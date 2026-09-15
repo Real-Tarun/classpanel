@@ -357,6 +357,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   transition: transform var(--transition-fast);
 }
 
+.tool-card-icon img {
+  width: 2.35rem;
+  height: 2.35rem;
+  object-fit: contain;
+  display: block;
+}
+
+.tool-title-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  vertical-align: -0.35rem;
+  object-fit: contain;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
 .tool-card:hover .tool-card-icon {
   transform: scale(1.08) rotate(2deg);
 }

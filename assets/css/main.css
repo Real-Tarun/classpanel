@@ -336,6 +336,55 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 3px 0 #CBD5E1;
 }
 
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid #CBD5E1;
+  border-bottom: 3px solid #94A3B8;
+  box-shadow: 0 3px 0 #CBD5E1;
+  border-radius: var(--radius-sm);
+  padding: 0 1.25rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-surface-subtle);
+  transform: translateY(-1px);
+  border-bottom-width: 4px;
+  box-shadow: 0 4px 0 #94A3B8;
+  text-decoration: none;
+}
+
+.btn-secondary:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 0 #CBD5E1;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #0E131F;
+  color: #F8FAFC;
+  border-color: #334155;
+  border-bottom-color: #475569;
+  box-shadow: 0 3px 0 #1E293B;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: #161E2E;
+  box-shadow: 0 4px 0 #334155;
+}
+
+[data-theme="dark"] .btn-secondary:active {
+  box-shadow: 0 1px 0 #1E293B;
+}
+
 /* Category Pills on Home - ElevenLabs Tactile Bevel */
 .category-pill {
   display: inline-flex;
@@ -855,10 +904,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .seo-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  border-bottom: 3.5px solid var(--border-strong);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   margin-bottom: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 0 var(--border-color), 0 8px 20px rgba(0, 0, 0, 0.04);
 }
 
 .seo-card h2 {

@@ -1,7 +1,8 @@
-const CACHE_NAME = 'classpanel-v1';
+const CACHE_NAME = 'classpanel-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
+  '/favicon.ico',
   '/manifest.webmanifest',
   '/assets/css/main.css',
   '/assets/js/common.js',
@@ -10,6 +11,9 @@ const STATIC_ASSETS = [
   '/assets/js/confetti.js',
   '/assets/js/fullscreen.js',
   '/assets/icons/icon.svg',
+  '/assets/icons/favicon.png',
+  '/assets/icons/icon-192.png',
+  '/assets/icons/icon-512.png',
   '/tools/classroom-timer/',
   '/tools/race-timers/',
   '/tools/holiday-timers/',

@@ -1,7 +1,6 @@
-const CACHE_NAME = 'classpanel-v3';
+const CACHE_NAME = 'classpanel-v4';
 const STATIC_ASSETS = [
   '/',
-  '/index.html',
   '/favicon.ico',
   '/manifest.webmanifest',
   '/assets/css/main.css',
@@ -31,6 +30,7 @@ const STATIC_ASSETS = [
   '/tools/group-generator/',
   '/tools/presentation-timer/',
   '/tools/tally-counter/',
+  '/blog/',
   '/about/',
   '/privacy/',
   '/contact/'

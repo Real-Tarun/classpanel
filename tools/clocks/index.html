@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom Clocks — Free Analog & Digital Smartboard Clock</title>
+  <meta name="description" content="Free classroom analog and digital clocks for smartboards. Practice reading time, toggle 12/24 hour formats, Roman numerals, and projector mode.">
+  <link rel="canonical" href="https://classpanel.online/tools/clocks/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .clock-display-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .analog-clock-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 8px solid var(--border-strong);
+      box-shadow: var(--shadow-xl);
+    }
+    .digital-clock-container {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 2rem 2.5rem;
+      text-align: center;
+    }
+    .clock-center-dot {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+    .clock-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      border-radius: 6px;
+      transition: transform 0.05s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+    }
+    .hand-hour {
+      width: 7px;
+      height: 80px;
+      margin-left: -3.5px;
+      background: var(--text-primary);
+      z-index: 7;
+    }
+    .hand-minute {
+      width: 5px;
+      height: 115px;
+      margin-left: -2.5px;
+      background: var(--primary);
+      z-index: 8;
+    }
+    .hand-second {
+      width: 2px;
+      height: 125px;
+      margin-left: -1px;
+      background: var(--accent-rose);
+      z-index: 9;
+    }
+    .clock-number {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Classroom Clocks</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="clock-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🕒 Classroom Clocks</h1>
+          <p class="tool-title-subtitle">Dual Analog & Digital clock display with time-teaching controls</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <button id="btn-toggle-digital" class="preset-chip" style="font-weight: 700;">Hide Digital (Quiz Mode)</button>
+          <button id="btn-toggle-24h" class="preset-chip">24-Hour Format</button>
+        </div>
+      </div>
+
+      <!-- Clock Display Area -->
+      <div class="clock-display-area">
+        <!-- Analog Clock Face -->
+        <div class="analog-clock-container" id="analog-clock">
+          <div class="clock-center-dot"></div>
+          <div class="clock-hand hand-hour" id="hand-hour"></div>
+          <div class="clock-hand hand-minute" id="hand-minute"></div>
+          <div class="clock-hand hand-second" id="hand-second"></div>
+        </div>
+
+        <!-- Digital Readout Container -->
+        <div class="digital-clock-container" id="digital-container">
+          <span style="font-size: 0.9rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Digital Time</span>
+          <div id="digital-time" style="font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--primary); margin: 0.5rem 0;">12:00:00 PM</div>
+          <div id="clock-date" style="font-size: 1.15rem; font-weight: 700; color: var(--text-secondary);">Tuesday, September 15, 2026</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Teaching Time on Interactive Smartboards</h2>
+            <p>Learning how to read analog clock faces is a core elementary mathematics standard. ClassPanel's Classroom Clocks bridges the gap between traditional clock hands and digital time displays.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Time-Telling Quiz Mode</h3>
+            <p>Click "Hide Digital (Quiz Mode)" to conceal the digital readout. Point to the analog hands on your projector or smartboard and ask students: "What time is it?" Once students answer, click to reveal the digital time and verify accuracy.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/exam-timer/">Official Exam Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/tally-counter/">Tally Counter</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let is24Hour = false;
+      let showDigital = true;
+
+      const clockFace = document.getElementById('analog-clock');
+      const handHour = document.getElementById('hand-hour');
+      const handMinute = document.getElementById('hand-minute');
+      const handSecond = document.getElementById('hand-second');
+      const digitalTime = document.getElementById('digital-time');
+      const clockDate = document.getElementById('clock-date');
+      const btnToggleDigital = document.getElementById('btn-toggle-digital');
+      const btnToggle24h = document.getElementById('btn-toggle-24h');
+
+      // Place 1-12 numbers on the clock face
+      function renderClockNumbers() {
+        const radius = 130;
+        const centerX = 160;
+        const centerY = 160;
+
+        for (let num = 1; num <= 12; num++) {
+          const angle = (num * 30) * (Math.PI / 180);
+          const x = centerX + radius * Math.sin(angle) - 15;
+          const y = centerY - radius * Math.cos(angle) - 15;
+
+          const numEl = document.createElement('div');
+          numEl.className = 'clock-number';
+          numEl.textContent = num;
+          numEl.style.left = `${x}px`;
+          numEl.style.top = `${y}px`;
+          clockFace.appendChild(numEl);
+        }
+      }
+
+      function updateClock() {
+        const now = new Date();
+        const seconds = now.getSeconds();
+        const minutes = now.getMinutes();
+        const hours = now.getHours();
+
+        // Degrees
+        const secondDeg = seconds * 6;
+        const minuteDeg = minutes * 6 + seconds * 0.1;
+        const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+
+        handSecond.style.transform = `rotate(${secondDeg}deg)`;
+        handMinute.style.transform = `rotate(${minuteDeg}deg)`;
+        handHour.style.transform = `rotate(${hourDeg}deg)`;
+
+        // Digital display
+        if (showDigital) {
+          const opt = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: !is24Hour
+          };
+          digitalTime.textContent = now.toLocaleTimeString([], opt);
+        } else {
+          digitalTime.textContent = "?? : ?? : ??";
+        }
+
+        clockDate.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      }
+
+      btnToggleDigital.addEventListener('click', () => {
+        showDigital = !showDigital;
+        btnToggleDigital.textContent = showDigital ? 'Hide Digital (Quiz Mode)' : 'Show Digital Readout';
+        updateClock();
+      });
+
+      btnToggle24h.addEventListener('click', () => {
+        is24Hour = !is24Hour;
+        btnToggle24h.textContent = is24Hour ? '12-Hour Format' : '24-Hour Format';
+        updateClock();
+      });
+
+      renderClockNumbers();
+      setInterval(updateClock, 1000);
+      updateClock();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensory Calming Timer — Free Visual Breathing & Liquid Timer</title>
+  <meta name="description" content="Free sensory calming timer for classrooms, quiet corners, and transitions. Features liquid bubble drip, box breathing circle guide, and gentle hourglass.">
+  <link rel="canonical" href="https://classpanel.online/tools/sensory-timer/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .sensory-viewport {
+      width: 100%;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 1.5rem 0;
+      background: radial-gradient(circle, var(--bg-surface-subtle) 0%, var(--bg-primary) 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    /* Breathing Circle Mode */
+    .breathing-circle-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .breathing-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #38BDF8, #818CF8);
+      box-shadow: 0 0 50px rgba(56, 189, 248, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: transform 4s ease-in-out, background 4s ease-in-out;
+    }
+    .breathing-instruction {
+      margin-top: 1.5rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    /* Liquid Canvas */
+    #liquid-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Sensory Calming Timer</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="sensory-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🫧 Sensory Calming Timer</h1>
+          <p class="tool-title-subtitle">Low-stimulation visual pacing for transitions, mindfulness & calm-down corners</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
+            <button id="btn-mode-breathing" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">🫁 Box Breathing</button>
+            <button id="btn-mode-liquid" class="preset-chip" style="background: transparent; border: none;">💧 Liquid Droplets</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Giant Digital Display -->
+      <div class="timer-big-display" id="sensory-time" style="font-size: clamp(3.5rem, 10vw, 7rem); margin: 0.5rem 0;">03:00</div>
+
+      <!-- Sensory Interactive Viewport -->
+      <div class="sensory-viewport" id="viewport">
+        <!-- Mode 1: Breathing Circle -->
+        <div class="breathing-circle-wrapper" id="breathing-container">
+          <div class="breathing-circle" id="circle">Breathe</div>
+          <div class="breathing-instruction" id="breathing-text">Inhale gently...</div>
+        </div>
+
+        <!-- Mode 2: Liquid Canvas -->
+        <canvas id="liquid-canvas" style="display: none;"></canvas>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="timer-actions">
+        <button id="btn-sensory-start" class="btn-giant btn-giant-primary" style="background: var(--accent-sky); color: #FFF;">
+          <span>Start Calm Timer</span>
+        </button>
+
+        <button id="btn-sensory-reset" class="btn-giant btn-giant-secondary">
+          <span>Reset</span>
+        </button>
+
+        <div class="presets-group" style="margin: 0;">
+          <button class="preset-chip" data-time="60">1 Min</button>
+          <button class="preset-chip" data-time="120">2 Min</button>
+          <button class="preset-chip" data-time="180" style="font-weight: 800; border-color: var(--primary);">3 Min</button>
+          <button class="preset-chip" data-time="300">5 Min</button>
+          <button class="preset-chip" data-time="600">10 Min</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Supporting Classroom Mindfulness & Emotional Regulation</h2>
+            <p>Classrooms are vibrant and energetic, but overstimulation can lead to fatigue, sensory overload, and loss of focus. Sensory timers provide visual pacing that guides students toward autonomic calming.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Box Breathing Technique (4-4-4-4)</h3>
+            <p>Used by athletes and wellness professionals, box breathing triggers the parasympathetic nervous system: Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds, and hold for 4 seconds. Our animated breathing orb gives students an intuitive focal point.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Calm-Down Corner Support</h3>
+            <p>Place a tablet or Chromebook in your classroom calm-down corner running the liquid bubble timer. Watching the slow descent of droplets helps dysregulated students regain composure without feeling punished.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/clocks/">Classroom Clocks</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/presentation-timer/">Presentation Timer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let mode = 'breathing'; // 'breathing' or 'liquid'
+      let totalSeconds = 180;
+      let remainingSeconds = 180;
+      let isRunning = false;
+      let timerInterval = null;
+      let breathingCycleInterval = null;
+
+      const sensoryTime = document.getElementById('sensory-time');
+      const btnStart = document.getElementById('btn-sensory-start');
+      const btnReset = document.getElementById('btn-sensory-reset');
+      const btnBreathing = document.getElementById('btn-mode-breathing');
+      const btnLiquid = document.getElementById('btn-mode-liquid');
+      const breathingContainer = document.getElementById('breathing-container');
+      const circle = document.getElementById('circle');
+      const breathingText = document.getElementById('breathing-text');
+      const canvas = document.getElementById('liquid-canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Box breathing cycle: 4s Inhale, 4s Hold, 4s Exhale, 4s Hold
+      const BREATH_STEPS = [
+        { text: 'Inhale gently...', scale: 1.8, bg: 'radial-gradient(circle, #38BDF8, #818CF8)' },
+        { text: 'Hold your breath...', scale: 1.8, bg: 'radial-gradient(circle, #818CF8, #6366F1)' },
+        { text: 'Exhale slowly...', scale: 1.0, bg: 'radial-gradient(circle, #34D399, #059669)' },
+        { text: 'Rest and pause...', scale: 1.0, bg: 'radial-gradient(circle, #6EE7B7, #10B981)' }
+      ];
+      let stepIndex = 0;
+
+      function updateBreathingOrb() {
+        const step = BREATH_STEPS[stepIndex];
+        breathingText.textContent = step.text;
+        circle.style.transform = `scale(${step.scale})`;
+        circle.style.background = step.bg;
+        stepIndex = (stepIndex + 1) % BREATH_STEPS.length;
+      }
+
+      function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+      }
+
+      function renderTime() {
+        sensoryTime.textContent = formatTime(remainingSeconds);
+      }
+
+      // Liquid droplet animation
+      let droplets = [];
+      let liquidAnimId = null;
+
+      function initLiquidCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        droplets = [];
+      }
+
+      function addDroplet() {
+        droplets.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * (canvas.width * 0.4),
+          y: 20,
+          radius: 12 + Math.random() * 8,
+          speed: 1.5 + Math.random() * 2,
+          color: Math.random() > 0.5 ? '#38BDF8' : '#818CF8'
+        });
+      }
+
+      function renderLiquid() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Progress fill in bottom chamber
+        const ratio = 1 - (remainingSeconds / totalSeconds);
+        const fillHeight = canvas.height * 0.35 * Math.min(1, Math.max(0, ratio));
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.fillRect(0, canvas.height - fillHeight, canvas.width, fillHeight);
+
+        // Update droplets
+        for (let i = droplets.length - 1; i >= 0; i--) {
+          const d = droplets[i];
+          d.y += d.speed;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+          ctx.fillStyle = d.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = d.color;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          if (d.y >= canvas.height - fillHeight) {
+            droplets.splice(i, 1);
+          }
+        }
+
+        if (isRunning && Math.random() < 0.05) {
+          addDroplet();
+        }
+
+        if (mode === 'liquid') {
+          liquidAnimId = requestAnimationFrame(renderLiquid);
+        }
+      }
+
+      function start() {
+        if (isRunning) return;
+        isRunning = true;
+        btnStart.classList.add('is-running');
+        btnStart.innerHTML = `<span>Pause Calm</span>`;
+
+        if (mode === 'breathing') {
+          updateBreathingOrb();
+          breathingCycleInterval = setInterval(updateBreathingOrb, 4000);
+        } else {
+          initLiquidCanvas();
+          renderLiquid();
+        }
+
+        timerInterval = setInterval(() => {
+          if (remainingSeconds > 0) {
+            remainingSeconds--;
+            renderTime();
+          } else {
+            finish();
+          }
+        }, 1000);
+      }
+
+      function pause() {
+        isRunning = false;
+        clearInterval(timerInterval);
+        clearInterval(breathingCycleInterval);
+        if (liquidAnimId) cancelAnimationFrame(liquidAnimId);
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = `<span>Resume</span>`;
+      }
+
+      function reset() {
+        pause();
+        remainingSeconds = totalSeconds;
+        renderTime();
+        stepIndex = 0;
+        circle.style.transform = 'scale(1)';
+        breathingText.textContent = 'Inhale gently...';
+        btnStart.innerHTML = `<span>Start Calm Timer</span>`;
+        if (mode === 'liquid') {
+          initLiquidCanvas();
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      function finish() {
+        pause();
+        if (window.SoundFX) window.SoundFX.playGentleChime();
+        if (window.ClassPanel) window.ClassPanel.showToast('Mindfulness session complete 🌿');
+      }
+
+      btnStart.addEventListener('click', () => {
+        if (isRunning) pause();
+        else start();
+      });
+
+      btnReset.addEventListener('click', reset);
+
+      document.querySelectorAll('[data-time]').forEach(chip => {
+        chip.addEventListener('click', () => {
+          totalSeconds = parseInt(chip.getAttribute('data-time'), 10);
+          reset();
+        });
+      });
+
+      btnBreathing.addEventListener('click', () => {
+        if (mode === 'breathing') return;
+        mode = 'breathing';
+        btnBreathing.style.background = 'var(--primary)';
+        btnBreathing.style.color = '#FFF';
+        btnLiquid.style.background = 'transparent';
+        btnLiquid.style.color = 'inherit';
+        breathingContainer.style.display = 'flex';
+        canvas.style.display = 'none';
+        reset();
+      });
+
+      btnLiquid.addEventListener('click', () => {
+        if (mode === 'liquid') return;
+        mode = 'liquid';
+        btnLiquid.style.background = 'var(--primary)';
+        btnLiquid.style.color = '#FFF';
+        btnBreathing.style.background = 'transparent';
+        btnBreathing.style.color = 'inherit';
+        breathingContainer.style.display = 'none';
+        canvas.style.display = 'block';
+        initLiquidCanvas();
+        reset();
+      });
+
+      window.addEventListener('resize', () => {
+        if (mode === 'liquid') initLiquidCanvas();
+      });
+
+      renderTime();
+    })();
+  </script>
+</body>
+</html>

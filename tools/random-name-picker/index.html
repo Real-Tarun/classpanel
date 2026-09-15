@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Name Picker — Free Wheel Spinner for Classrooms</title>
+  <meta name="description" content="Free classroom random name picker wheel. Manage class rosters, spin the wheel, eliminate picked names, and celebrate with sound effects and confetti.">
+  <link rel="canonical" href="https://classpanel.online/tools/random-name-picker/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .wheel-container {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 1;
+      margin: 1.5rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #wheel-canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: var(--shadow-xl);
+      border: 6px solid var(--border-color);
+      transition: transform 0.1s ease-out;
+    }
+    .wheel-pointer {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 32px solid var(--accent-rose);
+      z-index: 10;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+    .wheel-center-cap {
+      position: absolute;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 4px solid var(--border-strong);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      cursor: pointer;
+      user-select: none;
+      z-index: 5;
+    }
+    .winner-display-box {
+      background: var(--bg-surface-subtle);
+      border: 2px dashed var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      text-align: center;
+      margin: 1.5rem auto;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Random Name Picker</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="picker-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🎯 Random Name Picker</h1>
+          <p class="tool-title-subtitle" id="roster-info-subtitle">Current Class: Period 1 (Sample) • 16 Students</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <button id="btn-open-roster" class="btn-primary" style="padding: 0.55rem 1.25rem; border-radius: var(--radius-full); font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: var(--shadow-sm);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>+ Add / Edit Student Names</span>
+          </button>
+          
+          <label style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="check-remove-picked" checked style="accent-color: var(--primary); width: 1.1rem; height: 1.1rem;">
+            <span>Remove on Pick</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Empty State Card (Visible when class list is empty) -->
+      <div id="empty-state-card" style="display: none; background: var(--bg-surface-subtle); border: 2px dashed var(--primary); border-radius: var(--radius-xl); padding: 3rem 1.5rem; text-align: center; margin: 1.5rem auto; max-width: 520px;">
+        <div style="font-size: 3rem; margin-bottom: 0.75rem;">📋</div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">No Student Names Found</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.5;">Add your classroom roster to spin the wheel! You can paste names in bulk or load our sample class.</p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button id="btn-empty-add-names" class="btn-giant btn-giant-primary" style="height: 3.5rem; font-size: 1.1rem; padding: 0 1.5rem;">
+            <span>+ Add Your Class List</span>
+          </button>
+          <button id="btn-empty-load-sample" class="preset-chip" style="height: 3.5rem; padding: 0 1.25rem;">
+            <span>Load Sample Class</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Wheel Interactive Area -->
+      <div id="wheel-active-area">
+        <!-- Winner Callout Box -->
+        <div class="winner-display-box" id="winner-box">
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Selected Student</div>
+          <div id="winner-name" style="font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 900; color: var(--primary); line-height: 1.2;">Ready to Spin!</div>
+        </div>
+
+        <!-- Spinning Wheel Canvas Container -->
+        <div class="wheel-container">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheel-canvas" width="600" height="600"></canvas>
+          <div class="wheel-center-cap" id="wheel-cap" title="Click to Spin">🎯</div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="timer-actions">
+          <button id="btn-spin" class="btn-giant btn-giant-primary" style="background: var(--accent-purple); min-width: 220px;">
+            <span>🎲 Spin the Wheel</span>
+          </button>
+
+          <button id="btn-bottom-edit" class="btn-giant btn-giant-secondary" style="font-size: 1.05rem; padding: 0 1.5rem;" title="Edit Student Names">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>Edit Names (<span id="count-total">16</span>)</span>
+          </button>
+
+          <button id="btn-reset-pool" class="preset-chip" style="height: 3.5rem; padding: 0 1.25rem;">
+            <span>🔄 Reset Picked (<span id="count-remaining">16</span> left)</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Roster Management Modal (Zero native browser popups) -->
+    <div class="modal-backdrop" id="roster-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">Class Rosters & Student Names</h3>
+          <button class="modal-close-btn" id="btn-close-roster" aria-label="Close">✕</button>
+        </div>
+        
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Select Active Class:</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <select id="select-roster" class="select-input" style="flex: 1; font-weight: 600;"></select>
+            <button id="btn-delete-roster" class="preset-chip" style="color: var(--accent-rose); border-color: var(--accent-rose);" title="Delete current class">Delete</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Class Name:</label>
+          <input type="text" id="input-roster-name" class="input-text" placeholder="Class Name (e.g., Grade 6 Math, Period 3)" style="margin-bottom: 0.75rem; font-weight: 700;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Student Names (Paste one per line, or comma-separated):</label>
+          <textarea id="textarea-names" class="textarea-input" rows="8" placeholder="Alex Rivera&#10;Bella Chen&#10;Carlos Gomez&#10;David Kim..."></textarea>
+        </div>
+
+        <div id="roster-form-error" style="display: none; color: var(--accent-rose); font-size: 0.875rem; font-weight: 700; margin-bottom: 1rem;"></div>
+
+        <div style="display: flex; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+          <button id="btn-save-roster" class="btn-primary" style="padding: 0.75rem 1.75rem; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem;">Save Class List</button>
+          <button id="btn-load-sample" class="preset-chip">Load Sample Class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Fair and Engaging Student Random Selection</h2>
+            <p>Calling on students fairly is fundamental to classroom equity and engagement. ClassPanel's Random Name Picker ensures that every learner has an equal opportunity to participate without teacher bias or student anxiety.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Why Teachers Love This Wheel Picker</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Saved Class Rosters:</strong> Create multiple class rosters (Period 1, Science Block, Homeroom) saved safely in your browser.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>"Remove on Pick" Eliminates Duplicates:</strong> Once a student has spoken, their name is taken out of the wheel for that session so every student speaks before repeats occur.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Celebration Animations:</strong> Instant canvas confetti burst and optional victory fanfare turn answering questions into an exciting classroom game.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/group-generator/">Class Group Generator</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/chance-games/">Dice & Chance Games</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-number-generator/">Random Number Generator</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/confetti.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let currentRosterName = '';
+      let allStudents = [];
+      let pool = [];
+      let isSpinning = false;
+      let currentAngle = 0;
+
+      const canvas = document.getElementById('wheel-canvas');
+      const ctx = canvas.getContext('2d');
+      const btnSpin = document.getElementById('btn-spin');
+      const wheelCap = document.getElementById('wheel-cap');
+      const winnerName = document.getElementById('winner-name');
+      const countRemaining = document.getElementById('count-remaining');
+      const checkRemove = document.getElementById('check-remove-picked');
+      const btnResetPool = document.getElementById('btn-reset-pool');
+      const subtitle = document.getElementById('roster-info-subtitle');
+
+      // Modal elements
+      const modal = document.getElementById('roster-modal');
+      const btnOpenRoster = document.getElementById('btn-open-roster');
+      const btnCloseRoster = document.getElementById('btn-close-roster');
+      const selectRoster = document.getElementById('select-roster');
+      const inputRosterName = document.getElementById('input-roster-name');
+      const textareaNames = document.getElementById('textarea-names');
+      const btnSaveRoster = document.getElementById('btn-save-roster');
+      const btnDeleteRoster = document.getElementById('btn-delete-roster');
+      const btnLoadSample = document.getElementById('btn-load-sample');
+
+      const COLORS = [
+        '#4F46E5', '#7C3AED', '#EC4899', '#F59E0B', 
+        '#10B981', '#06B6D4', '#EF4444', '#8B5CF6',
+        '#3B82F6', '#14B8A6', '#F97316', '#6366F1'
+      ];
+
+      const emptyCard = document.getElementById('empty-state-card');
+      const wheelActiveArea = document.getElementById('wheel-active-area');
+      const countTotal = document.getElementById('count-total');
+      const btnBottomEdit = document.getElementById('btn-bottom-edit');
+      const btnEmptyAdd = document.getElementById('btn-empty-add-names');
+      const btnEmptySample = document.getElementById('btn-empty-load-sample');
+      const rosterError = document.getElementById('roster-form-error');
+
+      function loadRosterData() {
+        currentRosterName = window.StorageHub.getActiveRosterName() || '';
+        allStudents = window.StorageHub.getActiveRosterList();
+        pool = [...allStudents];
+        updateUI();
+        drawWheel();
+      }
+
+      function updateUI() {
+        countRemaining.textContent = pool.length;
+        if (countTotal) countTotal.textContent = allStudents.length;
+
+        if (allStudents.length === 0) {
+          emptyCard.style.display = 'block';
+          wheelActiveArea.style.display = 'none';
+          subtitle.textContent = 'No Class List Added Yet';
+        } else {
+          emptyCard.style.display = 'none';
+          wheelActiveArea.style.display = 'block';
+          subtitle.textContent = `Current Class: ${currentRosterName} • ${pool.length} of ${allStudents.length} Students Left to Pick`;
+        }
+      }
+
+      function drawWheel() {
+        const numSlices = pool.length;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = centerX - 10;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (numSlices === 0) {
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+          ctx.fillStyle = '#E2E8F0';
+          ctx.fill();
+          ctx.fillStyle = '#64748B';
+          ctx.font = 'bold 22px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('All names picked! Click Reset.', centerX, centerY);
+          return;
+        }
+
+        const sliceAngle = (2 * Math.PI) / numSlices;
+
+        for (let i = 0; i < numSlices; i++) {
+          const angle = currentAngle + i * sliceAngle;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, angle, angle + sliceAngle);
+          ctx.closePath();
+          ctx.fillStyle = COLORS[i % COLORS.length];
+          ctx.fill();
+          ctx.strokeStyle = '#FFFFFF';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Slice Label
+          ctx.save();
+          ctx.translate(centerX, centerY);
+          ctx.rotate(angle + sliceAngle / 2);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 18px system-ui, sans-serif';
+          ctx.shadowColor = 'rgba(0,0,0,0.4)';
+          ctx.shadowBlur = 4;
+          
+          let name = pool[i];
+          if (name.length > 15) name = name.substring(0, 13) + '...';
+          ctx.fillText(name, radius - 24, 6);
+          ctx.restore();
+        }
+      }
+
+      function spinWheel() {
+        if (isSpinning || pool.length === 0) {
+          if (pool.length === 0) resetPool();
+          return;
+        }
+
+        isSpinning = true;
+        winnerName.textContent = "Spinning...";
+        winnerName.style.color = "var(--text-muted)";
+
+        const spinTime = 3800; // ms
+        const startAngle = currentAngle;
+        const randomRotations = 5 + Math.random() * 5;
+        const targetAngle = startAngle + randomRotations * 2 * Math.PI + Math.random() * (2 * Math.PI);
+        const startTime = performance.now();
+        let lastTickSlice = -1;
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(1, elapsed / spinTime);
+          
+          // Ease out cubic
+          const ease = 1 - Math.pow(1 - progress, 3);
+          currentAngle = startAngle + (targetAngle - startAngle) * ease;
+
+          // Sound tick on passing slices
+          const sliceAngle = (2 * Math.PI) / pool.length;
+          const normAngle = (currentAngle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+          const currentSlice = Math.floor(normAngle / sliceAngle);
+          if (currentSlice !== lastTickSlice) {
+            lastTickSlice = currentSlice;
+            if (window.SoundFX) window.SoundFX.playClick();
+          }
+
+          drawWheel();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            finalizeSpin();
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      function finalizeSpin() {
+        isSpinning = false;
+        const numSlices = pool.length;
+        const sliceAngle = (2 * Math.PI) / numSlices;
+        
+        // Pointer is at top (-PI/2)
+        const pointerAngle = (3 * Math.PI) / 2;
+        let relativeAngle = (pointerAngle - currentAngle) % (2 * Math.PI);
+        if (relativeAngle < 0) relativeAngle += 2 * Math.PI;
+
+        const winningIndex = Math.floor(relativeAngle / sliceAngle) % numSlices;
+        const winner = pool[winningIndex];
+
+        winnerName.textContent = `🎉 ${winner}!`;
+        winnerName.style.color = "var(--primary)";
+
+        if (window.SoundFX) window.SoundFX.playFanfare();
+        if (window.Confetti) window.Confetti.fire({ count: 150 });
+        if (window.ClassPanel) window.ClassPanel.showToast(`Selected: ${winner}`);
+
+        if (checkRemove.checked) {
+          pool.splice(winningIndex, 1);
+          setTimeout(() => {
+            updateUI();
+            drawWheel();
+          }, 1200);
+        }
+      }
+
+      function resetPool() {
+        pool = [...allStudents];
+        updateUI();
+        drawWheel();
+        winnerName.textContent = "Ready to Spin!";
+        winnerName.style.color = "var(--primary)";
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      // Populate Roster Modal
+      function populateRosterModal() {
+        const rosters = window.StorageHub.getRosters();
+        selectRoster.innerHTML = '';
+        const names = Object.keys(rosters);
+        if (names.length === 0) {
+          selectRoster.innerHTML = '<option value="">(No saved classes)</option>';
+        } else {
+          names.forEach(name => {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = `${name} (${rosters[name].length} students)`;
+            if (name === currentRosterName) opt.selected = true;
+            selectRoster.appendChild(opt);
+          });
+        }
+
+        textareaNames.value = allStudents.join('\n');
+        inputRosterName.value = currentRosterName;
+        if (rosterError) rosterError.style.display = 'none';
+      }
+
+      // Event Listeners
+      btnSpin.addEventListener('click', spinWheel);
+      wheelCap.addEventListener('click', spinWheel);
+      btnResetPool.addEventListener('click', resetPool);
+
+      btnOpenRoster.addEventListener('click', () => {
+        populateRosterModal();
+        modal.classList.add('is-open');
+      });
+
+      if (btnBottomEdit) {
+        btnBottomEdit.addEventListener('click', () => {
+          populateRosterModal();
+          modal.classList.add('is-open');
+        });
+      }
+
+      if (btnEmptyAdd) {
+        btnEmptyAdd.addEventListener('click', () => {
+          populateRosterModal();
+          modal.classList.add('is-open');
+        });
+      }
+
+      if (btnEmptySample) {
+        btnEmptySample.addEventListener('click', () => {
+          window.StorageHub.initDefaults();
+          loadRosterData();
+          if (window.ClassPanel) window.ClassPanel.showToast('Sample Class loaded!');
+        });
+      }
+
+      btnCloseRoster.addEventListener('click', () => {
+        modal.classList.remove('is-open');
+      });
+
+      selectRoster.addEventListener('change', () => {
+        if (!selectRoster.value) return;
+        window.StorageHub.setActiveRosterName(selectRoster.value);
+        loadRosterData();
+        populateRosterModal();
+      });
+
+      btnSaveRoster.addEventListener('click', () => {
+        if (rosterError) rosterError.style.display = 'none';
+        const name = inputRosterName.value.trim();
+        const names = window.StorageHub.parseNamesFromText(textareaNames.value);
+        if (!name) {
+          if (rosterError) {
+            rosterError.textContent = 'Please enter a name for your class list.';
+            rosterError.style.display = 'block';
+          }
+          inputRosterName.focus();
+          return;
+        }
+        if (names.length === 0) {
+          if (rosterError) {
+            rosterError.textContent = 'Please enter at least one student name.';
+            rosterError.style.display = 'block';
+          }
+          textareaNames.focus();
+          return;
+        }
+        window.StorageHub.saveRoster(name, names);
+        loadRosterData();
+        modal.classList.remove('is-open');
+        if (window.ClassPanel) window.ClassPanel.showToast(`Saved ${names.length} students to "${name}"!`);
+      });
+
+      btnDeleteRoster.addEventListener('click', async () => {
+        const rosterToDelete = selectRoster.value;
+        if (!rosterToDelete) return;
+        const confirmed = await window.ClassPanel.confirm({
+          title: 'Delete Class List?',
+          message: `Are you sure you want to delete "${rosterToDelete}"?`,
+          confirmText: 'Delete Roster',
+          danger: true
+        });
+        if (confirmed) {
+          window.StorageHub.deleteRoster(rosterToDelete);
+          loadRosterData();
+          populateRosterModal();
+          if (window.ClassPanel) window.ClassPanel.showToast(`Deleted class "${rosterToDelete}".`);
+        }
+      });
+
+      btnLoadSample.addEventListener('click', () => {
+        window.StorageHub.initDefaults();
+        loadRosterData();
+        populateRosterModal();
+        if (window.ClassPanel) window.ClassPanel.showToast('Loaded sample class!');
+      });
+
+      // Spacebar to spin
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          spinWheel();
+        }
+      });
+
+      loadRosterData();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Group Generator — Free Classroom Team Maker</title>
+  <meta name="description" content="Free classroom team maker and group generator. Split student rosters into balanced groups, pairs, or tables. Instant shuffle, copy to clipboard, and projector mode.">
+  <link rel="canonical" href="https://classpanel.online/tools/group-generator/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.75rem;
+    }
+    .group-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .group-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .group-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.6rem;
+    }
+    .group-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .student-pill {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Group Generator</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="group-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>👥 Class Group Generator</h1>
+          <p class="tool-title-subtitle" id="group-subtitle">Split roster into balanced teams, lab pairs, and project tables</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <button id="btn-edit-roster" class="btn-primary" style="padding: 0.55rem 1.25rem; border-radius: var(--radius-full); font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: var(--shadow-sm);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>+ Add / Edit Student Names</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty State Card (Visible when roster is empty) -->
+      <div id="group-empty-state" style="display: none; background: var(--bg-surface-subtle); border: 2px dashed var(--primary); border-radius: var(--radius-xl); padding: 3rem 1.5rem; text-align: center; margin: 1.5rem auto; max-width: 520px;">
+        <div style="font-size: 3rem; margin-bottom: 0.75rem;">👥</div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">No Students in Class List</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem;">Add or paste your student names to automatically divide your class into teams!</p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button id="btn-empty-add-names" class="btn-giant btn-giant-primary" style="height: 3.5rem; font-size: 1.1rem; padding: 0 1.5rem;">
+            <span>+ Add Student Names</span>
+          </button>
+          <button id="btn-empty-load-sample" class="preset-chip" style="height: 3.5rem; padding: 0 1.25rem;">
+            <span>Load Sample Class</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generator Settings Bar -->
+      <div id="group-controls-bar" style="background: var(--bg-surface-subtle); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem;">Split Strategy:</label>
+            <select id="select-strategy" class="select-input" style="padding: 0.5rem 0.8rem; font-weight: 600;">
+              <option value="by-groups">By Number of Groups</option>
+              <option value="by-size">By Students Per Group</option>
+            </select>
+          </div>
+
+          <div>
+            <label id="label-count" style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem;">Number of Groups:</label>
+            <input type="number" id="input-count" class="input-text" value="4" min="2" max="20" style="width: 100px; padding: 0.5rem 0.8rem; font-weight: 700;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.6rem; align-items: center;">
+          <button id="btn-shuffle" class="btn-giant btn-giant-primary" style="height: 3.25rem; font-size: 1.1rem; padding: 0 1.5rem;">
+            <span>🔀 Shuffle Teams</span>
+          </button>
+          <button id="btn-copy" class="action-btn" style="height: 3.25rem;" title="Copy to Clipboard">
+            <span>📋 Copy</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated Groups Container -->
+      <div class="groups-grid" id="groups-container"></div>
+
+    </div>
+
+    <!-- Roster Management Modal (Zero native browser popups) -->
+    <div class="modal-backdrop" id="roster-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">Class Rosters & Student Names</h3>
+          <button class="modal-close-btn" id="btn-close-roster" aria-label="Close">✕</button>
+        </div>
+        
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Select Active Class:</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <select id="select-roster" class="select-input" style="flex: 1; font-weight: 600;"></select>
+            <button id="btn-delete-roster" class="preset-chip" style="color: var(--accent-rose); border-color: var(--accent-rose);" title="Delete current class">Delete</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Class Name:</label>
+          <input type="text" id="input-roster-name" class="input-text" placeholder="Class Name (e.g., Grade 6 Math, Period 3)" style="margin-bottom: 0.75rem; font-weight: 700;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Student Names (Paste one per line, or comma-separated):</label>
+          <textarea id="textarea-names" class="textarea-input" rows="8" placeholder="Alex Rivera&#10;Bella Chen&#10;Carlos Gomez&#10;David Kim..."></textarea>
+        </div>
+
+        <div id="roster-form-error" style="display: none; color: var(--accent-rose); font-size: 0.875rem; font-weight: 700; margin-bottom: 1rem;"></div>
+
+        <div style="display: flex; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+          <button id="btn-save-roster" class="btn-primary" style="padding: 0.75rem 1.75rem; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem;">Save Class List</button>
+          <button id="btn-load-sample" class="preset-chip">Load Sample Class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Instant, Fair Student Group Formation</h2>
+            <p>Forming student groups manually can waste valuable instructional minutes and inadvertently encourage social cliques. ClassPanel's Group Generator provides instant, impartial randomized group creation for collaborative learning.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Best Classroom Practices for Group Work</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Think-Pair-Share:</strong> Set the generator to "By Students Per Group: 2" to form rapid peer-discussion pairs.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Science Lab Stations:</strong> Select the exact number of lab tables available (e.g. 5 stations) to evenly distribute students.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Projector Display:</strong> Project the groups on the board so students immediately know where to sit without teacher confusion.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-name-picker/">Random Name Picker</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/tally-counter/">Team Score Counter</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/exam-timer/">Official Exam Timer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/confetti.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let currentRosterName = '';
+      let currentRoster = [];
+      let currentGroups = [];
+
+      const selectStrategy = document.getElementById('select-strategy');
+      const inputCount = document.getElementById('input-count');
+      const labelCount = document.getElementById('label-count');
+      const btnShuffle = document.getElementById('btn-shuffle');
+      const btnCopy = document.getElementById('btn-copy');
+      const container = document.getElementById('groups-container');
+      const subtitle = document.getElementById('group-subtitle');
+      const btnEditRoster = document.getElementById('btn-edit-roster');
+      const emptyCard = document.getElementById('group-empty-state');
+      const controlsBar = document.getElementById('group-controls-bar');
+      const btnEmptyAdd = document.getElementById('btn-empty-add-names');
+      const btnEmptySample = document.getElementById('btn-empty-load-sample');
+
+      // Modal elements
+      const modal = document.getElementById('roster-modal');
+      const btnCloseRoster = document.getElementById('btn-close-roster');
+      const selectRoster = document.getElementById('select-roster');
+      const inputRosterName = document.getElementById('input-roster-name');
+      const textareaNames = document.getElementById('textarea-names');
+      const btnSaveRoster = document.getElementById('btn-save-roster');
+      const btnDeleteRoster = document.getElementById('btn-delete-roster');
+      const btnLoadSample = document.getElementById('btn-load-sample');
+      const rosterError = document.getElementById('roster-form-error');
+
+      function init() {
+        currentRosterName = window.StorageHub.getActiveRosterName() || '';
+        currentRoster = window.StorageHub.getActiveRosterList();
+        
+        if (currentRoster.length === 0) {
+          emptyCard.style.display = 'block';
+          controlsBar.style.display = 'none';
+          container.style.display = 'none';
+          subtitle.textContent = 'No Class List Added Yet';
+        } else {
+          emptyCard.style.display = 'none';
+          controlsBar.style.display = 'flex';
+          container.style.display = 'grid';
+          subtitle.textContent = `Active Class: ${currentRosterName} (${currentRoster.length} students)`;
+          generateGroups();
+        }
+      }
+
+      function shuffleArray(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function generateGroups() {
+        if (currentRoster.length === 0) return;
+
+        const shuffled = shuffleArray(currentRoster);
+        const strategy = selectStrategy.value;
+        const count = Math.max(1, parseInt(inputCount.value, 10) || 4);
+
+        currentGroups = [];
+
+        if (strategy === 'by-groups') {
+          const numGroups = Math.min(count, shuffled.length);
+          for (let i = 0; i < numGroups; i++) {
+            currentGroups.push([]);
+          }
+          shuffled.forEach((student, idx) => {
+            currentGroups[idx % numGroups].push(student);
+          });
+        } else {
+          // by size
+          const size = count;
+          for (let i = 0; i < shuffled.length; i += size) {
+            currentGroups.push(shuffled.slice(i, i + size));
+          }
+        }
+
+        renderGroups();
+      }
+
+      function renderGroups() {
+        container.innerHTML = '';
+        const GROUP_COLORS = ['#4F46E5', '#7C3AED', '#EC4899', '#059669', '#0284C7', '#D97706', '#E11D48', '#0D9488'];
+
+        currentGroups.forEach((grp, idx) => {
+          const card = document.createElement('div');
+          card.className = 'group-card';
+          const color = GROUP_COLORS[idx % GROUP_COLORS.length];
+          card.style.borderTop = `4px solid ${color}`;
+
+          card.innerHTML = `
+            <div class="group-card-header">
+              <div class="group-title">
+                <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: ${color};"></span>
+                <span>Team ${idx + 1}</span>
+              </div>
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">${grp.length} students</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+              ${grp.map(s => `
+                <div class="student-pill">
+                  <span>${s}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      selectStrategy.addEventListener('change', () => {
+        if (selectStrategy.value === 'by-groups') {
+          labelCount.textContent = 'Number of Groups:';
+          inputCount.value = '4';
+        } else {
+          labelCount.textContent = 'Students Per Group:';
+          inputCount.value = '4';
+        }
+        generateGroups();
+      });
+
+      inputCount.addEventListener('input', generateGroups);
+
+      btnShuffle.addEventListener('click', () => {
+        if (window.SoundFX) window.SoundFX.playClick();
+        generateGroups();
+        if (window.Confetti) window.Confetti.fire({ count: 60 });
+      });
+
+      btnCopy.addEventListener('click', () => {
+        let text = `Class Groups (${currentRosterName}):\n\n`;
+        currentGroups.forEach((grp, idx) => {
+          text += `Team ${idx + 1} (${grp.length}):\n${grp.map(s => `• ${s}`).join('\n')}\n\n`;
+        });
+        navigator.clipboard.writeText(text).then(() => {
+          if (window.ClassPanel) window.ClassPanel.showToast('Copied teams to clipboard!');
+        });
+      });
+
+      // Populate Roster Modal
+      function populateRosterModal() {
+        const rosters = window.StorageHub.getRosters();
+        selectRoster.innerHTML = '';
+        const names = Object.keys(rosters);
+        if (names.length === 0) {
+          selectRoster.innerHTML = '<option value="">(No saved classes)</option>';
+        } else {
+          names.forEach(name => {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = `${name} (${rosters[name].length} students)`;
+            if (name === currentRosterName) opt.selected = true;
+            selectRoster.appendChild(opt);
+          });
+        }
+
+        textareaNames.value = currentRoster.join('\n');
+        inputRosterName.value = currentRosterName;
+        if (rosterError) rosterError.style.display = 'none';
+      }
+
+      btnEditRoster.addEventListener('click', () => {
+        populateRosterModal();
+        modal.classList.add('is-open');
+      });
+
+      if (btnEmptyAdd) {
+        btnEmptyAdd.addEventListener('click', () => {
+          populateRosterModal();
+          modal.classList.add('is-open');
+        });
+      }
+
+      if (btnEmptySample) {
+        btnEmptySample.addEventListener('click', () => {
+          window.StorageHub.initDefaults();
+          init();
+          if (window.ClassPanel) window.ClassPanel.showToast('Loaded sample class!');
+        });
+      }
+
+      btnCloseRoster.addEventListener('click', () => {
+        modal.classList.remove('is-open');
+      });
+
+      selectRoster.addEventListener('change', () => {
+        if (!selectRoster.value) return;
+        window.StorageHub.setActiveRosterName(selectRoster.value);
+        init();
+        populateRosterModal();
+      });
+
+      btnSaveRoster.addEventListener('click', () => {
+        if (rosterError) rosterError.style.display = 'none';
+        const name = inputRosterName.value.trim();
+        const names = window.StorageHub.parseNamesFromText(textareaNames.value);
+        if (!name) {
+          if (rosterError) {
+            rosterError.textContent = 'Please enter a name for your class list.';
+            rosterError.style.display = 'block';
+          }
+          inputRosterName.focus();
+          return;
+        }
+        if (names.length === 0) {
+          if (rosterError) {
+            rosterError.textContent = 'Please enter at least one student name.';
+            rosterError.style.display = 'block';
+          }
+          textareaNames.focus();
+          return;
+        }
+        window.StorageHub.saveRoster(name, names);
+        init();
+        modal.classList.remove('is-open');
+        if (window.ClassPanel) window.ClassPanel.showToast(`Saved ${names.length} students to "${name}"!`);
+      });
+
+      btnDeleteRoster.addEventListener('click', async () => {
+        const rosterToDelete = selectRoster.value;
+        if (!rosterToDelete) return;
+        const confirmed = await window.ClassPanel.confirm({
+          title: 'Delete Class List?',
+          message: `Are you sure you want to delete "${rosterToDelete}"?`,
+          confirmText: 'Delete Roster',
+          danger: true
+        });
+        if (confirmed) {
+          window.StorageHub.deleteRoster(rosterToDelete);
+          init();
+          populateRosterModal();
+          if (window.ClassPanel) window.ClassPanel.showToast(`Deleted class "${rosterToDelete}".`);
+        }
+      });
+
+      btnLoadSample.addEventListener('click', () => {
+        window.StorageHub.initDefaults();
+        init();
+        populateRosterModal();
+        if (window.ClassPanel) window.ClassPanel.showToast('Loaded sample class!');
+      });
+
+      init();
+    })();
+  </script>
+</body>
+</html>

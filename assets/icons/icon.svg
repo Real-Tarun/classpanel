@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="50%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#grad)"/>
+  <!-- Classroom board / screen icon -->
+  <g fill="#FFFFFF">
+    <rect x="96" y="110" width="320" height="230" rx="24" fill="#FFFFFF" fill-opacity="0.96"/>
+    <path d="M136 160h100v16H136zm0 32h70v16h-70zm0 32h120v16H136z" fill="#4F46E5" fill-opacity="0.75"/>
+    <!-- Timer ring in screen -->
+    <circle cx="330" cy="190" r="36" fill="none" stroke="#EC4899" stroke-width="10" stroke-linecap="round" stroke-dasharray="160 50"/>
+    <polyline points="330,172 330,190 344,190" fill="none" stroke="#EC4899" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Stand / Easel -->
+    <path d="M220 340 L180 415 M292 340 L332 415 M256 340 L256 425" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+    <line x1="160" y1="395" x2="352" y2="395" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round"/>
+  </g>
+</svg>

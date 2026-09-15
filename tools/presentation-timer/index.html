@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentation & Speech Timer — Traffic Light Pacing for Classrooms</title>
+  <meta name="description" content="Free classroom presentation and debate timer with Green, Amber, Red traffic light signals. Perfect for student speeches, presentations, and timed talks.">
+  <link rel="canonical" href="https://classpanel.online/tools/presentation-timer/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .traffic-lights-rack {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      margin: 2rem 0;
+      background: #1E293B;
+      padding: 1.5rem 2.5rem;
+      border-radius: var(--radius-full);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: var(--shadow-xl);
+    }
+    .traffic-light {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #334155;
+      border: 4px solid #0F172A;
+      opacity: 0.25;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .light-green.active {
+      background: #10B981;
+      box-shadow: 0 0 45px #10B981;
+      opacity: 1;
+    }
+    .light-yellow.active {
+      background: #F59E0B;
+      box-shadow: 0 0 45px #F59E0B;
+      opacity: 1;
+    }
+    .light-red.active {
+      background: #EF4444;
+      box-shadow: 0 0 45px #EF4444;
+      opacity: 1;
+      animation: pulse-red 1s infinite alternate;
+    }
+    @keyframes pulse-red {
+      from { transform: scale(1); }
+      to { transform: scale(1.08); }
+    }
+    .presentation-status-msg {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Presentation Timer</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="presentation-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🚦 Presentation & Speech Timer</h1>
+          <p class="tool-title-subtitle">Traffic-light pacing signals for student speeches, debates & timed talks</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Speech Presets:</label>
+            <select id="select-speech-preset" class="select-input" style="padding: 0.35rem 0.6rem; font-size: 0.85rem;">
+              <option value="120,180,240">3-4 Min Speech (Green 2m, Yellow 3m, Red 4m)</option>
+              <option value="180,240,300" selected>4-5 Min Presentation (Green 3m, Yellow 4m, Red 5m)</option>
+              <option value="60,90,120">2 Min Lightning Talk (Green 1m, Yellow 1.5m, Red 2m)</option>
+              <option value="300,420,600">7-10 Min Lecture (Green 5m, Yellow 7m, Red 10m)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Traffic Light Signal Board -->
+      <div class="traffic-lights-rack">
+        <div class="traffic-light light-green" id="light-green" title="Green: Minimum time reached"></div>
+        <div class="traffic-light light-yellow" id="light-yellow" title="Yellow: Wrap up speaking"></div>
+        <div class="traffic-light light-red" id="light-red" title="Red: Maximum time limit"></div>
+      </div>
+
+      <div class="presentation-status-msg" id="status-msg">Ready to Start</div>
+
+      <!-- Giant Digital Display -->
+      <div class="timer-big-display" id="speech-time">00:00</div>
+
+      <!-- Actions -->
+      <div class="timer-actions">
+        <button id="btn-speech-start" class="btn-giant btn-giant-primary">
+          <span>Start Speech</span>
+        </button>
+
+        <button id="btn-speech-reset" class="btn-giant btn-giant-secondary">
+          <span>Reset</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Teaching Effective Public Speaking and Time Management</h2>
+            <p>Whether preparing students for Model UN, debate club, or classroom science presentations, keeping within allocated time limits is a crucial life skill.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Traffic Light Meaning</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Green Light:</strong> The speaker has satisfied the minimum required duration for grading.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Yellow Light:</strong> One minute remaining. The speaker should begin their concluding remarks.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Red Light:</strong> Time has expired. Conclude speaking immediately.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/exam-timer/">Official Exam Timer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let elapsedSeconds = 0;
+      let isRunning = false;
+      let timerInterval = null;
+
+      let greenSec = 180;
+      let yellowSec = 240;
+      let redSec = 300;
+
+      const display = document.getElementById('speech-time');
+      const lightGreen = document.getElementById('light-green');
+      const lightYellow = document.getElementById('light-yellow');
+      const lightRed = document.getElementById('light-red');
+      const statusMsg = document.getElementById('status-msg');
+      const btnStart = document.getElementById('btn-speech-start');
+      const btnReset = document.getElementById('btn-speech-reset');
+      const selectPreset = document.getElementById('select-speech-preset');
+
+      function parsePreset() {
+        const parts = selectPreset.value.split(',').map(n => parseInt(n, 10));
+        greenSec = parts[0];
+        yellowSec = parts[1];
+        redSec = parts[2];
+      }
+
+      function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+      }
+
+      function updateUI() {
+        display.textContent = formatTime(elapsedSeconds);
+
+        lightGreen.classList.remove('active');
+        lightYellow.classList.remove('active');
+        lightRed.classList.remove('active');
+
+        if (elapsedSeconds >= redSec) {
+          lightRed.classList.add('active');
+          statusMsg.textContent = "🛑 Red: Time Limit Reached (Wrap Up!)";
+          statusMsg.style.color = "#EF4444";
+        } else if (elapsedSeconds >= yellowSec) {
+          lightYellow.classList.add('active');
+          statusMsg.textContent = "⚠️ Yellow: Concluding Remarks";
+          statusMsg.style.color = "#F59E0B";
+        } else if (elapsedSeconds >= greenSec) {
+          lightGreen.classList.add('active');
+          statusMsg.textContent = "✅ Green: Target Time Reached";
+          statusMsg.style.color = "#10B981";
+        } else if (isRunning) {
+          statusMsg.textContent = "Speaking...";
+          statusMsg.style.color = "var(--text-primary)";
+        } else {
+          statusMsg.textContent = "Ready to Start";
+          statusMsg.style.color = "var(--text-muted)";
+        }
+      }
+
+      function start() {
+        if (isRunning) return;
+        isRunning = true;
+        btnStart.classList.add('is-running');
+        btnStart.innerHTML = `<span>Pause</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+
+        timerInterval = setInterval(() => {
+          elapsedSeconds++;
+          if (elapsedSeconds === greenSec) {
+            if (window.SoundFX) window.SoundFX.playGentleChime();
+          } else if (elapsedSeconds === yellowSec) {
+            if (window.SoundFX) window.SoundFX.playBeep();
+          } else if (elapsedSeconds === redSec) {
+            if (window.SoundFX) window.SoundFX.playSchoolBell();
+          }
+          updateUI();
+        }, 1000);
+      }
+
+      function pause() {
+        isRunning = false;
+        clearInterval(timerInterval);
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = `<span>Resume</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function reset() {
+        pause();
+        elapsedSeconds = 0;
+        btnStart.innerHTML = `<span>Start Speech</span>`;
+        updateUI();
+      }
+
+      btnStart.addEventListener('click', () => {
+        if (isRunning) pause();
+        else start();
+      });
+
+      btnReset.addEventListener('click', reset);
+
+      selectPreset.addEventListener('change', () => {
+        parsePreset();
+        reset();
+      });
+
+      parsePreset();
+      updateUI();
+    })();
+  </script>
+</body>
+</html>

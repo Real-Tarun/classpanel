@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Number Generator — Free Classroom Math & Ticket Drawer</title>
+  <meta name="description" content="Free classroom random number generator. Set custom min/max ranges, batch generate numbers, eliminate duplicates, with roll animations and history log.">
+  <link rel="canonical" href="https://classpanel.online/tools/random-number-generator/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .number-stage-box {
+      background: var(--bg-surface-subtle);
+      border: 2px dashed var(--primary);
+      border-radius: var(--radius-xl);
+      padding: 3rem 1.5rem;
+      text-align: center;
+      margin: 1.5rem auto;
+      max-width: 580px;
+    }
+    .drawn-chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .drawn-chip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Number Generator</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="number-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🎲 Random Number Generator</h1>
+          <p class="tool-title-subtitle">Custom ranges, math problems, ticket drawings & lottery mode</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <label style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; cursor: pointer;">
+            <input type="checkbox" id="check-unique" style="accent-color: var(--primary);">
+            <span>Unique Only (No Repeats)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Range Controls -->
+      <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-weight: 700; color: var(--text-muted); font-size: 0.9rem;">Min:</span>
+          <input type="number" id="input-min" class="input-text" value="1" style="width: 90px; text-align: center; font-weight: 800;">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-weight: 700; color: var(--text-muted); font-size: 0.9rem;">Max:</span>
+          <input type="number" id="input-max" class="input-text" value="100" style="width: 110px; text-align: center; font-weight: 800;">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-weight: 700; color: var(--text-muted); font-size: 0.9rem;">Quantity:</span>
+          <input type="number" id="input-qty" class="input-text" value="1" min="1" max="50" style="width: 80px; text-align: center; font-weight: 800;">
+        </div>
+      </div>
+
+      <!-- Giant Reveal Box -->
+      <div class="number-stage-box">
+        <div style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Generated Result</div>
+        <div id="number-output" style="font-size: clamp(4rem, 12vw, 8rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--primary); line-height: 1;">?</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="timer-actions">
+        <button id="btn-generate" class="btn-giant btn-giant-primary" style="background: var(--accent-coral); color: #FFF; min-width: 200px;">
+          <span>⚡ Generate Number</span>
+        </button>
+
+        <button id="btn-clear-history" class="preset-chip" style="height: 3rem; padding: 0 1.25rem;">
+          <span>Clear History</span>
+        </button>
+      </div>
+
+      <!-- Presets -->
+      <div class="presets-group">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Quick Ranges:</span>
+        <button class="preset-chip" data-min="1" data-max="6">1 to 6 (Dice)</button>
+        <button class="preset-chip" data-min="1" data-max="10">1 to 10</button>
+        <button class="preset-chip" data-min="1" data-max="20">1 to 20 (D20)</button>
+        <button class="preset-chip" data-min="1" data-max="50">1 to 50</button>
+        <button class="preset-chip" data-min="1" data-max="100">1 to 100</button>
+      </div>
+
+      <!-- History log -->
+      <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+        <span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">Number History (<span id="history-count">0</span>):</span>
+        <div class="drawn-chips-container" id="history-chips">
+          <span style="color: var(--text-muted); font-size: 0.9rem;">No numbers generated yet.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Classroom Uses for Random Numbers</h2>
+            <p>From determining student presentation order to generating mental math equations, random numbers are an indispensable teaching resource.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Popular Learning Activities</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Target Number Math Challenge:</strong> Generate a 2-digit number (e.g. 48). Students must combine four smaller numbers using addition, subtraction, multiplication, or division to reach the target.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Classroom Ticket Raffles:</strong> Draw ticket stubs for behavior reward milestones with full transparency on the projector.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/chance-games/">Dice & Chance Games</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-name-picker/">Random Name Picker</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/tally-counter/">Tally Counter</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/confetti.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let history = [];
+      let isRolling = false;
+
+      const inputMin = document.getElementById('input-min');
+      const inputMax = document.getElementById('input-max');
+      const inputQty = document.getElementById('input-qty');
+      const checkUnique = document.getElementById('check-unique');
+      const output = document.getElementById('number-output');
+      const btnGenerate = document.getElementById('btn-generate');
+      const btnClear = document.getElementById('btn-clear-history');
+      const historyChips = document.getElementById('history-chips');
+      const historyCount = document.getElementById('history-count');
+
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function generate() {
+        if (isRolling) return;
+        const min = parseInt(inputMin.value, 10) || 1;
+        const max = parseInt(inputMax.value, 10) || 100;
+        const qty = Math.max(1, Math.min(50, parseInt(inputQty.value, 10) || 1));
+
+        if (min >= max) {
+          if (window.ClassPanel) window.ClassPanel.alert({ title: 'Invalid Number Range', message: 'The Minimum number must be strictly less than the Maximum number.' });
+          return;
+        }
+
+        isRolling = true;
+        let rollsCount = 0;
+        const rollDuration = 700;
+        const rollInterval = 40;
+
+        const timer = setInterval(() => {
+          rollsCount += rollInterval;
+          output.textContent = getRandomInt(min, max);
+          if (window.SoundFX) window.SoundFX.playClick();
+
+          if (rollsCount >= rollDuration) {
+            clearInterval(timer);
+            finalize(min, max, qty);
+          }
+        }, rollInterval);
+      }
+
+      function finalize(min, max, qty) {
+        isRolling = false;
+        const unique = checkUnique.checked;
+        let results = [];
+
+        if (qty === 1) {
+          if (unique) {
+            const available = [];
+            for (let i = min; i <= max; i++) {
+              if (!history.includes(i)) available.push(i);
+            }
+            if (available.length === 0) {
+              if (window.ClassPanel) window.ClassPanel.alert({ title: 'All Numbers Drawn', message: 'All unique numbers in this range have already been drawn! Click "Clear History" to start a new round.' });
+              output.textContent = 'DONE';
+              return;
+            }
+            results.push(available[Math.floor(Math.random() * available.length)]);
+          } else {
+            results.push(getRandomInt(min, max));
+          }
+        } else {
+          // Batch qty
+          const pool = [];
+          for (let i = min; i <= max; i++) pool.push(i);
+          for (let i = 0; i < qty; i++) {
+            if (unique && pool.length === 0) break;
+            const idx = Math.floor(Math.random() * pool.length);
+            results.push(pool[idx]);
+            if (unique) pool.splice(idx, 1);
+          }
+        }
+
+        output.textContent = results.join(', ');
+        results.forEach(r => history.unshift(r));
+        renderHistory();
+
+        if (window.SoundFX) window.SoundFX.playFanfare();
+        if (window.Confetti) window.Confetti.fire({ count: 80 });
+      }
+
+      function renderHistory() {
+        historyCount.textContent = history.length;
+        if (history.length === 0) {
+          historyChips.innerHTML = `<span style="color: var(--text-muted); font-size: 0.9rem;">No numbers generated yet.</span>`;
+          return;
+        }
+
+        historyChips.innerHTML = history.slice(0, 30).map(num => `
+          <span class="drawn-chip">${num}</span>
+        `).join('');
+      }
+
+      btnClear.addEventListener('click', () => {
+        history = [];
+        renderHistory();
+        output.textContent = '?';
+      });
+
+      btnGenerate.addEventListener('click', generate);
+
+      document.querySelectorAll('[data-min]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          inputMin.value = btn.getAttribute('data-min');
+          inputMax.value = btn.getAttribute('data-max');
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          generate();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

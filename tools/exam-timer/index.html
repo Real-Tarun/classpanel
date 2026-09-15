@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Exam Timer & Clock — Free Classroom Test Board</title>
+  <meta name="description" content="Free official examination timer and clock for schools. Features synchronized live clock, reading time, silent milestone banners, and custom exam notes board.">
+  <link rel="canonical" href="https://classpanel.online/tools/exam-timer/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .exam-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 768px) {
+      .exam-board {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exam-panel {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .exam-instruction-box {
+      background: #1E293B;
+      color: #F8FAFC;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .status-banner {
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-weight: 800;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .status-exam { background: var(--accent-emerald-light); color: var(--accent-emerald); border: 2px solid var(--accent-emerald); }
+    .status-reading { background: var(--accent-amber-light); color: var(--accent-amber); border: 2px solid var(--accent-amber); }
+    .status-ended { background: var(--accent-rose-light); color: var(--accent-rose); border: 2px solid var(--accent-rose); }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Official Exam Timer</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="exam-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>📝 Official Exam Timer</h1>
+          <p class="tool-title-subtitle">Standardized Test & Assessment Clock Board</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Reading Period:</label>
+            <select id="select-reading-time" class="select-input" style="padding: 0.35rem 0.6rem; font-size: 0.85rem;">
+              <option value="0">None</option>
+              <option value="300">5 Minutes</option>
+              <option value="600">10 Minutes</option>
+              <option value="900">15 Minutes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Status Banner -->
+      <div class="status-banner status-exam" id="exam-status-banner">EXAM READY • CLICK START</div>
+
+      <!-- Exam Dual Display Board (Live Clock + Countdown) -->
+      <div class="exam-board">
+        <!-- Live Real-Time Wall Clock -->
+        <div class="exam-panel">
+          <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Current Time</span>
+          <div id="exam-wall-clock" style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--text-primary); margin: 0.75rem 0;">12:00:00 PM</div>
+          <span id="exam-date-str" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600;">Tuesday, September 15, 2026</span>
+        </div>
+
+        <!-- Exam Remaining Countdown -->
+        <div class="exam-panel">
+          <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;" id="countdown-label">Time Remaining</span>
+          <div id="exam-countdown" style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--primary); margin: 0.75rem 0;">01:00:00</div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);" id="end-time-estimate">End Time: --:--</div>
+        </div>
+      </div>
+
+      <!-- Visual Progress Bar -->
+      <div class="timer-progress-track">
+        <div class="timer-progress-fill" id="exam-progress-fill" style="width: 100%;"></div>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="timer-actions">
+        <button id="btn-exam-start" class="btn-giant btn-giant-primary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Start Exam</span>
+        </button>
+
+        <button id="btn-exam-reset" class="btn-giant btn-giant-secondary">
+          <span>Reset</span>
+        </button>
+
+        <div class="presets-group" style="margin: 0;">
+          <button class="preset-chip" data-time="1800">30 Min</button>
+          <button class="preset-chip" data-time="2700">45 Min</button>
+          <button class="preset-chip" data-time="3600" style="font-weight: 800; border-color: var(--primary);">60 Min</button>
+          <button class="preset-chip" data-time="5400">90 Min</button>
+          <button class="preset-chip" data-time="7200">120 Min</button>
+        </div>
+      </div>
+
+      <!-- Whiteboard Instructions Section -->
+      <div style="margin-top: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-weight: 800; font-size: 0.95rem; text-transform: uppercase; color: var(--text-muted);">Exam Board Instructions</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Editable for projector display</span>
+        </div>
+        <div class="exam-instruction-box" contenteditable="true" id="exam-instructions" title="Click to edit instructions on the board">
+• SUBJECT: Midterm Examination
+• NO ELECTRONIC DEVICES OR SMARTPHONES
+• WRITE NAME AND CANDIDATE NUMBER ON ALL SHEETS
+• RAISING HAND: Remain seated if you need spare paper or assistance
+• FINAL 5 MINUTES: You must remain silently in your seats until papers are collected
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Standardized Examination Timing for Schools and Universities</h2>
+            <p>Administering exams demands absolute clarity, strict silence, and total transparency. ClassPanel's Official Exam Timer provides test proctors, invigilators, and teachers with an authoritative, distraction-free board.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Exam Room Features</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Synchronized Live Wall Clock:</strong> Displays exact local time alongside remaining exam duration so students can pace their test sections.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Dedicated Reading Time:</strong> Configure an automated pre-exam reading period (5m, 10m, 15m) that seamlessly rolls into writing time.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Silent Visual Milestones:</strong> Prevents loud alarming that disrupts test concentration while flashing clear banner reminders.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/clocks/">Classroom Clocks</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/presentation-timer/">Presentation Timer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let examDuration = 3600; // 60 min
+      let readingDuration = 0;
+      let state = 'idle'; // 'idle', 'reading', 'writing', 'ended'
+      let currentRemaining = 3600;
+      let interval = null;
+
+      const wallClock = document.getElementById('exam-wall-clock');
+      const dateStr = document.getElementById('exam-date-str');
+      const countdown = document.getElementById('exam-countdown');
+      const banner = document.getElementById('exam-status-banner');
+      const progressFill = document.getElementById('exam-progress-fill');
+      const btnStart = document.getElementById('btn-exam-start');
+      const btnReset = document.getElementById('btn-exam-reset');
+      const selectReading = document.getElementById('select-reading-time');
+      const endTimeEstimate = document.getElementById('end-time-estimate');
+      const countdownLabel = document.getElementById('countdown-label');
+
+      // Live wall clock
+      function updateWallClock() {
+        const now = new Date();
+        wallClock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        dateStr.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      }
+      setInterval(updateWallClock, 1000);
+      updateWallClock();
+
+      function formatTime(s) {
+        const h = Math.floor(s / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sec = s % 60;
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+      }
+
+      function updateEndTimeEstimate() {
+        const now = new Date();
+        const totalRemaining = currentRemaining + (state === 'reading' ? examDuration : 0);
+        const end = new Date(now.getTime() + totalRemaining * 1000);
+        endTimeEstimate.textContent = `Scheduled End: ${end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      }
+
+      function renderCountdown() {
+        countdown.textContent = formatTime(currentRemaining);
+        const total = state === 'reading' ? readingDuration : examDuration;
+        const ratio = total > 0 ? (currentRemaining / total) : 0;
+        progressFill.style.width = `${Math.max(0, Math.min(100, ratio * 100))}%`;
+
+        if (state === 'writing') {
+          if (currentRemaining <= 300) {
+            banner.className = 'status-banner status-ended';
+            banner.textContent = '⚠️ 5 MINUTES REMAINING — CHECK WORK';
+          } else if (currentRemaining <= 900) {
+            banner.className = 'status-banner status-reading';
+            banner.textContent = '15 MINUTES REMAINING';
+          }
+        }
+      }
+
+      function start() {
+        if (state === 'idle') {
+          readingDuration = parseInt(selectReading.value, 10);
+          if (readingDuration > 0) {
+            state = 'reading';
+            currentRemaining = readingDuration;
+            countdownLabel.textContent = 'Reading Period Remaining';
+            banner.className = 'status-banner status-reading';
+            banner.textContent = 'READING TIME ONLY • DO NOT OPEN TEST OR WRITE';
+          } else {
+            state = 'writing';
+            currentRemaining = examDuration;
+            countdownLabel.textContent = 'Exam Time Remaining';
+            banner.className = 'status-banner status-exam';
+            banner.textContent = 'EXAM IN PROGRESS • SILENCE REQUIRED';
+          }
+        }
+
+        btnStart.classList.add('is-running');
+        btnStart.innerHTML = `<span>Pause</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+        updateEndTimeEstimate();
+
+        interval = setInterval(() => {
+          if (currentRemaining > 0) {
+            currentRemaining--;
+            renderCountdown();
+          } else {
+            if (state === 'reading') {
+              // Transition from reading to writing
+              state = 'writing';
+              currentRemaining = examDuration;
+              countdownLabel.textContent = 'Exam Time Remaining';
+              banner.className = 'status-banner status-exam';
+              banner.textContent = 'WRITING COMMENCES • YOU MAY BEGIN';
+              if (window.SoundFX) window.SoundFX.playGentleChime();
+              updateEndTimeEstimate();
+              renderCountdown();
+            } else {
+              // Exam ended
+              state = 'ended';
+              clearInterval(interval);
+              banner.className = 'status-banner status-ended';
+              banner.textContent = '🛑 EXAM CONCLUDED • CEASE WRITING IMMEDIATELY';
+              if (window.SoundFX) window.SoundFX.playSchoolBell();
+              btnStart.innerHTML = `<span>Completed</span>`;
+            }
+          }
+        }, 1000);
+      }
+
+      function pause() {
+        clearInterval(interval);
+        interval = null;
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = `<span>Resume</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function reset() {
+        pause();
+        state = 'idle';
+        currentRemaining = examDuration;
+        countdownLabel.textContent = 'Time Remaining';
+        banner.className = 'status-banner status-exam';
+        banner.textContent = 'EXAM READY • CLICK START';
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start Exam</span>
+        `;
+        renderCountdown();
+        updateEndTimeEstimate();
+      }
+
+      btnStart.addEventListener('click', () => {
+        if (interval) pause();
+        else start();
+      });
+
+      btnReset.addEventListener('click', reset);
+
+      document.querySelectorAll('[data-time]').forEach(chip => {
+        chip.addEventListener('click', () => {
+          examDuration = parseInt(chip.getAttribute('data-time'), 10);
+          reset();
+        });
+      });
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

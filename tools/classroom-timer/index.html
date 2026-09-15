@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Classroom Timer — Free Smartboard Countdown & Stopwatch</title>
+  <meta name="description" content="Free online classroom timer with giant digits, visual progress bar, sound alarms, and fullscreen projector mode. Perfect for school activities, tests, and transitions.">
+  <link rel="canonical" href="https://classpanel.online/tools/classroom-timer/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .timer-big-display {
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+      display: inline-block;
+      border-radius: var(--radius-lg);
+      padding: 0.2rem 0.8rem;
+    }
+    .timer-big-display:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+      background: var(--bg-surface-subtle);
+    }
+    .timer-big-display:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 4px;
+    }
+    .time-digit-input {
+      width: clamp(65px, 15vw, 135px);
+      font-size: clamp(2.4rem, 8vw, 6rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      text-align: center;
+      background: var(--bg-surface);
+      border: 3px solid var(--primary);
+      border-radius: var(--radius-lg);
+      color: var(--text-primary);
+      padding: 0.25rem 0;
+      outline: none;
+      box-shadow: var(--shadow-md);
+      -moz-appearance: textfield;
+    }
+    .time-digit-input::-webkit-outer-spin-button,
+    .time-digit-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .time-digit-input:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+    .time-digit-colon {
+      font-size: clamp(2.2rem, 7vw, 5.5rem);
+      font-weight: 900;
+      color: var(--border-strong);
+      line-height: 1;
+      user-select: none;
+    }
+    .time-digit-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      user-select: none;
+    }
+    .time-edit-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      cursor: pointer;
+      transition: color 0.15s, opacity 0.15s;
+    }
+    .timer-display-container:hover .time-edit-hint {
+      color: var(--primary);
+    }
+    .preset-chip.active {
+      background: var(--primary) !important;
+      color: #FFF !important;
+      border-color: var(--primary) !important;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Classroom Timer</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="timer-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>⏱️ Classroom Timer</h1>
+          <p class="tool-title-subtitle" id="timer-mode-subtitle">Countdown Mode • Designed for Projectors & Smartboards</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
+            <button id="btn-mode-countdown" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">Countdown</button>
+            <button id="btn-mode-stopwatch" class="preset-chip" style="background: transparent; border: none;">Stopwatch</button>
+          </div>
+
+          <select id="select-alarm-sound" class="select-input" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem;" title="Choose End Alarm Tone">
+            <option value="bell">🔔 School Bell</option>
+            <option value="chime">🎶 Gentle Chime</option>
+            <option value="fanfare">🎺 Victory Fanfare</option>
+            <option value="beep">⏰ Digital Beep</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Giant Digital Display Container (Click to edit inline) -->
+      <div class="timer-display-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; margin: 1.25rem 0;">
+        <div class="timer-big-display" id="display-time" title="Click to edit time directly" role="button" tabindex="0" aria-label="Countdown timer. Click to edit time">
+          00:05:00
+        </div>
+
+        <!-- Inline Digit Editor (Appears right here when time is clicked) -->
+        <div id="inline-time-editor" style="display: none; flex-direction: column; align-items: center; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: clamp(0.35rem, 1.5vw, 0.75rem);">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <input type="number" id="edit-hh" class="time-digit-input" min="0" max="99" value="00" aria-label="Hours">
+              <span class="time-digit-label">Hours</span>
+            </div>
+            <span class="time-digit-colon">:</span>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <input type="number" id="edit-mm" class="time-digit-input" min="0" max="59" value="05" aria-label="Minutes">
+              <span class="time-digit-label">Minutes</span>
+            </div>
+            <span class="time-digit-colon">:</span>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <input type="number" id="edit-ss" class="time-digit-input" min="0" max="59" value="00" aria-label="Seconds">
+              <span class="time-digit-label">Seconds</span>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 0.6rem; margin-top: 0.5rem;">
+            <button id="btn-save-inline" class="btn-primary" style="padding: 0.5rem 1.4rem; font-weight: 800; font-size: 0.95rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.35rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Set Time</span>
+            </button>
+            <button id="btn-cancel-inline" class="preset-chip" style="padding: 0.5rem 1.2rem;">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div class="time-edit-hint" id="time-edit-hint" title="Click to edit time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span>Click time to edit</span>
+        </div>
+      </div>
+
+      <!-- Visual Progress Bar -->
+      <div class="timer-progress-track" id="progress-track">
+        <div class="timer-progress-fill" id="progress-fill" style="width: 100%;"></div>
+      </div>
+
+      <!-- Big Action Controls -->
+      <div class="timer-actions">
+        <button id="btn-start" class="btn-giant btn-giant-primary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Start</span>
+        </button>
+
+        <button id="btn-reset" class="btn-giant btn-giant-secondary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+          <span>Reset</span>
+        </button>
+
+        <div style="display: inline-flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center;">
+          <button id="btn-add-1h" class="preset-chip" title="Add 1 hour">+1 Hr</button>
+          <button id="btn-add-5m" class="preset-chip" title="Add 5 minutes">+5 Min</button>
+          <button id="btn-add-1m" class="preset-chip" title="Add 1 minute">+1 Min</button>
+          <button id="btn-sub-1m" class="preset-chip" title="Subtract 1 minute">-1 Min</button>
+        </div>
+      </div>
+
+      <!-- Quick Preset Chips (Reduced, clean set with hours) -->
+      <div class="presets-group" id="countdown-presets" style="margin-top: 1.75rem;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Presets:</span>
+        <button class="preset-chip" data-seconds="60">1 min</button>
+        <button class="preset-chip active" data-seconds="300">5 min</button>
+        <button class="preset-chip" data-seconds="600">10 min</button>
+        <button class="preset-chip" data-seconds="900">15 min</button>
+        <button class="preset-chip" data-seconds="1800">30 min</button>
+        <button class="preset-chip" data-seconds="3600">1 hr</button>
+      </div>
+
+    </div>
+
+    <!-- SEO Educational Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>The Best Free Online Timer for Classrooms and Smartboards</h2>
+            <p>ClassPanel's Classroom Timer is purposefully engineered for teachers and educators. Unlike ordinary phone timers or commercial timer websites cluttered with distracting advertisements and video popups, this tool is built for high-stakes classroom environments.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Key Classroom Benefits</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Massive High-Contrast Digits:</strong> Easily legible from the back of large lecture halls, science labs, and standard classrooms.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Visual Color Shifting Progress:</strong> The color transition (from soothing green to alerting yellow and warning red) teaches students visual time management.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Pleasant Synthesized Audio Chimes:</strong> Generates crisp school bell and gentle chime frequencies directly in the browser without loading slow MP3 files.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Zero Ad Interruption:</strong> Never suffer through an embarrassing video ad or cookie popup in front of 30 students.</span>
+              </li>
+            </ul>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--text-primary);">Effective Classroom Timing Strategies</h3>
+            <p>Effective teachers use timers for routine predictability. Running a 3-minute "Do Now" entry ticket establishes calm focus when the period begins. During collaborative group stations, a 10-minute countdown keeps student discussions on task without requiring constant teacher interjections.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/exam-timer/">Official Exam Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-name-picker/">Random Name Picker</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/group-generator/">Class Group Generator</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/sensory-timer/">Sensory Calming Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/presentation-timer/">Presentation Timer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/confetti.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let mode = 'countdown'; // 'countdown' or 'stopwatch'
+      let initialSeconds = 300;
+      let remainingSeconds = 300;
+      let stopwatchSeconds = 0;
+      let isRunning = false;
+      let timerInterval = null;
+
+      const display = document.getElementById('display-time');
+      const timeEditHint = document.getElementById('time-edit-hint');
+      const inlineEditor = document.getElementById('inline-time-editor');
+      const editHh = document.getElementById('edit-hh');
+      const editMm = document.getElementById('edit-mm');
+      const editSs = document.getElementById('edit-ss');
+      const btnSaveInline = document.getElementById('btn-save-inline');
+      const btnCancelInline = document.getElementById('btn-cancel-inline');
+
+      const progressFill = document.getElementById('progress-fill');
+      const progressTrack = document.getElementById('progress-track');
+      const btnStart = document.getElementById('btn-start');
+      const btnReset = document.getElementById('btn-reset');
+      const btnCountdown = document.getElementById('btn-mode-countdown');
+      const btnStopwatch = document.getElementById('btn-mode-stopwatch');
+      const modeSubtitle = document.getElementById('timer-mode-subtitle');
+      const soundSelect = document.getElementById('select-alarm-sound');
+      const presetContainer = document.getElementById('countdown-presets');
+      const presetButtons = document.querySelectorAll('#countdown-presets [data-seconds]');
+
+      function formatTime(totalSecs) {
+        const h = Math.floor(totalSecs / 3600);
+        const m = Math.floor((totalSecs % 3600) / 60);
+        const s = totalSecs % 60;
+        const hh = String(h).padStart(2, '0');
+        const mm = String(m).padStart(2, '0');
+        const ss = String(s).padStart(2, '0');
+        return `${hh}:${mm}:${ss}`;
+      }
+
+      function updateDisplay() {
+        if (mode === 'countdown') {
+          display.textContent = formatTime(remainingSeconds);
+          const ratio = initialSeconds > 0 ? (remainingSeconds / initialSeconds) : 0;
+          progressFill.style.width = `${Math.max(0, Math.min(100, ratio * 100))}%`;
+
+          // Color progress
+          progressFill.classList.remove('warning', 'danger');
+          if (ratio <= 0.15) {
+            progressFill.classList.add('danger');
+          } else if (ratio <= 0.35) {
+            progressFill.classList.add('warning');
+          }
+        } else {
+          display.textContent = formatTime(stopwatchSeconds);
+          progressFill.style.width = '100%';
+          progressFill.classList.remove('warning', 'danger');
+        }
+      }
+
+      function updateActivePresetChip(secs) {
+        presetButtons.forEach(btn => {
+          if (parseInt(btn.getAttribute('data-seconds'), 10) === secs) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      function openInlineEditor() {
+        if (mode !== 'countdown') return;
+        pauseTimer();
+
+        const cur = remainingSeconds > 0 ? remainingSeconds : initialSeconds;
+        const h = Math.floor(cur / 3600);
+        const m = Math.floor((cur % 3600) / 60);
+        const s = cur % 60;
+
+        editHh.value = String(h).padStart(2, '0');
+        editMm.value = String(m).padStart(2, '0');
+        editSs.value = String(s).padStart(2, '0');
+
+        display.style.display = 'none';
+        timeEditHint.style.display = 'none';
+        inlineEditor.style.display = 'flex';
+
+        // Select minutes field for quick typing
+        editMm.focus();
+        editMm.select();
+      }
+
+      function closeInlineEditor(applyChanges) {
+        if (applyChanges) {
+          let h = parseInt(editHh.value, 10) || 0;
+          let m = parseInt(editMm.value, 10) || 0;
+          let s = parseInt(editSs.value, 10) || 0;
+
+          h = Math.max(0, Math.min(99, h));
+          m = Math.max(0, Math.min(59, m));
+          s = Math.max(0, Math.min(59, s));
+
+          const total = h * 3600 + m * 60 + s;
+          if (total <= 0) {
+            if (window.ClassPanel) window.ClassPanel.showToast('Please enter a time greater than 0 seconds.');
+            return;
+          }
+
+          initialSeconds = total;
+          remainingSeconds = total;
+          updateActivePresetChip(total);
+          resetTimer();
+          if (window.ClassPanel) window.ClassPanel.showToast(`Countdown set to ${formatTime(total)}!`);
+        }
+
+        inlineEditor.style.display = 'none';
+        display.style.display = 'inline-block';
+        timeEditHint.style.display = 'inline-flex';
+      }
+
+      // Time Click / Interaction Listeners
+      display.addEventListener('click', openInlineEditor);
+      timeEditHint.addEventListener('click', openInlineEditor);
+      display.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openInlineEditor();
+        }
+      });
+
+      btnSaveInline.addEventListener('click', () => closeInlineEditor(true));
+      btnCancelInline.addEventListener('click', () => closeInlineEditor(false));
+
+      [editHh, editMm, editSs].forEach((input, idx, arr) => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            closeInlineEditor(true);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closeInlineEditor(false);
+          }
+        });
+
+        // Quick digit advance: if user types 2 digits, automatically focus next field
+        input.addEventListener('input', () => {
+          if (input.value.length >= 2 && idx < arr.length - 1) {
+            arr[idx + 1].focus();
+            arr[idx + 1].select();
+          }
+        });
+      });
+
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        btnStart.classList.add('is-running');
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16" rx="1"/>
+            <rect x="14" y="4" width="4" height="16" rx="1"/>
+          </svg>
+          <span>Pause</span>
+        `;
+        if (window.SoundFX) window.SoundFX.playClick();
+
+        timerInterval = setInterval(() => {
+          if (mode === 'countdown') {
+            if (remainingSeconds > 0) {
+              remainingSeconds--;
+              updateDisplay();
+              if (remainingSeconds === 0) {
+                completeCountdown();
+              }
+            }
+          } else {
+            stopwatchSeconds++;
+            updateDisplay();
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        if (!isRunning) return;
+        isRunning = false;
+        clearInterval(timerInterval);
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Resume</span>
+        `;
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function resetTimer() {
+        pauseTimer();
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Start</span>
+        `;
+        if (mode === 'countdown') {
+          remainingSeconds = initialSeconds;
+        } else {
+          stopwatchSeconds = 0;
+        }
+        updateDisplay();
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function completeCountdown() {
+        pauseTimer();
+        if (window.SoundFX) {
+          window.SoundFX.playAlarm(soundSelect.value);
+        }
+        if (window.Confetti) {
+          window.Confetti.fire({ count: 140 });
+        }
+        if (window.ClassPanel) {
+          window.ClassPanel.showToast("⏰ Time's up!");
+        }
+      }
+
+      // Button listeners
+      btnStart.addEventListener('click', () => {
+        if (isRunning) pauseTimer();
+        else startTimer();
+      });
+
+      btnReset.addEventListener('click', resetTimer);
+
+      // Adjustments (Hours + Minutes)
+      document.getElementById('btn-add-1h').addEventListener('click', () => {
+        if (mode === 'countdown') {
+          initialSeconds += 3600;
+          remainingSeconds += 3600;
+          updateActivePresetChip(initialSeconds);
+          updateDisplay();
+        }
+      });
+      document.getElementById('btn-add-5m').addEventListener('click', () => {
+        if (mode === 'countdown') {
+          initialSeconds += 300;
+          remainingSeconds += 300;
+          updateActivePresetChip(initialSeconds);
+          updateDisplay();
+        }
+      });
+      document.getElementById('btn-add-1m').addEventListener('click', () => {
+        if (mode === 'countdown') {
+          initialSeconds += 60;
+          remainingSeconds += 60;
+          updateActivePresetChip(initialSeconds);
+          updateDisplay();
+        }
+      });
+      document.getElementById('btn-sub-1m').addEventListener('click', () => {
+        if (mode === 'countdown' && remainingSeconds > 60) {
+          initialSeconds = Math.max(60, initialSeconds - 60);
+          remainingSeconds = Math.max(1, remainingSeconds - 60);
+          updateActivePresetChip(initialSeconds);
+          updateDisplay();
+        }
+      });
+
+      // Presets
+      presetButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const secs = parseInt(btn.getAttribute('data-seconds'), 10);
+          initialSeconds = secs;
+          remainingSeconds = secs;
+          updateActivePresetChip(secs);
+          resetTimer();
+        });
+      });
+
+      // Mode toggle
+      btnCountdown.addEventListener('click', () => {
+        if (mode === 'countdown') return;
+        mode = 'countdown';
+        btnCountdown.style.background = 'var(--primary)';
+        btnCountdown.style.color = '#FFF';
+        btnStopwatch.style.background = 'transparent';
+        btnStopwatch.style.color = 'inherit';
+        modeSubtitle.textContent = 'Countdown Mode • Designed for Projectors & Smartboards';
+        progressTrack.style.display = 'block';
+        presetContainer.style.display = 'flex';
+        timeEditHint.style.display = 'inline-flex';
+        display.style.cursor = 'pointer';
+        display.title = 'Click to edit time directly';
+        resetTimer();
+      });
+
+      btnStopwatch.addEventListener('click', () => {
+        if (mode === 'stopwatch') return;
+        mode = 'stopwatch';
+        closeInlineEditor(false);
+        btnStopwatch.style.background = 'var(--primary)';
+        btnStopwatch.style.color = '#FFF';
+        btnCountdown.style.background = 'transparent';
+        btnCountdown.style.color = 'inherit';
+        modeSubtitle.textContent = 'Stopwatch Mode • Track elapsed class activity time';
+        progressTrack.style.display = 'none';
+        presetContainer.style.display = 'none';
+        timeEditHint.style.display = 'none';
+        display.style.cursor = 'default';
+        display.title = '';
+        resetTimer();
+      });
+
+      // Keyboard shortcuts: Space to toggle, R to reset
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          btnStart.click();
+        } else if (e.code === 'KeyR') {
+          btnReset.click();
+        }
+      });
+
+      updateDisplay();
+    })();
+  </script>
+</body>
+</html>

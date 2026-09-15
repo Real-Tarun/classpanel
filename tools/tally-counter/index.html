@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom Tally Counter & Scoreboard — Free Team Points Tracker</title>
+  <meta name="description" content="Free online classroom tally counter and team scoreboard. Track table points, house scores, and attendance with giant touch buttons and keyboard shortcuts.">
+  <link rel="canonical" href="https://classpanel.online/tools/tally-counter/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .counter-teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .team-counter-card {
+      background: var(--bg-surface-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .team-counter-card:hover {
+      border-color: var(--primary);
+    }
+    .team-counter-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      outline: none;
+      border-bottom: 1px dashed transparent;
+      padding: 0.2rem 0.5rem;
+    }
+    .team-counter-name:focus {
+      border-bottom-color: var(--primary);
+      background: var(--bg-surface);
+      border-radius: var(--radius-sm);
+    }
+    .team-counter-val {
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: var(--text-primary);
+      line-height: 1;
+      margin: 1rem 0;
+      user-select: none;
+    }
+    .counter-btn-row {
+      display: flex;
+      gap: 0.6rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-step {
+      flex: 1;
+      height: 3.5rem;
+      border-radius: var(--radius-md);
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+    }
+    .btn-step:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Tally Counter</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="counter-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🔢 Multi-Team Tally Counter</h1>
+          <p class="tool-title-subtitle">Track classroom house points, team scores, attendance, or behavior goals</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <button id="btn-add-team" class="action-btn" style="border-color: var(--primary); color: var(--primary);">
+            <span>+ Add Team</span>
+          </button>
+          <button id="btn-reset-all" class="preset-chip">Reset All</button>
+        </div>
+      </div>
+
+      <!-- Teams Score Grid -->
+      <div class="counter-teams-grid" id="teams-grid"></div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Gamifying Positive Behavior with Classroom Scoreboards</h2>
+            <p>Visual scoreboards create high engagement during classroom review games, trivia contests, and collaborative table group challenges.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Classroom Management Applications</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Table Group Points:</strong> Award quick points to tables that transition promptly and maintain clean work areas.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Review Jeopardy:</strong> Keep running scores during unit test review games without writing and erasing chalk or dry erase markers.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/group-generator/">Group Generator</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/chance-games/">Dice & Chance Games</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/confetti.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let teams = [
+        { name: 'Team Red', count: 0, color: '#EF4444' },
+        { name: 'Team Blue', count: 0, color: '#3B82F6' },
+        { name: 'Team Green', count: 0, color: '#10B981' },
+        { name: 'Team Gold', count: 0, color: '#F59E0B' }
+      ];
+
+      const grid = document.getElementById('teams-grid');
+      const btnAddTeam = document.getElementById('btn-add-team');
+      const btnResetAll = document.getElementById('btn-reset-all');
+
+      function render() {
+        grid.innerHTML = '';
+        teams.forEach((t, i) => {
+          const card = document.createElement('div');
+          card.className = 'team-counter-card';
+          card.style.borderTop = `6px solid ${t.color}`;
+
+          card.innerHTML = `
+            <div class="team-counter-name" contenteditable="true" title="Click to rename team">${t.name}</div>
+            <div class="team-counter-val" style="color: ${t.color};">${t.count}</div>
+            <div class="counter-btn-row">
+              <button class="btn-step" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-muted);" data-action="sub" data-idx="${i}">-1</button>
+              <button class="btn-step" style="background: ${t.color}; color: #FFF;" data-action="add" data-idx="${i}">+1</button>
+            </div>
+            <div style="display: flex; gap: 0.4rem; margin-top: 0.6rem; width: 100%;">
+              <button class="preset-chip" style="flex: 1; padding: 0.3rem;" data-action="add5" data-idx="${i}">+5</button>
+              <button class="preset-chip" style="color: var(--accent-rose); padding: 0.3rem;" data-action="reset" data-idx="${i}">0</button>
+            </div>
+          `;
+
+          // Edit name handler
+          const nameEl = card.querySelector('.team-counter-name');
+          nameEl.addEventListener('blur', () => {
+            teams[i].name = nameEl.textContent.trim() || `Team ${i + 1}`;
+          });
+
+          grid.appendChild(card);
+        });
+      }
+
+      grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const action = btn.getAttribute('data-action');
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+
+        if (action === 'add') {
+          teams[idx].count++;
+          if (window.SoundFX) window.SoundFX.playClick();
+        } else if (action === 'sub') {
+          teams[idx].count = Math.max(0, teams[idx].count - 1);
+          if (window.SoundFX) window.SoundFX.playClick();
+        } else if (action === 'add5') {
+          teams[idx].count += 5;
+          if (window.SoundFX) window.SoundFX.playClick();
+          if (window.Confetti) window.Confetti.fire({ count: 50 });
+        } else if (action === 'reset') {
+          teams[idx].count = 0;
+        }
+
+        render();
+      });
+
+      btnAddTeam.addEventListener('click', () => {
+        const colors = ['#8B5CF6', '#EC4899', '#06B6D4', '#F97316', '#6366F1'];
+        const color = colors[teams.length % colors.length];
+        teams.push({ name: `Team ${teams.length + 1}`, count: 0, color });
+        render();
+      });
+
+      btnResetAll.addEventListener('click', async () => {
+        const confirmed = await window.ClassPanel.confirm({
+          title: 'Reset All Scores?',
+          message: 'Are you sure you want to reset all team points back to 0?',
+          confirmText: 'Reset Scores',
+          danger: true
+        });
+        if (confirmed) {
+          teams.forEach(t => t.count = 0);
+          render();
+          if (window.ClassPanel) window.ClassPanel.showToast('All team scores reset to 0.');
+        }
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

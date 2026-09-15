@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClassPanel — Free Smartboard & Projector Tools for Teachers</title>
+  <meta name="description" content="Free, fast classroom utility tools for teachers. Instant countdown timers, random name pickers, group generators, clocks, dice, and exam boards. Zero ads, works 100% offline.">
+  <meta name="keywords" content="classroom timer, random name picker, group generator, online stopwatch for schools, projector tools, teacher smartboard utilities">
+  
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ClassPanel — Free Smartboard & Projector Tools for Teachers">
+  <meta property="og:description" content="Instant countdown timers, student name pickers, random groups, dice, and exam boards. Zero signups, zero ads, 100% offline-ready.">
+  <meta property="og:url" content="https://classpanel.online/">
+  <meta property="og:image" content="/assets/icons/icon.svg">
+  
+  <link rel="canonical" href="https://classpanel.online/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <meta name="theme-color" content="#4F46E5">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <!-- Structured Data / JSON-LD for Google Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ClassPanel",
+    "url": "https://classpanel.online/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "description": "Free projector-friendly classroom tools for teachers including countdown timers, random name pickers, group generators, and clocks.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-logo" aria-label="ClassPanel Home">
+        <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+        <span>Class<span style="color: var(--primary);">Panel</span></span>
+        <span class="brand-badge">Hub</span>
+      </a>
+
+      <div class="header-actions">
+        <button class="action-btn" data-action="open-search" title="Quick Tool Search (Ctrl+K)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <span style="display: none; @media(min-width: 640px){ display: inline; }">Quick Search</span>
+          <kbd style="font-size: 0.7rem; padding: 0.15rem 0.4rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">⌘K</kbd>
+        </button>
+
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Sound">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section style="padding: 3.5rem 0 2.5rem; text-align: center; background: radial-gradient(circle at 50% 10%, var(--primary-light), transparent 70%);">
+      <div class="container" style="max-width: 920px;">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); background: var(--bg-surface); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 1.25rem; box-shadow: var(--shadow-sm);">
+          <span style="font-size: 1rem;">✨</span> 100% Free • No Signups • Projector Ready
+        </div>
+
+        <h1 style="font-size: clamp(2.2rem, 5.5vw, 3.75rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1.25rem; color: var(--text-primary);">
+          Smartboard & Projector Tools for <span style="background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Modern Classrooms</span>
+        </h1>
+
+        <p style="font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-secondary); max-width: 720px; margin: 0 auto 2.25rem; line-height: 1.6;">
+          Zero-distraction digital utilities engineered for teachers. Massive high-contrast typography, synthesized offline audio alerts, and instant full-screen modes.
+        </p>
+
+        <!-- Category Filters -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;" id="category-filters">
+          <button class="category-pill active" data-category="all">✨ All Tools</button>
+          <button class="category-pill" data-category="timers">⏱️ Timers</button>
+          <button class="category-pill" data-category="randomizers">🎯 Randomizers</button>
+          <button class="category-pill" data-category="clocks">🕒 Clocks & Counters</button>
+          <button class="category-pill" data-category="games">🎲 Games & Chance</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Tools Grid -->
+    <section style="padding: 1.5rem 0 4rem;">
+      <div class="container">
+        <div class="tools-grid" id="tools-grid">
+
+          <!-- 1. Classroom Timer -->
+          <a href="/tools/classroom-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
+            <div class="tool-card-icon">⏱️</div>
+            <h2 class="tool-card-title">Classroom Timer</h2>
+            <p class="tool-card-desc">Giant digital countdown timer & stopwatch with visual color progress bar, quick presets, and pleasant school bell audio alarms.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Most Popular</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 2. Random Name Picker -->
+          <a href="/tools/random-name-picker/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
+            <div class="tool-card-icon">🎯</div>
+            <h2 class="tool-card-title">Random Name Picker</h2>
+            <p class="tool-card-desc">Exciting spinning wheel and card draw picker. Save multiple class rosters, eliminate picked names, with confetti celebrations.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Roster Ready</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 3. Group Generator -->
+          <a href="/tools/group-generator/" class="tool-card" data-category="randomizers" style="--card-accent: var(--primary); --card-light: var(--primary-light);">
+            <div class="tool-card-icon">👥</div>
+            <h2 class="tool-card-title">Group Generator</h2>
+            <p class="tool-card-desc">Split your class into balanced study teams, lab pairs, or table groups instantly. Easy drag-and-drop adjustments and clipboard export.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Team Creator</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 4. Official Exam Timer -->
+          <a href="/tools/exam-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
+            <div class="tool-card-icon">📝</div>
+            <h2 class="tool-card-title">Official Exam Timer</h2>
+            <p class="tool-card-desc">Formal examination board with synchronized live clock, countdown, silent 15m/5m/1m warnings, and customizable test instructions.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Formal Tests</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 5. Sensory & Calming Timer -->
+          <a href="/tools/sensory-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
+            <div class="tool-card-icon">🫧</div>
+            <h2 class="tool-card-title">Sensory & Calming Timer</h2>
+            <p class="tool-card-desc">Soothing visual timers for calm-down corners, transitions, and mindfulness. Liquid bubble drip, sand hourglass, and box breathing guide.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Mindfulness</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 6. Classroom Clocks -->
+          <a href="/tools/clocks/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
+            <div class="tool-card-icon">🕒</div>
+            <h2 class="tool-card-title">Classroom Clocks</h2>
+            <p class="tool-card-desc">High-visibility analog and digital clock display. Features interactive time-teaching mode with Roman/Standard numerals and schedule tracking.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Teaching Time</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 7. Random Number Generator -->
+          <a href="/tools/random-number-generator/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-coral); --card-light: var(--accent-coral-light);">
+            <div class="tool-card-icon">🎲</div>
+            <h2 class="tool-card-title">Random Number Generator</h2>
+            <p class="tool-card-desc">Flexible number generator for math games, bingo, and student ticket draws. Set min/max ranges, batch generate, and prevent repeat numbers.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Math & Draws</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 8. Dice & Chance Games -->
+          <a href="/tools/chance-games/" class="tool-card" data-category="games" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
+            <div class="tool-card-icon">🪙</div>
+            <h2 class="tool-card-title">Dice & Chance Games</h2>
+            <p class="tool-card-desc">Interactive 3D animated dice (1-6 dice), realistic physics coin flip, and decision spinner for classroom games and probability lessons.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Classroom Games</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 9. Multi-Team Tally Counter -->
+          <a href="/tools/tally-counter/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
+            <div class="tool-card-icon">🔢</div>
+            <h2 class="tool-card-title">Multi-Team Tally Counter</h2>
+            <p class="tool-card-desc">Interactive classroom scoreboard and tally counter. Track house points, attendance, or behavior milestones with quick keyboard shortcuts.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Scoreboard</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 10. Presentation Timer -->
+          <a href="/tools/presentation-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
+            <div class="tool-card-icon">🚦</div>
+            <h2 class="tool-card-title">Presentation & Speech Timer</h2>
+            <p class="tool-card-desc">Pacing timer for student presentations, debates, and teacher mini-lessons with intuitive traffic-light signals (Green, Amber, Red).</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Speech & Debate</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 11. Fun Race Timers -->
+          <a href="/tools/race-timers/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-coral); --card-light: var(--accent-coral-light);">
+            <div class="tool-card-icon">🏁</div>
+            <h2 class="tool-card-title">Fun Race Timers</h2>
+            <p class="tool-card-desc">Animated classroom sprint timer where students or teams cheer on animal avatars (Turtle, Bunny, Cheetah) during quick clean-up drills.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Gamified Focus</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 12. Holiday Countdown Timers -->
+          <a href="/tools/holiday-timers/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
+            <div class="tool-card-icon">🎄</div>
+            <h2 class="tool-card-title">Holiday & Break Timers</h2>
+            <p class="tool-card-desc">Live countdowns to school milestones: Summer Vacation, Winter Break, Thanksgiving, Halloween, and 100th Day of School.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Milestones</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Value Props / Why Teachers Love ClassPanel -->
+    <section style="padding: 3.5rem 0; background: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+      <div class="container">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto 3rem;">
+          <h2 style="font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem;">Engineered for Classroom Projectors</h2>
+          <p style="color: var(--text-secondary); font-size: 1.05rem;">Designed from real teacher feedback to solve the common frustrations of online timers and classroom tools.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;">
+          <div style="padding: 1.75rem; border-radius: var(--radius-lg); background: var(--bg-primary); border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; margin-bottom: 1rem;">🖥️</div>
+            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Projector-Optimized</h3>
+            <p style="color: var(--text-secondary); line-height: 1.55; font-size: 0.95rem;">High-contrast digital digits legible from the back of any classroom. Screen wake-lock technology prevents display timeout mid-lesson.</p>
+          </div>
+
+          <div style="padding: 1.75rem; border-radius: var(--radius-lg); background: var(--bg-primary); border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; margin-bottom: 1rem;">🔒</div>
+            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Privacy First (Zero Tracking)</h3>
+            <p style="color: var(--text-secondary); line-height: 1.55; font-size: 0.95rem;">Student names and rosters stay 100% on your device's browser. We collect no student information, ensuring strict COPPA & FERPA compliance.</p>
+          </div>
+
+          <div style="padding: 1.75rem; border-radius: var(--radius-lg); background: var(--bg-primary); border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; margin-bottom: 1rem;">⚡</div>
+            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Works 100% Offline</h3>
+            <p style="color: var(--text-secondary); line-height: 1.55; font-size: 0.95rem;">School Wi-Fi down? No problem. ClassPanel caches automatically as a PWA, loading instantly on Chromebooks and smartboards offline.</p>
+          </div>
+
+          <div style="padding: 1.75rem; border-radius: var(--radius-lg); background: var(--bg-primary); border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; margin-bottom: 1rem;">🚫</div>
+            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Zero Ads, Zero Distractions</h3>
+            <p style="color: var(--text-secondary); line-height: 1.55; font-size: 0.95rem;">No popups, banner ads, or autoplaying videos that embarrass you in front of students. Pure utility with pleasant synthesized chimes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Teacher FAQ / SEO Section -->
+    <section class="seo-content-section">
+      <div class="container">
+        <div class="seo-content-grid">
+          <div>
+            <div class="seo-card">
+              <h2>Frequently Asked Questions for Teachers</h2>
+              
+              <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem;">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--text-primary);">Is ClassPanel really completely free?</h3>
+                  <p>Yes, ClassPanel is 100% free for educators, schools, and students. There are no paywalls, premium subscriptions, or sign-up requirements. You can bookmark and project any tool instantly.</p>
+                </div>
+
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--text-primary);">How do I save my student class rosters?</h3>
+                  <p>In tools like the Random Name Picker and Group Generator, open the roster manager, paste your student names, and click "Save Roster". ClassPanel saves them locally in your browser so they are ready every time you open class.</p>
+                </div>
+
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--text-primary);">How do I use Fullscreen Projector Mode?</h3>
+                  <p>Every tool page features a dark "Projector Mode" button at the top-right. Clicking it activates a distraction-free full-screen display that hides browser tabs and navigation bars. It also requests a wake-lock so your smartboard doesn't go to sleep.</p>
+                </div>
+
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--text-primary);">Will the tools work on my interactive smartboard?</h3>
+                  <p>Yes! All tools are built with oversized, touch-friendly touch targets tested on Promethean Boards, SMART Boards, ViewSonic ViewBoards, and interactive panels, as well as Chromebooks and iPads.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="seo-card">
+              <h2>Quick Links</h2>
+              <ul class="seo-features-list">
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <a href="/tools/classroom-timer/">Countdown Timer</a>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <a href="/tools/random-name-picker/">Wheel Name Picker</a>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <a href="/tools/group-generator/">Class Team Generator</a>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <a href="/tools/exam-timer/">Official Exam Board</a>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <a href="/tools/sensory-timer/">Sensory Liquid Timer</a>
+                </li>
+              </ul>
+
+              <div style="margin-top: 1.75rem; padding: 1.25rem; background: var(--primary-light); border-radius: var(--radius-md); text-align: center;">
+                <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">Install on Chromebook</div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Click your browser's install icon or bookmark ClassPanel for instant offline launch.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo">
+            <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+            <span>Class<span style="color: var(--primary);">Panel</span></span>
+          </a>
+          <p>Free, privacy-friendly classroom utility tools designed for interactive smartboards, projectors, and modern teachers.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Timers</h4>
+          <ul>
+            <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+            <li><a href="/tools/exam-timer/">Exam Timer</a></li>
+            <li><a href="/tools/presentation-timer/">Presentation Timer</a></li>
+            <li><a href="/tools/sensory-timer/">Sensory Timer</a></li>
+            <li><a href="/tools/race-timers/">Race Timers</a></li>
+            <li><a href="/tools/holiday-timers/">Holiday Timers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Classroom Tools</h4>
+          <ul>
+            <li><a href="/tools/random-name-picker/">Random Name Picker</a></li>
+            <li><a href="/tools/group-generator/">Group Generator</a></li>
+            <li><a href="/tools/clocks/">Classroom Clocks</a></li>
+            <li><a href="/tools/random-number-generator/">Number Generator</a></li>
+            <li><a href="/tools/chance-games/">Dice & Chance</a></li>
+            <li><a href="/tools/tally-counter/">Tally Counter</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>About & Legal</h4>
+          <ul>
+            <li><a href="/about/">About ClassPanel</a></li>
+            <li><a href="/privacy/">Privacy Policy</a></li>
+            <li><a href="/contact/">Feedback & Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    // Category pill filtering logic
+    document.querySelectorAll('.category-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const cat = pill.getAttribute('data-category');
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(card => {
+          if (cat === 'all' || card.getAttribute('data-category') === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

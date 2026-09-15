@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom Race Timers — Free Animated Track Countdown</title>
+  <meta name="description" content="Free animated classroom race timer. Students cheer on turtle, bunny, cheetah, or rocket during clean up drills, math sprints, and timed transitions.">
+  <link rel="canonical" href="https://classpanel.online/tools/race-timers/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .race-track-container {
+      background: var(--bg-surface-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .race-lane {
+      position: relative;
+      height: 64px;
+      border-bottom: 2px dashed var(--border-strong);
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .race-lane:last-child {
+      border-bottom: none;
+    }
+    .race-avatar {
+      position: absolute;
+      left: 0;
+      font-size: 2.25rem;
+      transition: left 0.5s linear;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+      user-select: none;
+    }
+    .finish-line {
+      position: absolute;
+      right: 25px;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background: repeating-linear-gradient(
+        0deg,
+        #000000,
+        #000000 10px,
+        #FFFFFF 10px,
+        #FFFFFF 20px
+      );
+      border-radius: 4px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Race Timers</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="race-stage">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🏁 Animated Classroom Race Timers</h1>
+          <p class="tool-title-subtitle">Turn quick classroom clean-ups and math drills into an exciting sprint</p>
+        </div>
+      </div>
+
+      <!-- Giant Digital Display -->
+      <div class="timer-big-display" id="race-timer-display">01:00</div>
+
+      <!-- Race Track View -->
+      <div class="race-track-container" id="race-track">
+        <div class="finish-line"></div>
+
+        <div class="race-lane">
+          <div class="race-avatar" id="avatar-1" style="left: 0;">🐢 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Turtle</span></div>
+        </div>
+        <div class="race-lane">
+          <div class="race-avatar" id="avatar-2" style="left: 0;">🐇 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Bunny</span></div>
+        </div>
+        <div class="race-lane">
+          <div class="race-avatar" id="avatar-3" style="left: 0;">🐆 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Cheetah</span></div>
+        </div>
+        <div class="race-lane">
+          <div class="race-avatar" id="avatar-4" style="left: 0;">🚀 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Rocket</span></div>
+        </div>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="timer-actions">
+        <button id="btn-race-start" class="btn-giant btn-giant-primary" style="background: var(--accent-coral); color: #FFF;">
+          <span>Start Race</span>
+        </button>
+
+        <button id="btn-race-reset" class="btn-giant btn-giant-secondary">
+          <span>Reset</span>
+        </button>
+
+        <div class="presets-group" style="margin: 0;">
+          <button class="preset-chip" data-time="30">30s Clean-Up</button>
+          <button class="preset-chip" data-time="60" style="font-weight: 800; border-color: var(--primary);">1 Min Sprint</button>
+          <button class="preset-chip" data-time="120">2 Min</button>
+          <button class="preset-chip" data-time="180">3 Min</button>
+          <button class="preset-chip" data-time="300">5 Min</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational SEO Guide Section -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Gamified Clean-Up and Transition Timing</h2>
+            <p>Young learners thrive when routine chores are transformed into a cooperative game. Running a 1-minute animated race timer motivates the whole class to pack away supplies, return books to the shelves, and be seated before the runners cross the finish line.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Classroom Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/tally-counter/">Tally Counter</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Feedback</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/storage.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/confetti.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function () {
+      let totalDuration = 60;
+      let remaining = 60;
+      let isRunning = false;
+      let timerInterval = null;
+
+      const display = document.getElementById('race-timer-display');
+      const btnStart = document.getElementById('btn-race-start');
+      const btnReset = document.getElementById('btn-race-reset');
+      const avatars = [
+        document.getElementById('avatar-1'),
+        document.getElementById('avatar-2'),
+        document.getElementById('avatar-3'),
+        document.getElementById('avatar-4')
+      ];
+
+      function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+      }
+
+      function updatePositions() {
+        const progress = Math.min(1, (totalDuration - remaining) / totalDuration);
+        const track = document.getElementById('race-track');
+        const maxDist = track.clientWidth - 140; // width minus avatar & finish line
+
+        avatars.forEach((av, i) => {
+          // slight stochastic lead
+          const randomWiggle = isRunning && progress < 0.95 ? (Math.random() - 0.5) * 20 : 0;
+          const pos = Math.max(0, Math.min(maxDist, progress * maxDist + randomWiggle));
+          av.style.left = `${pos}px`;
+        });
+      }
+
+      function start() {
+        if (isRunning) return;
+        isRunning = true;
+        btnStart.classList.add('is-running');
+        btnStart.innerHTML = `<span>Pause</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+
+        timerInterval = setInterval(() => {
+          if (remaining > 0) {
+            remaining--;
+            display.textContent = formatTime(remaining);
+            updatePositions();
+            if (remaining === 0) {
+              finish();
+            }
+          }
+        }, 1000);
+      }
+
+      function pause() {
+        isRunning = false;
+        clearInterval(timerInterval);
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = `<span>Resume</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function reset() {
+        pause();
+        remaining = totalDuration;
+        display.textContent = formatTime(remaining);
+        avatars.forEach(av => av.style.left = '0px');
+        btnStart.innerHTML = `<span>Start Race</span>`;
+      }
+
+      function finish() {
+        pause();
+        const names = ['Turtle 🐢', 'Bunny 🐇', 'Cheetah 🐆', 'Rocket 🚀'];
+        const winner = names[Math.floor(Math.random() * names.length)];
+        if (window.SoundFX) window.SoundFX.playFanfare();
+        if (window.Confetti) window.Confetti.fire({ count: 160 });
+        if (window.ClassPanel) window.ClassPanel.showToast(`🏆 ${winner} crossed the finish line!`);
+      }
+
+      btnStart.addEventListener('click', () => {
+        if (isRunning) pause();
+        else start();
+      });
+
+      btnReset.addEventListener('click', reset);
+
+      document.querySelectorAll('[data-time]').forEach(chip => {
+        chip.addEventListener('click', () => {
+          totalDuration = parseInt(chip.getAttribute('data-time'), 10);
+          reset();
+        });
+      });
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

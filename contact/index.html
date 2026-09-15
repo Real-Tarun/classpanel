@@ -17,7 +17,7 @@
     <div class="container header-inner">
       <div style="display: flex; align-items: center; gap: 1rem;">
         <a href="/" class="brand-logo" title="Back to ClassPanel Home">
-          <img src="/assets/icons/icon.svg" alt="ClassPanel Logo" class="brand-icon">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
           <span>Class<span style="color: var(--primary);">Panel</span></span>
         </a>
         <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
@@ -43,21 +43,44 @@
       Have an idea for a new classroom utility, timer sound, or smartboard enhancement? We prioritize features requested directly by classroom teachers.
     </p>
 
-    <div class="seo-card">
+    <!-- Direct Email 3D Card -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-bottom: 3.5px solid var(--border-strong); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin-bottom: 2rem; box-shadow: 0 3px 0 var(--border-color), 0 8px 20px rgba(0, 0, 0, 0.03); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 3rem; height: 3rem; border-radius: var(--radius-sm); background: var(--primary-light); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: var(--text-primary);">
+          ✉️
+        </div>
+        <div>
+          <div style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted);">Direct Teacher Support Email</div>
+          <a href="mailto:you.pncml123@gmail.com?subject=ClassPanel%20Teacher%20Feedback" style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); text-decoration: none;">
+            you.pncml123@gmail.com
+          </a>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <button id="btn-copy-mail" class="action-btn" onclick="copyEmail()" style="font-size: 0.92rem; padding: 0 1.2rem; height: 2.8rem;">
+          📋 Copy Email
+        </button>
+        <a href="mailto:you.pncml123@gmail.com?subject=ClassPanel%20Teacher%20Feedback" class="btn-giant-primary" style="text-decoration: none; font-size: 0.92rem; padding: 0 1.25rem; height: 2.8rem; min-width: auto; border-radius: var(--radius-sm);">
+          Open Mail App ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="seo-card" style="border-bottom: 3.5px solid var(--border-strong);">
       <form id="feedback-form" onsubmit="handleContactSubmit(event)">
         <div style="margin-bottom: 1.25rem;">
           <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Name / Grade Level:</label>
-          <input type="text" class="input-text" placeholder="e.g. Ms. Sarah (4th Grade Teacher)" required>
+          <input type="text" id="contact-name" class="input-text" placeholder="e.g. Ms. Sarah (4th Grade Teacher)" required>
         </div>
 
         <div style="margin-bottom: 1.25rem;">
           <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Email Address (Optional for reply):</label>
-          <input type="email" class="input-text" placeholder="teacher@school.edu">
+          <input type="email" id="contact-email" class="input-text" placeholder="teacher@school.edu">
         </div>
 
         <div style="margin-bottom: 1.25rem;">
           <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Feedback Category:</label>
-          <select class="select-input">
+          <select id="contact-cat" class="select-input">
             <option value="new-tool">Request a New Tool (e.g. Noise Meter, Seating Chart)</option>
             <option value="bug">Report a Bug / Smartboard Display Issue</option>
             <option value="improvement">Improvement to an Existing Tool</option>
@@ -67,11 +90,11 @@
 
         <div style="margin-bottom: 1.75rem;">
           <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Message / Suggestion:</label>
-          <textarea class="textarea-input" rows="6" placeholder="Tell us how we can make your classroom run smoother..." required></textarea>
+          <textarea id="contact-msg" class="textarea-input" rows="6" placeholder="Tell us how we can make your classroom run smoother..." required></textarea>
         </div>
 
         <button type="submit" class="btn-giant btn-giant-primary" style="width: 100%; border-radius: var(--radius-md); font-size: 1.1rem; height: 3.5rem;">
-          Send Feedback to ClassPanel Team
+          Send Feedback to you.pncml123@gmail.com
         </button>
       </form>
     </div>
@@ -98,12 +121,33 @@
   <script defer src="/assets/js/fullscreen.js"></script>
   <script defer src="/assets/js/common.js"></script>
   <script>
+    function copyEmail() {
+      navigator.clipboard.writeText("you.pncml123@gmail.com").then(() => {
+        const btn = document.getElementById("btn-copy-mail");
+        const orig = btn.innerHTML;
+        btn.innerHTML = "✅ Copied!";
+        if (window.ClassPanel) window.ClassPanel.showToast("Copied you.pncml123@gmail.com to clipboard!");
+        setTimeout(() => { btn.innerHTML = orig; }, 2500);
+      });
+    }
+
     function handleContactSubmit(e) {
       e.preventDefault();
+      const name = document.getElementById("contact-name").value;
+      const cat = document.getElementById("contact-cat").value;
+      const msg = document.getElementById("contact-msg").value;
+      
+      const subject = encodeURIComponent(`ClassPanel Feedback [${cat}]: from ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nCategory: ${cat}\n\nMessage:\n${msg}`);
+      
       if (window.SoundFX) window.SoundFX.playFanfare();
       if (window.ClassPanel) {
-        window.ClassPanel.showToast("Thank you! Your feedback has been sent to our team.");
+        window.ClassPanel.showToast("Opening email client to send to you.pncml123@gmail.com...");
       }
+
+      setTimeout(() => {
+        window.location.href = `mailto:you.pncml123@gmail.com?subject=${subject}&body=${body}`;
+      }, 500);
       e.target.reset();
     }
   </script>

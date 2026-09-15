@@ -1,32 +1,33 @@
 /* ==========================================================================
-   ClassPanel.online — Modern Classroom Design System
+   ClassPanel.online — ElevenLabs-Inspired 3D Tactile Design System
    ========================================================================== */
 
 :root {
-  /* Color Palette - Light Mode Default */
-  --bg-primary: #F8FAFC;
+  /* Color Palette - ElevenLabs High-Contrast Modern Slate */
+  --bg-primary: #FAFAFB;
   --bg-surface: #FFFFFF;
-  --bg-surface-subtle: #F1F5F9;
-  --bg-card-hover: #F8FAFC;
+  --bg-surface-subtle: #F3F4F6;
+  --bg-card-hover: #FFFFFF;
   
-  --border-color: #E2E8F0;
+  --border-color: #E5E7EB;
   --border-strong: #CBD5E1;
+  --border-3d: #94A3B8;
   
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
+  --text-primary: #090A0C;
+  --text-secondary: #374151;
+  --text-muted: #6B7280;
   --text-inverse: #FFFFFF;
   
-  /* Brand Accents */
-  --primary: #4F46E5;
-  --primary-hover: #4338CA;
-  --primary-light: #EEF2FF;
-  --primary-text: #4338CA;
+  /* Brand Accents - ElevenLabs Monochrome + Precision Hues */
+  --primary: #090A0C;
+  --primary-hover: #18181B;
+  --primary-light: #F3F4F6;
+  --primary-text: #090A0C;
   
-  --accent-purple: #7C3AED;
-  --accent-purple-light: #F5F3FF;
+  --accent-purple: #4F46E5;
+  --accent-purple-light: #EEF2FF;
   
-  --accent-emerald: #059669;
+  --accent-emerald: #10B981;
   --accent-emerald-light: #ECFDF5;
   
   --accent-sky: #0284C7;
@@ -41,53 +42,54 @@
   --accent-coral: #F97316;
   --accent-coral-light: #FFF7ED;
 
-  /* Shadows */
+  /* Shadows & 3D Extrusion */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-  --shadow-glow: 0 0 25px rgba(79, 70, 229, 0.25);
+  --shadow-glow: 0 0 25px rgba(0, 0, 0, 0.15);
 
   /* Radii */
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.1s ease;
+  --transition-normal: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Projector specific */
   --tool-bg: #FFFFFF;
-  --tool-border: #E2E8F0;
-  --digit-color: #0F172A;
+  --tool-border: #E5E7EB;
+  --digit-color: #090A0C;
 }
 
-/* Dark Mode Theme */
+/* Dark Mode Theme - ElevenLabs Obsidian */
 [data-theme="dark"] {
-  --bg-primary: #090D16;
-  --bg-surface: #111827;
-  --bg-surface-subtle: #1F2937;
-  --bg-card-hover: #1E293B;
+  --bg-primary: #080B11;
+  --bg-surface: #0E131F;
+  --bg-surface-subtle: #161E2E;
+  --bg-card-hover: #131A29;
   
-  --border-color: #1F2937;
-  --border-strong: #374151;
+  --border-color: #1E293B;
+  --border-strong: #334155;
+  --border-3d: #475569;
   
   --text-primary: #F8FAFC;
   --text-secondary: #CBD5E1;
   --text-muted: #94A3B8;
-  --text-inverse: #0F172A;
+  --text-inverse: #090A0C;
 
-  --primary: #6366F1;
-  --primary-hover: #818CF8;
-  --primary-light: #1E1B4B;
-  --primary-text: #A5B4FC;
+  --primary: #F8FAFC;
+  --primary-hover: #E2E8F0;
+  --primary-light: #1E293B;
+  --primary-text: #F8FAFC;
 
-  --accent-purple: #8B5CF6;
-  --accent-purple-light: #2E1065;
+  --accent-purple: #6366F1;
+  --accent-purple-light: #1E1B4B;
 
   --accent-emerald: #10B981;
   --accent-emerald-light: #064E3B;
@@ -104,14 +106,14 @@
   --accent-coral: #FB923C;
   --accent-coral-light: #431407;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 35px rgba(99, 102, 241, 0.35);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 35px rgba(255, 255, 255, 0.08);
 
-  --tool-bg: #111827;
-  --tool-border: #1F2937;
+  --tool-bg: #0E131F;
+  --tool-border: #1E293B;
   --digit-color: #F8FAFC;
 }
 
@@ -133,12 +135,24 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ElevenLabs Precision Graph Grid Background */
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center top;
   transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+[data-theme="dark"] body {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
 }
 
 a {
@@ -214,23 +228,33 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .brand-icon {
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 2.45rem;
+  height: 2.45rem;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+  transition: transform var(--transition-fast);
+}
+
+.brand-logo:hover .brand-icon {
+  transform: scale(1.05) translateY(-1px);
 }
 
 .brand-badge {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.2rem 0.5rem;
-  background: var(--primary-light);
-  color: var(--primary);
-  border-radius: var(--radius-full);
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 0 var(--border-color);
 }
 
 .header-actions {
@@ -243,67 +267,125 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  height: 2.6rem;
-  padding: 0 0.9rem;
-  border-radius: var(--radius-full);
+  gap: 0.45rem;
+  height: 2.5rem;
+  padding: 0 0.95rem;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
+  border-bottom: 2.5px solid var(--border-strong);
   background: var(--bg-surface);
   color: var(--text-primary);
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all var(--transition-fast);
+  box-shadow: 0 2px 0 var(--border-color);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  cursor: pointer;
+  user-select: none;
 }
 
 .action-btn:hover {
   background: var(--bg-surface-subtle);
   border-color: var(--border-strong);
+  border-bottom-width: 3px;
   transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--border-strong);
+  text-decoration: none;
+}
+
+.action-btn:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 0 0 transparent;
 }
 
 .action-btn-icon {
-  width: 2.6rem;
+  width: 2.5rem;
   padding: 0;
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: #090A0C;
   color: #FFFFFF;
-  border: 1px solid var(--primary);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid #18181B;
+  border-bottom: 3px solid #000000;
+  box-shadow: 0 3px 0 #000000, 0 6px 12px rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: #18181B;
+  transform: translateY(-1px);
+  border-bottom-width: 4px;
+  box-shadow: 0 4px 0 #000000, 0 8px 16px rgba(0, 0, 0, 0.16);
   color: #FFFFFF;
-  border-color: var(--primary-hover);
+  text-decoration: none;
 }
 
-/* Category Pills on Home */
+.btn-primary:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 0 0 transparent;
+}
+
+[data-theme="dark"] .btn-primary {
+  background: #F8FAFC;
+  color: #090A0C;
+  border: 1px solid #FFFFFF;
+  border-bottom: 3px solid #CBD5E1;
+  box-shadow: 0 3px 0 #CBD5E1;
+}
+
+/* Category Pills on Home - ElevenLabs Tactile Bevel */
 .category-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1.1rem;
-  border-radius: var(--radius-full);
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 700;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-color);
+  border-bottom: 2.5px solid var(--border-strong);
   cursor: pointer;
-  transition: all var(--transition-fast);
   background: var(--bg-surface);
   color: var(--text-secondary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 0 var(--border-color);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+  user-select: none;
+}
+
+.category-pill:hover {
+  background: var(--bg-surface-subtle);
+  border-bottom-width: 3px;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--border-strong);
+  color: var(--text-primary);
+}
+
+.category-pill:active {
+  transform: translateY(1.5px);
+  border-bottom-width: 1px;
+  box-shadow: 0 0 0 transparent;
 }
 
 .category-pill.active {
-  background: var(--primary);
+  background: #090A0C;
   color: #FFFFFF;
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  border-color: #000000;
+  border-bottom: 2.5px solid #000000;
+  box-shadow: 0 2px 0 #000000;
 }
 
-/* Tool Grid Cards */
+[data-theme="dark"] .category-pill.active {
+  background: #F8FAFC;
+  color: #090A0C;
+  border-color: #FFFFFF;
+  border-bottom-color: #CBD5E1;
+  box-shadow: 0 2px 0 #CBD5E1;
+}
+
+/* Tool Grid Cards - ElevenLabs 3D Card Look */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -316,13 +398,28 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   flex-direction: column;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-bottom: 3.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
   padding: 1.6rem;
   text-decoration: none;
   color: inherit;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 3px 0 var(--border-color), 0 8px 24px rgba(0, 0, 0, 0.03);
   overflow: hidden;
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-bottom-width: 4.5px;
+  border-color: var(--border-strong);
+  box-shadow: 0 6px 0 var(--border-strong), 0 16px 32px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+}
+
+.tool-card:active {
+  transform: translateY(2px);
+  border-bottom-width: 1.5px;
+  box-shadow: 0 1px 0 var(--border-strong);
 }
 
 .tool-card::before {
@@ -425,8 +522,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .tool-stage {
   background: var(--tool-bg);
   border: 1px solid var(--tool-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
+  border-bottom: 4px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 0 var(--border-color), 0 20px 40px rgba(0, 0, 0, 0.05);
   padding: 2.25rem;
   position: relative;
   transition: all var(--transition-normal);
@@ -484,28 +582,49 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   flex-wrap: wrap;
 }
 
-/* Fullscreen Projector Button */
+/* Fullscreen Projector Button - ElevenLabs 3D Tactile */
 .btn-projector {
-  background: #0F172A;
+  background: #090A0C;
   color: #FFFFFF;
-  border-radius: var(--radius-full);
-  padding: 0.5rem 1.1rem;
+  border: 1px solid #18181B;
+  border-bottom: 2.5px solid #000000;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1.15rem;
   font-size: 0.85rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  transition: all var(--transition-fast);
-}
-
-[data-theme="dark"] .btn-projector {
-  background: #3B82F6;
-  color: #FFFFFF;
+  box-shadow: 0 2px 0 #000000;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .btn-projector:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
+  transform: translateY(-1px);
+  border-bottom-width: 3px;
+  box-shadow: 0 3px 0 #000000;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.btn-projector:active {
+  transform: translateY(1.5px);
+  border-bottom-width: 1px;
+  box-shadow: 0 0 0 transparent;
+}
+
+[data-theme="dark"] .btn-projector {
+  background: #F8FAFC;
+  color: #090A0C;
+  border: 1px solid #FFFFFF;
+  border-bottom: 2.5px solid #CBD5E1;
+  box-shadow: 0 2px 0 #CBD5E1;
+}
+
+[data-theme="dark"] .btn-projector:hover {
+  box-shadow: 0 3px 0 #CBD5E1;
+  color: #090A0C;
 }
 
 /* Giant Digital Display (Classroom Timer, Clocks, etc.) */
@@ -557,62 +676,108 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   to { opacity: 1; filter: brightness(1.2); }
 }
 
-/* Big Action Buttons (Touch Friendly) */
+/* Big Action Buttons (Touch & Smartboard Friendly - ElevenLabs 3D Look) */
 .timer-actions {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .btn-giant {
-  min-width: 140px;
-  height: 4rem;
-  padding: 0 2rem;
-  font-size: 1.35rem;
+  min-width: 145px;
+  height: 3.85rem;
+  padding: 0 2.25rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  border-radius: var(--radius-full);
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-md);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  transition: all var(--transition-normal);
+  gap: 0.65rem;
+  cursor: pointer;
   user-select: none;
-}
-
-.btn-giant:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-giant:active {
-  transform: translateY(0) scale(0.98);
+  position: relative;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.12s ease;
 }
 
 .btn-giant-primary {
-  background: var(--accent-emerald);
+  background: #090A0C;
   color: #FFFFFF;
-  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.35);
+  border: 1px solid #18181B;
+  border-bottom: 4.5px solid #000000;
+  box-shadow: 0 4px 0 #000000, 0 10px 20px rgba(0, 0, 0, 0.16);
+}
+
+.btn-giant-primary:hover {
+  transform: translateY(-2px);
+  border-bottom-width: 5.5px;
+  box-shadow: 0 6px 0 #000000, 0 16px 28px rgba(0, 0, 0, 0.22);
+}
+
+.btn-giant-primary:active {
+  transform: translateY(3.5px);
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 0 #000000, 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .btn-giant-primary {
+  background: #F8FAFC;
+  color: #090A0C;
+  border: 1px solid #FFFFFF;
+  border-bottom: 4.5px solid #CBD5E1;
+  box-shadow: 0 4px 0 #CBD5E1, 0 10px 25px rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .btn-giant-primary:hover {
+  border-bottom-width: 5.5px;
+  box-shadow: 0 6px 0 #CBD5E1, 0 16px 30px rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="dark"] .btn-giant-primary:active {
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 0 #CBD5E1;
 }
 
 .btn-giant-primary.is-running {
-  background: var(--accent-amber);
-  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.35);
+  background: #D97706 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #B45309 !important;
+  border-bottom: 4.5px solid #92400E !important;
+  box-shadow: 0 4px 0 #92400E, 0 10px 20px rgba(217, 119, 6, 0.3) !important;
+}
+
+.btn-giant-primary.is-running:active {
+  transform: translateY(3.5px) !important;
+  border-bottom-width: 1px !important;
+  box-shadow: 0 1px 0 #92400E !important;
 }
 
 .btn-giant-secondary {
-  background: var(--bg-surface-subtle);
-  border: 2px solid var(--border-strong);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-bottom: 4px solid var(--border-strong);
   color: var(--text-primary);
+  box-shadow: 0 3.5px 0 var(--border-strong), 0 6px 14px rgba(0, 0, 0, 0.04);
 }
 
 .btn-giant-secondary:hover {
-  background: var(--border-color);
+  transform: translateY(-2px);
+  border-bottom-width: 5px;
+  background: var(--bg-surface-subtle);
+  box-shadow: 0 5.5px 0 var(--border-strong), 0 12px 22px rgba(0, 0, 0, 0.08);
 }
 
-/* Quick Preset Chips */
+.btn-giant-secondary:active {
+  transform: translateY(3px);
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 0 var(--border-strong);
+}
+
+/* Quick Preset Chips - ElevenLabs 3D Bevel */
 .presets-group {
   display: flex;
   align-items: center;
@@ -623,21 +788,47 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .preset-chip {
-  padding: 0.5rem 1.1rem;
-  border-radius: var(--radius-full);
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-weight: 700;
   border: 1px solid var(--border-color);
-  background: var(--bg-surface-subtle);
+  border-bottom: 3px solid var(--border-strong);
+  background: var(--bg-surface);
   color: var(--text-primary);
-  transition: all var(--transition-fast);
+  box-shadow: 0 2px 0 var(--border-color);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
+  user-select: none;
 }
 
 .preset-chip:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
+  background: var(--bg-surface-subtle);
+  border-color: var(--border-strong);
+  border-bottom-width: 3.5px;
   transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--border-strong);
+}
+
+.preset-chip:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 0 0 transparent;
+}
+
+.preset-chip.active {
+  background: #090A0C;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+  border-bottom: 3px solid #000000;
+  box-shadow: 0 2px 0 #000000;
+}
+
+[data-theme="dark"] .preset-chip.active {
+  background: #F8FAFC;
+  color: #090A0C;
+  border: 1px solid #FFFFFF;
+  border-bottom: 3px solid #CBD5E1;
+  box-shadow: 0 2px 0 #CBD5E1;
 }
 
 /* Content SEO Sections Below the Fold */
@@ -928,20 +1119,29 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .blog-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-bottom: 3.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  box-shadow: 0 3px 0 var(--border-color), 0 8px 24px rgba(0, 0, 0, 0.03);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, border-color 0.15s ease;
   text-decoration: none;
   color: inherit;
 }
 
 .blog-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary);
+  border-bottom-width: 4.5px;
+  border-color: var(--border-strong);
+  box-shadow: 0 6px 0 var(--border-strong), 0 16px 32px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+}
+
+.blog-card:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 0 var(--border-strong);
 }
 
 .blog-card-meta {

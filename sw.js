@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v9';
+const CACHE_NAME = 'classpanel-v10';
 const STATIC_ASSETS = [
   '/',
   '/favicon.ico',
@@ -21,7 +21,10 @@ const STATIC_ASSETS = [
   '/assets/icons/group-generator.png',
   '/assets/icons/exam-timer.png',
   '/assets/icons/sensory-timer.png',
+  '/assets/icons/clocks.png',
+  '/assets/icons/random-number-generator.png',
   '/assets/icons/chance-games.png',
+  '/assets/icons/tally-counter.png',
   '/assets/icons/presentation-timer.png',
   '/assets/icons/race-timers.png',
   '/assets/icons/holiday-timers.png',

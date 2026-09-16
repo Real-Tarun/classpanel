@@ -228,8 +228,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .brand-icon {
-  width: 2.35rem;
-  height: 2.35rem;
+  height: 2.85rem;
+  width: auto;
+  max-width: 3.5rem;
+  aspect-ratio: 544 / 455;
   flex-shrink: 0;
   display: inline-block;
   vertical-align: middle;

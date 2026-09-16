@@ -6,6 +6,8 @@
 /index.php / 301
 
 # Subdirectory clean URL normalization
+/tools /tools/ 301
+/tools/index.html /tools/ 301
 /tools/*/index.html /tools/:splat/ 301
 /blog/*/index.html /blog/:splat/ 301
 /about/index.html /about/ 301

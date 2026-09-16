@@ -32,5 +32,11 @@ export async function onRequest(context) {
     return Response.redirect(url.toString(), 301);
   }
 
+  // 5. Normalize /tools to /tools/
+  if (url.pathname === '/tools') {
+    url.pathname = '/tools/';
+    return Response.redirect(url.toString(), 301);
+  }
+
   return context.next();
 }

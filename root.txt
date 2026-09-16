@@ -21,6 +21,10 @@ Disallow: /_headers
 Disallow: /package.json
 Disallow: /package-lock.json
 Disallow: /.git/
+Disallow: /app/
+Disallow: /cdn-cgi/
+Disallow: /404
+Disallow: /404.html
 
 # Google Search & Google Images
 User-agent: Googlebot

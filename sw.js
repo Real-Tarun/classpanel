@@ -1,6 +1,7 @@
-const CACHE_NAME = 'classpanel-v11';
+const CACHE_NAME = 'classpanel-v12';
 const STATIC_ASSETS = [
   '/',
+  '/tools/',
   '/favicon.ico',
   '/manifest.webmanifest',
   '/robots.txt',

@@ -8,7 +8,15 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- 2. Interactive Classroom Tools (0.8 Priority, Weekly Updates) -->
+  <!-- 2. Tools Hub & Directory -->
+  <url>
+    <loc>https://classpanel.online/tools/</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 3. Interactive Classroom Tools (0.8 Priority, Weekly Updates) -->
   <url>
     <loc>https://classpanel.online/tools/classroom-timer/</loc>
     <lastmod>2026-09-16</lastmod>

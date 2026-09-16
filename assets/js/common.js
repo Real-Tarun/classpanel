@@ -34,6 +34,21 @@
           window.location.reload();
         }
       });
+
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'SW_ACTIVATED') {
+          console.log('ClassPanel: Updated to', event.data.cache);
+        }
+      });
+
+      // When tab is reopened or focused, check for fresh updates automatically
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          navigator.serviceWorker.getRegistration().then(reg => {
+            if (reg && reg.update) reg.update();
+          });
+        }
+      });
     });
   }
 

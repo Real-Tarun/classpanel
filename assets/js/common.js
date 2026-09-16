@@ -6,12 +6,34 @@
 (function () {
   'use strict';
 
-  // --- 1. Service Worker Registration ---
+  // --- 1. Service Worker Registration & Auto-Update ---
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('ClassPanel ServiceWorker ready:', reg.scope))
-        .catch(err => console.debug('ClassPanel ServiceWorker registration notice:', err));
+        .then(reg => {
+          if (reg.update) reg.update();
+
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('ClassPanel: New version installed, auto-applying...');
+                  window.location.reload();
+                }
+              });
+            }
+          });
+        })
+        .catch(err => console.debug('ClassPanel ServiceWorker notice:', err));
+
+      let isRefreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          window.location.reload();
+        }
+      });
     });
   }
 

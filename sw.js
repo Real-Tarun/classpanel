@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v5';
+const CACHE_NAME = 'classpanel-v6';
 const STATIC_ASSETS = [
   '/',
   '/favicon.ico',
@@ -39,22 +39,26 @@ const STATIC_ASSETS = [
   '/contact/'
 ];
 
+// Install Event: Cache assets and immediately activate
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch((err) => {
-        console.warn('Pre-caching partial or offline fallback:', err);
+        console.warn('ClassPanel: Pre-caching partial or offline fallback:', err);
       });
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
+// Activate Event: Clear all previous caches and claim clients immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('ClassPanel: Clearing outdated cache:', key);
             return caches.delete(key);
           }
         })
@@ -63,28 +67,52 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Fetch Event
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Handle same-origin requests with stale-while-revalidate / network fallback
   if (url.origin === location.origin) {
+    const isHtmlNavigation = event.request.mode === 'navigate' ||
+      (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'));
+
+    // 1. HTML PAGES: NETWORK-FIRST (Always fetch freshest live page; fallback to cache if offline)
+    if (isHtmlNavigation) {
+      event.respondWith(
+        fetch(event.request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const responseClone = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseClone);
+              });
+            }
+            return networkResponse;
+          })
+          .catch(async () => {
+            // Offline fallback: serve cached page or root
+            const cached = await caches.match(event.request);
+            if (cached) return cached;
+            return caches.match('/');
+          })
+      );
+      return;
+    }
+
+    // 2. STATIC ASSETS: Stale-While-Revalidate with background revalidation
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return networkResponse;
-        }).catch(() => {
-          // If offline and request is an HTML page, return cached root or page
-          if (event.request.headers.get('accept')?.includes('text/html')) {
-            return cachedResponse || caches.match('/');
-          }
-        });
+        const fetchPromise = fetch(event.request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const responseClone = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseClone);
+              });
+            }
+            return networkResponse;
+          })
+          .catch(() => cachedResponse);
 
         return cachedResponse || fetchPromise;
       })

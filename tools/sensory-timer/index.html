@@ -119,8 +119,8 @@
         </div>
       </div>
 
-      <!-- Giant Digital Display -->
-      <div class="timer-big-display" id="sensory-time" style="font-size: clamp(3.5rem, 10vw, 7rem); margin: 0.5rem 0;">03:00</div>
+      <!-- Giant Digital Display (Clickable to customize) -->
+      <div class="timer-big-display" id="sensory-time" style="font-size: clamp(3.5rem, 10vw, 7rem); margin: 0.5rem 0; cursor: pointer;" title="Click to set custom calm time">03:00</div>
 
       <!-- Sensory Interactive Viewport -->
       <div class="sensory-viewport" id="viewport">
@@ -407,19 +407,62 @@
         });
       });
 
-      if (btnCustomSensory) {
-        btnCustomSensory.addEventListener('click', () => {
-          const userMins = prompt('Enter calm timer duration in minutes (e.g. 4, 7, 15):', Math.round(totalSeconds / 60));
-          if (userMins !== null) {
-            const parsed = parseFloat(userMins);
-            if (!isNaN(parsed) && parsed > 0 && parsed <= 60) {
-              totalSeconds = Math.round(parsed * 60);
-              setActiveSensoryPreset(totalSeconds, true);
-              reset();
-              if (window.ClassPanel) window.ClassPanel.showToast(`Calm timer set to ${parsed} minutes!`);
-            }
+      function parseAndSetSensoryDuration(input) {
+        if (!input) return;
+        const str = String(input).trim().toLowerCase();
+        let secs = 0;
+        if (str.includes(':')) {
+          const parts = str.split(':').map(p => parseInt(p.trim(), 10) || 0);
+          if (parts.length === 2) {
+            secs = parts[0] * 60 + parts[1];
           }
-        });
+        } else if (str.endsWith('s')) {
+          secs = parseInt(str, 10);
+        } else {
+          const parsed = parseFloat(str);
+          if (!isNaN(parsed)) {
+            secs = Math.round(parsed * 60);
+          }
+        }
+
+        if (!isNaN(secs) && secs >= 10 && secs <= 3600) {
+          totalSeconds = secs;
+          setActiveSensoryPreset(totalSeconds, true);
+          reset();
+          const m = Math.floor(secs / 60);
+          const s = secs % 60;
+          const label = m > 0 ? (s > 0 ? `${m}m ${s}s` : `${m} minutes`) : `${s} seconds`;
+          if (window.ClassPanel) window.ClassPanel.showToast(`Calm timer set to ${label}!`);
+        } else {
+          if (window.ClassPanel) window.ClassPanel.showToast('Please enter a valid duration (e.g. 4, 2.5, or 03:00).');
+        }
+      }
+
+      async function openCustomSensoryModal() {
+        if (window.ClassPanel && window.ClassPanel.prompt) {
+          const currentMins = (totalSeconds / 60).toFixed(1).replace(/\.0$/, '');
+          const res = await window.ClassPanel.prompt({
+            title: 'Set Custom Calm Time',
+            label: 'Enter duration in minutes (e.g. 4, 7.5) or MM:SS (e.g. 02:30):',
+            defaultValue: currentMins,
+            placeholder: 'e.g. 4 or 02:30',
+            confirmText: 'Set Time'
+          });
+          if (res !== null && res !== undefined) {
+            parseAndSetSensoryDuration(res);
+          }
+        } else {
+          const userMins = prompt('Enter calm timer duration in minutes (e.g. 4, 7, 15) or MM:SS:', Math.round(totalSeconds / 60));
+          if (userMins) parseAndSetSensoryDuration(userMins);
+        }
+      }
+
+      if (btnCustomSensory) {
+        btnCustomSensory.addEventListener('click', openCustomSensoryModal);
+      }
+
+      if (sensoryTime) {
+        sensoryTime.addEventListener('click', openCustomSensoryModal);
       }
 
       btnBreathing.addEventListener('click', () => {

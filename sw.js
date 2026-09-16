@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v10';
+const CACHE_NAME = 'classpanel-v11';
 const STATIC_ASSETS = [
   '/',
   '/favicon.ico',

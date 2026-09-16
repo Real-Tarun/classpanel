@@ -14,44 +14,174 @@
       background: var(--bg-surface-subtle);
       border: 2px solid var(--border-color);
       border-radius: var(--radius-xl);
-      padding: 1.5rem;
-      margin: 1.5rem 0;
+      padding: 1.25rem 1rem;
+      margin: 1.25rem 0;
       position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+    .race-commentary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.45rem 1.25rem;
+      margin: 0.75rem auto 1rem;
+      max-width: 540px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
     }
     .race-lane {
       position: relative;
-      height: 64px;
+      height: 68px;
       border-bottom: 2px dashed var(--border-strong);
       display: flex;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
+      padding-left: 56px;
+      padding-right: 48px;
     }
     .race-lane:last-child {
       border-bottom: none;
     }
-    .race-avatar {
+    .lane-badge {
       position: absolute;
-      left: 0;
-      font-size: 2.25rem;
-      transition: left 0.5s linear;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+      left: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: #FFF;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
       user-select: none;
+      z-index: 2;
+    }
+    .start-line {
+      position: absolute;
+      left: 50px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--border-strong);
+      border-radius: 2px;
+      z-index: 1;
     }
     .finish-line {
       position: absolute;
-      right: 25px;
+      right: 32px;
       top: 0;
       bottom: 0;
-      width: 12px;
+      width: 16px;
       background: repeating-linear-gradient(
         0deg,
-        #000000,
-        #000000 10px,
-        #FFFFFF 10px,
-        #FFFFFF 20px
+        #111827,
+        #111827 8px,
+        #F9FAFB 8px,
+        #F9FAFB 16px
       );
       border-radius: 4px;
-      opacity: 0.8;
+      opacity: 0.9;
+      box-shadow: 0 0 6px rgba(0,0,0,0.25);
+      z-index: 2;
+    }
+    .finish-flag {
+      position: absolute;
+      right: 28px;
+      top: -12px;
+      font-size: 1.35rem;
+      z-index: 3;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+    .race-avatar-box {
+      position: absolute;
+      left: 54px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      user-select: none;
+      z-index: 4;
+      will-change: transform;
+      transition: transform 0.05s linear;
+    }
+    .race-avatar-icon {
+      font-size: 2.25rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+      display: inline-block;
+      transition: transform 0.15s ease;
+    }
+    .race-avatar-box.is-running .race-avatar-icon {
+      animation: avatarSprint 0.35s ease-in-out infinite alternate;
+    }
+    .race-avatar-box.is-turbo .race-avatar-icon {
+      animation: avatarTurbo 0.18s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 10px #F59E0B) drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+    @keyframes avatarSprint {
+      0% { transform: translateY(-3px) rotate(-4deg); }
+      100% { transform: translateY(2px) rotate(4deg); }
+    }
+    @keyframes avatarTurbo {
+      0% { transform: translateY(-5px) scale(1.15) rotate(-6deg); }
+      100% { transform: translateY(2px) scale(1.15) rotate(6deg); }
+    }
+    .race-avatar-label {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+    .race-avatar-label:hover {
+      border-color: var(--primary);
+    }
+    .podium-card {
+      display: none;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      margin: 1.25rem 0;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: fadeIn 0.3s ease-out;
+    }
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .podium-rank-item {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .podium-rank-item.winner {
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.08);
+      transform: scale(1.04);
     }
   </style>
 </head>
@@ -101,26 +231,67 @@
           <h1><img src="/assets/icons/race-timers.png" alt="" class="tool-title-icon"> Animated Classroom Race Timers</h1>
           <p class="tool-title-subtitle">Turn quick classroom clean-ups and math drills into an exciting sprint</p>
         </div>
+
+        <div class="tool-control-bar">
+          <select id="select-race-theme" class="select-input" style="padding: 0.4rem 0.8rem; font-weight: 700; font-size: 0.85rem;" title="Change Racer Theme">
+            <option value="animals">🐾 Animals & Rocket</option>
+            <option value="teams">🔴 Classroom Teams</option>
+            <option value="vehicles">🏎️ Super Vehicles</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Giant Digital Display -->
-      <div class="timer-big-display" id="race-timer-display">01:00</div>
+      <!-- Giant Digital Display (Clickable to edit time) -->
+      <div class="timer-big-display" id="race-timer-display" title="Click to edit race duration" style="cursor: pointer;">01:00</div>
+
+      <!-- Dynamic Live Race Commentary Banner -->
+      <div class="race-commentary-bar" id="race-commentary">
+        <span>🏁</span> <span id="race-commentary-text">Ready to race! Click Start Race to begin.</span>
+      </div>
 
       <!-- Race Track View -->
       <div class="race-track-container" id="race-track">
+        <div class="start-line"></div>
         <div class="finish-line"></div>
+        <div class="finish-flag">🏁</div>
 
-        <div class="race-lane">
-          <div class="race-avatar" id="avatar-1" style="left: 0;">🐢 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Turtle</span></div>
+        <div class="race-lane" data-lane="0">
+          <div class="lane-badge" style="background: #EF4444;">1</div>
+          <div class="race-avatar-box" id="avatar-box-0">
+            <span class="race-avatar-icon" id="avatar-icon-0">🐢</span>
+            <span class="race-avatar-label" id="avatar-label-0" contenteditable="true" title="Click to rename racer">Turtle</span>
+          </div>
         </div>
-        <div class="race-lane">
-          <div class="race-avatar" id="avatar-2" style="left: 0;">🐇 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Bunny</span></div>
+        <div class="race-lane" data-lane="1">
+          <div class="lane-badge" style="background: #3B82F6;">2</div>
+          <div class="race-avatar-box" id="avatar-box-1">
+            <span class="race-avatar-icon" id="avatar-icon-1">🐇</span>
+            <span class="race-avatar-label" id="avatar-label-1" contenteditable="true" title="Click to rename racer">Bunny</span>
+          </div>
         </div>
-        <div class="race-lane">
-          <div class="race-avatar" id="avatar-3" style="left: 0;">🐆 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Cheetah</span></div>
+        <div class="race-lane" data-lane="2">
+          <div class="lane-badge" style="background: #10B981;">3</div>
+          <div class="race-avatar-box" id="avatar-box-2">
+            <span class="race-avatar-icon" id="avatar-icon-2">🐆</span>
+            <span class="race-avatar-label" id="avatar-label-2" contenteditable="true" title="Click to rename racer">Cheetah</span>
+          </div>
         </div>
-        <div class="race-lane">
-          <div class="race-avatar" id="avatar-4" style="left: 0;">🚀 <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Rocket</span></div>
+        <div class="race-lane" data-lane="3">
+          <div class="lane-badge" style="background: #F59E0B;">4</div>
+          <div class="race-avatar-box" id="avatar-box-3">
+            <span class="race-avatar-icon" id="avatar-icon-3">🚀</span>
+            <span class="race-avatar-label" id="avatar-label-3" contenteditable="true" title="Click to rename racer">Rocket</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Race Results / Podium Card -->
+      <div class="podium-card" id="podium-card">
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--text-primary);" id="podium-winner-title">🏆 Winner Crossed the Finish Line!</h2>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem;">Official Finish Order & Placement</p>
+        <div class="podium-grid" id="podium-grid"></div>
+        <div style="margin-top: 1.25rem;">
+          <button id="btn-podium-close" class="btn-giant btn-giant-primary" style="height: 3rem; font-size: 1rem; padding: 0 1.5rem;">Race Again</button>
         </div>
       </div>
 
@@ -198,82 +369,326 @@
   <script defer src="/assets/js/common.js?v=8"></script>
   <script>
     (function () {
+      const THEMES = {
+        animals: [
+          { icon: '🐢', name: 'Turtle', color: '#EF4444', trait: 'turtle' },
+          { icon: '🐇', name: 'Bunny', color: '#3B82F6', trait: 'bunny' },
+          { icon: '🐆', name: 'Cheetah', color: '#10B981', trait: 'cheetah' },
+          { icon: '🚀', name: 'Rocket', color: '#F59E0B', trait: 'rocket' }
+        ],
+        teams: [
+          { icon: '🔴', name: 'Red Team', color: '#EF4444', trait: 'cheetah' },
+          { icon: '🔵', name: 'Blue Team', color: '#3B82F6', trait: 'bunny' },
+          { icon: '🟢', name: 'Green Team', color: '#10B981', trait: 'turtle' },
+          { icon: '🟡', name: 'Gold Team', color: '#F59E0B', trait: 'rocket' }
+        ],
+        vehicles: [
+          { icon: '🏎️', name: 'Racecar', color: '#EF4444', trait: 'cheetah' },
+          { icon: '🚀', name: 'Rocket', color: '#3B82F6', trait: 'rocket' },
+          { icon: '🚁', name: 'Chopper', color: '#10B981', trait: 'turtle' },
+          { icon: '⚡', name: 'Speedster', color: '#F59E0B', trait: 'bunny' }
+        ]
+      };
+
+      let currentTheme = 'animals';
+      let racers = JSON.parse(JSON.stringify(THEMES.animals));
+
       let totalDuration = 60;
-      let remaining = 60;
+      let remainingSeconds = 60;
       let isRunning = false;
-      let timerInterval = null;
+      let animFrameId = null;
+      let lastTimestamp = null;
+      let raceFinished = false;
+
+      // Physics state per racer: progress 0..1, seed for personality curves, turbo flag
+      let racerStates = [
+        { pos: 0, seed: Math.random() * 50 + 1, isTurbo: false },
+        { pos: 0, seed: Math.random() * 50 + 20, isTurbo: false },
+        { pos: 0, seed: Math.random() * 50 + 40, isTurbo: false },
+        { pos: 0, seed: Math.random() * 50 + 60, isTurbo: false }
+      ];
+
+      let lastLeaderIndex = -1;
+      let commentaryCooldown = 0;
 
       const display = document.getElementById('race-timer-display');
       const btnStart = document.getElementById('btn-race-start');
       const btnReset = document.getElementById('btn-race-reset');
-      const avatars = [
-        document.getElementById('avatar-1'),
-        document.getElementById('avatar-2'),
-        document.getElementById('avatar-3'),
-        document.getElementById('avatar-4')
+      const selectTheme = document.getElementById('select-race-theme');
+      const track = document.getElementById('race-track');
+      const commentaryText = document.getElementById('race-commentary-text');
+      const commentaryBar = document.getElementById('race-commentary');
+      const podiumCard = document.getElementById('podium-card');
+      const podiumGrid = document.getElementById('podium-grid');
+      const podiumWinnerTitle = document.getElementById('podium-winner-title');
+      const btnPodiumClose = document.getElementById('btn-podium-close');
+
+      const avatarBoxes = [
+        document.getElementById('avatar-box-0'),
+        document.getElementById('avatar-box-1'),
+        document.getElementById('avatar-box-2'),
+        document.getElementById('avatar-box-3')
+      ];
+      const avatarIcons = [
+        document.getElementById('avatar-icon-0'),
+        document.getElementById('avatar-icon-1'),
+        document.getElementById('avatar-icon-2'),
+        document.getElementById('avatar-icon-3')
+      ];
+      const avatarLabels = [
+        document.getElementById('avatar-label-0'),
+        document.getElementById('avatar-label-1'),
+        document.getElementById('avatar-label-2'),
+        document.getElementById('avatar-label-3')
       ];
 
       function formatTime(s) {
         const m = Math.floor(s / 60);
-        const sec = s % 60;
+        const sec = Math.floor(s % 60);
         return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
       }
 
-      function updatePositions() {
-        const progress = Math.min(1, (totalDuration - remaining) / totalDuration);
-        const track = document.getElementById('race-track');
-        const maxDist = track.clientWidth - 140; // width minus avatar & finish line
+      function setCommentary(msg) {
+        if (commentaryText) commentaryText.textContent = msg;
+      }
 
-        avatars.forEach((av, i) => {
-          // slight stochastic lead
-          const randomWiggle = isRunning && progress < 0.95 ? (Math.random() - 0.5) * 20 : 0;
-          const pos = Math.max(0, Math.min(maxDist, progress * maxDist + randomWiggle));
-          av.style.left = `${pos}px`;
+      function updateTheme(themeKey) {
+        currentTheme = themeKey;
+        const list = THEMES[themeKey] || THEMES.animals;
+        racers = JSON.parse(JSON.stringify(list));
+        racers.forEach((r, i) => {
+          if (avatarIcons[i]) avatarIcons[i].textContent = r.icon;
+          if (avatarLabels[i]) avatarLabels[i].textContent = r.name;
         });
+        reset();
+      }
+
+      function initRacerLabels() {
+        avatarLabels.forEach((lbl, i) => {
+          lbl.addEventListener('blur', () => {
+            const val = lbl.textContent.trim();
+            if (val) racers[i].name = val;
+            else lbl.textContent = racers[i].name;
+          });
+          lbl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              lbl.blur();
+            }
+          });
+        });
+      }
+
+      function resetPhysicsSeeds() {
+        racerStates.forEach((st, i) => {
+          st.pos = 0;
+          st.seed = Math.random() * 80 + i * 25;
+          st.isTurbo = false;
+        });
+        lastLeaderIndex = -1;
+        commentaryCooldown = 0;
+      }
+
+      function renderPositions() {
+        const trackWidth = track.clientWidth || 600;
+        const startX = 54;
+        const finishX = Math.max(120, trackWidth - 120);
+        const distance = finishX - startX;
+
+        avatarBoxes.forEach((box, i) => {
+          const st = racerStates[i];
+          const px = st.pos * distance;
+          box.style.transform = `translateX(${px}px)`;
+
+          if (isRunning) {
+            box.classList.add('is-running');
+            if (st.isTurbo) box.classList.add('is-turbo');
+            else box.classList.remove('is-turbo');
+          } else {
+            box.classList.remove('is-running', 'is-turbo');
+          }
+        });
+      }
+
+      function animationLoop(timestamp) {
+        if (!isRunning) return;
+
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const dt = Math.min(0.1, (timestamp - lastTimestamp) / 1000); // delta in seconds
+        lastTimestamp = timestamp;
+
+        remainingSeconds = Math.max(0, remainingSeconds - dt);
+        display.textContent = formatTime(Math.ceil(remainingSeconds));
+
+        const baseProgress = Math.min(1, (totalDuration - remainingSeconds) / totalDuration);
+
+        // Update each racer's dynamic physics position
+        racerStates.forEach((st, i) => {
+          const trait = racers[i].trait;
+          let wave = 0;
+          let turbo = false;
+
+          if (trait === 'turtle') {
+            // Steady pace, then surprise rocket bursts
+            const boostVal = Math.sin(baseProgress * 12 + st.seed);
+            turbo = boostVal > 0.6;
+            wave = turbo ? 0.09 : (Math.sin(baseProgress * 6 + st.seed) * 0.02 - 0.02);
+          } else if (trait === 'bunny') {
+            // Fast hops, pauses
+            const hop = Math.sin(baseProgress * 20 + st.seed);
+            wave = hop * 0.055;
+            turbo = hop > 0.75;
+          } else if (trait === 'cheetah') {
+            // Sprints & coasting
+            const sprint = Math.cos(baseProgress * 15 + st.seed);
+            wave = sprint * 0.06;
+            turbo = sprint > 0.7;
+          } else {
+            // Rocket: starts slow, accelerates dramatically
+            const accel = Math.pow(baseProgress, 1.3) * 0.11 - 0.03;
+            const flutter = Math.sin(baseProgress * 25 + st.seed) * 0.025;
+            wave = accel + flutter;
+            turbo = baseProgress > 0.55 && Math.sin(baseProgress * 8) > 0;
+          }
+
+          st.isTurbo = turbo;
+
+          if (baseProgress < 0.90) {
+            st.pos = Math.max(0, Math.min(0.88, baseProgress + wave * 0.7));
+          } else {
+            // Final sprint: racers surge toward and across the finish line as time runs out
+            const sprintRatio = (baseProgress - 0.90) / 0.10;
+            const finalSeedAdvantage = ((st.seed % 10) - 4.5) * 0.008;
+            st.pos = Math.min(1.06, 0.88 + sprintRatio * (0.12 + finalSeedAdvantage));
+          }
+        });
+
+        // Determine current race leader
+        let leaderIdx = 0;
+        let maxP = -1;
+        racerStates.forEach((st, i) => {
+          if (st.pos > maxP) {
+            maxP = st.pos;
+            leaderIdx = i;
+          }
+        });
+
+        commentaryCooldown -= dt;
+        if (leaderIdx !== lastLeaderIndex && commentaryCooldown <= 0 && baseProgress < 0.9) {
+          lastLeaderIndex = leaderIdx;
+          commentaryCooldown = 3.2;
+          const leader = racers[leaderIdx];
+          const cheerMsgs = [
+            `${leader.icon} ${leader.name} takes the lead!`,
+            `${leader.icon} ${leader.name} bursts to the front!`,
+            `Cheer on ${leader.name}! Looking strong!`,
+            `${leader.icon} ${leader.name} is accelerating ahead!`
+          ];
+          setCommentary(cheerMsgs[Math.floor(Math.random() * cheerMsgs.length)]);
+        } else if (baseProgress >= 0.9 && commentaryCooldown <= 0) {
+          commentaryCooldown = 999;
+          setCommentary('🔥 FINAL SPRINT! Who will cross first?!');
+        }
+
+        renderPositions();
+
+        // Finish condition: exactly when the classroom countdown reaches 0
+        if (remainingSeconds <= 0) {
+          finishRace();
+          return;
+        }
+
+        animFrameId = requestAnimationFrame(animationLoop);
       }
 
       function start() {
         if (isRunning) return;
+        if (raceFinished || remainingSeconds <= 0) {
+          reset();
+        }
         isRunning = true;
+        raceFinished = false;
+        lastTimestamp = null;
+        podiumCard.style.display = 'none';
+
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `<span>Pause</span>`;
         if (window.SoundFX) window.SoundFX.playClick();
+        setCommentary('🏁 The race is ON! Cheer for your favorite!');
 
-        timerInterval = setInterval(() => {
-          if (remaining > 0) {
-            remaining--;
-            display.textContent = formatTime(remaining);
-            updatePositions();
-            if (remaining === 0) {
-              finish();
-            }
-          }
-        }, 1000);
+        animFrameId = requestAnimationFrame(animationLoop);
       }
 
       function pause() {
         isRunning = false;
-        clearInterval(timerInterval);
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
         btnStart.classList.remove('is-running');
         btnStart.innerHTML = `<span>Resume</span>`;
+        renderPositions();
         if (window.SoundFX) window.SoundFX.playClick();
+        setCommentary('⏸️ Race paused. Click Resume to continue.');
       }
 
       function reset() {
-        pause();
-        remaining = totalDuration;
-        display.textContent = formatTime(remaining);
-        avatars.forEach(av => av.style.left = '0px');
+        isRunning = false;
+        raceFinished = false;
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+        lastTimestamp = null;
+        remainingSeconds = totalDuration;
+        display.textContent = formatTime(remainingSeconds);
+
+        resetPhysicsSeeds();
+        renderPositions();
+
+        btnStart.classList.remove('is-running');
         btnStart.innerHTML = `<span>Start Race</span>`;
+        podiumCard.style.display = 'none';
+        setCommentary('🏁 Ready to race! Click Start Race to begin.');
       }
 
-      function finish() {
-        pause();
-        const names = ['Turtle 🐢', 'Bunny 🐇', 'Cheetah 🐆', 'Rocket 🚀'];
-        const winner = names[Math.floor(Math.random() * names.length)];
+      function finishRace() {
+        isRunning = false;
+        raceFinished = true;
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+        display.textContent = formatTime(0);
+        renderPositions();
+
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = `<span>Start Race</span>`;
+
+        // Rank by actual physical finish position descending
+        const ranking = racerStates
+          .map((st, i) => ({ index: i, racer: racers[i], pos: st.pos }))
+          .sort((a, b) => b.pos - a.pos);
+
+        const winner = ranking[0].racer;
+        setCommentary(`🏆 ${winner.icon} ${winner.name} WINS THE RACE!`);
+
         if (window.SoundFX) window.SoundFX.playFanfare();
-        if (window.Confetti) window.Confetti.fire({ count: 160 });
-        if (window.ClassPanel) window.ClassPanel.showToast(`🏆 ${winner} crossed the finish line!`);
+        if (window.Confetti) window.Confetti.fire({ count: 180 });
+        if (window.ClassPanel) window.ClassPanel.showToast(`🏆 ${winner.icon} ${winner.name} crossed the finish line!`);
+
+        // Render podium card
+        podiumWinnerTitle.textContent = `🏆 ${winner.icon} ${winner.name} Wins!`;
+        const medals = ['🥇 1st Place (Winner)', '🥈 2nd Place', '🥉 3rd Place', '🎖️ 4th Place'];
+        podiumGrid.innerHTML = ranking.map((r, rank) => `
+          <div class="podium-rank-item ${rank === 0 ? 'winner' : ''}">
+            <div style="font-size: 2.2rem;">${r.racer.icon}</div>
+            <strong style="font-size: 1rem; color: var(--text-primary);">${r.racer.name}</strong>
+            <span class="preset-chip active" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; ${rank === 0 ? 'background: #F59E0B; color: #000; font-weight: 800;' : ''}">${medals[rank]}</span>
+          </div>
+        `).join('');
+
+        podiumCard.style.display = 'block';
       }
 
       btnStart.addEventListener('click', () => {
@@ -282,7 +697,15 @@
       });
 
       btnReset.addEventListener('click', reset);
+      if (btnPodiumClose) btnPodiumClose.addEventListener('click', reset);
 
+      if (selectTheme) {
+        selectTheme.addEventListener('change', (e) => {
+          updateTheme(e.target.value);
+        });
+      }
+
+      // Presets
       const raceChips = document.querySelectorAll('#race-presets-group .preset-chip');
       const btnCustomRace = document.getElementById('btn-custom-race');
 
@@ -305,6 +728,47 @@
         }
       }
 
+      function parseAndSetDuration(input) {
+        if (!input) return;
+        let secs = 0;
+        const str = String(input).trim();
+        if (str.includes(':')) {
+          const parts = str.split(':').map(p => parseInt(p.trim(), 10) || 0);
+          if (parts.length === 2) {
+            secs = parts[0] * 60 + parts[1];
+          }
+        } else {
+          secs = parseInt(str, 10);
+        }
+
+        if (!isNaN(secs) && secs >= 5 && secs <= 3600) {
+          totalDuration = secs;
+          setActiveRacePreset(totalDuration, true);
+          reset();
+          if (window.ClassPanel) window.ClassPanel.showToast(`Race duration set to ${formatTime(secs)}!`);
+        } else {
+          if (window.ClassPanel) window.ClassPanel.showToast('Please enter a valid duration between 5s and 60m.');
+        }
+      }
+
+      async function openCustomDurationModal() {
+        if (window.ClassPanel && window.ClassPanel.prompt) {
+          const res = await window.ClassPanel.prompt({
+            title: 'Set Custom Race Time',
+            label: 'Enter duration in seconds (e.g. 45, 90) or MM:SS (e.g. 01:30):',
+            defaultValue: String(totalDuration),
+            placeholder: 'e.g. 45 or 01:30',
+            confirmText: 'Set Race Time'
+          });
+          if (res !== null && res !== undefined) {
+            parseAndSetDuration(res);
+          }
+        } else {
+          const val = prompt('Enter race duration in seconds (e.g. 45, 90, 120):', totalDuration);
+          if (val) parseAndSetDuration(val);
+        }
+      }
+
       document.querySelectorAll('#race-presets-group [data-time]').forEach(chip => {
         chip.addEventListener('click', () => {
           totalDuration = parseInt(chip.getAttribute('data-time'), 10);
@@ -314,20 +778,25 @@
       });
 
       if (btnCustomRace) {
-        btnCustomRace.addEventListener('click', () => {
-          const userSecs = prompt('Enter race duration in seconds (e.g. 45, 90, 120, 180):', totalDuration);
-          if (userSecs !== null) {
-            const parsed = parseInt(userSecs, 10);
-            if (!isNaN(parsed) && parsed > 5 && parsed <= 3600) {
-              totalDuration = parsed;
-              setActiveRacePreset(totalDuration, true);
-              reset();
-              if (window.ClassPanel) window.ClassPanel.showToast(`Race timer set to ${parsed} seconds!`);
-            }
-          }
-        });
+        btnCustomRace.addEventListener('click', openCustomDurationModal);
       }
 
+      display.addEventListener('click', openCustomDurationModal);
+
+      // Keyboard shortcuts
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.isContentEditable) return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          btnStart.click();
+        } else if (e.code === 'KeyR') {
+          btnReset.click();
+        }
+      });
+
+      window.addEventListener('resize', renderPositions);
+
+      initRacerLabels();
       reset();
       setActiveRacePreset(60, false);
     })();

@@ -48,7 +48,7 @@
     .student-pill {
       background: var(--bg-surface-subtle);
       border: 1px solid var(--border-color);
-      padding: 0.45rem 0.85rem;
+      padding: 0.5rem 0.85rem;
       border-radius: var(--radius-md);
       font-size: 0.95rem;
       font-weight: 600;
@@ -56,6 +56,68 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      position: relative;
+    }
+    .student-pill:hover {
+      border-color: var(--primary);
+      background: var(--bg-surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .student-pill.is-editing {
+      padding: 0.2rem;
+      background: var(--bg-surface);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+    }
+    .student-name-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 0.5rem;
+    }
+    .student-pill-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      opacity: 0.4;
+      transition: opacity 0.15s;
+    }
+    .student-pill:hover .student-pill-actions {
+      opacity: 1;
+    }
+    .student-btn-action {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 0.2rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s, background 0.15s;
+    }
+    .student-btn-action:hover {
+      color: var(--text-primary);
+    }
+    .student-btn-remove:hover {
+      color: var(--accent-rose);
+      background: rgba(239, 68, 68, 0.12);
+    }
+    .student-inline-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      background: transparent;
+      color: var(--text-primary);
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-sm);
     }
   </style>
 </head>
@@ -106,7 +168,10 @@
           <p class="tool-title-subtitle" id="group-subtitle">Split roster into balanced teams, lab pairs, and project tables</p>
         </div>
 
-        <div class="tool-control-bar">
+        <div class="tool-control-bar" style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+          <button id="active-class-badge" class="preset-chip" style="cursor: pointer; background: var(--bg-surface); border: 1px solid var(--border-color); font-weight: 700;" title="Click to view or switch active class roster">
+            <span id="active-class-badge-text">📚 Class: Sample Class (16)</span>
+          </button>
           <button id="btn-edit-roster" class="btn-primary" style="padding: 0.55rem 1.25rem; border-radius: var(--radius-full); font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: var(--shadow-sm);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -132,12 +197,37 @@
         </div>
       </div>
 
-      <!-- Generator Settings Bar -->
-      <div id="group-controls-bar" style="background: var(--bg-surface-subtle); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <!-- Generator Settings Bar (Beginner Friendly) -->
+      <div id="group-controls-bar" style="background: var(--bg-surface-subtle); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.85rem;">
+        
+        <!-- Primary Controls Row -->
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;" id="quick-presets-container">
+            <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-primary); margin-right: 0.25rem;">Quick Setup:</span>
+            <button class="preset-chip" data-quick="pairs">👥 Pairs (2/grp)</button>
+            <button class="preset-chip" data-quick="2">2 Groups</button>
+            <button class="preset-chip" data-quick="3">3 Groups</button>
+            <button class="preset-chip active" data-quick="4">4 Groups</button>
+            <button class="preset-chip" data-quick="5">5 Groups</button>
+            <button class="preset-chip" data-quick="6">6 Groups</button>
+            <button class="preset-chip" id="btn-toggle-advanced" style="color: var(--text-muted); font-size: 0.8rem;">⚙️ Custom Split</button>
+          </div>
+
+          <div style="display: flex; gap: 0.6rem; align-items: center;">
+            <button id="btn-shuffle" class="btn-giant btn-giant-primary" style="height: 3.25rem; font-size: 1.1rem; padding: 0 1.5rem;">
+              <span>🔀 Shuffle Teams</span>
+            </button>
+            <button id="btn-copy" class="action-btn" style="height: 3.25rem;" title="Copy to Clipboard">
+              <span>📋 Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Custom / Advanced Controls (Collapsible) -->
+        <div id="advanced-settings-row" style="display: none; padding-top: 0.85rem; border-top: 1px dashed var(--border-color); align-items: center; gap: 1.25rem; flex-wrap: wrap;">
           <div>
             <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem;">Split Strategy:</label>
-            <select id="select-strategy" class="select-input" style="padding: 0.5rem 0.8rem; font-weight: 600;">
+            <select id="select-strategy" class="select-input" style="padding: 0.45rem 0.8rem; font-weight: 600;">
               <option value="by-groups">By Number of Groups</option>
               <option value="by-size">By Students Per Group</option>
             </select>
@@ -145,18 +235,16 @@
 
           <div>
             <label id="label-count" style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem;">Number of Groups:</label>
-            <input type="number" id="input-count" class="input-text" value="4" min="2" max="20" style="width: 100px; padding: 0.5rem 0.8rem; font-weight: 700;">
+            <input type="number" id="input-count" class="input-text" value="4" min="2" max="30" style="width: 100px; padding: 0.45rem 0.8rem; font-weight: 700;">
           </div>
         </div>
 
-        <div style="display: flex; gap: 0.6rem; align-items: center;">
-          <button id="btn-shuffle" class="btn-giant btn-giant-primary" style="height: 3.25rem; font-size: 1.1rem; padding: 0 1.5rem;">
-            <span>🔀 Shuffle Teams</span>
-          </button>
-          <button id="btn-copy" class="action-btn" style="height: 3.25rem;" title="Copy to Clipboard">
-            <span>📋 Copy</span>
-          </button>
-        </div>
+      </div>
+
+      <!-- Friendly Tip & Count Bar -->
+      <div id="group-tip-bar" style="display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.85rem; background: var(--bg-surface); padding: 0.6rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.5rem;">
+        <span>💡 <strong>Teacher Tip:</strong> Click directly on any student name to edit it or fix a typo. Click "Shuffle Teams" to remix!</span>
+        <span id="group-roster-count-summary" style="font-weight: 700; color: var(--text-primary);">16 students total</span>
       </div>
 
       <!-- Generated Groups Container -->
@@ -288,6 +376,12 @@
       const controlsBar = document.getElementById('group-controls-bar');
       const btnEmptyAdd = document.getElementById('btn-empty-add-names');
       const btnEmptySample = document.getElementById('btn-empty-load-sample');
+      const activeClassBadge = document.getElementById('active-class-badge');
+      const activeClassBadgeText = document.getElementById('active-class-badge-text');
+      const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
+      const advancedSettingsRow = document.getElementById('advanced-settings-row');
+      const rosterCountSummary = document.getElementById('group-roster-count-summary');
+      const quickPresetButtons = document.querySelectorAll('#quick-presets-container [data-quick]');
 
       // Modal elements
       const modal = document.getElementById('roster-modal');
@@ -301,19 +395,23 @@
       const rosterError = document.getElementById('roster-form-error');
 
       function init() {
-        currentRosterName = window.StorageHub.getActiveRosterName() || '';
-        currentRoster = window.StorageHub.getActiveRosterList();
+        currentRosterName = window.StorageHub ? window.StorageHub.getActiveRosterName() || '' : '';
+        currentRoster = window.StorageHub ? window.StorageHub.getActiveRosterList() : [];
         
         if (currentRoster.length === 0) {
           emptyCard.style.display = 'block';
           controlsBar.style.display = 'none';
           container.style.display = 'none';
           subtitle.textContent = 'No Class List Added Yet';
+          if (activeClassBadgeText) activeClassBadgeText.textContent = '📚 (No active class)';
+          if (rosterCountSummary) rosterCountSummary.textContent = '0 students';
         } else {
           emptyCard.style.display = 'none';
           controlsBar.style.display = 'flex';
           container.style.display = 'grid';
-          subtitle.textContent = `Active Class: ${currentRosterName} (${currentRoster.length} students)`;
+          subtitle.textContent = `Active Class: ${currentRosterName} • ${currentRoster.length} students enrolled`;
+          if (activeClassBadgeText) activeClassBadgeText.textContent = `📚 Class: ${currentRosterName} (${currentRoster.length})`;
+          if (rosterCountSummary) rosterCountSummary.textContent = `${currentRoster.length} students total`;
           generateGroups();
         }
       }
@@ -359,29 +457,146 @@
         container.innerHTML = '';
         const GROUP_COLORS = ['#4F46E5', '#7C3AED', '#EC4899', '#059669', '#0284C7', '#D97706', '#E11D48', '#0D9488'];
 
-        currentGroups.forEach((grp, idx) => {
+        currentGroups.forEach((grp, gIdx) => {
           const card = document.createElement('div');
           card.className = 'group-card';
-          const color = GROUP_COLORS[idx % GROUP_COLORS.length];
+          const color = GROUP_COLORS[gIdx % GROUP_COLORS.length];
           card.style.borderTop = `4px solid ${color}`;
 
           card.innerHTML = `
             <div class="group-card-header">
               <div class="group-title">
                 <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: ${color};"></span>
-                <span>Team ${idx + 1}</span>
+                <span contenteditable="true" class="group-name-editable" title="Click to rename team">Team ${gIdx + 1}</span>
               </div>
-              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">${grp.length} students</span>
+              <span class="group-card-count" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">${grp.length} students</span>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.45rem;">
-              ${grp.map(s => `
-                <div class="student-pill">
-                  <span>${s}</span>
+            <div class="group-students-list" style="display: flex; flex-direction: column; gap: 0.45rem;">
+              ${grp.map((s, sIdx) => `
+                <div class="student-pill" data-group="${gIdx}" data-student="${sIdx}" title="Click to edit name directly">
+                  <span class="student-name-text">${s}</span>
+                  <div class="student-pill-actions">
+                    <button class="student-btn-action" title="Click to edit name" aria-label="Edit name">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="student-btn-action student-btn-remove" data-action="remove-student" data-group="${gIdx}" data-student="${sIdx}" title="Remove student from this group" aria-label="Remove student">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                  </div>
                 </div>
               `).join('')}
             </div>
           `;
           container.appendChild(card);
+        });
+
+        // Update badge and summary
+        const totalCount = currentRoster ? currentRoster.length : 0;
+        if (activeClassBadgeText) {
+          activeClassBadgeText.textContent = `📚 Class: ${currentRosterName || 'Class'} (${totalCount})`;
+        }
+        if (rosterCountSummary) {
+          rosterCountSummary.textContent = `${totalCount} students total`;
+        }
+      }
+
+      // Inline student name editing and removing
+      container.addEventListener('click', (e) => {
+        // 1. Remove student action
+        const btnRemove = e.target.closest('[data-action="remove-student"]');
+        if (btnRemove) {
+          e.stopPropagation();
+          const gIdx = parseInt(btnRemove.getAttribute('data-group'), 10);
+          const sIdx = parseInt(btnRemove.getAttribute('data-student'), 10);
+          if (currentGroups[gIdx] && currentGroups[gIdx][sIdx]) {
+            const removedName = currentGroups[gIdx].splice(sIdx, 1)[0];
+            renderGroups();
+            if (window.ClassPanel) window.ClassPanel.showToast(`Removed "${removedName}" from Team ${gIdx + 1}.`);
+          }
+          return;
+        }
+
+        // 2. Click student pill to edit name inline
+        const pill = e.target.closest('.student-pill');
+        if (!pill || pill.classList.contains('is-editing')) return;
+
+        const gIdx = parseInt(pill.getAttribute('data-group'), 10);
+        const sIdx = parseInt(pill.getAttribute('data-student'), 10);
+        const currentName = currentGroups[gIdx][sIdx];
+
+        pill.classList.add('is-editing');
+        pill.innerHTML = `
+          <input type="text" class="student-inline-input" value="${currentName.replace(/"/g, '&quot;')}" aria-label="Edit student name">
+        `;
+        const input = pill.querySelector('.student-inline-input');
+        input.focus();
+        input.select();
+
+        let isSaved = false;
+        function saveEdit() {
+          if (isSaved) return;
+          isSaved = true;
+          const newName = input.value.trim();
+          if (newName && newName !== currentName) {
+            currentGroups[gIdx][sIdx] = newName;
+
+            // Update in StorageHub active roster list so it persists!
+            if (window.StorageHub) {
+              const activeName = window.StorageHub.getActiveRosterName();
+              const fullRoster = window.StorageHub.getActiveRosterList();
+              const rIdx = fullRoster.indexOf(currentName);
+              if (rIdx !== -1) {
+                fullRoster[rIdx] = newName;
+                window.StorageHub.saveRoster(activeName, fullRoster);
+                currentRoster = fullRoster;
+              }
+            }
+            if (window.ClassPanel) window.ClassPanel.showToast(`Updated student name to "${newName}".`);
+          }
+          renderGroups();
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', (ke) => {
+          if (ke.key === 'Enter') {
+            ke.preventDefault();
+            input.blur();
+          } else if (ke.key === 'Escape') {
+            ke.preventDefault();
+            renderGroups();
+          }
+        });
+      });
+
+      // Quick presets setup
+      quickPresetButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          quickPresetButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const val = btn.getAttribute('data-quick');
+          if (val === 'pairs') {
+            selectStrategy.value = 'by-size';
+            inputCount.value = '2';
+            labelCount.textContent = 'Students Per Group:';
+          } else {
+            selectStrategy.value = 'by-groups';
+            inputCount.value = val;
+            labelCount.textContent = 'Number of Groups:';
+          }
+
+          if (window.SoundFX) window.SoundFX.playClick();
+          generateGroups();
+          if (window.Confetti) window.Confetti.fire({ count: 60 });
+        });
+      });
+
+      // Toggle advanced / custom settings
+      if (btnToggleAdvanced && advancedSettingsRow) {
+        btnToggleAdvanced.addEventListener('click', () => {
+          const isHidden = advancedSettingsRow.style.display === 'none';
+          advancedSettingsRow.style.display = isHidden ? 'flex' : 'none';
+          btnToggleAdvanced.textContent = isHidden ? '▲ Hide Custom' : '⚙️ Custom Split';
         });
       }
 
@@ -393,21 +608,25 @@
           labelCount.textContent = 'Students Per Group:';
           inputCount.value = '4';
         }
+        quickPresetButtons.forEach(b => b.classList.remove('active'));
         generateGroups();
       });
 
-      inputCount.addEventListener('input', generateGroups);
+      inputCount.addEventListener('input', () => {
+        quickPresetButtons.forEach(b => b.classList.remove('active'));
+        generateGroups();
+      });
 
       btnShuffle.addEventListener('click', () => {
         if (window.SoundFX) window.SoundFX.playClick();
         generateGroups();
-        if (window.Confetti) window.Confetti.fire({ count: 60 });
+        if (window.Confetti) window.Confetti.fire({ count: 70 });
       });
 
       btnCopy.addEventListener('click', () => {
         let text = `Class Groups (${currentRosterName}):\n\n`;
         currentGroups.forEach((grp, idx) => {
-          text += `Team ${idx + 1} (${grp.length}):\n${grp.map(s => `• ${s}`).join('\n')}\n\n`;
+          text += `Team ${idx + 1} (${grp.length} students):\n${grp.map(s => `• ${s}`).join('\n')}\n\n`;
         });
         navigator.clipboard.writeText(text).then(() => {
           if (window.ClassPanel) window.ClassPanel.showToast('Copied teams to clipboard!');
@@ -416,7 +635,7 @@
 
       // Populate Roster Modal
       function populateRosterModal() {
-        const rosters = window.StorageHub.getRosters();
+        const rosters = window.StorageHub ? window.StorageHub.getRosters() : {};
         selectRoster.innerHTML = '';
         const names = Object.keys(rosters);
         if (names.length === 0) {
@@ -440,6 +659,13 @@
         populateRosterModal();
         modal.classList.add('is-open');
       });
+
+      if (activeClassBadge) {
+        activeClassBadge.addEventListener('click', () => {
+          populateRosterModal();
+          modal.classList.add('is-open');
+        });
+      }
 
       if (btnEmptyAdd) {
         btnEmptyAdd.addEventListener('click', () => {

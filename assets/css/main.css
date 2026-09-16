@@ -194,15 +194,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 [data-theme="dark"] .site-header {
-  background: rgba(17, 24, 39, 0.88);
+  background: var(--bg-surface);
 }
 
 .header-inner {

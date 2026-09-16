@@ -214,7 +214,7 @@
           <span>Reset</span>
         </button>
 
-        <div style="display: inline-flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center;">
+        <div id="time-adjust-buttons" style="display: inline-flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center;">
           <button id="btn-add-1h" class="preset-chip" title="Add 1 hour">+1 Hr</button>
           <button id="btn-add-5m" class="preset-chip" title="Add 5 minutes">+5 Min</button>
           <button id="btn-add-1m" class="preset-chip" title="Add 1 minute">+1 Min</button>
@@ -348,6 +348,7 @@
       const soundSelect = document.getElementById('select-alarm-sound');
       const presetContainer = document.getElementById('countdown-presets');
       const presetButtons = document.querySelectorAll('#countdown-presets [data-seconds]');
+      const timeAdjustButtons = document.getElementById('time-adjust-buttons');
 
       function formatTime(totalSecs) {
         const h = Math.floor(totalSecs / 3600);
@@ -612,6 +613,7 @@
         timeEditHint.style.display = 'inline-flex';
         display.style.cursor = 'pointer';
         display.title = 'Click to edit time directly';
+        if (timeAdjustButtons) timeAdjustButtons.style.display = 'inline-flex';
         resetTimer();
       });
 
@@ -629,6 +631,7 @@
         timeEditHint.style.display = 'none';
         display.style.cursor = 'default';
         display.title = '';
+        if (timeAdjustButtons) timeAdjustButtons.style.display = 'none';
         resetTimer();
       });
 

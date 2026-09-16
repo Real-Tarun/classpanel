@@ -130,10 +130,13 @@
         </div>
 
         <!-- Exam Remaining Countdown -->
-        <div class="exam-panel">
+        <div class="exam-panel" id="exam-countdown-panel" style="cursor: pointer;" title="Click to set custom exam duration">
           <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;" id="countdown-label">Time Remaining</span>
           <div id="exam-countdown" style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--primary); margin: 0.75rem 0;">01:00:00</div>
-          <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);" id="end-time-estimate">End Time: --:--</div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+            <span id="end-time-estimate">End Time: --:--</span>
+            <span style="font-size: 0.75rem; color: var(--primary); background: var(--bg-surface-subtle); padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-color); font-weight: 700;">✎ Custom</span>
+          </div>
         </div>
       </div>
 
@@ -155,12 +158,56 @@
           <span>Reset</span>
         </button>
 
-        <div class="presets-group" style="margin: 0;">
+        <div class="presets-group" id="exam-presets-group" style="margin: 0;">
           <button class="preset-chip" data-time="1800">30 Min</button>
           <button class="preset-chip" data-time="2700">45 Min</button>
-          <button class="preset-chip" data-time="3600" style="font-weight: 800; border-color: var(--primary);">60 Min</button>
+          <button class="preset-chip active" data-time="3600">60 Min</button>
           <button class="preset-chip" data-time="5400">90 Min</button>
           <button class="preset-chip" data-time="7200">120 Min</button>
+          <button class="preset-chip" id="btn-custom-time" title="Set custom exam duration">⏱️ Custom Time</button>
+        </div>
+      </div>
+
+      <!-- Custom Time Modal Dialog -->
+      <div class="modal-backdrop" id="modal-custom-time" style="display: none;">
+        <div class="modal-card" style="max-width: 440px;">
+          <div class="modal-header">
+            <h3 class="modal-title">⏱️ Set Custom Exam Duration</h3>
+            <button class="modal-close-btn" id="btn-close-custom-modal" aria-label="Close">✕</button>
+          </div>
+          
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem;">Specify the exact exam duration in hours and minutes:</p>
+
+          <div style="display: flex; gap: 1rem; margin-bottom: 1.25rem; justify-content: center; align-items: center;">
+            <div style="flex: 1; text-align: center;">
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem;">Hours</label>
+              <input type="number" id="input-custom-hours" min="0" max="12" value="1" class="input-text" style="font-size: 1.5rem; font-weight: 800; text-align: center; padding: 0.6rem;">
+            </div>
+            <span style="font-size: 1.8rem; font-weight: 900; color: var(--text-muted); margin-top: 1.2rem;">:</span>
+            <div style="flex: 1; text-align: center;">
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem;">Minutes</label>
+              <input type="number" id="input-custom-minutes" min="0" max="59" value="0" class="input-text" style="font-size: 1.5rem; font-weight: 800; text-align: center; padding: 0.6rem;">
+            </div>
+          </div>
+
+          <!-- Quick Duration Shortcuts inside modal -->
+          <div style="margin-bottom: 1.5rem;">
+            <span style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em;">Quick Options:</span>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+              <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="15" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">15m</button>
+              <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="20" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">20m</button>
+              <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="50" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">50m</button>
+              <button type="button" class="preset-chip modal-quick-btn" data-h="1" data-m="15" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">75m (1h 15m)</button>
+              <button type="button" class="preset-chip modal-quick-btn" data-h="1" data-m="30" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">90m (1h 30m)</button>
+              <button type="button" class="preset-chip modal-quick-btn" data-h="1" data-m="40" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">100m</button>
+              <button type="button" class="preset-chip modal-quick-btn" data-h="2" data-m="30" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">150m (2h 30m)</button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <button type="button" id="btn-cancel-custom-modal" class="btn-giant btn-giant-secondary" style="height: 3rem; padding: 0 1.25rem; font-size: 0.95rem;">Cancel</button>
+            <button type="button" id="btn-save-custom-modal" class="btn-giant btn-giant-primary" style="height: 3rem; padding: 0 1.5rem; font-size: 0.95rem;">Apply Duration</button>
+          </div>
         </div>
       </div>
 
@@ -390,14 +437,131 @@
 
       btnReset.addEventListener('click', reset);
 
-      document.querySelectorAll('[data-time]').forEach(chip => {
+      const presetChips = document.querySelectorAll('#exam-presets-group .preset-chip');
+      const btnCustomTime = document.getElementById('btn-custom-time');
+      const customModal = document.getElementById('modal-custom-time');
+      const inputCustomHours = document.getElementById('input-custom-hours');
+      const inputCustomMinutes = document.getElementById('input-custom-minutes');
+      const btnSaveCustomModal = document.getElementById('btn-save-custom-modal');
+      const btnCancelCustomModal = document.getElementById('btn-cancel-custom-modal');
+      const btnCloseCustomModal = document.getElementById('btn-close-custom-modal');
+      const countdownPanel = document.getElementById('exam-countdown-panel');
+
+      function setActivePreset(durationSeconds, isCustom = false) {
+        presetChips.forEach(chip => {
+          chip.classList.remove('active');
+          chip.removeAttribute('style'); // Clear any legacy inline styles
+        });
+
+        if (isCustom) {
+          btnCustomTime.classList.add('active');
+          const h = Math.floor(durationSeconds / 3600);
+          const m = Math.floor((durationSeconds % 3600) / 60);
+          let label = 'Custom';
+          if (h > 0 && m > 0) label = `Custom (${h}h ${m}m)`;
+          else if (h > 0) label = `Custom (${h}h)`;
+          else label = `Custom (${m}m)`;
+          btnCustomTime.textContent = label;
+        } else {
+          btnCustomTime.textContent = '⏱️ Custom Time';
+          const match = Array.from(presetChips).find(c => parseInt(c.getAttribute('data-time'), 10) === durationSeconds);
+          if (match) {
+            match.classList.add('active');
+          }
+        }
+      }
+
+      function openCustomModal() {
+        if (state === 'writing' || state === 'reading') {
+          if (!confirm('Exam is currently in progress. Pause and change duration?')) return;
+          pause();
+        }
+        const h = Math.floor(examDuration / 3600);
+        const m = Math.floor((examDuration % 3600) / 60);
+        inputCustomHours.value = h;
+        inputCustomMinutes.value = m;
+        customModal.style.display = 'flex';
+        customModal.classList.add('is-open');
+        inputCustomMinutes.focus();
+        inputCustomMinutes.select();
+      }
+
+      function closeCustomModal() {
+        customModal.classList.remove('is-open');
+        customModal.style.display = 'none';
+      }
+
+      function applyCustomDuration() {
+        const h = Math.max(0, Math.min(12, parseInt(inputCustomHours.value, 10) || 0));
+        const m = Math.max(0, Math.min(59, parseInt(inputCustomMinutes.value, 10) || 0));
+        const total = h * 3600 + m * 60;
+        if (total <= 0) {
+          if (window.ClassPanel) window.ClassPanel.showToast('Please enter an exam duration greater than 0 minutes.');
+          return;
+        }
+
+        examDuration = total;
+        setActivePreset(total, true);
+        reset();
+        closeCustomModal();
+        if (window.ClassPanel) window.ClassPanel.showToast(`Exam duration set to ${formatTime(total)}!`);
+      }
+
+      btnCustomTime.addEventListener('click', openCustomModal);
+      if (countdownPanel) countdownPanel.addEventListener('click', openCustomModal);
+      btnCancelCustomModal.addEventListener('click', closeCustomModal);
+      btnCloseCustomModal.addEventListener('click', closeCustomModal);
+      btnSaveCustomModal.addEventListener('click', applyCustomDuration);
+
+      // Quick duration buttons in modal
+      document.querySelectorAll('.modal-quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          inputCustomHours.value = btn.getAttribute('data-h');
+          inputCustomMinutes.value = btn.getAttribute('data-m');
+        });
+      });
+
+      // Enter and Escape inside custom modal
+      [inputCustomHours, inputCustomMinutes].forEach(inp => {
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            applyCustomDuration();
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closeCustomModal();
+          }
+        });
+      });
+
+      // Preset click listeners
+      document.querySelectorAll('#exam-presets-group [data-time]').forEach(chip => {
         chip.addEventListener('click', () => {
-          examDuration = parseInt(chip.getAttribute('data-time'), 10);
+          const secs = parseInt(chip.getAttribute('data-time'), 10);
+          examDuration = secs;
+          setActivePreset(secs, false);
           reset();
         });
       });
 
+      // Close modal when clicking backdrop
+      customModal.addEventListener('click', (e) => {
+        if (e.target === customModal) closeCustomModal();
+      });
+
+      // Global keyboard shortcuts: Space to toggle, R to reset
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          btnStart.click();
+        } else if (e.code === 'KeyR') {
+          btnReset.click();
+        }
+      });
+
       reset();
+      setActivePreset(3600, false);
     })();
   </script>
 </body>

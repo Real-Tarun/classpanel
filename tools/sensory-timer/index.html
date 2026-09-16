@@ -144,12 +144,13 @@
           <span>Reset</span>
         </button>
 
-        <div class="presets-group" style="margin: 0;">
+        <div class="presets-group" id="sensory-presets-group" style="margin: 0;">
           <button class="preset-chip" data-time="60">1 Min</button>
           <button class="preset-chip" data-time="120">2 Min</button>
-          <button class="preset-chip" data-time="180" style="font-weight: 800; border-color: var(--primary);">3 Min</button>
+          <button class="preset-chip active" data-time="180">3 Min</button>
           <button class="preset-chip" data-time="300">5 Min</button>
           <button class="preset-chip" data-time="600">10 Min</button>
+          <button class="preset-chip" id="btn-custom-sensory" title="Set custom calm timer duration">⏱️ Custom Time</button>
         </div>
       </div>
 
@@ -376,12 +377,50 @@
 
       btnReset.addEventListener('click', reset);
 
-      document.querySelectorAll('[data-time]').forEach(chip => {
+      const sensoryChips = document.querySelectorAll('#sensory-presets-group .preset-chip');
+      const btnCustomSensory = document.getElementById('btn-custom-sensory');
+
+      function setActiveSensoryPreset(secs, isCustom = false) {
+        sensoryChips.forEach(c => {
+          c.classList.remove('active');
+          c.removeAttribute('style');
+        });
+        if (isCustom) {
+          if (btnCustomSensory) {
+            btnCustomSensory.classList.add('active');
+            const m = Math.floor(secs / 60);
+            const s = secs % 60;
+            btnCustomSensory.textContent = s > 0 ? `Custom (${m}m ${s}s)` : `Custom (${m}m)`;
+          }
+        } else {
+          if (btnCustomSensory) btnCustomSensory.textContent = '⏱️ Custom Time';
+          const match = Array.from(sensoryChips).find(c => parseInt(c.getAttribute('data-time'), 10) === secs);
+          if (match) match.classList.add('active');
+        }
+      }
+
+      document.querySelectorAll('#sensory-presets-group [data-time]').forEach(chip => {
         chip.addEventListener('click', () => {
           totalSeconds = parseInt(chip.getAttribute('data-time'), 10);
+          setActiveSensoryPreset(totalSeconds, false);
           reset();
         });
       });
+
+      if (btnCustomSensory) {
+        btnCustomSensory.addEventListener('click', () => {
+          const userMins = prompt('Enter calm timer duration in minutes (e.g. 4, 7, 15):', Math.round(totalSeconds / 60));
+          if (userMins !== null) {
+            const parsed = parseFloat(userMins);
+            if (!isNaN(parsed) && parsed > 0 && parsed <= 60) {
+              totalSeconds = Math.round(parsed * 60);
+              setActiveSensoryPreset(totalSeconds, true);
+              reset();
+              if (window.ClassPanel) window.ClassPanel.showToast(`Calm timer set to ${parsed} minutes!`);
+            }
+          }
+        });
+      }
 
       btnBreathing.addEventListener('click', () => {
         if (mode === 'breathing') return;

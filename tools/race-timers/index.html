@@ -134,12 +134,13 @@
           <span>Reset</span>
         </button>
 
-        <div class="presets-group" style="margin: 0;">
+        <div class="presets-group" id="race-presets-group" style="margin: 0;">
           <button class="preset-chip" data-time="30">30s Clean-Up</button>
-          <button class="preset-chip" data-time="60" style="font-weight: 800; border-color: var(--primary);">1 Min Sprint</button>
+          <button class="preset-chip active" data-time="60">1 Min Sprint</button>
           <button class="preset-chip" data-time="120">2 Min</button>
           <button class="preset-chip" data-time="180">3 Min</button>
           <button class="preset-chip" data-time="300">5 Min</button>
+          <button class="preset-chip" id="btn-custom-race" title="Set custom race timer duration">⏱️ Custom Time</button>
         </div>
       </div>
 
@@ -282,14 +283,53 @@
 
       btnReset.addEventListener('click', reset);
 
-      document.querySelectorAll('[data-time]').forEach(chip => {
+      const raceChips = document.querySelectorAll('#race-presets-group .preset-chip');
+      const btnCustomRace = document.getElementById('btn-custom-race');
+
+      function setActiveRacePreset(secs, isCustom = false) {
+        raceChips.forEach(c => {
+          c.classList.remove('active');
+          c.removeAttribute('style');
+        });
+        if (isCustom) {
+          if (btnCustomRace) {
+            btnCustomRace.classList.add('active');
+            const m = Math.floor(secs / 60);
+            const s = secs % 60;
+            btnCustomRace.textContent = m > 0 ? (s > 0 ? `Custom (${m}m ${s}s)` : `Custom (${m}m)`) : `Custom (${s}s)`;
+          }
+        } else {
+          if (btnCustomRace) btnCustomRace.textContent = '⏱️ Custom Time';
+          const match = Array.from(raceChips).find(c => parseInt(c.getAttribute('data-time'), 10) === secs);
+          if (match) match.classList.add('active');
+        }
+      }
+
+      document.querySelectorAll('#race-presets-group [data-time]').forEach(chip => {
         chip.addEventListener('click', () => {
           totalDuration = parseInt(chip.getAttribute('data-time'), 10);
+          setActiveRacePreset(totalDuration, false);
           reset();
         });
       });
 
+      if (btnCustomRace) {
+        btnCustomRace.addEventListener('click', () => {
+          const userSecs = prompt('Enter race duration in seconds (e.g. 45, 90, 120, 180):', totalDuration);
+          if (userSecs !== null) {
+            const parsed = parseInt(userSecs, 10);
+            if (!isNaN(parsed) && parsed > 5 && parsed <= 3600) {
+              totalDuration = parsed;
+              setActiveRacePreset(totalDuration, true);
+              reset();
+              if (window.ClassPanel) window.ClassPanel.showToast(`Race timer set to ${parsed} seconds!`);
+            }
+          }
+        });
+      }
+
       reset();
+      setActiveRacePreset(60, false);
     })();
   </script>
 </body>

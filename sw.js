@@ -1,14 +1,17 @@
-const CACHE_NAME = 'classpanel-v4';
+const CACHE_NAME = 'classpanel-v5';
 const STATIC_ASSETS = [
   '/',
   '/favicon.ico',
   '/manifest.webmanifest',
+  '/robots.txt',
+  '/root.txt',
   '/assets/css/main.css',
   '/assets/js/common.js',
   '/assets/js/audio.js',
   '/assets/js/storage.js',
   '/assets/js/confetti.js',
   '/assets/js/fullscreen.js',
+  '/assets/icons/logo.png',
   '/assets/icons/icon.svg',
   '/assets/icons/favicon.png',
   '/assets/icons/icon-192.png',

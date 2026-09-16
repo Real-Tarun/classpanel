@@ -284,12 +284,14 @@
       btnToggleDigital.addEventListener('click', () => {
         showDigital = !showDigital;
         btnToggleDigital.textContent = showDigital ? 'Hide Digital (Quiz Mode)' : 'Show Digital Readout';
+        btnToggleDigital.classList.toggle('active', !showDigital);
         updateClock();
       });
 
       btnToggle24h.addEventListener('click', () => {
         is24Hour = !is24Hour;
         btnToggle24h.textContent = is24Hour ? '12-Hour Format' : '24-Hour Format';
+        btnToggle24h.classList.toggle('active', is24Hour);
         updateClock();
       });
 

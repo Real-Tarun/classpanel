@@ -320,10 +320,24 @@
 
       btnGenerate.addEventListener('click', generate);
 
-      document.querySelectorAll('[data-min]').forEach(btn => {
+      const rangeBtns = document.querySelectorAll('[data-min]');
+      rangeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
+          rangeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
           inputMin.value = btn.getAttribute('data-min');
           inputMax.value = btn.getAttribute('data-max');
+        });
+      });
+      [inputMin, inputMax].forEach(inp => {
+        inp.addEventListener('input', () => {
+          rangeBtns.forEach(b => {
+            if (b.getAttribute('data-min') === inputMin.value && b.getAttribute('data-max') === inputMax.value) {
+              b.classList.add('active');
+            } else {
+              b.classList.remove('active');
+            }
+          });
         });
       });
 

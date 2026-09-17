@@ -22,9 +22,36 @@ class FullscreenManager {
         await this.requestWakeLock();
       }
     });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.ensureWatermark());
+    } else {
+      this.ensureWatermark();
+    }
+  }
+
+  ensureWatermark() {
+    const stages = document.querySelectorAll('.tool-stage');
+    stages.forEach(stage => {
+      if (!stage.querySelector('.projector-watermark')) {
+        const watermark = document.createElement('a');
+        watermark.href = 'https://classpanel.online';
+        watermark.target = '_blank';
+        watermark.rel = 'noopener';
+        watermark.className = 'projector-watermark';
+        watermark.title = 'ClassPanel.online — Free Online Classroom Tools & Timers';
+        watermark.innerHTML = `
+          <img src="/assets/icons/logo.png" alt="ClassPanel" width="15" height="15">
+          <span>classpanel<span class="watermark-highlight">.online</span></span>
+        `;
+        watermark.addEventListener('click', (e) => e.stopPropagation());
+        stage.appendChild(watermark);
+      }
+    });
   }
 
   handleFullscreenChange() {
+    this.ensureWatermark();
     const isNowFs = !!(
       document.fullscreenElement ||
       document.webkitFullscreenElement ||

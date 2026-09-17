@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v18';
+const CACHE_NAME = 'classpanel-v19';
 const STATIC_ASSETS = [
   '/',
   '/tools/',
@@ -8,6 +8,8 @@ const STATIC_ASSETS = [
   '/root.txt',
   '/llms.txt',
   '/assets/images/og-card.png',
+  '/assets/images/mystery-box.png',
+  '/assets/images/box.png',
   '/assets/css/main.css',
   '/assets/js/common.js',
   '/assets/js/audio.js',

@@ -8,7 +8,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/chance-games/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
-  <link rel="stylesheet" href="/assets/css/main.css?v=16">
+  <link rel="stylesheet" href="/assets/css/main.css?v=19">
   <style>
     .chance-tab-bar {
       display: flex;
@@ -122,15 +122,64 @@
     }
 
     /* =========================================
-       2. MYSTERY CHESTS STYLES
+       2. MYSTERY CHESTS (3D LUCKY BOXES) STYLES
        ========================================= */
+    .chests-count-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 0.5rem 0 1.25rem;
+      flex-wrap: wrap;
+    }
+    .count-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .count-stepper-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--bg-surface-subtle);
+      color: var(--text-primary);
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .count-stepper-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: #FFFFFF;
+      transform: scale(1.08);
+    }
+    .count-stepper-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .count-stepper-val {
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 0 0.85rem;
+      min-width: 46px;
+      text-align: center;
+      color: var(--text-primary);
+    }
     .chests-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 1.25rem;
       width: 100%;
-      max-width: 680px;
-      margin: 1.5rem auto;
+      max-width: 820px;
+      margin: 1rem auto 1.5rem;
       perspective: 1000px;
     }
     .chest-card {
@@ -145,59 +194,100 @@
       cursor: pointer;
       position: relative;
       user-select: none;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-      min-height: 160px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+      min-height: 180px;
     }
     .chest-card:hover:not(.opened) {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 16px 30px rgba(99, 102, 241, 0.18);
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 16px 32px rgba(99, 102, 241, 0.22);
       border-color: var(--primary);
     }
-    .chest-icon {
-      font-size: 3.75rem;
-      line-height: 1;
+    .chest-box-wrap {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 0.5rem;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .chest-number {
+    .chest-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,0.18));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .chest-card:hover:not(.opened) .chest-img {
+      animation: boxWiggle 0.75s ease infinite alternate;
+    }
+    @keyframes boxWiggle {
+      0% { transform: rotate(-5deg) scale(1.06); }
+      100% { transform: rotate(5deg) scale(1.06); }
+    }
+    .chest-badge {
+      position: absolute;
+      bottom: -6px;
+      right: -4px;
       font-weight: 800;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      background: var(--bg-surface-subtle);
-      padding: 0.2rem 0.6rem;
+      font-size: 0.75rem;
+      color: #FFFFFF;
+      background: var(--primary);
+      padding: 0.15rem 0.55rem;
       border-radius: var(--radius-full);
+      box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+      border: 2px solid var(--bg-surface);
     }
     .chest-reward {
       display: none;
-      font-size: 1rem;
-      font-weight: 800;
+      width: 100%;
       text-align: center;
+      animation: popBounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .chest-reward-icon {
+      font-size: 2.85rem;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    }
+    .chest-reward-label {
+      font-size: 0.95rem;
+      font-weight: 800;
       color: var(--primary);
-      margin-top: 0.5rem;
-      animation: popBounce 0.4s ease;
+      line-height: 1.25;
+      word-break: break-word;
     }
     .chest-card.opened {
       background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.08));
       border-color: var(--primary);
-      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+      box-shadow: 0 12px 28px rgba(99, 102, 241, 0.25);
     }
-    .chest-card.opened .chest-number {
+    .chest-card.opened .chest-box-wrap {
       display: none;
     }
     .chest-card.opened .chest-reward {
       display: block;
-    }
-    .chest-card.opened .chest-icon {
-      transform: scale(1.15);
     }
     .chest-card.shuffling {
       animation: chestShuffle 0.6s ease;
     }
     @keyframes chestShuffle {
       0% { transform: scale(1); }
-      50% { transform: scale(0.85) rotate(10deg); opacity: 0.5; }
+      50% { transform: scale(0.8) rotate(12deg); opacity: 0.4; }
       100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* Modal List Row Styles */
+    .modal-chest-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      background: var(--bg-surface-subtle);
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
     }
 
     /* =========================================
@@ -434,16 +524,35 @@
            AREA 2: MYSTERY CHESTS (3D LUCKY BOXES)
            ======================================================= -->
       <div id="chests-section" class="chance-area" style="display: none;">
-        <p style="font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">Pick a mystery treasure chest to reveal the secret reward inside!</p>
+        <p style="font-weight: 700; color: var(--text-muted); margin-bottom: 0.35rem;">Pick a mystery box to reveal the secret prize inside!</p>
         
+        <!-- Mystery Box Count & Stepper Toolbar -->
+        <div class="chests-count-bar">
+          <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-muted);">Number of Boxes:</span>
+          <div class="count-stepper">
+            <button id="btn-chest-minus" class="count-stepper-btn" title="Remove a mystery box" aria-label="Decrease box count">−</button>
+            <span id="chest-count-display" class="count-stepper-val">5</span>
+            <button id="btn-chest-plus" class="count-stepper-btn" title="Add a mystery box" aria-label="Increase box count">+</button>
+          </div>
+          <div style="display: inline-flex; gap: 0.35rem; align-items: center; margin-left: 0.35rem; flex-wrap: wrap;">
+            <button class="preset-chip btn-quick-boxes" data-count="3">3</button>
+            <button class="preset-chip btn-quick-boxes active" data-count="5">5</button>
+            <button class="preset-chip btn-quick-boxes" data-count="6">6</button>
+            <button class="preset-chip btn-quick-boxes" data-count="8">8</button>
+            <button class="preset-chip btn-quick-boxes" data-count="10">10</button>
+            <button class="preset-chip btn-quick-boxes" data-count="12">12</button>
+          </div>
+        </div>
+
         <div class="chests-grid" id="chests-grid">
           <!-- Dynamically populated chests -->
         </div>
 
         <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-          <button id="btn-shuffle-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">🔀 Shuffle Chests</button>
+          <button id="btn-shuffle-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">🔀 Shuffle Boxes</button>
           <button id="btn-reset-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">🔄 Seal All</button>
-          <button id="btn-edit-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">✏️ Custom Rewards</button>
+          <button id="btn-open-all-chests-inline" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">👁️ Open All</button>
+          <button id="btn-edit-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem; font-weight: 700; color: var(--primary); border-color: var(--primary);">✏️ Edit Rewards & Boxes</button>
         </div>
       </div>
 
@@ -482,7 +591,7 @@
         <!-- Chests Controls -->
         <div id="chests-actions" style="display: none; gap: 1rem; justify-content: center;">
           <button id="btn-open-all-chests" class="btn-giant btn-giant-secondary">
-            <span>Open All Chests</span>
+            <span>Open All Mystery Boxes</span>
           </button>
         </div>
 
@@ -544,6 +653,90 @@
         </div>
       </div>
     </section>
+
+    <!-- Wheel Edit Modal -->
+    <div class="modal-backdrop" id="wheel-edit-modal" role="dialog" aria-modal="true" aria-labelledby="wheel-modal-title">
+      <div class="modal-card" style="max-width: 520px;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="wheel-modal-title">🎡 Edit Lucky Prize Wheel</h3>
+          <button class="modal-close-btn" id="btn-close-wheel-modal" aria-label="Close modal">✕</button>
+        </div>
+        <div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Enter your wheel segments below (one per line or separated by commas). Minimum 2 items required.
+          </p>
+          <textarea id="wheel-items-input" class="input-text" rows="6" style="width: 100%; font-family: inherit; font-size: 0.95rem; line-height: 1.5; padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); resize: vertical; margin-bottom: 1rem;" placeholder="Item 1&#10;Item 2&#10;Item 3..."></textarea>
+          
+          <div style="margin-bottom: 1.25rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.45rem;">Quick Presets:</span>
+            <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+              <button type="button" class="preset-chip btn-modal-wheel-preset" data-preset="rewards">🎓 Rewards</button>
+              <button type="button" class="preset-chip btn-modal-wheel-preset" data-preset="dares">🎭 Dares</button>
+              <button type="button" class="preset-chip btn-modal-wheel-preset" data-preset="lunch">🍕 Food</button>
+              <button type="button" class="preset-chip btn-modal-wheel-preset" data-preset="numbers">🔢 1 to 8</button>
+              <button type="button" class="preset-chip btn-modal-wheel-preset" data-preset="yesno">⚖️ Yes / No</button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="btn-secondary" id="btn-cancel-wheel-modal" style="padding: 0.6rem 1.25rem;">Cancel</button>
+            <button type="button" class="btn-primary" id="btn-save-wheel-modal" style="padding: 0.6rem 1.4rem;">Save & Update Wheel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mystery Chests Edit Modal -->
+    <div class="modal-backdrop" id="chests-edit-modal" role="dialog" aria-modal="true" aria-labelledby="chests-modal-title">
+      <div class="modal-card" style="max-width: 580px;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="chests-modal-title">🎁 Edit Mystery Boxes & Secret Rewards</h3>
+          <button class="modal-close-btn" id="btn-close-chests-modal" aria-label="Close modal">✕</button>
+        </div>
+        <div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Customize the number of mystery boxes and their hidden surprise rewards.
+          </p>
+
+          <!-- Box Count in Modal -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--bg-surface-subtle); border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.15rem;">
+            <span style="font-weight: 700; font-size: 0.95rem;">Active Mystery Boxes:</span>
+            <div class="count-stepper">
+              <button id="btn-modal-chest-minus" class="count-stepper-btn" aria-label="Decrease boxes">−</button>
+              <span id="modal-chest-count-val" class="count-stepper-val">5</span>
+              <button id="btn-modal-chest-plus" class="count-stepper-btn" aria-label="Increase boxes">+</button>
+            </div>
+          </div>
+
+          <!-- Presets inside Modal -->
+          <div style="margin-bottom: 1rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Quick Templates:</span>
+            <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+              <button type="button" class="preset-chip btn-modal-chest-preset" data-preset="classroom">🎓 Classroom Perks</button>
+              <button type="button" class="preset-chip btn-modal-chest-preset" data-preset="dares">🎭 Fun Dares</button>
+              <button type="button" class="preset-chip btn-modal-chest-preset" data-preset="points">⭐ Points / Star Prize</button>
+              <button type="button" class="preset-chip btn-modal-chest-preset" data-preset="treats">🍬 Treats & Candy</button>
+            </div>
+          </div>
+
+          <!-- List of Boxes Editor -->
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-primary);">Box Rewards List:</span>
+              <button type="button" id="btn-add-chest-item" class="preset-chip" style="font-size: 0.8rem; padding: 0.25rem 0.65rem; color: var(--primary); border-color: var(--primary);">+ Add Box</button>
+            </div>
+            <div id="modal-chests-list" style="max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-right: 0.25rem;">
+              <!-- Dynamically populated rows -->
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
+            <button type="button" class="btn-secondary" id="btn-cancel-chests-modal" style="padding: 0.6rem 1.25rem;">Cancel</button>
+            <button type="button" class="btn-primary" id="btn-save-chests-modal" style="padding: 0.6rem 1.4rem;">Save & Update Boxes</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Site Footer -->
@@ -562,11 +755,11 @@
   </footer>
 
   <!-- Scripts -->
-  <script defer src="/assets/js/audio.js?v=18"></script>
+  <script defer src="/assets/js/audio.js?v=19"></script>
   <script defer src="/assets/js/storage.js"></script>
-  <script defer src="/assets/js/fullscreen.js"></script>
+  <script defer src="/assets/js/fullscreen.js?v=19"></script>
   <script defer src="/assets/js/confetti.js"></script>
-  <script defer src="/assets/js/common.js?v=18"></script>
+  <script defer src="/assets/js/common.js?v=19"></script>
   <script>
     (function () {
       // ----------------------------------------------------
@@ -796,19 +989,66 @@
         });
       });
 
-      // Custom Wheel Items
-      btnEditWheel.addEventListener('click', () => {
-        const input = prompt('Enter wheel options separated by commas:', wheelItems.join(', '));
-        if (input) {
-          const parsed = input.split(',').map(s => s.trim()).filter(Boolean);
-          if (parsed.length >= 2) {
-            wheelItems = parsed;
-            document.querySelectorAll('.btn-wheel-preset').forEach(b => b.classList.remove('active'));
-            drawWheel();
-            winnerBanner.style.display = 'none';
-          } else {
-            alert('Please provide at least 2 options for the wheel.');
+      // ----------------------------------------------------
+      // Lucky Wheel Modal & Edit Logic
+      // ----------------------------------------------------
+      const wheelModal = document.getElementById('wheel-edit-modal');
+      const btnCloseWheelModal = document.getElementById('btn-close-wheel-modal');
+      const btnCancelWheelModal = document.getElementById('btn-cancel-wheel-modal');
+      const btnSaveWheelModal = document.getElementById('btn-save-wheel-modal');
+      const wheelItemsInput = document.getElementById('wheel-items-input');
+
+      function openWheelModal() {
+        wheelItemsInput.value = wheelItems.join('\n');
+        wheelModal.classList.add('is-open');
+        setTimeout(() => wheelItemsInput.focus(), 50);
+      }
+
+      function closeWheelModal() {
+        wheelModal.classList.remove('is-open');
+      }
+
+      btnEditWheel.addEventListener('click', openWheelModal);
+      btnCloseWheelModal.addEventListener('click', closeWheelModal);
+      btnCancelWheelModal.addEventListener('click', closeWheelModal);
+      wheelModal.addEventListener('click', (e) => {
+        if (e.target === wheelModal) closeWheelModal();
+      });
+
+      // Modal preset helper buttons
+      document.querySelectorAll('.btn-modal-wheel-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = btn.dataset.preset;
+          if (preset === 'yesno') {
+            wheelItemsInput.value = 'YES\nNO\nYES\nNO';
+          } else if (preset === 'numbers') {
+            wheelItemsInput.value = '1\n2\n3\n4\n5\n6\n7\n8';
+          } else if (WHEEL_PRESETS[preset]) {
+            wheelItemsInput.value = WHEEL_PRESETS[preset].join('\n');
           }
+        });
+      });
+
+      btnSaveWheelModal.addEventListener('click', () => {
+        const raw = wheelItemsInput.value;
+        const parsed = raw.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+        if (parsed.length < 2) {
+          if (window.ClassPanel && window.ClassPanel.showToast) {
+            window.ClassPanel.showToast('Please enter at least 2 wheel items.', 'error');
+          } else {
+            alert('Please enter at least 2 wheel items.');
+          }
+          return;
+        }
+
+        wheelItems = parsed;
+        document.querySelectorAll('.btn-wheel-preset').forEach(b => b.classList.remove('active'));
+        drawWheel();
+        winnerBanner.style.display = 'none';
+        closeWheelModal();
+
+        if (window.ClassPanel && window.ClassPanel.showToast) {
+          window.ClassPanel.showToast(`Lucky Wheel updated with ${parsed.length} options!`, 'success');
         }
       });
 
@@ -821,28 +1061,137 @@
       const btnShuffleChests = document.getElementById('btn-shuffle-chests');
       const btnResetChests = document.getElementById('btn-reset-chests');
       const btnOpenAll = document.getElementById('btn-open-all-chests');
+      const btnOpenAllInline = document.getElementById('btn-open-all-chests-inline');
       const btnEditChests = document.getElementById('btn-edit-chests');
 
-      let chestRewards = [
-        { icon: '⭐', label: 'Grand Prize: Homework Pass' },
-        { icon: '🍬', label: 'Sweet Treat / Sticker' },
-        { icon: '👑', label: 'Class VIP / First Choice' },
-        { icon: '🎵', label: 'Pick Today\'s Playlist' },
-        { icon: '🌱', label: 'High Five & Extra Credit' }
-      ];
+      // Stepper & Quick Count buttons
+      const btnChestMinus = document.getElementById('btn-chest-minus');
+      const btnChestPlus = document.getElementById('btn-chest-plus');
+      const chestCountDisplay = document.getElementById('chest-count-display');
+      const quickBoxesBtns = document.querySelectorAll('.btn-quick-boxes');
+
+      // Modal elements
+      const chestsModal = document.getElementById('chests-edit-modal');
+      const btnCloseChestsModal = document.getElementById('btn-close-chests-modal');
+      const btnCancelChestsModal = document.getElementById('btn-cancel-chests-modal');
+      const btnSaveChestsModal = document.getElementById('btn-save-chests-modal');
+      const btnModalChestMinus = document.getElementById('btn-modal-chest-minus');
+      const btnModalChestPlus = document.getElementById('btn-modal-chest-plus');
+      const modalChestCountVal = document.getElementById('modal-chest-count-val');
+      const modalChestsList = document.getElementById('modal-chests-list');
+      const btnAddChestItem = document.getElementById('btn-add-chest-item');
+
+      const CHEST_TEMPLATES = {
+        classroom: [
+          { icon: '⭐', label: 'Grand Prize: Homework Pass' },
+          { icon: '👑', label: 'VIP Teacher Assistant' },
+          { icon: '🍬', label: 'Sweet Treat or Sticker' },
+          { icon: '🎵', label: 'Pick Today\'s Playlist' },
+          { icon: '🌱', label: 'Sit With A Friend' },
+          { icon: '🏆', label: 'First In Line Privilege' },
+          { icon: '🎮', label: 'Extra 5m Free Time' },
+          { icon: '🎒', label: 'No Shoes Day' },
+          { icon: '🌟', label: 'Bonus Credit Point' },
+          { icon: '🎈', label: 'Class DJ for 1 Song' },
+          { icon: '🍀', label: 'Free Pass on 1 Question' },
+          { icon: '🎁', label: 'Mystery Desk Surprise' }
+        ],
+        dares: [
+          { icon: '🎭', label: 'Talk In Robot Voice' },
+          { icon: '🎤', label: 'Sing First Line of A Song' },
+          { icon: '🤸', label: 'Do 10 High Knees' },
+          { icon: '😂', label: 'Tell Your Funniest Joke' },
+          { icon: '🧊', label: 'Statue Freeze for 20s' },
+          { icon: '🦆', label: 'Do The Duck Walk' },
+          { icon: '💬', label: 'Compliment 3 Classmates' },
+          { icon: '🎩', label: 'Moonwalk Across Room' },
+          { icon: '🐱', label: 'Meow Like A Cat' },
+          { icon: '🦖', label: 'T-Rex Roar Demonstration' },
+          { icon: '🕺', label: 'Show Best Dance Move' },
+          { icon: '🤫', label: 'Whisper Only For 3 Mins' }
+        ],
+        points: [
+          { icon: '⭐', label: '⭐ MEGA 100 POINTS' },
+          { icon: '✨', label: '+50 Team Points' },
+          { icon: '💎', label: '+30 Team Points' },
+          { icon: '🌟', label: '+20 Team Points' },
+          { icon: '🪙', label: '+10 Team Points' },
+          { icon: '🔥', label: '+5 Team Points' },
+          { icon: '⚡', label: 'Double Next Round' },
+          { icon: '💥', label: 'Swap Team Points' },
+          { icon: '🎯', label: 'Precision +15 Points' },
+          { icon: '🛡️', label: 'Point Protection Shield' },
+          { icon: '🎲', label: 'Roll 1d20 For Points' },
+          { icon: '💣', label: 'Zero Points (Oops!)' }
+        ],
+        treats: [
+          { icon: '🍬', label: 'Lollipop / Candy' },
+          { icon: '🍫', label: 'Chocolate Bar' },
+          { icon: '🍪', label: 'Fresh Cookie' },
+          { icon: '🍩', label: 'Glazed Donut' },
+          { icon: '🧁', label: 'Mini Cupcake' },
+          { icon: '🍿', label: 'Popcorn Snack' },
+          { icon: '🍦', label: 'Ice Cream Treat' },
+          { icon: '🍎', label: 'Crisp Red Apple' },
+          { icon: '🥨', label: 'Pretzel Bag' },
+          { icon: '🧃', label: 'Fruit Juice Box' },
+          { icon: '🍓', label: 'Fresh Berry Cup' },
+          { icon: '🍭', label: 'Rainbow Swirl Candy' }
+        ]
+      };
+
+      const POOL_ICONS = ['⭐', '🎁', '👑', '🎉', '🌟', '💎', '🔥', '🏆', '🍬', '🎯', '🍀', '✨'];
+
+      let chestRewards = [...CHEST_TEMPLATES.classroom];
+      let activeBoxCount = 5;
+
+      function updateBoxCountUI() {
+        if (chestCountDisplay) chestCountDisplay.textContent = activeBoxCount;
+        if (modalChestCountVal) modalChestCountVal.textContent = activeBoxCount;
+
+        if (btnChestMinus) btnChestMinus.disabled = (activeBoxCount <= 2);
+        if (btnChestPlus) btnChestPlus.disabled = (activeBoxCount >= 12);
+        if (btnModalChestMinus) btnModalChestMinus.disabled = (activeBoxCount <= 2);
+        if (btnModalChestPlus) btnModalChestPlus.disabled = (activeBoxCount >= 12);
+
+        quickBoxesBtns.forEach(btn => {
+          btn.classList.toggle('active', parseInt(btn.dataset.count, 10) === activeBoxCount);
+        });
+      }
+
+      function setBoxCount(newCount) {
+        newCount = Math.max(2, Math.min(12, newCount));
+        activeBoxCount = newCount;
+        
+        // If chestRewards has fewer items than activeBoxCount, expand it
+        while (chestRewards.length < activeBoxCount) {
+          const idx = chestRewards.length;
+          chestRewards.push({
+            icon: POOL_ICONS[idx % POOL_ICONS.length],
+            label: `Surprise Perk #${idx + 1}`
+          });
+        }
+
+        updateBoxCountUI();
+        renderChests();
+      }
 
       function renderChests() {
         chestsGrid.innerHTML = '';
-        chestRewards.forEach((item, index) => {
+        const currentItems = chestRewards.slice(0, activeBoxCount);
+
+        currentItems.forEach((item, index) => {
           const card = document.createElement('div');
           card.className = 'chest-card';
           card.dataset.index = index;
           card.innerHTML = `
-            <div class="chest-icon">🎁</div>
-            <div class="chest-number">Chest #${index + 1}</div>
+            <div class="chest-box-wrap">
+              <img src="/assets/images/mystery-box.png" alt="Mystery Box" class="chest-img">
+              <span class="chest-badge">#${index + 1}</span>
+            </div>
             <div class="chest-reward">
-              <div style="font-size: 2.2rem; margin-bottom: 0.25rem;">${item.icon}</div>
-              <div>${item.label}</div>
+              <div class="chest-reward-icon">${item.icon}</div>
+              <div class="chest-reward-label">${item.label}</div>
             </div>
           `;
 
@@ -853,11 +1202,13 @@
 
           chestsGrid.appendChild(card);
         });
+
+        updateBoxCountUI();
       }
 
       function openChest(card, item) {
+        if (!card || card.classList.contains('opened')) return;
         card.classList.add('opened');
-        card.querySelector('.chest-icon').textContent = '✨';
 
         if (window.SoundFX && window.SoundFX.playFanfare) {
           window.SoundFX.playFanfare();
@@ -879,10 +1230,15 @@
         }
 
         setTimeout(() => {
-          // Shuffle rewards array
-          for (let i = chestRewards.length - 1; i > 0; i--) {
+          // Shuffle the active slice
+          const slice = chestRewards.slice(0, activeBoxCount);
+          for (let i = slice.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [chestRewards[i], chestRewards[j]] = [chestRewards[j], chestRewards[i]];
+            [slice[i], slice[j]] = [slice[j], slice[i]];
+          }
+          // Put shuffled slice back
+          for (let i = 0; i < activeBoxCount; i++) {
+            chestRewards[i] = slice[i];
           }
           renderChests();
         }, 500);
@@ -893,26 +1249,167 @@
         renderChests();
         if (window.SoundFX) window.SoundFX.playClick();
       });
-      btnOpenAll.addEventListener('click', () => {
+
+      const openAllAction = () => {
         document.querySelectorAll('.chest-card').forEach((card, idx) => {
           if (!card.classList.contains('opened')) {
-            setTimeout(() => openChest(card, chestRewards[idx]), idx * 150);
+            setTimeout(() => openChest(card, chestRewards[idx]), idx * 140);
+          }
+        });
+      };
+      btnOpenAll.addEventListener('click', openAllAction);
+      if (btnOpenAllInline) btnOpenAllInline.addEventListener('click', openAllAction);
+
+      // Box count stepper buttons
+      btnChestMinus.addEventListener('click', () => setBoxCount(activeBoxCount - 1));
+      btnChestPlus.addEventListener('click', () => setBoxCount(activeBoxCount + 1));
+      quickBoxesBtns.forEach(btn => {
+        btn.addEventListener('click', () => setBoxCount(parseInt(btn.dataset.count, 10)));
+      });
+
+      // --- Mystery Chests Edit Modal Logic ---
+      function populateModalChestsList(items) {
+        modalChestsList.innerHTML = '';
+        items.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.className = 'modal-chest-row';
+          row.innerHTML = `
+            <span style="font-weight: 800; font-size: 0.85rem; color: var(--text-muted); width: 28px;">#${idx + 1}</span>
+            <input type="text" class="input-text chest-row-icon" value="${item.icon}" style="width: 48px; text-align: center; font-size: 1.25rem; padding: 0.4rem;" maxlength="3" title="Emoji Icon">
+            <input type="text" class="input-text chest-row-label" value="${item.label}" style="flex: 1; padding: 0.4rem 0.75rem;" placeholder="Reward name...">
+            <button type="button" class="modal-close-btn btn-delete-chest-row" style="width: 32px; height: 32px; font-size: 0.85rem;" title="Delete this box">✕</button>
+          `;
+
+          row.querySelector('.btn-delete-chest-row').addEventListener('click', () => {
+            const rows = modalChestsList.querySelectorAll('.modal-chest-row');
+            if (rows.length <= 2) {
+              if (window.ClassPanel && window.ClassPanel.showToast) {
+                window.ClassPanel.showToast('Minimum 2 mystery boxes required.', 'error');
+              }
+              return;
+            }
+            row.remove();
+            refreshModalRowIndexes();
+          });
+
+          modalChestsList.appendChild(row);
+        });
+        refreshModalRowIndexes();
+      }
+
+      function refreshModalRowIndexes() {
+        const rows = modalChestsList.querySelectorAll('.modal-chest-row');
+        rows.forEach((r, i) => {
+          const badge = r.querySelector('span');
+          if (badge) badge.textContent = `#${i + 1}`;
+        });
+        modalChestCountVal.textContent = rows.length;
+        if (btnModalChestMinus) btnModalChestMinus.disabled = (rows.length <= 2);
+        if (btnModalChestPlus) btnModalChestPlus.disabled = (rows.length >= 12);
+      }
+
+      function openChestsModal() {
+        populateModalChestsList(chestRewards.slice(0, activeBoxCount));
+        modalChestCountVal.textContent = activeBoxCount;
+        chestsModal.classList.add('is-open');
+      }
+
+      function closeChestsModal() {
+        chestsModal.classList.remove('is-open');
+      }
+
+      btnEditChests.addEventListener('click', openChestsModal);
+      btnCloseChestsModal.addEventListener('click', closeChestsModal);
+      btnCancelChestsModal.addEventListener('click', closeChestsModal);
+      chestsModal.addEventListener('click', (e) => {
+        if (e.target === chestsModal) closeChestsModal();
+      });
+
+      btnAddChestItem.addEventListener('click', () => {
+        const rows = modalChestsList.querySelectorAll('.modal-chest-row');
+        if (rows.length >= 12) {
+          if (window.ClassPanel && window.ClassPanel.showToast) {
+            window.ClassPanel.showToast('Maximum 12 mystery boxes supported.', 'error');
+          }
+          return;
+        }
+        const newIdx = rows.length;
+        const icon = POOL_ICONS[newIdx % POOL_ICONS.length];
+        const row = document.createElement('div');
+        row.className = 'modal-chest-row';
+        row.innerHTML = `
+          <span style="font-weight: 800; font-size: 0.85rem; color: var(--text-muted); width: 28px;">#${newIdx + 1}</span>
+          <input type="text" class="input-text chest-row-icon" value="${icon}" style="width: 48px; text-align: center; font-size: 1.25rem; padding: 0.4rem;" maxlength="3" title="Emoji Icon">
+          <input type="text" class="input-text chest-row-label" value="Surprise Mystery Perk #${newIdx + 1}" style="flex: 1; padding: 0.4rem 0.75rem;" placeholder="Reward name...">
+          <button type="button" class="modal-close-btn btn-delete-chest-row" style="width: 32px; height: 32px; font-size: 0.85rem;" title="Delete this box">✕</button>
+        `;
+
+        row.querySelector('.btn-delete-chest-row').addEventListener('click', () => {
+          const current = modalChestsList.querySelectorAll('.modal-chest-row');
+          if (current.length <= 2) return;
+          row.remove();
+          refreshModalRowIndexes();
+        });
+
+        modalChestsList.appendChild(row);
+        refreshModalRowIndexes();
+        modalChestsList.scrollTop = modalChestsList.scrollHeight;
+      });
+
+      btnModalChestMinus.addEventListener('click', () => {
+        const rows = modalChestsList.querySelectorAll('.modal-chest-row');
+        if (rows.length > 2) {
+          rows[rows.length - 1].remove();
+          refreshModalRowIndexes();
+        }
+      });
+
+      btnModalChestPlus.addEventListener('click', () => {
+        btnAddChestItem.click();
+      });
+
+      // Modal template chips
+      document.querySelectorAll('.btn-modal-chest-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = btn.dataset.preset;
+          if (CHEST_TEMPLATES[preset]) {
+            const count = Math.max(2, Math.min(12, parseInt(modalChestCountVal.textContent, 10) || 5));
+            populateModalChestsList(CHEST_TEMPLATES[preset].slice(0, count));
           }
         });
       });
 
-      btnEditChests.addEventListener('click', () => {
-        const text = prompt('Enter chest surprises separated by commas:', chestRewards.map(r => r.label).join(', '));
-        if (text) {
-          const items = text.split(',').map(s => s.trim()).filter(Boolean);
-          if (items.length >= 2) {
-            const icons = ['⭐', '🎁', '👑', '🎉', '🌟', '💎', '🔥', '🏆'];
-            chestRewards = items.map((label, idx) => ({
-              icon: icons[idx % icons.length],
-              label: label
-            }));
-            renderChests();
+      btnSaveChestsModal.addEventListener('click', () => {
+        const rows = modalChestsList.querySelectorAll('.modal-chest-row');
+        const updated = [];
+        rows.forEach(r => {
+          const icon = r.querySelector('.chest-row-icon').value.trim() || '🎁';
+          const label = r.querySelector('.chest-row-label').value.trim() || 'Mystery Surprise';
+          updated.push({ icon, label });
+        });
+
+        if (updated.length < 2) {
+          if (window.ClassPanel && window.ClassPanel.showToast) {
+            window.ClassPanel.showToast('Please provide at least 2 mystery boxes.', 'error');
           }
+          return;
+        }
+
+        activeBoxCount = updated.length;
+        chestRewards = updated;
+        renderChests();
+        closeChestsModal();
+
+        if (window.ClassPanel && window.ClassPanel.showToast) {
+          window.ClassPanel.showToast(`Updated with ${updated.length} mystery boxes!`, 'success');
+        }
+      });
+
+      // Global Escape listener for modals
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (wheelModal && wheelModal.classList.contains('is-open')) closeWheelModal();
+          if (chestsModal && chestsModal.classList.contains('is-open')) closeChestsModal();
         }
       });
 

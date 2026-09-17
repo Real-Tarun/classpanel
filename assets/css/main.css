@@ -599,6 +599,73 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   overflow: auto !important;
 }
 
+/* Projector & Fullscreen Mode Branding Watermark */
+.projector-watermark {
+  display: none;
+  position: fixed;
+  bottom: 1.15rem;
+  right: 1.25rem;
+  z-index: 10001;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  pointer-events: auto;
+  opacity: 0.75;
+}
+
+.projector-watermark:hover {
+  opacity: 1;
+  background: rgba(15, 23, 42, 0.9);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+}
+
+.projector-watermark img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  border-radius: 3px;
+  display: block;
+}
+
+.projector-watermark .watermark-highlight {
+  color: #818CF8;
+}
+
+@media (max-width: 600px) {
+  .projector-watermark {
+    bottom: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.55rem;
+  }
+}
+
+/* Show in Fullscreen or Projector Mode */
+.tool-stage.is-fullscreen .projector-watermark,
+:fullscreen .projector-watermark,
+:-webkit-full-screen .projector-watermark,
+:-moz-full-screen .projector-watermark,
+:-ms-fullscreen .projector-watermark {
+  display: inline-flex !important;
+}
+
 .tool-header-bar {
   display: flex;
   align-items: center;

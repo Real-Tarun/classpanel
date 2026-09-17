@@ -403,8 +403,12 @@
               state = 'ended';
               clearInterval(interval);
               banner.className = 'status-banner status-ended';
-              banner.textContent = '🛑 EXAM CONCLUDED • CEASE WRITING IMMEDIATELY';
-              if (window.SoundFX) window.SoundFX.playSchoolBell();
+              banner.textContent = '🛑 EXAM CONCLUDED • CEASE WRITING IMMEDIATELY (Click to Stop Alarm)';
+              if (window.SoundFX && window.SoundFX.playCompletionAlarm) {
+                window.SoundFX.playCompletionAlarm();
+              } else if (window.SoundFX) {
+                window.SoundFX.playSchoolBell();
+              }
               btnStart.innerHTML = `<span>Completed</span>`;
             }
           }
@@ -421,6 +425,9 @@
 
       function reset() {
         pause();
+        if (window.SoundFX && window.SoundFX.stopAlarm) {
+          window.SoundFX.stopAlarm();
+        }
         state = 'idle';
         currentRemaining = examDuration;
         countdownLabel.textContent = 'Time Remaining';
@@ -553,9 +560,21 @@
         if (e.target === customModal) closeCustomModal();
       });
 
+      banner.addEventListener('click', () => {
+        if (state === 'ended' && window.SoundFX && window.SoundFX.stopAlarm) {
+          window.SoundFX.stopAlarm();
+          banner.textContent = '🛑 EXAM CONCLUDED • CEASE WRITING IMMEDIATELY';
+        }
+      });
+
       // Global keyboard shortcuts: Space to toggle, R to reset
       window.addEventListener('keydown', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+        if (state === 'ended') {
+          if (window.SoundFX && window.SoundFX.stopAlarm) window.SoundFX.stopAlarm();
+          banner.textContent = '🛑 EXAM CONCLUDED • CEASE WRITING IMMEDIATELY';
+          return;
+        }
         if (e.code === 'Space') {
           e.preventDefault();
           btnStart.click();

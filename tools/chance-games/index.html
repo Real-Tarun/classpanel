@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chance Games & Probability — Free Dice Roller, Coin Flip & RPS</title>
-  <meta name="description" content="Free online dice roller, coin flip, and rock paper scissors games. Roll virtual dice, flip realistic 3D coins, and simulate probability for tabletop gaming, classrooms, and daily choices.">
+  <title>Chance Games & Mystery Pickers — Lucky Wheel, Mystery Chests & Magic 8-Ball</title>
+  <meta name="description" content="Free online chance games: spin the Lucky Prize Wheel, open 3D Mystery Treasure Chests, and consult the Magic 8-Ball Oracle. Fun probability games for classrooms, parties, and quick decisions.">
   <link rel="canonical" href="https://classpanel.online/tools/chance-games/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -18,66 +18,299 @@
       flex-wrap: wrap;
     }
     .chance-area {
-      min-height: 280px;
+      min-height: 380px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 1.5rem 0;
+      margin: 1rem 0;
+      position: relative;
     }
 
-    /* Dice styling */
-    .dice-rack {
+    /* Standalone Tools Banner */
+    .standalone-nav-bar {
       display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
+      gap: 1rem;
       justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-surface-subtle);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      font-size: 0.9rem;
       align-items: center;
     }
-    .die {
+    .standalone-nav-bar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+    .standalone-nav-bar a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      border-color: var(--primary);
+    }
+
+    /* =========================================
+       1. LUCKY WHEEL STYLES
+       ========================================= */
+    .wheel-container {
+      position: relative;
+      width: 360px;
+      height: 360px;
+      max-width: 90vw;
+      max-height: 90vw;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wheel-canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 15px rgba(0,0,0,0.15);
+      transition: transform 4s cubic-bezier(0.12, 0.8, 0.25, 1);
+    }
+    .wheel-pointer {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 42px;
+      z-index: 10;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      transform-origin: top center;
+    }
+    .wheel-center-cap {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      background: radial-gradient(circle, #FFFFFF 40%, #E2E8F0 100%);
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.8);
+      border: 3px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 5;
+    }
+    .wheel-winner-banner {
+      display: none;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: #FFFFFF;
+      font-size: 1.35rem;
+      font-weight: 800;
+      border-radius: var(--radius-lg);
+      margin-top: 1rem;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+      animation: popBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: center;
+    }
+
+    /* =========================================
+       2. MYSTERY CHESTS STYLES
+       ========================================= */
+    .chests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 680px;
+      margin: 1.5rem auto;
+      perspective: 1000px;
+    }
+    .chest-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      min-height: 160px;
+    }
+    .chest-card:hover:not(.opened) {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 16px 30px rgba(99, 102, 241, 0.18);
+      border-color: var(--primary);
+    }
+    .chest-icon {
+      font-size: 3.75rem;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .chest-number {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      background: var(--bg-surface-subtle);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+    }
+    .chest-reward {
+      display: none;
+      font-size: 1rem;
+      font-weight: 800;
+      text-align: center;
+      color: var(--primary);
+      margin-top: 0.5rem;
+      animation: popBounce 0.4s ease;
+    }
+    .chest-card.opened {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.08));
+      border-color: var(--primary);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+    }
+    .chest-card.opened .chest-number {
+      display: none;
+    }
+    .chest-card.opened .chest-reward {
+      display: block;
+    }
+    .chest-card.opened .chest-icon {
+      transform: scale(1.15);
+    }
+    .chest-card.shuffling {
+      animation: chestShuffle 0.6s ease;
+    }
+    @keyframes chestShuffle {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.85) rotate(10deg); opacity: 0.5; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* =========================================
+       3. MAGIC 8-BALL STYLES
+       ========================================= */
+    .eightball-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .magic-ball {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #475569 0%, #0F172A 50%, #020617 100%);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.45), inset 0 -10px 20px rgba(0,0,0,0.8), inset 0 8px 16px rgba(255,255,255,0.25);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+    }
+    .magic-ball:hover {
+      transform: scale(1.02);
+    }
+    .magic-ball.shaking {
+      animation: shakeBall 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes shakeBall {
+      10%, 90% { transform: translate3d(-3px, 0, 0) rotate(-3deg); }
+      20%, 80% { transform: translate3d(5px, 0, 0) rotate(4deg); }
+      30%, 50%, 70% { transform: translate3d(-7px, 0, 0) rotate(-5deg); }
+      40%, 60% { transform: translate3d(7px, 0, 0) rotate(5deg); }
+    }
+    .ball-window {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #1E1B4B 0%, #0B0F19 80%, #020617 100%);
+      border: 6px solid #1E293B;
+      box-shadow: inset 0 8px 18px rgba(0,0,0,0.9), 0 2px 6px rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ball-triangle {
+      width: 90px;
+      height: 80px;
+      background: radial-gradient(circle, #2563EB, #1D4ED8);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 20px;
+      box-sizing: border-box;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .ball-oracle-text {
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-align: center;
+      text-transform: uppercase;
+      line-height: 1.15;
+      padding: 0 6px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+    .ball-idle-8 {
+      position: absolute;
       width: 90px;
       height: 90px;
+      border-radius: 50%;
       background: #FFFFFF;
-      border-radius: 18px;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.8);
-      border: 3px solid #CBD5E1;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      padding: 10px;
-      position: relative;
-      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .die-pip {
-      width: 14px;
-      height: 14px;
-      background: #0F172A;
-      border-radius: 50%;
-      margin: auto;
-    }
-
-    /* Coin styling */
-    .coin-wrapper {
-      perspective: 800px;
-      margin-bottom: 1.5rem;
-    }
-    .coin {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #F59E0B, #D97706);
-      box-shadow: 0 15px 30px rgba(217, 119, 6, 0.35), inset 0 3px 6px rgba(255,255,255,0.5);
-      border: 6px solid #B45309;
+      color: #0F172A;
+      font-size: 3.25rem;
+      font-weight: 900;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 1.75rem;
-      font-weight: 900;
-      color: #FFFFFF;
-      user-select: none;
-      transition: transform 0.9s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-      transform-style: preserve-3d;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: opacity 0.3s ease;
+    }
+    .eightball-question-input {
+      width: 100%;
+      max-width: 440px;
+      margin: 1.5rem 0 1rem;
+      padding: 0.85rem 1.25rem;
+      font-size: 1rem;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      text-align: center;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+    .eightball-question-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+    }
+
+    @keyframes popBounce {
+      0% { transform: scale(0.6); opacity: 0; }
+      70% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
@@ -124,82 +357,120 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1><img src="/assets/icons/chance-games.png" alt="Dice & Chance Games Icon" class="tool-title-icon"> Dice & Chance Games</h1>
-          <p class="tool-title-subtitle">Virtual 3D dice rolls, coin flips, and RPS for tabletop gaming, math & quick decisions</p>
+          <h1><img src="/assets/icons/chance-games.png" alt="Chance Games Icon" class="tool-title-icon"> Chance Games & Mystery Pickers</h1>
+          <p class="tool-title-subtitle">Interactive Lucky Prize Wheel, 3D Mystery Treasure Chests & Cosmic Magic 8-Ball Oracle</p>
         </div>
+      </div>
+
+      <!-- Standalone Tools Callout Bar -->
+      <div class="standalone-nav-bar">
+        <span style="font-weight: 700; color: var(--text-muted);">Looking for standalone simulators?</span>
+        <a href="/tools/dice-roller/">🎲 Dice Roller (d4–d100)</a>
+        <a href="/tools/coin-flip/">🪙 3D Coin Flip</a>
+        <a href="/tools/rock-paper-scissors/">✂️ Rock Paper Scissors</a>
       </div>
 
       <!-- Mode Selector Tabs -->
       <div class="chance-tab-bar">
-        <button id="tab-dice" class="category-pill active">🎲 Dice Roller</button>
-        <button id="tab-coin" class="category-pill">🪙 Coin Flipper</button>
-        <button id="tab-rps" class="category-pill">✂️ Rock Paper Scissors</button>
+        <button id="tab-wheel" class="category-pill active">🎡 Lucky Prize Wheel</button>
+        <button id="tab-chests" class="category-pill">🎁 Mystery Chests</button>
+        <button id="tab-eightball" class="category-pill">🎱 Magic 8-Ball Oracle</button>
       </div>
 
-      <!-- Area 1: Dice Roller -->
-      <div id="dice-section" class="chance-area">
-        <div class="dice-rack" id="dice-rack"></div>
-        <div id="dice-total-display" style="font-size: 1.5rem; font-weight: 800; margin-top: 1.5rem; color: var(--text-primary);">Total: 0</div>
-      </div>
+      <!-- =======================================================
+           AREA 1: LUCKY PRIZE WHEEL
+           ======================================================= -->
+      <div id="wheel-section" class="chance-area">
+        <div class="wheel-container">
+          <!-- Flapper Pointer -->
+          <svg class="wheel-pointer" id="wheel-pointer" viewBox="0 0 32 42">
+            <polygon points="16,42 0,0 32,0" fill="#EF4444" stroke="#B91C1C" stroke-width="3"/>
+            <circle cx="16" cy="8" r="4" fill="#FFFFFF"/>
+          </svg>
 
-      <!-- Area 2: Coin Flipper -->
-      <div id="coin-section" class="chance-area" style="display: none;">
-        <div class="coin-wrapper">
-          <div class="coin" id="coin">
-            <span id="coin-face">🪙</span>
-            <span id="coin-text" style="font-size: 1rem; margin-top: 0.25rem;">HEADS</span>
+          <!-- Canvas Wheel -->
+          <canvas id="wheel-canvas" class="wheel-canvas" width="720" height="720"></canvas>
+
+          <!-- Center Cap -->
+          <div class="wheel-center-cap" id="wheel-center-btn" title="Click to Spin">
+            <span>✨</span>
           </div>
+        </div>
+
+        <div id="wheel-winner-banner" class="wheel-winner-banner">
+          🎉 Winner: <span id="wheel-winner-name">Homework Pass</span>!
+        </div>
+
+        <!-- Wheel Preset Selector & Controls -->
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; justify-content: center; margin-top: 1rem;">
+          <button class="preset-chip active btn-wheel-preset" data-preset="rewards">🎓 Classroom Rewards</button>
+          <button class="preset-chip btn-wheel-preset" data-preset="dares">🎭 Truth or Dare</button>
+          <button class="preset-chip btn-wheel-preset" data-preset="lunch">🍕 Food & Treats</button>
+          <button class="preset-chip" id="btn-edit-wheel-items">✏️ Edit Wheel</button>
         </div>
       </div>
 
-      <!-- Area 3: Rock Paper Scissors -->
-      <div id="rps-section" class="chance-area" style="display: none;">
-        <div style="display: flex; gap: 2rem; align-items: center; justify-content: center; flex-wrap: wrap;">
-          <div style="text-align: center;">
-            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">YOUR HAND</div>
-            <div id="player-hand" style="font-size: 5rem; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface-subtle); border: 2px solid var(--border-color); border-radius: 20px;">❓</div>
-          </div>
-          <div style="font-size: 2rem; font-weight: 900; color: var(--text-muted);">VS</div>
-          <div style="text-align: center;">
-            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">COMPUTER</div>
-            <div id="comp-hand" style="font-size: 5rem; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface-subtle); border: 2px solid var(--border-color); border-radius: 20px;">❓</div>
-          </div>
+      <!-- =======================================================
+           AREA 2: MYSTERY CHESTS (3D LUCKY BOXES)
+           ======================================================= -->
+      <div id="chests-section" class="chance-area" style="display: none;">
+        <p style="font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">Pick a mystery treasure chest to reveal the secret reward inside!</p>
+        
+        <div class="chests-grid" id="chests-grid">
+          <!-- Dynamically populated chests -->
         </div>
-        <div id="rps-result-text" style="font-size: 1.5rem; font-weight: 800; margin-top: 1.5rem; color: var(--primary);">Choose Rock, Paper, or Scissors!</div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+          <button id="btn-shuffle-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">🔀 Shuffle Chests</button>
+          <button id="btn-reset-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">🔄 Seal All</button>
+          <button id="btn-edit-chests" class="preset-chip" style="font-size: 1rem; padding: 0.6rem 1.25rem;">✏️ Custom Rewards</button>
+        </div>
+      </div>
+
+      <!-- =======================================================
+           AREA 3: MAGIC 8-BALL ORACLE
+           ======================================================= -->
+      <div id="eightball-section" class="chance-area" style="display: none;">
+        <div class="eightball-container">
+          <input type="text" id="eightball-question" class="eightball-question-input" placeholder="Ask your question (e.g., Will I ace this quiz?)..." maxlength="120">
+          
+          <div class="magic-ball" id="magic-ball" title="Click or tap to shake the 8-Ball!">
+            <!-- Idle Number 8 -->
+            <div class="ball-idle-8" id="ball-idle-8">8</div>
+            
+            <!-- Window with floating liquid triangle -->
+            <div class="ball-window" id="ball-window" style="display: none;">
+              <div class="ball-triangle" id="ball-triangle">
+                <span class="ball-oracle-text" id="ball-oracle-text">IT IS CERTAIN</span>
+              </div>
+            </div>
+          </div>
+
+          <p id="eightball-hint" style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-top: 1.25rem;">Tap the 8-Ball or click Shake for cosmic guidance!</p>
+        </div>
       </div>
 
       <!-- Action Controls -->
-      <div class="timer-actions">
-        <!-- Dice Controls -->
-        <div id="dice-controls" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; justify-content: center;">
-          <button id="btn-roll-dice" class="btn-giant btn-giant-primary">
-            <span>Roll Dice</span>
-          </button>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <label for="select-dice-count" style="font-weight: 700; font-size: 0.9rem;">Dice Count:</label>
-            <select id="select-dice-count" class="select-input" style="padding: 0.4rem 0.8rem; font-weight: 700;">
-              <option value="1">1 Die</option>
-              <option value="2" selected>2 Dice</option>
-              <option value="3">3 Dice</option>
-              <option value="4">4 Dice</option>
-              <option value="5">5 Dice</option>
-              <option value="6">6 Dice</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Coin Controls -->
-        <div id="coin-controls" style="display: none; justify-content: center;">
-          <button id="btn-flip-coin" class="btn-giant btn-giant-primary">
-            <span>Flip Coin</span>
+      <div class="timer-actions" style="margin-top: 1.5rem;">
+        <!-- Wheel Controls -->
+        <div id="wheel-actions" style="display: flex; gap: 1rem; justify-content: center;">
+          <button id="btn-spin-wheel" class="btn-giant btn-giant-primary">
+            <span>Spin The Wheel</span>
           </button>
         </div>
 
-        <!-- RPS Controls -->
-        <div id="rps-controls" style="display: none; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-          <button class="preset-chip btn-rps-pick" data-choice="rock" style="font-size: 1.25rem; padding: 0.75rem 1.5rem;">🪨 Rock</button>
-          <button class="preset-chip btn-rps-pick" data-choice="paper" style="font-size: 1.25rem; padding: 0.75rem 1.5rem;">📄 Paper</button>
-          <button class="preset-chip btn-rps-pick" data-choice="scissors" style="font-size: 1.25rem; padding: 0.75rem 1.5rem;">✂️ Scissors</button>
+        <!-- Chests Controls -->
+        <div id="chests-actions" style="display: none; gap: 1rem; justify-content: center;">
+          <button id="btn-open-all-chests" class="btn-giant btn-giant-secondary">
+            <span>Open All Chests</span>
+          </button>
+        </div>
+
+        <!-- 8-Ball Controls -->
+        <div id="eightball-actions" style="display: none; gap: 1rem; justify-content: center;">
+          <button id="btn-shake-8ball" class="btn-giant btn-giant-primary">
+            <span>Shake Magic 8-Ball</span>
+          </button>
         </div>
       </div>
 
@@ -210,14 +481,17 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Online Probability, Dice Rolling & Decision Games</h2>
-            <p>From settling everyday decisions to running tabletop roleplaying games and exploring mathematics concepts, random chance tools make uncertainty visual, fair, and fun:</p>
+            <h2>Interactive Chance Games, Mystery Pickers & Classroom Decisions</h2>
+            <p>From awarding weekly classroom perks and picking student volunteers to running party games and making spontaneous choices, chance-based games add suspense, fairness, and delight:</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Tabletop Gaming & Everyday Decisions</h3>
-            <p>Need a quick decision or missing physical dice? Roll up to 6 dice simultaneously or flip a virtual coin with realistic physics and sound effects. For dedicated multi-sided dice (d4–d20), visit our standalone <a href="/tools/dice-roller/">Polyhedral Dice Roller</a>.</p>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">🎡 The Lucky Prize Wheel</h3>
+            <p>A customizable digital wheel of fortune with smooth deceleration physics, tick audio feedback, and celebration confetti. Perfect for gamifying classroom management, raffle giveaways, and choosing brain break activities.</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Classroom Probability Lessons</h3>
-            <p>Explore theoretical vs. experimental probability with students. Have the class tally 50 flips to test the Law of Large Numbers, or examine the bell-curve distribution of two six-sided dice sums.</p>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">🎁 3D Mystery Treasure Chests</h3>
+            <p>Select from 5 interactive mystery chests hiding secret surprises, homework passes, or humorous party dares. Use the shuffle button to hide a single grand prize for an exciting memory and luck challenge.</p>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">🎱 Cosmic Magic 8-Ball Oracle</h3>
+            <p>Consult the classic 20-answer fortune teller with authentic floating triangle die animations. Great for story writing prompts, settling lighthearted debates, and creative classroom discussions.</p>
           </div>
         </div>
 
@@ -227,19 +501,23 @@
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/coin-flip/">Dedicated Coin Flip Simulator</a>
+                <a href="/tools/dice-roller/">Polyhedral Dice Roller (d4–d100)</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/dice-roller/">Standalone Dice Roller (d4–d100)</a>
+                <a href="/tools/coin-flip/">3D Coin Flip Simulator</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/rock-paper-scissors/">Rock Paper Scissors Game</a>
+                <a href="/tools/rock-paper-scissors/">Rock Paper Scissors AI Arena</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/random-name-picker/">Wheel of Names Picker</a>
+                <a href="/tools/random-name-picker/">Random Name Picker Wheel</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-number-generator/">Random Number Generator</a>
               </li>
             </ul>
           </div>
@@ -271,167 +549,440 @@
   <script defer src="/assets/js/common.js?v=8"></script>
   <script>
     (function () {
-      // Tab switching
-      const tabDice = document.getElementById('tab-dice');
-      const tabCoin = document.getElementById('tab-coin');
-      const tabRps = document.getElementById('tab-rps');
-      const secDice = document.getElementById('dice-section');
-      const secCoin = document.getElementById('coin-section');
-      const secRps = document.getElementById('rps-section');
+      // ----------------------------------------------------
+      // Tabs Navigation
+      // ----------------------------------------------------
+      const tabWheel = document.getElementById('tab-wheel');
+      const tabChests = document.getElementById('tab-chests');
+      const tabEightball = document.getElementById('tab-eightball');
 
-      function switchTab(activeTab, activeSec) {
-        [tabDice, tabCoin, tabRps].forEach(t => t.classList.remove('active'));
-        [secDice, secCoin, secRps].forEach(s => s.style.display = 'none');
+      const secWheel = document.getElementById('wheel-section');
+      const secChests = document.getElementById('chests-section');
+      const secEightball = document.getElementById('eightball-section');
+
+      const actWheel = document.getElementById('wheel-actions');
+      const actChests = document.getElementById('chests-actions');
+      const actEightball = document.getElementById('eightball-actions');
+
+      function switchTab(activeTab, activeSec, activeAct) {
+        [tabWheel, tabChests, tabEightball].forEach(t => t.classList.remove('active'));
+        [secWheel, secChests, secEightball].forEach(s => s.style.display = 'none');
+        [actWheel, actChests, actEightball].forEach(a => a.style.display = 'none');
+
         activeTab.classList.add('active');
         activeSec.style.display = 'flex';
-        if (window.SoundFX) window.SoundFX.playClick();
+        activeAct.style.display = 'flex';
+
+        if (window.SoundFX && window.SoundFX.playButtonClick) {
+          window.SoundFX.playButtonClick();
+        } else if (window.SoundFX) {
+          window.SoundFX.playClick();
+        }
       }
 
-      tabDice.addEventListener('click', () => switchTab(tabDice, secDice));
-      tabCoin.addEventListener('click', () => switchTab(tabCoin, secCoin));
-      tabRps.addEventListener('click', () => switchTab(tabRps, secRps));
+      tabWheel.addEventListener('click', () => switchTab(tabWheel, secWheel, actWheel));
+      tabChests.addEventListener('click', () => switchTab(tabChests, secChests, actChests));
+      tabEightball.addEventListener('click', () => switchTab(tabEightball, secEightball, actEightball));
 
-      // --- 1. Dice Logic ---
-      const diceRack = document.getElementById('dice-rack');
-      const selectCount = document.getElementById('select-dice-count');
-      const diceTotal = document.getElementById('dice-total-display');
-      const btnRollDice = document.getElementById('btn-roll-dice');
+      // ----------------------------------------------------
+      // 1. LUCKY PRIZE WHEEL LOGIC
+      // ----------------------------------------------------
+      const canvas = document.getElementById('wheel-canvas');
+      const ctx = canvas.getContext('2d');
+      const btnSpinWheel = document.getElementById('btn-spin-wheel');
+      const wheelCenterBtn = document.getElementById('wheel-center-btn');
+      const winnerBanner = document.getElementById('wheel-winner-banner');
+      const winnerName = document.getElementById('wheel-winner-name');
+      const pointer = document.getElementById('wheel-pointer');
+      const btnEditWheel = document.getElementById('btn-edit-wheel-items');
 
-      const PIP_MAP = {
-        1: [4],
-        2: [0, 8],
-        3: [0, 4, 8],
-        4: [0, 2, 6, 8],
-        5: [0, 2, 4, 6, 8],
-        6: [0, 2, 3, 5, 6, 8]
+      const WHEEL_PRESETS = {
+        rewards: [
+          'Homework Pass',
+          'Sit With Friend',
+          'Extra 5m Recess',
+          'Line Leader',
+          'Teacher Assistant',
+          'Music DJ',
+          'Mystery Prize',
+          'No Shoes Day'
+        ],
+        dares: [
+          'Tell a Joke',
+          'Sing a Song',
+          'Do 10 Jumping Jacks',
+          'Funny Accent',
+          'Robot Voice',
+          'Compliment Friend',
+          'Freeze for 20s',
+          'Dance Moves'
+        ],
+        lunch: [
+          'Pizza 🍕',
+          'Tacos 🌮',
+          'Burgers 🍔',
+          'Sushi 🍣',
+          'Pasta 🍝',
+          'Sandwiches 🥪',
+          'Noodles 🍜',
+          'Ice Cream 🍨'
+        ]
       };
 
-      function createDieEl(val) {
-        const die = document.createElement('div');
-        die.className = 'die';
-        for (let i = 0; i < 9; i++) {
-          const pip = document.createElement('div');
-          if (PIP_MAP[val].includes(i)) {
-            pip.className = 'die-pip';
-          }
-          die.appendChild(pip);
-        }
-        return die;
-      }
-
-      function rollDice() {
-        const count = parseInt(selectCount.value, 10);
-        diceRack.innerHTML = '';
-        let sum = 0;
-        const rolls = [];
-
-        for (let i = 0; i < count; i++) {
-          const val = Math.floor(Math.random() * 6) + 1;
-          rolls.push(val);
-          sum += val;
-          const die = createDieEl(val);
-          die.style.transform = `rotate(${(Math.random() - 0.5) * 40}deg) scale(0.9)`;
-          diceRack.appendChild(die);
-        }
-
-        setTimeout(() => {
-          document.querySelectorAll('.die').forEach(d => {
-            d.style.transform = 'scale(1) rotate(0deg)';
-          });
-        }, 100);
-
-        diceTotal.innerHTML = `Total Sum: <span style="color: var(--primary);">${sum}</span>`;
-        if (window.SoundFX) window.SoundFX.playClick();
-      }
-
-      selectCount.addEventListener('change', rollDice);
-      btnRollDice.addEventListener('click', rollDice);
-      rollDice();
-
-      // --- 2. Coin Logic ---
-      const coinEl = document.getElementById('coin-el');
-      const coinIcon = document.getElementById('coin-icon');
-      const coinText = document.getElementById('coin-text');
-      const btnFlip = document.getElementById('btn-flip-coin');
-      const btnResetCoin = document.getElementById('btn-reset-coin');
-      const headsCount = document.getElementById('heads-count');
-      const tailsCount = document.getElementById('tails-count');
-      let heads = 0;
-      let tails = 0;
-      let isFlipping = false;
-
-      function flipCoin() {
-        if (isFlipping) return;
-        isFlipping = true;
-        const isHeads = Math.random() > 0.5;
-
-        coinEl.style.transform = `rotateY(${1800 + (isHeads ? 0 : 180)}deg)`;
-        if (window.SoundFX) window.SoundFX.playCoinClink();
-
-        setTimeout(() => {
-          isFlipping = false;
-          if (isHeads) {
-            coinIcon.textContent = '👑';
-            coinText.textContent = 'HEADS';
-            heads++;
-            headsCount.textContent = heads;
-          } else {
-            coinIcon.textContent = '🦅';
-            coinText.textContent = 'TAILS';
-            tails++;
-            tailsCount.textContent = tails;
-          }
-          coinEl.style.transform = 'rotateY(0deg)';
-        }, 900);
-      }
-
-      btnFlip.addEventListener('click', flipCoin);
-      btnResetCoin.addEventListener('click', () => {
-        heads = 0;
-        tails = 0;
-        headsCount.textContent = '0';
-        tailsCount.textContent = '0';
-      });
-
-      // --- 3. Rock Paper Scissors Logic ---
-      const rpsHand = document.getElementById('rps-hand');
-      const rpsTitle = document.getElementById('rps-title');
-      const btnPlayRps = document.getElementById('btn-play-rps');
-      const RPS_OPTIONS = [
-        { name: 'Rock', icon: '✊' },
-        { name: 'Paper', icon: '✋' },
-        { name: 'Scissors', icon: '✌️' }
+      const SLICE_COLORS = [
+        '#6366F1', '#EC4899', '#3B82F6', '#10B981',
+        '#F59E0B', '#8B5CF6', '#14B8A6', '#F43F5E'
       ];
 
-      function playRps() {
-        let count = 3;
-        rpsTitle.textContent = "Rock...";
-        rpsHand.textContent = "✊";
-        rpsHand.style.transform = "translateY(-20px)";
+      let wheelItems = [...WHEEL_PRESETS.rewards];
+      let currentAngle = 0; // radians
+      let isSpinning = false;
 
-        const countdownRps = setInterval(() => {
-          count--;
-          if (count === 2) {
-            rpsTitle.textContent = "Paper...";
-            rpsHand.style.transform = "translateY(0)";
-            if (window.SoundFX) window.SoundFX.playClick();
-          } else if (count === 1) {
-            rpsTitle.textContent = "Scissors...";
-            rpsHand.style.transform = "translateY(-20px)";
-            if (window.SoundFX) window.SoundFX.playClick();
-          } else if (count === 0) {
-            clearInterval(countdownRps);
-            const pick = RPS_OPTIONS[Math.floor(Math.random() * RPS_OPTIONS.length)];
-            rpsHand.textContent = pick.icon;
-            rpsHand.style.transform = "scale(1.2)";
-            rpsTitle.textContent = `SHOOT! ➔ ${pick.name}!`;
-            if (window.SoundFX) window.SoundFX.playFanfare();
-            if (window.Confetti) window.Confetti.fire({ count: 80 });
-          }
-        }, 600);
+      function drawWheel() {
+        const dpr = window.devicePixelRatio || 1;
+        const width = 720;
+        const height = 720;
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const cx = width / 2;
+        const cy = height / 2;
+        const radius = cx - 20;
+        const numSlices = wheelItems.length;
+        const arc = (2 * Math.PI) / numSlices;
+
+        for (let i = 0; i < numSlices; i++) {
+          const sliceAngle = currentAngle + i * arc;
+
+          // Draw slice
+          ctx.beginPath();
+          ctx.fillStyle = SLICE_COLORS[i % SLICE_COLORS.length];
+          ctx.moveTo(cx, cy);
+          ctx.arc(cx, cy, radius, sliceAngle, sliceAngle + arc);
+          ctx.closePath();
+          ctx.fill();
+
+          // Border between slices
+          ctx.strokeStyle = '#FFFFFF';
+          ctx.lineWidth = 4;
+          ctx.stroke();
+
+          // Draw slice text
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(sliceAngle + arc / 2);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 24px system-ui, -apple-system, sans-serif';
+          ctx.shadowColor = 'rgba(0,0,0,0.4)';
+          ctx.shadowBlur = 4;
+
+          const text = wheelItems[i];
+          const maxTextWidth = radius - 70;
+          ctx.fillText(text, radius - 30, 8, maxTextWidth);
+          ctx.restore();
+        }
+
+        // Outer rim
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+        ctx.lineWidth = 14;
+        ctx.strokeStyle = '#0F172A';
+        ctx.stroke();
       }
 
-      btnPlayRps.addEventListener('click', playRps);
+      function spinWheel() {
+        if (isSpinning) return;
+        isSpinning = true;
+        winnerBanner.style.display = 'none';
+
+        if (window.SoundFX && window.SoundFX.playButtonClick) {
+          window.SoundFX.playButtonClick();
+        } else if (window.SoundFX) {
+          window.SoundFX.playClick();
+        }
+
+        const fullSpins = 4 + Math.random() * 3;
+        const randomTargetAngle = Math.random() * 2 * Math.PI;
+        const totalRotation = fullSpins * 2 * Math.PI + randomTargetAngle;
+        const duration = 4000; // ms
+        const startTime = performance.now();
+        const startAngle = currentAngle;
+        let lastTickSlice = -1;
+
+        function animateSpin(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          // Ease out cubic
+          const ease = 1 - Math.pow(1 - progress, 3);
+          currentAngle = startAngle + totalRotation * ease;
+          drawWheel();
+
+          // Needle tick sound on crossing slices
+          const numSlices = wheelItems.length;
+          const sliceArc = (2 * Math.PI) / numSlices;
+          // Pointer is at top (-PI/2)
+          const normalizedAngle = (1.5 * Math.PI - (currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+          const currentSlice = Math.floor(normalizedAngle / sliceArc);
+
+          if (currentSlice !== lastTickSlice) {
+            lastTickSlice = currentSlice;
+            if (pointer) {
+              pointer.style.transform = 'translateX(-50%) rotate(18deg)';
+              setTimeout(() => { if (pointer) pointer.style.transform = 'translateX(-50%) rotate(0deg)'; }, 60);
+            }
+            if (window.SoundFX && progress < 0.95) {
+              window.SoundFX.playBeep(false);
+            }
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animateSpin);
+          } else {
+            isSpinning = false;
+            // Determine winner
+            const winningItem = wheelItems[currentSlice % wheelItems.length];
+            winnerName.textContent = winningItem;
+            winnerBanner.style.display = 'block';
+
+            if (window.SoundFX && window.SoundFX.playFanfare) {
+              window.SoundFX.playFanfare();
+            }
+            if (window.Confetti && window.Confetti.fire) {
+              window.Confetti.fire({ count: 90 });
+            }
+          }
+        }
+
+        requestAnimationFrame(animateSpin);
+      }
+
+      btnSpinWheel.addEventListener('click', spinWheel);
+      wheelCenterBtn.addEventListener('click', spinWheel);
+
+      // Preset buttons
+      document.querySelectorAll('.btn-wheel-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (isSpinning) return;
+          document.querySelectorAll('.btn-wheel-preset').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const presetKey = btn.dataset.preset;
+          wheelItems = [...WHEEL_PRESETS[presetKey]];
+          drawWheel();
+          winnerBanner.style.display = 'none';
+        });
+      });
+
+      // Custom Wheel Items
+      btnEditWheel.addEventListener('click', () => {
+        const input = prompt('Enter wheel options separated by commas:', wheelItems.join(', '));
+        if (input) {
+          const parsed = input.split(',').map(s => s.trim()).filter(Boolean);
+          if (parsed.length >= 2) {
+            wheelItems = parsed;
+            document.querySelectorAll('.btn-wheel-preset').forEach(b => b.classList.remove('active'));
+            drawWheel();
+            winnerBanner.style.display = 'none';
+          } else {
+            alert('Please provide at least 2 options for the wheel.');
+          }
+        }
+      });
+
+      drawWheel();
+
+      // ----------------------------------------------------
+      // 2. MYSTERY CHESTS (3D LUCKY BOXES) LOGIC
+      // ----------------------------------------------------
+      const chestsGrid = document.getElementById('chests-grid');
+      const btnShuffleChests = document.getElementById('btn-shuffle-chests');
+      const btnResetChests = document.getElementById('btn-reset-chests');
+      const btnOpenAll = document.getElementById('btn-open-all-chests');
+      const btnEditChests = document.getElementById('btn-edit-chests');
+
+      let chestRewards = [
+        { icon: '⭐', label: 'Grand Prize: Homework Pass' },
+        { icon: '🍬', label: 'Sweet Treat / Sticker' },
+        { icon: '👑', label: 'Class VIP / First Choice' },
+        { icon: '🎵', label: 'Pick Today\'s Playlist' },
+        { icon: '🌱', label: 'High Five & Extra Credit' }
+      ];
+
+      function renderChests() {
+        chestsGrid.innerHTML = '';
+        chestRewards.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.className = 'chest-card';
+          card.dataset.index = index;
+          card.innerHTML = `
+            <div class="chest-icon">🎁</div>
+            <div class="chest-number">Chest #${index + 1}</div>
+            <div class="chest-reward">
+              <div style="font-size: 2.2rem; margin-bottom: 0.25rem;">${item.icon}</div>
+              <div>${item.label}</div>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            if (card.classList.contains('opened')) return;
+            openChest(card, item);
+          });
+
+          chestsGrid.appendChild(card);
+        });
+      }
+
+      function openChest(card, item) {
+        card.classList.add('opened');
+        card.querySelector('.chest-icon').textContent = '✨';
+
+        if (window.SoundFX && window.SoundFX.playFanfare) {
+          window.SoundFX.playFanfare();
+        } else if (window.SoundFX) {
+          window.SoundFX.playClick();
+        }
+
+        if (window.Confetti && window.Confetti.fire) {
+          window.Confetti.fire({ count: 40 });
+        }
+      }
+
+      function shuffleChests() {
+        const cards = document.querySelectorAll('.chest-card');
+        cards.forEach(c => c.classList.add('shuffling'));
+
+        if (window.SoundFX && window.SoundFX.playButtonClick) {
+          window.SoundFX.playButtonClick();
+        }
+
+        setTimeout(() => {
+          // Shuffle rewards array
+          for (let i = chestRewards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [chestRewards[i], chestRewards[j]] = [chestRewards[j], chestRewards[i]];
+          }
+          renderChests();
+        }, 500);
+      }
+
+      btnShuffleChests.addEventListener('click', shuffleChests);
+      btnResetChests.addEventListener('click', () => {
+        renderChests();
+        if (window.SoundFX) window.SoundFX.playClick();
+      });
+      btnOpenAll.addEventListener('click', () => {
+        document.querySelectorAll('.chest-card').forEach((card, idx) => {
+          if (!card.classList.contains('opened')) {
+            setTimeout(() => openChest(card, chestRewards[idx]), idx * 150);
+          }
+        });
+      });
+
+      btnEditChests.addEventListener('click', () => {
+        const text = prompt('Enter chest surprises separated by commas:', chestRewards.map(r => r.label).join(', '));
+        if (text) {
+          const items = text.split(',').map(s => s.trim()).filter(Boolean);
+          if (items.length >= 2) {
+            const icons = ['⭐', '🎁', '👑', '🎉', '🌟', '💎', '🔥', '🏆'];
+            chestRewards = items.map((label, idx) => ({
+              icon: icons[idx % icons.length],
+              label: label
+            }));
+            renderChests();
+          }
+        }
+      });
+
+      renderChests();
+
+      // ----------------------------------------------------
+      // 3. MAGIC 8-BALL ORACLE LOGIC
+      // ----------------------------------------------------
+      const magicBall = document.getElementById('magic-ball');
+      const ballIdle8 = document.getElementById('ball-idle-8');
+      const ballWindow = document.getElementById('ball-window');
+      const ballTriangle = document.getElementById('ball-triangle');
+      const ballOracleText = document.getElementById('ball-oracle-text');
+      const btnShake8ball = document.getElementById('btn-shake-8ball');
+      const eightballQuestion = document.getElementById('eightball-question');
+      const eightballHint = document.getElementById('eightball-hint');
+
+      const EIGHT_BALL_ANSWERS = [
+        // Affirmative
+        { text: 'IT IS CERTAIN', type: 'yes' },
+        { text: 'WITHOUT A DOUBT', type: 'yes' },
+        { text: 'DEFINITELY YES', type: 'yes' },
+        { text: 'YOU MAY RELY ON IT', type: 'yes' },
+        { text: 'AS I SEE IT, YES', type: 'yes' },
+        { text: 'MOST LIKELY', type: 'yes' },
+        { text: 'OUTLOOK GOOD', type: 'yes' },
+        { text: 'YES', type: 'yes' },
+        { text: 'SIGNS POINT TO YES', type: 'yes' },
+        // Non-committal
+        { text: 'REPLY HAZY, TRY AGAIN', type: 'neutral' },
+        { text: 'ASK AGAIN LATER', type: 'neutral' },
+        { text: 'BETTER NOT TELL YOU NOW', type: 'neutral' },
+        { text: 'CANNOT PREDICT NOW', type: 'neutral' },
+        { text: 'CONCENTRATE AND ASK AGAIN', type: 'neutral' },
+        // Negative
+        { text: 'DON\'T COUNT ON IT', type: 'no' },
+        { text: 'MY REPLY IS NO', type: 'no' },
+        { text: 'MY SOURCES SAY NO', type: 'no' },
+        { text: 'OUTLOOK NOT SO GOOD', type: 'no' },
+        { text: 'VERY DOUBTFUL', type: 'no' }
+      ];
+
+      let isShakingBall = false;
+
+      function shake8Ball() {
+        if (isShakingBall) return;
+        isShakingBall = true;
+
+        if (window.SoundFX && window.SoundFX.playButtonClick) {
+          window.SoundFX.playButtonClick();
+        } else if (window.SoundFX) {
+          window.SoundFX.playClick();
+        }
+
+        magicBall.classList.add('shaking');
+        ballTriangle.style.opacity = '0';
+        ballTriangle.style.transform = 'scale(0.7) rotate(-15deg)';
+        eightballHint.textContent = 'Consulting cosmic oracle...';
+
+        setTimeout(() => {
+          magicBall.classList.remove('shaking');
+          ballIdle8.style.display = 'none';
+          ballWindow.style.display = 'flex';
+
+          const pick = EIGHT_BALL_ANSWERS[Math.floor(Math.random() * EIGHT_BALL_ANSWERS.length)];
+          ballOracleText.textContent = pick.text;
+
+          // Float in answer
+          setTimeout(() => {
+            ballTriangle.style.opacity = '1';
+            ballTriangle.style.transform = 'scale(1) rotate(0deg)';
+            isShakingBall = false;
+            eightballHint.textContent = 'Oracle has spoken! Tap again to ask another.';
+
+            if (pick.type === 'yes' && window.Confetti) {
+              window.Confetti.fire({ count: 30 });
+            }
+            if (window.SoundFX && window.SoundFX.playGentleChime) {
+              window.SoundFX.playGentleChime();
+            }
+          }, 100);
+        }, 800);
+      }
+
+      magicBall.addEventListener('click', shake8Ball);
+      btnShake8ball.addEventListener('click', shake8Ball);
+      eightballQuestion.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') shake8Ball();
+      });
+
     })();
   </script>
 </body>

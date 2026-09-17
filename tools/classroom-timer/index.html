@@ -242,21 +242,36 @@
         <span id="pomodoro-cycle-text" style="color: var(--text-muted); font-size: 0.85rem;">Cycle 1 of 4</span>
       </div>
 
-      <!-- Ambient Background Music Toolbar -->
-      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem; padding: 0.45rem 1rem; background: var(--bg-surface-subtle); border-radius: var(--radius-full); border: 1px solid var(--border-color); max-width: 580px; margin-left: auto; margin-right: auto;">
+      <!-- Ambient Background Music & Alarm Toolbar -->
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem; padding: 0.5rem 1.1rem; background: var(--bg-surface-subtle); border-radius: var(--radius-full); border: 1px solid var(--border-color); max-width: 680px; margin-left: auto; margin-right: auto;">
         <label style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; user-select: none;">
           <input type="checkbox" id="check-ambient-music" style="accent-color: var(--primary); width: 1.1rem; height: 1.1rem;">
-          <span>🎵 Background Music</span>
+          <span>🎵 Music Loop</span>
         </label>
-        <select id="select-ambient-track" class="select-input" style="width: auto; padding: 0.25rem 0.6rem; font-size: 0.8rem; font-weight: 600;" title="Select Royalty-Free Ambient Music">
-          <option value="focus">🧘 Calm Focus Drone</option>
-          <option value="rain">🌧️ Gentle Rain & Lo-Fi</option>
+        <select id="select-ambient-track" class="select-input" style="width: auto; padding: 0.25rem 0.6rem; font-size: 0.8rem; font-weight: 600;" title="Select Background Music">
+          <option value="calm">🧘 Calm Meditation</option>
+          <option value="rain">🌧️ Alpha Beats with Rain</option>
+          <option value="5d">✨ 5D Spiritual Journey</option>
+          <option value="meditation">🎵 Deep Meditation Music</option>
+          <option value="focus">⚡ Focus Drone</option>
           <option value="zen">🔔 Zen Tibetan Chimes</option>
         </select>
         <div style="display: inline-flex; align-items: center; gap: 0.35rem;">
           <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">Vol:</span>
-          <input type="range" id="ambient-volume" min="0" max="1" step="0.05" value="0.5" style="width: 70px; accent-color: var(--primary); cursor: pointer;" title="Music Volume">
+          <input type="range" id="ambient-volume" min="0" max="1" step="0.05" value="0.5" style="width: 65px; accent-color: var(--primary); cursor: pointer;" title="Music Volume">
         </div>
+        <span style="color: var(--border-strong);">|</span>
+        <button id="btn-toggle-alarm-mode" class="preset-chip" style="padding: 0.25rem 0.65rem; font-size: 0.8rem; font-weight: 700;" title="Toggle Alarm Ending Style: Continuous Loop vs Short Ting">
+          🔁 Loop Alarm (Default)
+        </button>
+      </div>
+
+      <!-- Pulsing Alarm Ringing Alert Banner -->
+      <div id="alarm-banner" style="display: none; align-items: center; justify-content: center; gap: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--accent-rose), #dc2626); color: #fff; border-radius: var(--radius-full); font-weight: 800; font-size: 1.05rem; margin: 1.25rem auto 0; max-width: 540px; box-shadow: 0 0 25px rgba(220, 38, 38, 0.6); cursor: pointer; animation: pulse 1s infinite alternate;">
+        <span>⏰ TIME'S UP! Alarm Ringing...</span>
+        <button id="btn-stop-alarm" style="background: #fff; color: #dc2626; border: none; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); font-weight: 900; font-size: 0.9rem; cursor: pointer;">
+          🛑 Stop Alarm (Space)
+        </button>
       </div>
 
     </div>
@@ -522,8 +537,95 @@
         });
       });
 
+      // Alarm & Music Elements
+      const btnToggleAlarmMode = document.getElementById('btn-toggle-alarm-mode');
+      const alarmBanner = document.getElementById('alarm-banner');
+      const btnStopAlarm = document.getElementById('btn-stop-alarm');
+
+      let alarmLoopMode = localStorage.getItem('classpanel_alarm_loop_mode') || 'loop'; // 'loop' (default) or 'ting'
+
+      function updateAlarmModeUI() {
+        if (!btnToggleAlarmMode) return;
+        if (alarmLoopMode === 'ting') {
+          btnToggleAlarmMode.textContent = '🔔 Short Ting (2-3s)';
+          btnToggleAlarmMode.style.borderColor = 'var(--border-color)';
+        } else {
+          btnToggleAlarmMode.textContent = '🔁 Loop Alarm (Default)';
+          btnToggleAlarmMode.style.borderColor = 'var(--primary)';
+        }
+      }
+      updateAlarmModeUI();
+
+      if (btnToggleAlarmMode) {
+        btnToggleAlarmMode.addEventListener('click', () => {
+          alarmLoopMode = alarmLoopMode === 'loop' ? 'ting' : 'loop';
+          if (window.SoundFX && window.SoundFX.setAlarmLoopMode) {
+            window.SoundFX.setAlarmLoopMode(alarmLoopMode);
+          } else {
+            localStorage.setItem('classpanel_alarm_loop_mode', alarmLoopMode);
+          }
+          updateAlarmModeUI();
+          if (window.ClassPanel) {
+            window.ClassPanel.showToast(alarmLoopMode === 'loop' ? 'Alarm will ring in continuous loop until stopped' : 'Alarm set to single short chime (2-3s)');
+          }
+        });
+      }
+
+      function showAlarmBanner() {
+        if (alarmBanner) alarmBanner.style.display = 'inline-flex';
+      }
+
+      function dismissAlarm() {
+        if (window.SoundFX && window.SoundFX.stopAlarm) {
+          window.SoundFX.stopAlarm();
+        }
+        if (alarmBanner) alarmBanner.style.display = 'none';
+      }
+
+      if (btnStopAlarm) btnStopAlarm.addEventListener('click', dismissAlarm);
+      if (alarmBanner) alarmBanner.addEventListener('click', dismissAlarm);
+
+      // Keyboard & Display Click dismiss for ringing alarm
+      window.addEventListener('keydown', (e) => {
+        if (window.SoundFX && window.SoundFX.isAlarmRinging) {
+          if (e.key === ' ' || e.key === 'Escape' || e.key === 'Enter') {
+            e.preventDefault();
+            dismissAlarm();
+          }
+        }
+      });
+      display.addEventListener('click', () => {
+        if (window.SoundFX && window.SoundFX.isAlarmRinging) {
+          dismissAlarm();
+        }
+      });
+
+      // Ambient Music track and volume changes
+      checkAmbient.addEventListener('change', () => {
+        if (isRunning) {
+          if (checkAmbient.checked && window.SoundFX && window.SoundFX.startMusic) {
+            window.SoundFX.startMusic(selectAmbient.value, parseFloat(ambientVol.value));
+          } else if (window.SoundFX && window.SoundFX.stopMusic) {
+            window.SoundFX.stopMusic();
+          }
+        }
+      });
+
+      selectAmbient.addEventListener('change', () => {
+        if (isRunning && checkAmbient.checked && window.SoundFX && window.SoundFX.startMusic) {
+          window.SoundFX.startMusic(selectAmbient.value, parseFloat(ambientVol.value));
+        }
+      });
+
+      ambientVol.addEventListener('input', () => {
+        if (window.SoundFX && window.SoundFX.setMusicVolume) {
+          window.SoundFX.setMusicVolume(parseFloat(ambientVol.value));
+        }
+      });
+
       function startTimer() {
         if (isRunning) return;
+        dismissAlarm();
         isRunning = true;
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `
@@ -533,10 +635,18 @@
           </svg>
           <span>Pause</span>
         `;
-        if (window.SoundFX) window.SoundFX.playClick();
+        if (window.SoundFX) {
+          if (window.SoundFX.playButtonClick) window.SoundFX.playButtonClick();
+          else window.SoundFX.playClick();
+        }
 
-        if (checkAmbient.checked && window.SoundFX && window.SoundFX.startAmbient) {
-          window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
+        // Loop background music during active timer
+        if (checkAmbient && checkAmbient.checked && window.SoundFX) {
+          if (window.SoundFX.startMusic) {
+            window.SoundFX.startMusic(selectAmbient.value, parseFloat(ambientVol.value));
+          } else if (window.SoundFX.startAmbient) {
+            window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
+          }
         }
 
         timerInterval = setInterval(() => {
@@ -567,13 +677,18 @@
           <span>Resume</span>
         `;
         if (window.SoundFX) {
-          window.SoundFX.playClick();
-          if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+          if (window.SoundFX.playButtonClick) window.SoundFX.playButtonClick();
+          else window.SoundFX.playClick();
+
+          // Pause music while timer is paused
+          if (window.SoundFX.pauseMusic) window.SoundFX.pauseMusic();
+          else if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
         }
       }
 
       function resetTimer() {
         pauseTimer();
+        dismissAlarm();
         btnStart.innerHTML = `
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"/>
@@ -587,17 +702,32 @@
         }
         updateDisplay();
         if (window.SoundFX) {
-          window.SoundFX.playClick();
-          if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+          if (window.SoundFX.playButtonClick) window.SoundFX.playButtonClick();
+          else window.SoundFX.playClick();
+
+          if (window.SoundFX.stopMusic) window.SoundFX.stopMusic();
+          else if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
         }
       }
 
       function completeCountdown() {
         pauseTimer();
         if (window.SoundFX) {
-          window.SoundFX.playAlarm(soundSelect.value);
-          if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+          if (window.SoundFX.stopMusic) window.SoundFX.stopMusic();
+          else if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+
+          // Continuous loop by default, or short ting if user selected
+          if (window.SoundFX.playCompletionAlarm) {
+            window.SoundFX.playCompletionAlarm(alarmLoopMode);
+          } else {
+            window.SoundFX.playAlarm(soundSelect.value);
+          }
         }
+
+        if (alarmLoopMode === 'loop') {
+          showAlarmBanner();
+        }
+
         if (window.Confetti) {
           window.Confetti.fire({ count: 140 });
         }

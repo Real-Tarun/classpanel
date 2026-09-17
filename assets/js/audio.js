@@ -8,6 +8,21 @@ class SoundSynthesizer {
     this.ctx = null;
     this.isMuted = localStorage.getItem('classpanel_muted') === 'true';
     this.volume = parseFloat(localStorage.getItem('classpanel_volume') || '0.8');
+    this.currentMusicAudio = null;
+    this.currentMusicTrack = null;
+    this.alarmAudio = null;
+    this.isAlarmRinging = false;
+    this._proceduralAlarmInterval = null;
+    this.alarmLoopMode = localStorage.getItem('classpanel_alarm_loop_mode') || 'loop'; // 'loop' (default) or 'ting'
+
+    this.TRACKS = {
+      calm: { name: 'Calm Meditation', src: '/assets/audio/calm.mp3' },
+      rain: { name: 'Alpha Beats with Rain', src: '/assets/audio/binaural-rain.mp3' },
+      'binaural-rain': { name: 'Alpha Beats with Rain', src: '/assets/audio/binaural-rain.mp3' },
+      '5d': { name: '5D Spiritual Journey', src: '/assets/audio/journey-5d.mp3' },
+      'journey-5d': { name: '5D Spiritual Journey', src: '/assets/audio/journey-5d.mp3' },
+      meditation: { name: 'Deep Meditation Music', src: '/assets/audio/meditation.mp3' }
+    };
   }
 
   initContext() {
@@ -341,6 +356,141 @@ class SoundSynthesizer {
       const effectiveVol = Math.max(0, Math.min(1, vol)) * this.volume * 0.35;
       this.ambientGain.gain.setValueAtTime(effectiveVol, this.ctx.currentTime);
     }
+  }
+
+  // --- Real Button Click FX ---
+  playButtonClick() {
+    if (this.isMuted) return;
+    try {
+      const audio = new Audio('/assets/audio/button-click.mp3');
+      audio.volume = Math.min(1, this.volume * 0.65);
+      audio.play().catch(() => this.playPop());
+    } catch(e) {
+      this.playPop();
+    }
+  }
+
+  // --- Real Pixabay Background Music Player (Loops during timer) ---
+  startMusic(trackKey = 'calm', userVol = 0.5) {
+    this.stopMusic();
+    if (this.isMuted) return;
+
+    // Check if it's a real file track
+    const track = this.TRACKS[trackKey];
+    if (track) {
+      this.currentMusicTrack = trackKey;
+      try {
+        this.currentMusicAudio = new Audio(track.src);
+        this.currentMusicAudio.loop = true;
+        this.currentMusicAudio.volume = Math.max(0, Math.min(1, userVol)) * this.volume * 0.55;
+        this.currentMusicAudio.play().catch(err => {
+          console.warn('ClassPanel Music play fallback:', err);
+          this.startAmbient('focus', userVol);
+        });
+      } catch(e) {
+        this.startAmbient('focus', userVol);
+      }
+    } else {
+      // Fallback to procedural synth track (focus, rain, zen)
+      this.startAmbient(trackKey, userVol);
+    }
+  }
+
+  pauseMusic() {
+    if (this.currentMusicAudio && !this.currentMusicAudio.paused) {
+      this.currentMusicAudio.pause();
+    }
+  }
+
+  resumeMusic() {
+    if (this.isMuted) return;
+    if (this.currentMusicAudio && this.currentMusicAudio.paused) {
+      this.currentMusicAudio.play().catch(() => {});
+    }
+  }
+
+  stopMusic() {
+    if (this.currentMusicAudio) {
+      try {
+        this.currentMusicAudio.pause();
+        this.currentMusicAudio.currentTime = 0;
+      } catch(e) {}
+      this.currentMusicAudio = null;
+      this.currentMusicTrack = null;
+    }
+    this.stopAmbient();
+  }
+
+  setMusicVolume(vol) {
+    const v = Math.max(0, Math.min(1, vol));
+    if (this.currentMusicAudio) {
+      this.currentMusicAudio.volume = v * this.volume * 0.55;
+    }
+    this.setAmbientVolume(v);
+  }
+
+  // --- Timer Completion Alarm (Continuous Loop by Default vs Short 2-3s Ting) ---
+  playCompletionAlarm(mode = null) {
+    if (this.isMuted) return;
+    this.stopAlarm();
+    this.stopMusic();
+
+    const activeMode = mode || this.alarmLoopMode || 'loop';
+
+    // 1. Short 2-3s Ting / Chime Mode
+    if (activeMode === 'ting') {
+      this.playGentleChime();
+      return;
+    }
+
+    // 2. Continuous Loop Mode (Default - rings until user dismisses)
+    this.isAlarmRinging = true;
+    try {
+      this.alarmAudio = new Audio('/assets/audio/digital-alarm.mp3');
+      this.alarmAudio.loop = true;
+      this.alarmAudio.volume = Math.min(1, this.volume * 0.85);
+      this.alarmAudio.play().catch(err => {
+        console.warn('Alarm audio fallback to procedural loop:', err);
+        this._startProceduralAlarmLoop();
+      });
+    } catch(e) {
+      this._startProceduralAlarmLoop();
+    }
+
+    window.dispatchEvent(new CustomEvent('classpanel-alarm-started', { detail: { mode: 'loop' } }));
+  }
+
+  _startProceduralAlarmLoop() {
+    this._proceduralAlarmInterval = setInterval(() => {
+      if (!this.isAlarmRinging) {
+        clearInterval(this._proceduralAlarmInterval);
+        return;
+      }
+      this.playSchoolBell();
+    }, 2200);
+    this.playSchoolBell();
+  }
+
+  stopAlarm() {
+    this.isAlarmRinging = false;
+    if (this.alarmAudio) {
+      try {
+        this.alarmAudio.pause();
+        this.alarmAudio.currentTime = 0;
+      } catch(e) {}
+      this.alarmAudio = null;
+    }
+    if (this._proceduralAlarmInterval) {
+      clearInterval(this._proceduralAlarmInterval);
+      this._proceduralAlarmInterval = null;
+    }
+    window.dispatchEvent(new CustomEvent('classpanel-alarm-stopped'));
+  }
+
+  setAlarmLoopMode(mode) {
+    this.alarmLoopMode = mode === 'ting' ? 'ting' : 'loop';
+    localStorage.setItem('classpanel_alarm_loop_mode', this.alarmLoopMode);
+    return this.alarmLoopMode;
   }
 }
 

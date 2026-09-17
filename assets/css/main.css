@@ -725,6 +725,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   to { opacity: 1; filter: brightness(1.2); }
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.95; }
+  100% { transform: scale(1.02); opacity: 1; filter: brightness(1.1); }
+}
+
 /* Big Action Buttons (Touch & Smartboard Friendly - ElevenLabs 3D Look) */
 .timer-actions {
   display: flex;

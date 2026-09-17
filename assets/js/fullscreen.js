@@ -31,18 +31,68 @@ class FullscreenManager {
   }
 
   ensureWatermark() {
+    const attachDodgeBehavior = (watermark) => {
+      let isShifted = false;
+      let isMoving = false;
+      let cooldownTimer = null;
+
+      const getShiftDistance = () => {
+        const container = watermark.parentElement;
+        const containerWidth = (!container || container === document.body)
+          ? document.documentElement.clientWidth
+          : container.clientWidth;
+        const margin = window.innerWidth <= 600 ? 12 : 20;
+        return Math.max(0, containerWidth - watermark.offsetWidth - (margin * 2));
+      };
+
+      const dodge = () => {
+        if (isMoving) return;
+        isMoving = true;
+        isShifted = !isShifted;
+
+        // Temporarily disable pointer events during slide so immediate clicks pass to buttons below
+        watermark.style.pointerEvents = 'none';
+
+        if (isShifted) {
+          const shiftDist = getShiftDistance();
+          watermark.style.transform = `translateX(-${shiftDist}px)`;
+          watermark.classList.add('is-shifted-left');
+        } else {
+          watermark.style.transform = 'translateX(0)';
+          watermark.classList.remove('is-shifted-left');
+        }
+
+        clearTimeout(cooldownTimer);
+        cooldownTimer = setTimeout(() => {
+          isMoving = false;
+          watermark.style.pointerEvents = 'auto';
+        }, 400);
+      };
+
+      watermark.addEventListener('mouseenter', dodge);
+      watermark.addEventListener('touchstart', () => dodge(), { passive: true });
+
+      window.addEventListener('resize', () => {
+        if (isShifted) {
+          const shiftDist = getShiftDistance();
+          watermark.style.transform = `translateX(-${shiftDist}px)`;
+        }
+      });
+    };
+
     const createWatermarkEl = () => {
       const watermark = document.createElement('a');
       watermark.href = 'https://classpanel.online';
       watermark.target = '_blank';
       watermark.rel = 'noopener';
       watermark.className = 'projector-watermark';
-      watermark.title = 'ClassPanel.online — Free Online Classroom Tools & Timers';
+      watermark.title = 'ClassPanel.online — Free Online Classroom Tools & Timers (Hover to move)';
       watermark.innerHTML = `
         <img src="/assets/icons/logo.png" alt="ClassPanel" width="16" height="16">
         <span>classpanel<span class="watermark-highlight">.online</span></span>
       `;
       watermark.addEventListener('click', (e) => e.stopPropagation());
+      attachDodgeBehavior(watermark);
       return watermark;
     };
 

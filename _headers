@@ -36,6 +36,7 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 /assets/images/*
+  Content-Type: image/png
   Cache-Control: public, max-age=0, must-revalidate
 
 /manifest.webmanifest

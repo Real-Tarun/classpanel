@@ -47,6 +47,22 @@ Allow: /
 User-agent: DuckDuckBot
 Allow: /
 
+# Social Media Link Preview Crawlers (Twitter/X, Facebook, WhatsApp, LinkedIn, Discord)
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
 # AI Search Engines, Answer Engines & AI Training Crawlers (Fully Allowed for Maximum Reach)
 User-agent: GPTBot
 Allow: /

@@ -1482,4 +1482,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
+.audio-headphone-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem auto 0;
+  text-align: center;
+}
+
+.audio-headphone-tip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-surface-subtle);
+  padding: 0.25rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  letter-spacing: 0.01em;
+}
+
+.audio-headphone-tip span em {
+  font-style: normal;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+
 

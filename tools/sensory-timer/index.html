@@ -8,7 +8,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/sensory-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link rel="stylesheet" href="/assets/css/main.css?v=16">
   <style>
     .sensory-viewport {
       width: 100%;
@@ -127,22 +127,30 @@
       </div>
 
       <!-- Meditation Soundscape Selector -->
-      <div style="display: flex; gap: 0.75rem; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-        <label for="select-sensory-ambient" style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); display: inline-flex; align-items: center; gap: 0.35rem;">
-          <span>🧘 Meditation Music:</span>
-        </label>
-        <div style="display: inline-flex; align-items: center; gap: 0.4rem;">
-          <select id="select-sensory-ambient" class="select-audio-track" style="padding: 0.4rem 0.9rem; font-size: 0.88rem;" title="Choose peaceful meditation background music">
-            <option value="calm" selected>🌸 Calm Meditation</option>
-            <option value="binaural-rain">🌧️ 10Hz Alpha Beats + Rain</option>
-            <option value="journey-5d">✨ 5D Spiritual Journey</option>
-            <option value="meditation">🧘 Zen Meditation Waves</option>
-            <option value="none">🔇 Silent (No Music)</option>
-          </select>
-          <button type="button" id="btn-preview-sensory-music" class="audio-preview-btn" title="Preview / Test Meditation Music">
-            <span>▶ Preview</span>
-          </button>
+      <!-- Meditation Audio Selector Panel -->
+      <div class="audio-control-panel">
+        <div class="audio-panel-group">
+          <label for="select-sensory-ambient" class="audio-group-label">
+            <span>🧘 Meditation Music:</span>
+          </label>
+          <div class="audio-input-cluster">
+            <select id="select-sensory-ambient" class="select-audio-track" title="Choose peaceful meditation background music">
+              <option value="calm" selected>🌸 Calm Meditation</option>
+              <option value="binaural-rain">🌧️ 10Hz Alpha Beats + Rain</option>
+              <option value="journey-5d">✨ 5D Spiritual Journey</option>
+              <option value="meditation">🧘 Zen Meditation Waves</option>
+              <option value="none">🔇 Silent (No Music)</option>
+            </select>
+            <button type="button" id="btn-preview-sensory-music" class="audio-preview-btn" title="Preview / Test Meditation Music">
+              <span>▶ Preview</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Headphone Tip for Meditation & Binaural Beats -->
+      <div class="audio-headphone-tip" style="margin-bottom: 0.75rem;">
+        <span>🎧 <em>Tip:</em> Use headphones for the best calming binaural beat & meditation experience</span>
       </div>
 
       <!-- Giant Digital Display (Clickable to customize) -->
@@ -251,10 +259,10 @@
   </footer>
 
   <!-- Scripts -->
-  <script defer src="/assets/js/audio.js?v=15"></script>
+  <script defer src="/assets/js/audio.js?v=16"></script>
   <script defer src="/assets/js/storage.js"></script>
   <script defer src="/assets/js/fullscreen.js"></script>
-  <script defer src="/assets/js/common.js?v=15"></script>
+  <script defer src="/assets/js/common.js?v=16"></script>
   <script>
     (function () {
       let mode = 'breathing'; // 'breathing' or 'liquid'

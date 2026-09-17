@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v15';
+const CACHE_NAME = 'classpanel-v16';
 const STATIC_ASSETS = [
   '/',
   '/tools/',
@@ -6,6 +6,7 @@ const STATIC_ASSETS = [
   '/manifest.webmanifest',
   '/robots.txt',
   '/root.txt',
+  '/llms.txt',
   '/assets/css/main.css',
   '/assets/js/common.js',
   '/assets/js/audio.js',

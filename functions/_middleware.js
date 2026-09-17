@@ -32,26 +32,27 @@ User-agent: *
 Allow: /
 Allow: /tools/
 Allow: /blog/
+Allow: /about/
+Allow: /privacy/
+Allow: /contact/
 Allow: /assets/
-Allow: /assets/icons/
-Allow: /assets/images/
-Allow: /assets/css/
-Allow: /assets/js/
-
-# Internal Configurations & Middleware Protection
 Disallow: /functions/
 Disallow: /_redirects
 Disallow: /_headers
 Disallow: /package.json
 Disallow: /package-lock.json
 Disallow: /.git/
-Disallow: /app/
 Disallow: /cdn-cgi/
-Disallow: /404
 Disallow: /404.html
 
-# Major Search Engines
+# Googlebot & Google Search Console Inspection Tools
 User-agent: Googlebot
+Allow: /
+
+User-agent: Google-InspectionTool
+Allow: /
+
+User-agent: GoogleOther
 Allow: /
 
 User-agent: Googlebot-Image
@@ -59,18 +60,25 @@ Allow: /
 Allow: /favicon.ico
 Allow: /assets/
 
+# Microsoft Bing
 User-agent: Bingbot
 Allow: /
 
+User-agent: msnbot
+Allow: /
+
+# Yandex Search
 User-agent: YandexBot
 Allow: /
 
 User-agent: Yandex
 Allow: /
 
+# Apple Search & Siri Suggestions
 User-agent: Applebot
 Allow: /
 
+# DuckDuckGo
 User-agent: DuckDuckBot
 Allow: /
 

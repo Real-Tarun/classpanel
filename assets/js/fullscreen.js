@@ -7,6 +7,7 @@ class FullscreenManager {
   constructor() {
     this.wakeLock = null;
     this.isFullscreen = false;
+    this.isFallbackFs = false;
     this.initListeners();
   }
 
@@ -47,19 +48,56 @@ class FullscreenManager {
         watermark.addEventListener('click', (e) => e.stopPropagation());
         stage.appendChild(watermark);
       }
+
+      if (!stage.querySelector('.projector-exit-floating')) {
+        const exitBtn = document.createElement('button');
+        exitBtn.type = 'button';
+        exitBtn.className = 'projector-exit-floating';
+        exitBtn.title = 'Exit Projector Mode (Esc)';
+        exitBtn.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+          <span>Exit</span>
+        `;
+        exitBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.exit();
+        });
+        stage.appendChild(exitBtn);
+      }
     });
+
+    // Also attach to body as fallback only if no tool-stage exists
+    if (stages.length === 0 && !document.body.querySelector(':scope > .projector-watermark')) {
+      const bodyWm = document.createElement('a');
+      bodyWm.href = 'https://classpanel.online';
+      bodyWm.target = '_blank';
+      bodyWm.rel = 'noopener';
+      bodyWm.className = 'projector-watermark';
+      bodyWm.title = 'ClassPanel.online — Free Online Classroom Tools & Timers';
+      bodyWm.innerHTML = `
+        <img src="/assets/icons/logo.png" alt="ClassPanel" width="15" height="15">
+        <span>classpanel<span class="watermark-highlight">.online</span></span>
+      `;
+      bodyWm.addEventListener('click', (e) => e.stopPropagation());
+      document.body.appendChild(bodyWm);
+    }
   }
 
   handleFullscreenChange() {
     this.ensureWatermark();
-    const isNowFs = !!(
+    const hasNativeFs = !!(
       document.fullscreenElement ||
       document.webkitFullscreenElement ||
       document.mozFullScreenElement ||
       document.msFullscreenElement
     );
 
+    const isNowFs = hasNativeFs || this.isFallbackFs;
+
     this.isFullscreen = isNowFs;
+    document.body.classList.toggle('is-projector-mode', isNowFs);
 
     const stages = document.querySelectorAll('.tool-stage');
     stages.forEach(stage => {
@@ -67,6 +105,30 @@ class FullscreenManager {
         stage.classList.add('is-fullscreen');
       } else {
         stage.classList.remove('is-fullscreen');
+      }
+    });
+
+    // Directly control watermark visibility
+    const watermarks = document.querySelectorAll('.projector-watermark');
+    watermarks.forEach(wm => {
+      if (isNowFs) {
+        wm.classList.add('is-visible');
+        wm.style.display = 'inline-flex';
+      } else {
+        wm.classList.remove('is-visible');
+        wm.style.display = 'none';
+      }
+    });
+
+    // Directly control floating exit button
+    const exitBtns = document.querySelectorAll('.projector-exit-floating');
+    exitBtns.forEach(btn => {
+      if (isNowFs) {
+        btn.classList.add('is-visible');
+        btn.style.display = 'inline-flex';
+      } else {
+        btn.classList.remove('is-visible');
+        btn.style.display = 'none';
       }
     });
 
@@ -107,6 +169,7 @@ class FullscreenManager {
   }
 
   async enter(element) {
+    this.isFallbackFs = false;
     try {
       if (element.requestFullscreen) {
         await element.requestFullscreen();
@@ -116,27 +179,27 @@ class FullscreenManager {
         await element.mozRequestFullScreen();
       } else if (element.msRequestFullscreen) {
         await element.msRequestFullscreen();
+      } else {
+        this.isFallbackFs = true;
       }
     } catch (err) {
       console.warn('Native fullscreen request blocked or not supported, using CSS fallback:', err);
-      // Fallback: full-bleed CSS class
-      if (element) {
-        element.classList.toggle('is-fullscreen');
-        this.isFullscreen = element.classList.contains('is-fullscreen');
-      }
+      this.isFallbackFs = true;
     }
+    this.handleFullscreenChange();
     await this.requestWakeLock();
   }
 
   async exit() {
+    this.isFallbackFs = false;
     try {
-      if (document.exitFullscreen) {
+      if (document.exitFullscreen && document.fullscreenElement) {
         await document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
+      } else if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
         await document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
+      } else if (document.mozCancelFullScreen && document.mozFullScreenElement) {
         await document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
+      } else if (document.msExitFullscreen && document.msFullscreenElement) {
         await document.msExitFullscreen();
       }
     } catch (err) {
@@ -146,6 +209,7 @@ class FullscreenManager {
     const stages = document.querySelectorAll('.tool-stage');
     stages.forEach(s => s.classList.remove('is-fullscreen'));
     this.isFullscreen = false;
+    this.handleFullscreenChange();
     this.releaseWakeLock();
   }
 

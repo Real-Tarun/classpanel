@@ -590,13 +590,55 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   z-index: 9999 !important;
   border-radius: 0 !important;
   border: none !important;
-  padding: 2rem !important;
+  padding: 1.5rem 1.5rem 4.5rem !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   background: var(--bg-surface) !important;
-  overflow: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.tool-stage.is-fullscreen > * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Floating Exit Button in Fullscreen / Projector Mode */
+.projector-exit-floating {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  right: 1.25rem;
+  z-index: 2147483647;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.projector-exit-floating:hover {
+  background: rgba(239, 68, 68, 0.95);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.tool-stage.is-fullscreen .projector-exit-floating,
+.projector-exit-floating.is-visible {
+  display: inline-flex !important;
 }
 
 /* Projector & Fullscreen Mode Branding Watermark */
@@ -605,34 +647,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   position: fixed;
   bottom: 1.15rem;
   right: 1.25rem;
-  z-index: 10001;
+  z-index: 2147483647;
   align-items: center;
   gap: 0.45rem;
   padding: 0.35rem 0.75rem 0.35rem 0.6rem;
   border-radius: var(--radius-full);
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.95);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   pointer-events: auto;
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
 .projector-watermark:hover {
   opacity: 1;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.95);
   color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-1.5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   text-decoration: none;
 }
 
@@ -657,12 +699,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
-/* Show in Fullscreen or Projector Mode */
-.tool-stage.is-fullscreen .projector-watermark,
-:fullscreen .projector-watermark,
-:-webkit-full-screen .projector-watermark,
-:-moz-full-screen .projector-watermark,
-:-ms-fullscreen .projector-watermark {
+/* Show in Fullscreen or Projector Mode - Separate rules for 100% cross-browser reliability */
+.projector-watermark.is-visible {
+  display: inline-flex !important;
+}
+
+.tool-stage.is-fullscreen .projector-watermark {
+  display: inline-flex !important;
+}
+
+:fullscreen .projector-watermark {
+  display: inline-flex !important;
+}
+
+:-webkit-full-screen .projector-watermark {
   display: inline-flex !important;
 }
 

@@ -39,6 +39,13 @@ Allow: /assets/
 User-agent: Bingbot
 Allow: /
 
+# Yandex Search
+User-agent: YandexBot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
 # Apple Search & Siri Suggestions
 User-agent: Applebot
 Allow: /

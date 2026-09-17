@@ -20,6 +20,144 @@ export async function onRequest(context) {
     );
   }
 
+  // Serve clean robots.txt directly to prevent Cloudflare AI-block & Content-Signal injection
+  if (url.pathname === '/robots.txt') {
+    const robotsTxt = `# ==============================================================================
+# ClassPanel.online — Free Online Productivity, Study & Classroom Digital Tools
+# Canonical URL: https://classpanel.online/
+# ==============================================================================
+
+# Global Search Crawler Directives
+User-agent: *
+Allow: /
+Allow: /tools/
+Allow: /blog/
+Allow: /assets/
+Allow: /assets/icons/
+Allow: /assets/images/
+Allow: /assets/css/
+Allow: /assets/js/
+
+# Internal Configurations & Middleware Protection
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /app/
+Disallow: /cdn-cgi/
+Disallow: /404
+Disallow: /404.html
+
+# Major Search Engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /favicon.ico
+Allow: /assets/
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Social Media Link Preview Crawlers
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+# AI Search Engines, Answer Engines & AI Training Crawlers (Fully Allowed)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: img2dataset
+Allow: /
+
+# Canonical Sitemap & Host
+Host: https://classpanel.online
+Sitemap: https://classpanel.online/sitemap.xml
+`;
+    return new Response(robotsTxt, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  }
+
   // 1. Force www.classpanel.online -> https://classpanel.online
   if (hostname === 'www.classpanel.online') {
     url.hostname = 'classpanel.online';

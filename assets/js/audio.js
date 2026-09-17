@@ -165,25 +165,7 @@ class SoundSynthesizer {
 
   // Tactile Click / Tick for Buttons & Counters
   playClick() {
-    if (this.isMuted) return;
-    this.initContext();
-    if (!this.ctx) return;
-
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(700, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.03);
-
-    gain.gain.setValueAtTime(0.2 * this.volume, this.ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
-
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-
-    osc.start();
-    osc.stop(this.ctx.currentTime + 0.04);
+    this.playButtonClick();
   }
 
   // Metallic Coin Flip Clink
@@ -358,16 +340,78 @@ class SoundSynthesizer {
     }
   }
 
-  // --- Real Button Click FX ---
+  // --- Tactile Mechanical Button Click FX ---
   playButtonClick() {
     if (this.isMuted) return;
-    try {
-      const audio = new Audio('/assets/audio/button-click.mp3');
-      audio.volume = Math.min(1, this.volume * 0.65);
-      audio.play().catch(() => this.playPop());
-    } catch(e) {
-      this.playPop();
+
+    // Prevent double-fire within 30ms (e.g. pointerdown + synthetic click)
+    const nowMs = Date.now();
+    if (this._lastClickTime && (nowMs - this._lastClickTime < 30)) {
+      return;
     }
+    this._lastClickTime = nowMs;
+
+    this.initContext();
+
+    // 1. Instant zero-latency Web Audio API tactile switch synthesis
+    if (this.ctx) {
+      try {
+        const now = this.ctx.currentTime;
+
+        // Layer A: Crisp mechanical snap (1800Hz -> 500Hz)
+        const oscSnap = this.ctx.createOscillator();
+        const gainSnap = this.ctx.createGain();
+        oscSnap.type = 'triangle';
+        oscSnap.frequency.setValueAtTime(1800, now);
+        oscSnap.frequency.exponentialRampToValueAtTime(500, now + 0.035);
+
+        gainSnap.gain.setValueAtTime(0.65 * this.volume, now);
+        gainSnap.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+        oscSnap.connect(gainSnap);
+        gainSnap.connect(this.ctx.destination);
+        oscSnap.start(now);
+        oscSnap.stop(now + 0.045);
+
+        // Layer B: Tactile bottom-out body thump (360Hz -> 140Hz)
+        const oscThump = this.ctx.createOscillator();
+        const gainThump = this.ctx.createGain();
+        oscThump.type = 'sine';
+        oscThump.frequency.setValueAtTime(360, now);
+        oscThump.frequency.exponentialRampToValueAtTime(140, now + 0.055);
+
+        gainThump.gain.setValueAtTime(0.5 * this.volume, now);
+        gainThump.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+        oscThump.connect(gainThump);
+        gainThump.connect(this.ctx.destination);
+        oscThump.start(now);
+        oscThump.stop(now + 0.065);
+        return;
+      } catch (e) {
+        // Fall back to HTML5 audio if audio context fails
+      }
+    }
+
+    // 2. HTML5 Audio fallback
+    try {
+      if (!this._clickPool) {
+        this._clickPool = [
+          new Audio('/assets/audio/button-click.wav'),
+          new Audio('/assets/audio/button-click.wav')
+        ];
+        this._clickIdx = 0;
+      }
+      const audio = this._clickPool[this._clickIdx % this._clickPool.length];
+      this._clickIdx++;
+      audio.currentTime = 0;
+      audio.volume = Math.min(1, this.volume * 0.85);
+      audio.play().catch(() => {});
+    } catch (e) {}
+  }
+
+  playPop() {
+    this.playButtonClick();
   }
 
   // --- Real Pixabay Background Music Player (Loops during timer) ---

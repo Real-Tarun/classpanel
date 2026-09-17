@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v17';
+const CACHE_NAME = 'classpanel-v18';
 const STATIC_ASSETS = [
   '/',
   '/tools/',
@@ -16,6 +16,7 @@ const STATIC_ASSETS = [
   '/assets/js/fullscreen.js',
   '/assets/audio/digital-alarm.mp3',
   '/assets/audio/button-click.mp3',
+  '/assets/audio/button-click.wav',
   '/assets/icons/logo.png',
   '/assets/icons/icon.svg',
   '/assets/icons/favicon.png',

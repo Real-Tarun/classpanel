@@ -431,6 +431,31 @@
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
 
+    // Global tactile button click sound & audio unlock
+    const playClickOnInteraction = (e) => {
+      if (window.SoundFX) {
+        window.SoundFX.initContext();
+      }
+
+      if (!window.SoundFX || window.SoundFX.isMuted) return;
+
+      const target = e.target;
+      if (!target || typeof target.closest !== 'function') return;
+
+      const interactive = target.closest(
+        'button, [role="button"], .btn, .btn-primary, .btn-secondary, .btn-outline, .btn-giant, ' +
+        '.preset-chip, .category-pill, .audio-chip, .audio-preview-btn, .action-btn, .pill-btn, ' +
+        '.segmented-btn, .tab-btn, .keypad-btn, .counter-btn, .tool-quick-btn, .nav-btn, .modal-close, ' +
+        '.chip, .filter-chip, .tag-btn, [data-action], summary'
+      );
+
+      if (interactive && !interactive.disabled && interactive.getAttribute('aria-disabled') !== 'true') {
+        window.SoundFX.playButtonClick();
+      }
+    };
+
+    document.addEventListener('pointerdown', playClickOnInteraction, { passive: true });
+
     // Theme Toggle Buttons
     document.addEventListener('click', (e) => {
       const themeBtn = e.target.closest('[data-action="toggle-theme"]');

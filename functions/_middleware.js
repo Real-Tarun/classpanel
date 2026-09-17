@@ -6,6 +6,20 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const hostname = url.hostname.toLowerCase();
 
+  // Handle Yandex Webmaster verification directly with HTTP 200 (prevents 308 redirect)
+  if (url.pathname === '/yandex_68d0900cb3d0d199.html' || url.pathname === '/yandex_68d0900cb3d0d199') {
+    return new Response(
+      `<html>\n    <head>\n        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n    </head>\n    <body>Verification: 68d0900cb3d0d199</body>\n</html>\n`,
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=UTF-8',
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      }
+    );
+  }
+
   // 1. Force www.classpanel.online -> https://classpanel.online
   if (hostname === 'www.classpanel.online') {
     url.hostname = 'classpanel.online';

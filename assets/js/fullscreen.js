@@ -24,29 +24,38 @@ class FullscreenManager {
       }
     });
 
+    this.ensureWatermark();
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.ensureWatermark());
-    } else {
-      this.ensureWatermark();
     }
   }
 
   ensureWatermark() {
+    const createWatermarkEl = () => {
+      const watermark = document.createElement('a');
+      watermark.href = 'https://classpanel.online';
+      watermark.target = '_blank';
+      watermark.rel = 'noopener';
+      watermark.className = 'projector-watermark';
+      watermark.title = 'ClassPanel.online — Free Online Classroom Tools & Timers';
+      watermark.innerHTML = `
+        <img src="/assets/icons/logo.png" alt="ClassPanel" width="16" height="16">
+        <span>classpanel<span class="watermark-highlight">.online</span></span>
+      `;
+      watermark.addEventListener('click', (e) => e.stopPropagation());
+      return watermark;
+    };
+
+    // Ensure watermark is attached to document.body
+    if (document.body && !document.body.querySelector(':scope > .projector-watermark')) {
+      document.body.appendChild(createWatermarkEl());
+    }
+
+    // Also attach to each .tool-stage so element-level fullscreen displays it
     const stages = document.querySelectorAll('.tool-stage');
     stages.forEach(stage => {
-      if (!stage.querySelector('.projector-watermark')) {
-        const watermark = document.createElement('a');
-        watermark.href = 'https://classpanel.online';
-        watermark.target = '_blank';
-        watermark.rel = 'noopener';
-        watermark.className = 'projector-watermark';
-        watermark.title = 'ClassPanel.online — Free Online Classroom Tools & Timers';
-        watermark.innerHTML = `
-          <img src="/assets/icons/logo.png" alt="ClassPanel" width="15" height="15">
-          <span>classpanel<span class="watermark-highlight">.online</span></span>
-        `;
-        watermark.addEventListener('click', (e) => e.stopPropagation());
-        stage.appendChild(watermark);
+      if (!stage.querySelector(':scope > .projector-watermark')) {
+        stage.appendChild(createWatermarkEl());
       }
 
       if (!stage.querySelector('.projector-exit-floating')) {
@@ -67,22 +76,6 @@ class FullscreenManager {
         stage.appendChild(exitBtn);
       }
     });
-
-    // Also attach to body as fallback only if no tool-stage exists
-    if (stages.length === 0 && !document.body.querySelector(':scope > .projector-watermark')) {
-      const bodyWm = document.createElement('a');
-      bodyWm.href = 'https://classpanel.online';
-      bodyWm.target = '_blank';
-      bodyWm.rel = 'noopener';
-      bodyWm.className = 'projector-watermark';
-      bodyWm.title = 'ClassPanel.online — Free Online Classroom Tools & Timers';
-      bodyWm.innerHTML = `
-        <img src="/assets/icons/logo.png" alt="ClassPanel" width="15" height="15">
-        <span>classpanel<span class="watermark-highlight">.online</span></span>
-      `;
-      bodyWm.addEventListener('click', (e) => e.stopPropagation());
-      document.body.appendChild(bodyWm);
-    }
   }
 
   handleFullscreenChange() {
@@ -105,18 +98,6 @@ class FullscreenManager {
         stage.classList.add('is-fullscreen');
       } else {
         stage.classList.remove('is-fullscreen');
-      }
-    });
-
-    // Directly control watermark visibility
-    const watermarks = document.querySelectorAll('.projector-watermark');
-    watermarks.forEach(wm => {
-      if (isNowFs) {
-        wm.classList.add('is-visible');
-        wm.style.display = 'inline-flex';
-      } else {
-        wm.classList.remove('is-visible');
-        wm.style.display = 'none';
       }
     });
 

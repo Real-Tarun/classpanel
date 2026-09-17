@@ -641,78 +641,74 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: inline-flex !important;
 }
 
-/* Projector & Fullscreen Mode Branding Watermark */
+/* Branding Watermark — subtle, elegant, non-distracting mini branding pill */
 .projector-watermark {
-  display: none;
-  position: fixed;
-  bottom: 1.15rem;
-  right: 1.25rem;
-  z-index: 2147483647;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.35rem 0.75rem 0.35rem 0.6rem;
-  border-radius: var(--radius-full);
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  pointer-events: auto;
-  opacity: 0.9;
+  display: inline-flex !important;
+  position: fixed !important;
+  bottom: 1.15rem !important;
+  right: 1.25rem !important;
+  z-index: 2147483647 !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  padding: 0.35rem 0.75rem 0.35rem 0.6rem !important;
+  border-radius: 9999px !important;
+  background: rgba(15, 23, 42, 0.82) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.02em !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  user-select: none !important;
+  pointer-events: auto !important;
+  opacity: 0.88 !important;
 }
 
 .projector-watermark:hover {
-  opacity: 1;
-  background: rgba(15, 23, 42, 0.95);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-1.5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-  text-decoration: none;
+  opacity: 1 !important;
+  background: rgba(15, 23, 42, 0.96) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
+  text-decoration: none !important;
 }
 
 .projector-watermark img {
-  width: 15px;
-  height: 15px;
-  object-fit: contain;
-  border-radius: 3px;
-  display: block;
+  width: 16px !important;
+  height: 16px !important;
+  object-fit: contain !important;
+  border-radius: 3px !important;
+  display: block !important;
 }
 
 .projector-watermark .watermark-highlight {
-  color: #818CF8;
+  color: #818CF8 !important;
 }
 
 @media (max-width: 600px) {
   .projector-watermark {
-    bottom: 0.75rem;
-    right: 0.75rem;
-    font-size: 0.7rem;
-    padding: 0.25rem 0.55rem;
+    bottom: 0.75rem !important;
+    right: 0.75rem !important;
+    font-size: 0.72rem !important;
+    padding: 0.25rem 0.55rem !important;
   }
 }
 
-/* Show in Fullscreen or Projector Mode - Separate rules for 100% cross-browser reliability */
-.projector-watermark.is-visible {
-  display: inline-flex !important;
+/* Ensure only one watermark displays when nested inside stage in normal mode */
+.tool-stage:not(.is-fullscreen) > .projector-watermark {
+  display: none !important;
 }
 
-.tool-stage.is-fullscreen .projector-watermark {
-  display: inline-flex !important;
-}
-
-:fullscreen .projector-watermark {
-  display: inline-flex !important;
-}
-
-:-webkit-full-screen .projector-watermark {
+.tool-stage.is-fullscreen > .projector-watermark,
+:fullscreen .tool-stage > .projector-watermark,
+.tool-stage:fullscreen > .projector-watermark {
   display: inline-flex !important;
 }
 

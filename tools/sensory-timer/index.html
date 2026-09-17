@@ -126,31 +126,23 @@
         <button class="preset-chip" data-rhythm="coherence" title="Coherent Breathing: 5s In, 5s Out">🌊 5-5 Coherence</button>
       </div>
 
-      <!-- Music Loop & Alarm Settings Bar -->
-      <div style="display: flex; gap: 0.75rem; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 0.75rem;">
-        <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <label for="select-sensory-ambient" style="font-weight: 700; font-size: 0.85rem; color: var(--text-muted);">🎵 Music Loop:</label>
-          <select id="select-sensory-ambient" class="select-input" style="padding: 0.35rem 0.75rem; font-weight: 600; font-size: 0.85rem; border-radius: var(--radius-full);">
+      <!-- Meditation Soundscape Selector -->
+      <div style="display: flex; gap: 0.75rem; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <label for="select-sensory-ambient" style="font-weight: 800; font-size: 0.88rem; color: var(--text-primary); display: inline-flex; align-items: center; gap: 0.35rem;">
+          <span>🧘 Meditation Music:</span>
+        </label>
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem;">
+          <select id="select-sensory-ambient" class="select-audio-track" style="padding: 0.4rem 0.9rem; font-size: 0.88rem;" title="Choose peaceful meditation background music">
             <option value="calm" selected>🌸 Calm Meditation</option>
-            <option value="binaural-rain">🌧️ 10Hz Alpha Binaural + Rain</option>
+            <option value="binaural-rain">🌧️ 10Hz Alpha Beats + Rain</option>
             <option value="journey-5d">✨ 5D Spiritual Journey</option>
             <option value="meditation">🧘 Zen Meditation Waves</option>
-            <option value="pink-noise">📻 Pure Pink Noise</option>
-            <option value="rain">🌧️ Rain Ambient</option>
             <option value="none">🔇 Silent (No Music)</option>
           </select>
+          <button type="button" id="btn-preview-sensory-music" class="audio-preview-btn" title="Preview / Test Meditation Music">
+            <span>▶ Preview</span>
+          </button>
         </div>
-        <button id="btn-toggle-sensory-alarm-mode" class="preset-chip" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;" title="Switch alarm between continuous loop and short 2-3s ting">
-          🔁 Loop Alarm (Default)
-        </button>
-      </div>
-
-      <!-- Alarm Ringing Banner -->
-      <div id="alarm-banner" style="display: none; background: #DC2626; color: #FFFFFF; padding: 0.85rem 1.5rem; border-radius: var(--radius-lg); margin-top: 1rem; text-align: center; font-weight: 800; font-size: 1.25rem; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4); animation: pulse 1s infinite alternate; cursor: pointer;">
-        <span style="margin-right: 0.5rem;">⏰</span> Session Complete! 
-        <button id="btn-dismiss-alarm" style="margin-left: 1rem; background: #FFFFFF; color: #DC2626; border: none; font-weight: 900; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); cursor: pointer;">
-          🛑 Stop Alarm (Space)
-        </button>
       </div>
 
       <!-- Giant Digital Display (Clickable to customize) -->
@@ -386,71 +378,51 @@
       }
 
       const selectAmbient = document.getElementById('select-sensory-ambient');
-      const btnToggleAlarmMode = document.getElementById('btn-toggle-sensory-alarm-mode');
-      const alarmBanner = document.getElementById('alarm-banner');
-      const btnDismissAlarm = document.getElementById('btn-dismiss-alarm');
+      const btnPreviewSensory = document.getElementById('btn-preview-sensory-music');
 
-      function updateAlarmModeBtn() {
-        const currentMode = window.SoundFX ? window.SoundFX.alarmLoopMode : (localStorage.getItem('classpanel_alarm_loop_mode') || 'loop');
-        if (btnToggleAlarmMode) {
-          if (currentMode === 'loop') {
-            btnToggleAlarmMode.innerHTML = '🔁 Loop Alarm (Default)';
-            btnToggleAlarmMode.classList.add('active');
+      if (btnPreviewSensory) {
+        btnPreviewSensory.addEventListener('click', () => {
+          if (selectAmbient.value === 'none') selectAmbient.value = 'calm';
+          const isPlaying = window.SoundFX && window.SoundFX.previewMusic ? window.SoundFX.previewMusic(selectAmbient.value, 0.5) : false;
+          if (isPlaying) {
+            btnPreviewSensory.classList.add('is-playing');
+            btnPreviewSensory.innerHTML = '<span>⏹ Stop</span>';
           } else {
-            btnToggleAlarmMode.innerHTML = '🔔 Short Ting (2-3s)';
-            btnToggleAlarmMode.classList.remove('active');
+            btnPreviewSensory.classList.remove('is-playing');
+            btnPreviewSensory.innerHTML = '<span>▶ Preview</span>';
           }
-        }
-      }
-
-      if (btnToggleAlarmMode) {
-        updateAlarmModeBtn();
-        btnToggleAlarmMode.addEventListener('click', () => {
-          const cur = window.SoundFX ? window.SoundFX.alarmLoopMode : 'loop';
-          const next = cur === 'loop' ? 'ting' : 'loop';
-          if (window.SoundFX && window.SoundFX.setAlarmLoopMode) {
-            window.SoundFX.setAlarmLoopMode(next);
-          }
-          updateAlarmModeBtn();
         });
       }
 
-      function dismissAlarm() {
-        if (window.SoundFX && window.SoundFX.stopAlarm) {
-          window.SoundFX.stopAlarm();
-        }
-        if (alarmBanner) alarmBanner.style.display = 'none';
-      }
-
-      if (btnDismissAlarm) btnDismissAlarm.addEventListener('click', dismissAlarm);
-      if (alarmBanner) alarmBanner.addEventListener('click', dismissAlarm);
-
-      window.addEventListener('classpanel-alarm-started', () => {
-        if (alarmBanner) alarmBanner.style.display = 'block';
-      });
-      window.addEventListener('classpanel-alarm-stopped', () => {
-        if (alarmBanner) alarmBanner.style.display = 'none';
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (alarmBanner && alarmBanner.style.display === 'block') {
-          if (e.code === 'Space' || e.key === 'Escape' || e.key === 'Enter') {
-            e.preventDefault();
-            dismissAlarm();
+      if (selectAmbient) {
+        selectAmbient.addEventListener('change', () => {
+          if (btnPreviewSensory) {
+            btnPreviewSensory.classList.remove('is-playing');
+            btnPreviewSensory.innerHTML = '<span>▶ Preview</span>';
           }
-        }
-      });
+          if (isRunning) {
+            if (selectAmbient.value !== 'none' && window.SoundFX && window.SoundFX.startMusic) {
+              window.SoundFX.startMusic(selectAmbient.value, 0.5);
+            } else if (window.SoundFX && window.SoundFX.stopMusic) {
+              window.SoundFX.stopMusic();
+            }
+          }
+        });
+      }
 
       function start() {
         if (isRunning) return;
         isRunning = true;
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `<span>Pause Calm</span>`;
-        dismissAlarm();
+        if (btnPreviewSensory) {
+          btnPreviewSensory.classList.remove('is-playing');
+          btnPreviewSensory.innerHTML = '<span>▶ Preview</span>';
+        }
 
         // Start ambient music loop
         if (selectAmbient && selectAmbient.value !== 'none' && window.SoundFX && window.SoundFX.startMusic) {
-          window.SoundFX.startMusic(selectAmbient.value, 0.45);
+          window.SoundFX.startMusic(selectAmbient.value, 0.5);
         } else if (window.SoundFX && window.SoundFX.playGentleChime) {
           window.SoundFX.playGentleChime();
         }
@@ -486,7 +458,10 @@
 
       function reset() {
         pause();
-        dismissAlarm();
+        if (btnPreviewSensory) {
+          btnPreviewSensory.classList.remove('is-playing');
+          btnPreviewSensory.innerHTML = '<span>▶ Preview</span>';
+        }
         if (window.SoundFX && window.SoundFX.stopMusic) {
           window.SoundFX.stopMusic();
         }
@@ -507,8 +482,9 @@
         if (window.SoundFX && window.SoundFX.stopMusic) {
           window.SoundFX.stopMusic();
         }
-        if (window.SoundFX && window.SoundFX.playCompletionAlarm) {
-          window.SoundFX.playCompletionAlarm();
+        // Peaceful ending chime for meditation
+        if (window.SoundFX && window.SoundFX.playGentleChime) {
+          window.SoundFX.playGentleChime();
         }
         if (window.ClassPanel) window.ClassPanel.showToast('Mindfulness session complete 🌿');
       }

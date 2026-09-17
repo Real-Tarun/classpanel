@@ -373,6 +373,7 @@ class SoundSynthesizer {
   // --- Real Pixabay Background Music Player (Loops during timer) ---
   startMusic(trackKey = 'calm', userVol = 0.5) {
     this.stopMusic();
+    if (trackKey === 'none' || !trackKey) return;
     if (this.isMuted) return;
 
     // Check if it's a real file track
@@ -380,20 +381,34 @@ class SoundSynthesizer {
     if (track) {
       this.currentMusicTrack = trackKey;
       try {
-        this.currentMusicAudio = new Audio(track.src);
-        this.currentMusicAudio.loop = true;
-        this.currentMusicAudio.volume = Math.max(0, Math.min(1, userVol)) * this.volume * 0.55;
-        this.currentMusicAudio.play().catch(err => {
-          console.warn('ClassPanel Music play fallback:', err);
-          this.startAmbient('focus', userVol);
-        });
+        const audio = new Audio(track.src);
+        audio.loop = true;
+        audio.volume = Math.max(0, Math.min(1, userVol)) * Math.max(0.4, this.volume) * 0.75;
+        this.currentMusicAudio = audio;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn('ClassPanel Music autoplay/play fallback:', err);
+            this.startAmbient('focus', userVol);
+          });
+        }
       } catch(e) {
+        console.warn('Audio creation error:', e);
         this.startAmbient('focus', userVol);
       }
     } else {
       // Fallback to procedural synth track (focus, rain, zen)
       this.startAmbient(trackKey, userVol);
     }
+  }
+
+  previewMusic(trackKey = 'calm', userVol = 0.5) {
+    if (this.currentMusicAudio && !this.currentMusicAudio.paused && this.currentMusicTrack === trackKey) {
+      this.stopMusic();
+      return false;
+    }
+    this.startMusic(trackKey, userVol);
+    return true;
   }
 
   pauseMusic() {
@@ -429,7 +444,7 @@ class SoundSynthesizer {
     this.setAmbientVolume(v);
   }
 
-  // --- Timer Completion Alarm (Continuous Loop by Default vs Short 2-3s Ting) ---
+  // --- Timer Completion Alarm (Uses user's Digital Alarm Clock sound: Loop vs Short 2-3s Ting) ---
   playCompletionAlarm(mode = null) {
     if (this.isMuted) return;
     this.stopAlarm();
@@ -437,27 +452,52 @@ class SoundSynthesizer {
 
     const activeMode = mode || this.alarmLoopMode || 'loop';
 
-    // 1. Short 2-3s Ting / Chime Mode
+    // 1. Short Ting Mode (2-3s burst of user's digital alarm, then auto stops)
     if (activeMode === 'ting') {
-      this.playGentleChime();
+      try {
+        const tingAudio = new Audio('/assets/audio/digital-alarm.mp3');
+        tingAudio.loop = false;
+        tingAudio.volume = Math.min(1, this.volume * 0.85);
+        this.alarmAudio = tingAudio;
+        tingAudio.play().catch(() => this.playBeep(true));
+        setTimeout(() => {
+          if (this.alarmAudio === tingAudio) {
+            this.stopAlarm();
+          }
+        }, 2600);
+      } catch(e) {
+        this.playBeep(true);
+      }
       return;
     }
 
-    // 2. Continuous Loop Mode (Default - rings until user dismisses)
+    // 2. Continuous Loop Mode (Default - rings digital alarm continuously until user stops)
     this.isAlarmRinging = true;
     try {
       this.alarmAudio = new Audio('/assets/audio/digital-alarm.mp3');
       this.alarmAudio.loop = true;
       this.alarmAudio.volume = Math.min(1, this.volume * 0.85);
-      this.alarmAudio.play().catch(err => {
-        console.warn('Alarm audio fallback to procedural loop:', err);
-        this._startProceduralAlarmLoop();
-      });
+      const p = this.alarmAudio.play();
+      if (p !== undefined) {
+        p.catch(err => {
+          console.warn('Alarm audio fallback to procedural loop:', err);
+          this._startProceduralAlarmLoop();
+        });
+      }
     } catch(e) {
       this._startProceduralAlarmLoop();
     }
 
     window.dispatchEvent(new CustomEvent('classpanel-alarm-started', { detail: { mode: 'loop' } }));
+  }
+
+  previewAlarm(mode = null) {
+    if (this.isAlarmRinging) {
+      this.stopAlarm();
+      return false;
+    }
+    this.playCompletionAlarm(mode);
+    return true;
   }
 
   _startProceduralAlarmLoop() {

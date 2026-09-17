@@ -141,13 +141,6 @@
             <button id="btn-mode-pomodoro" class="preset-chip" style="background: transparent; border: none;">🍅 Focus (Pomodoro)</button>
             <button id="btn-mode-stopwatch" class="preset-chip" style="background: transparent; border: none;">Stopwatch</button>
           </div>
-
-          <select id="select-alarm-sound" class="select-input" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem;" title="Choose End Alarm Tone">
-            <option value="bell">🔔 School Bell</option>
-            <option value="chime">🎶 Gentle Chime</option>
-            <option value="fanfare">🎺 Victory Fanfare</option>
-            <option value="beep">⏰ Digital Beep</option>
-          </select>
         </div>
       </div>
 
@@ -242,34 +235,49 @@
         <span id="pomodoro-cycle-text" style="color: var(--text-muted); font-size: 0.85rem;">Cycle 1 of 4</span>
       </div>
 
-      <!-- Ambient Background Music & Alarm Toolbar -->
-      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem; padding: 0.5rem 1.1rem; background: var(--bg-surface-subtle); border-radius: var(--radius-full); border: 1px solid var(--border-color); max-width: 680px; margin-left: auto; margin-right: auto;">
-        <label style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; user-select: none;">
-          <input type="checkbox" id="check-ambient-music" style="accent-color: var(--primary); width: 1.1rem; height: 1.1rem;">
-          <span>🎵 Music Loop</span>
-        </label>
-        <select id="select-ambient-track" class="select-input" style="width: auto; padding: 0.25rem 0.6rem; font-size: 0.8rem; font-weight: 600;" title="Select Background Music">
-          <option value="calm">🧘 Calm Meditation</option>
-          <option value="rain">🌧️ Alpha Beats with Rain</option>
-          <option value="5d">✨ 5D Spiritual Journey</option>
-          <option value="meditation">🎵 Deep Meditation Music</option>
-          <option value="focus">⚡ Focus Drone</option>
-          <option value="zen">🔔 Zen Tibetan Chimes</option>
-        </select>
-        <div style="display: inline-flex; align-items: center; gap: 0.35rem;">
-          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">Vol:</span>
-          <input type="range" id="ambient-volume" min="0" max="1" step="0.05" value="0.5" style="width: 65px; accent-color: var(--primary); cursor: pointer;" title="Music Volume">
+      <!-- Unified Sound & Alarm Settings Panel -->
+      <div class="audio-control-panel">
+        <!-- 1. Background Music Loop -->
+        <div class="audio-panel-group">
+          <label for="select-ambient-track" class="audio-group-label">
+            <span>🎵 Background Music:</span>
+          </label>
+          <div class="audio-input-cluster">
+            <select id="select-ambient-track" class="select-audio-track" title="Background Music Loop while timer runs">
+              <option value="none">🔇 None (Silent)</option>
+              <option value="calm" selected>🌸 Calm Meditation</option>
+              <option value="rain">🌧️ 10Hz Alpha Beats + Rain</option>
+              <option value="5d">✨ 5D Spiritual Journey</option>
+              <option value="meditation">🧘 Zen Meditation Waves</option>
+            </select>
+            <button type="button" id="btn-preview-music" class="audio-preview-btn" title="Preview / Test Music">
+              <span>▶ Preview</span>
+            </button>
+          </div>
         </div>
-        <span style="color: var(--border-strong);">|</span>
-        <button id="btn-toggle-alarm-mode" class="preset-chip" style="padding: 0.25rem 0.65rem; font-size: 0.8rem; font-weight: 700;" title="Toggle Alarm Ending Style: Continuous Loop vs Short Ting">
-          🔁 Loop Alarm (Default)
-        </button>
+
+        <div class="audio-panel-divider"></div>
+
+        <!-- 2. End Alarm (Digital Alarm Clock) -->
+        <div class="audio-panel-group">
+          <span class="audio-group-label">
+            <span>⏰ End Alarm:</span>
+          </span>
+          <div class="audio-input-cluster">
+            <button type="button" id="btn-toggle-alarm-mode" class="preset-chip active" style="font-size: 0.8rem; padding: 0.35rem 0.8rem; font-weight: 700;" title="Toggle Alarm Ending Style: Continuous Loop vs Short Ting">
+              🔁 Loop Alarm (Default)
+            </button>
+            <button type="button" id="btn-test-alarm" class="audio-preview-btn" title="Test Digital Alarm Sound">
+              <span>🔊 Test Alarm</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Pulsing Alarm Ringing Alert Banner -->
       <div id="alarm-banner" style="display: none; align-items: center; justify-content: center; gap: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--accent-rose), #dc2626); color: #fff; border-radius: var(--radius-full); font-weight: 800; font-size: 1.05rem; margin: 1.25rem auto 0; max-width: 540px; box-shadow: 0 0 25px rgba(220, 38, 38, 0.6); cursor: pointer; animation: pulse 1s infinite alternate;">
         <span>⏰ TIME'S UP! Alarm Ringing...</span>
-        <button id="btn-stop-alarm" style="background: #fff; color: #dc2626; border: none; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); font-weight: 900; font-size: 0.9rem; cursor: pointer;">
+        <button type="button" id="btn-stop-alarm" style="background: #fff; color: #dc2626; border: none; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); font-weight: 900; font-size: 0.9rem; cursor: pointer;">
           🛑 Stop Alarm (Space)
         </button>
       </div>
@@ -387,7 +395,6 @@
       const btnPomodoro = document.getElementById('btn-mode-pomodoro');
       const btnStopwatch = document.getElementById('btn-mode-stopwatch');
       const modeSubtitle = document.getElementById('timer-mode-subtitle');
-      const soundSelect = document.getElementById('select-alarm-sound');
       const presetContainer = document.getElementById('countdown-presets');
       const presetButtons = document.querySelectorAll('#countdown-presets [data-seconds]');
       const timeAdjustButtons = document.getElementById('time-adjust-buttons');
@@ -397,9 +404,12 @@
       const pomodoroPhaseText = document.getElementById('pomodoro-phase-text');
       const pomodoroCycleText = document.getElementById('pomodoro-cycle-text');
 
-      const checkAmbient = document.getElementById('check-ambient-music');
       const selectAmbient = document.getElementById('select-ambient-track');
-      const ambientVol = document.getElementById('ambient-volume');
+      const btnPreviewMusic = document.getElementById('btn-preview-music');
+      const btnToggleAlarmMode = document.getElementById('btn-toggle-alarm-mode');
+      const btnTestAlarm = document.getElementById('btn-test-alarm');
+      const alarmBanner = document.getElementById('alarm-banner');
+      const btnStopAlarm = document.getElementById('btn-stop-alarm');
 
       let pomodoroPhase = 'work'; // 'work' | 'break'
       let pomodoroCycle = 1;
@@ -537,21 +547,17 @@
         });
       });
 
-      // Alarm & Music Elements
-      const btnToggleAlarmMode = document.getElementById('btn-toggle-alarm-mode');
-      const alarmBanner = document.getElementById('alarm-banner');
-      const btnStopAlarm = document.getElementById('btn-stop-alarm');
-
+      // Alarm Loop Mode ('loop' default or 'ting')
       let alarmLoopMode = localStorage.getItem('classpanel_alarm_loop_mode') || 'loop'; // 'loop' (default) or 'ting'
 
       function updateAlarmModeUI() {
         if (!btnToggleAlarmMode) return;
         if (alarmLoopMode === 'ting') {
           btnToggleAlarmMode.textContent = '🔔 Short Ting (2-3s)';
-          btnToggleAlarmMode.style.borderColor = 'var(--border-color)';
+          btnToggleAlarmMode.classList.remove('active');
         } else {
           btnToggleAlarmMode.textContent = '🔁 Loop Alarm (Default)';
-          btnToggleAlarmMode.style.borderColor = 'var(--primary)';
+          btnToggleAlarmMode.classList.add('active');
         }
       }
       updateAlarmModeUI();
@@ -566,7 +572,62 @@
           }
           updateAlarmModeUI();
           if (window.ClassPanel) {
-            window.ClassPanel.showToast(alarmLoopMode === 'loop' ? 'Alarm will ring in continuous loop until stopped' : 'Alarm set to single short chime (2-3s)');
+            window.ClassPanel.showToast(alarmLoopMode === 'loop' ? 'End alarm set to Continuous Loop' : 'End alarm set to Short 2-3s Ting');
+          }
+        });
+      }
+
+      // Music Preview button
+      if (btnPreviewMusic) {
+        btnPreviewMusic.addEventListener('click', () => {
+          if (selectAmbient.value === 'none') {
+            selectAmbient.value = 'calm';
+          }
+          const isPlaying = window.SoundFX && window.SoundFX.previewMusic ? window.SoundFX.previewMusic(selectAmbient.value, 0.6) : false;
+          if (isPlaying) {
+            btnPreviewMusic.classList.add('is-playing');
+            btnPreviewMusic.innerHTML = '<span>⏹ Stop</span>';
+          } else {
+            btnPreviewMusic.classList.remove('is-playing');
+            btnPreviewMusic.innerHTML = '<span>▶ Preview</span>';
+          }
+        });
+      }
+
+      // Alarm Test button (Plays user's digital alarm sound)
+      if (btnTestAlarm) {
+        btnTestAlarm.addEventListener('click', () => {
+          if (window.SoundFX && window.SoundFX.isAlarmRinging) {
+            dismissAlarm();
+            return;
+          }
+          if (window.SoundFX && window.SoundFX.playCompletionAlarm) {
+            window.SoundFX.playCompletionAlarm(alarmLoopMode);
+            btnTestAlarm.classList.add('is-playing');
+            btnTestAlarm.innerHTML = '<span>🛑 Stop</span>';
+            if (alarmLoopMode === 'ting') {
+              setTimeout(() => {
+                btnTestAlarm.classList.remove('is-playing');
+                btnTestAlarm.innerHTML = '<span>🔊 Test Alarm</span>';
+              }, 2600);
+            }
+          }
+        });
+      }
+
+      // Ambient Music track change
+      if (selectAmbient) {
+        selectAmbient.addEventListener('change', () => {
+          if (btnPreviewMusic) {
+            btnPreviewMusic.classList.remove('is-playing');
+            btnPreviewMusic.innerHTML = '<span>▶ Preview</span>';
+          }
+          if (isRunning) {
+            if (selectAmbient.value !== 'none' && window.SoundFX && window.SoundFX.startMusic) {
+              window.SoundFX.startMusic(selectAmbient.value, 0.6);
+            } else if (window.SoundFX && window.SoundFX.stopMusic) {
+              window.SoundFX.stopMusic();
+            }
           }
         });
       }
@@ -580,10 +641,22 @@
           window.SoundFX.stopAlarm();
         }
         if (alarmBanner) alarmBanner.style.display = 'none';
+        if (btnTestAlarm) {
+          btnTestAlarm.classList.remove('is-playing');
+          btnTestAlarm.innerHTML = '<span>🔊 Test Alarm</span>';
+        }
       }
 
       if (btnStopAlarm) btnStopAlarm.addEventListener('click', dismissAlarm);
       if (alarmBanner) alarmBanner.addEventListener('click', dismissAlarm);
+
+      window.addEventListener('classpanel-alarm-stopped', () => {
+        if (btnTestAlarm) {
+          btnTestAlarm.classList.remove('is-playing');
+          btnTestAlarm.innerHTML = '<span>🔊 Test Alarm</span>';
+        }
+        if (alarmBanner) alarmBanner.style.display = 'none';
+      });
 
       // Keyboard & Display Click dismiss for ringing alarm
       window.addEventListener('keydown', (e) => {
@@ -600,32 +673,13 @@
         }
       });
 
-      // Ambient Music track and volume changes
-      checkAmbient.addEventListener('change', () => {
-        if (isRunning) {
-          if (checkAmbient.checked && window.SoundFX && window.SoundFX.startMusic) {
-            window.SoundFX.startMusic(selectAmbient.value, parseFloat(ambientVol.value));
-          } else if (window.SoundFX && window.SoundFX.stopMusic) {
-            window.SoundFX.stopMusic();
-          }
-        }
-      });
-
-      selectAmbient.addEventListener('change', () => {
-        if (isRunning && checkAmbient.checked && window.SoundFX && window.SoundFX.startMusic) {
-          window.SoundFX.startMusic(selectAmbient.value, parseFloat(ambientVol.value));
-        }
-      });
-
-      ambientVol.addEventListener('input', () => {
-        if (window.SoundFX && window.SoundFX.setMusicVolume) {
-          window.SoundFX.setMusicVolume(parseFloat(ambientVol.value));
-        }
-      });
-
       function startTimer() {
         if (isRunning) return;
         dismissAlarm();
+        if (btnPreviewMusic) {
+          btnPreviewMusic.classList.remove('is-playing');
+          btnPreviewMusic.innerHTML = '<span>▶ Preview</span>';
+        }
         isRunning = true;
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `
@@ -641,12 +695,8 @@
         }
 
         // Loop background music during active timer
-        if (checkAmbient && checkAmbient.checked && window.SoundFX) {
-          if (window.SoundFX.startMusic) {
-            window.SoundFX.startMusic(selectAmbient.value, parseFloat(ambientVol.value));
-          } else if (window.SoundFX.startAmbient) {
-            window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
-          }
+        if (selectAmbient && selectAmbient.value !== 'none' && window.SoundFX && window.SoundFX.startMusic) {
+          window.SoundFX.startMusic(selectAmbient.value, 0.6);
         }
 
         timerInterval = setInterval(() => {
@@ -880,29 +930,6 @@
         if (timeAdjustButtons) timeAdjustButtons.style.display = 'none';
         updatePomodoroUI();
         resetTimer();
-      });
-
-      // Ambient Audio Listeners
-      checkAmbient.addEventListener('change', () => {
-        if (!checkAmbient.checked) {
-          if (window.SoundFX && window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
-        } else if (isRunning) {
-          if (window.SoundFX && window.SoundFX.startAmbient) {
-            window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
-          }
-        }
-      });
-
-      selectAmbient.addEventListener('change', () => {
-        if (isRunning && checkAmbient.checked && window.SoundFX && window.SoundFX.startAmbient) {
-          window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
-        }
-      });
-
-      ambientVol.addEventListener('input', () => {
-        if (window.SoundFX && window.SoundFX.setAmbientVolume) {
-          window.SoundFX.setAmbientVolume(parseFloat(ambientVol.value));
-        }
       });
 
       // Keyboard shortcuts: Space to toggle, R to reset

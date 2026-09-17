@@ -1,7 +1,7 @@
 {
-  "name": "ClassPanel — Free Classroom Tools Hub",
+  "name": "ClassPanel — Free Online Tools & Classroom Hub",
   "short_name": "ClassPanel",
-  "description": "Free, instant classroom utility tools for teachers. Timers, pickers, dice, clocks, counters, and games designed for projectors and smartboards.",
+  "description": "Free, instant online utilities for study, focus, classrooms, and games. Timers, stopwatch, pickers, dice, clocks, counters, and decision games.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F172A",

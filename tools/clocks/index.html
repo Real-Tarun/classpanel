@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classroom Clocks — Free Analog & Digital Smartboard Clock</title>
-  <meta name="description" content="Free classroom analog and digital clocks for smartboards. Practice reading time, toggle 12/24 hour formats, Roman numerals, and projector mode.">
+  <title>Online Clock — Free Fullscreen Analog & Digital Clock</title>
+  <meta name="description" content="Free online clock with synchronized analog face and digital display. Features 12/24 hour format, full-screen projector view, and quiz mode for study desks, workspaces, and smartboards.">
   <link rel="canonical" href="https://classpanel.online/tools/clocks/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -98,7 +98,7 @@
           <span>Class<span style="color: var(--primary);">Panel</span></span>
         </a>
         <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
-        <span style="font-weight: 700; color: var(--text-primary);">Classroom Clocks</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Online Clocks</span>
       </div>
 
       <div class="header-actions">
@@ -130,8 +130,8 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1><img src="/assets/icons/clocks.png" alt="Classroom Clocks Icon" class="tool-title-icon"> Classroom Clocks</h1>
-          <p class="tool-title-subtitle">Dual Analog & Digital clock display with time-teaching controls</p>
+          <h1><img src="/assets/icons/clocks.png" alt="Classroom Clocks Icon" class="tool-title-icon"> Online Clock & Time Display</h1>
+          <p class="tool-title-subtitle">Synchronized analog and digital clock for focus desks, study rooms & classrooms</p>
         </div>
 
         <div class="tool-control-bar">
@@ -140,7 +140,7 @@
         </div>
       </div>
 
-      <!-- Clock Display Area -->
+      <!-- Clock Display Grid -->
       <div class="clock-display-area">
         <!-- Analog Clock Face -->
         <div class="analog-clock-container" id="analog-clock">
@@ -150,11 +150,10 @@
           <div class="clock-hand hand-second" id="hand-second"></div>
         </div>
 
-        <!-- Digital Readout Container -->
-        <div class="digital-clock-container" id="digital-container">
-          <span style="font-size: 0.9rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Digital Time</span>
-          <div id="digital-time" style="font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--primary); margin: 0.5rem 0;">12:00:00 PM</div>
-          <div id="clock-date" style="font-size: 1.15rem; font-weight: 700; color: var(--text-secondary);">Tuesday, September 15, 2026</div>
+        <!-- Digital Readout Panel -->
+        <div class="digital-clock-container" id="digital-panel">
+          <div style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; font-family: ui-monospace, monospace; color: var(--primary); line-height: 1.1;" id="digital-time">12:00:00 PM</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-secondary); margin-top: 0.75rem;" id="clock-date">Tuesday, September 15, 2026</div>
         </div>
       </div>
 
@@ -165,21 +164,28 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Teaching Time on Interactive Smartboards</h2>
-            <p>Learning how to read analog clock faces is a core elementary mathematics standard. ClassPanel's Classroom Clocks bridges the gap between traditional clock hands and digital time displays.</p>
+            <h2>Aesthetic Fullscreen Online Clock for Study Desks, Workspaces & Classrooms</h2>
+            <p>From maintaining focus during study sessions to teaching elementary students how to tell time, having a clean, prominent clock keeps you anchored to your schedule:</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Time-Telling Quiz Mode</h3>
-            <p>Click "Hide Digital (Quiz Mode)" to conceal the digital readout. Point to the analog hands on your projector or smartboard and ask students: "What time is it?" Once students answer, click to reveal the digital time and verify accuracy.</p>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Desk & Study Monitor Display</h3>
+            <p>Use Projector Mode (F11) to turn an extra tablet, iPad, or secondary monitor into an elegant desktop clock. The high-contrast numerals and smooth second-hand motion give an instant, glanceable read without screen clutter.</p>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Time-Telling Practice & Quiz Mode</h3>
+            <p>Click "Hide Digital (Quiz Mode)" to conceal the digital readout. Point to the analog hands on your screen and ask: "What time is it?" Once an answer is given, click to reveal the digital time and verify accuracy.</p>
           </div>
         </div>
 
         <div>
           <div class="seo-card">
-            <h2>Related Classroom Tools</h2>
+            <h2>Related Timing & Productivity Tools</h2>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/classroom-timer/">Classroom Timer</a>
+                <a href="/tools/stopwatch/">Online Stopwatch & Lap Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom & Focus Timer</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -187,7 +193,7 @@
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/tally-counter/">Tally Counter</a>
+                <a href="/tools/holiday-timers/">Countdown to Any Date</a>
               </li>
             </ul>
           </div>

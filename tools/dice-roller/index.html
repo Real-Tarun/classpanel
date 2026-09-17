@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Dice Roller — Free 3D d6, d20 & Polyhedral Dice Roller</title>
+  <meta name="description" content="Roll dice online with 3D animation and instant sums. Roll 1 to 6+ dice with custom sides (d4, d6, d8, d10, d12, d20, d100) for tabletop RPGs, board games, and classrooms.">
+  <link rel="canonical" href="https://classpanel.online/tools/dice-roller/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/assets/css/main.css?v=8">
+  <style>
+    .dice-tray {
+      background: var(--bg-surface-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 1.5rem;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+    .dice-rack {
+      display: flex;
+      gap: clamp(0.75rem, 2vw, 1.5rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    .die-face {
+      width: clamp(80px, 16vw, 105px);
+      height: clamp(80px, 16vw, 105px);
+      background: #FFFFFF;
+      border-radius: 18px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.8);
+      border: 3px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+      transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .die-pip-grid {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      padding: 10px;
+    }
+    .die-pip {
+      width: 13px;
+      height: 13px;
+      background: #0F172A;
+      border-radius: 50%;
+      margin: auto;
+    }
+    .die-poly-num {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #1E293B;
+    }
+    .die-poly-tag {
+      position: absolute;
+      bottom: 4px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+    }
+    @keyframes diceRoll {
+      0% { transform: translateY(0) rotate(0deg) scale(1); }
+      30% { transform: translateY(-35px) rotate(180deg) scale(1.15); }
+      70% { transform: translateY(15px) rotate(320deg) scale(0.95); }
+      100% { transform: translateY(0) rotate(360deg) scale(1); }
+    }
+    .is-rolling {
+      animation: diceRoll 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .dice-total-display {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 900;
+      text-align: center;
+      margin-top: 0.5rem;
+      color: var(--text-primary);
+    }
+    .dice-history-drawer {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1.5rem;
+      max-width: 700px;
+    }
+    .history-chip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.35rem 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Dice Roller</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="dice-stage-container">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/dice-roller.png" alt="Dice Roller Icon" class="tool-title-icon"> Online Dice Roller</h1>
+          <p class="tool-title-subtitle">Roll 1 to 6+ Standard or Polyhedral Dice • Press Spacebar to Roll</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <!-- Sides Selector -->
+          <select id="select-dice-sides" class="select-input" style="width: auto; padding: 0.4rem 0.8rem; font-weight: 700;">
+            <option value="6" selected>🎲 d6 (Standard)</option>
+            <option value="4">🔺 d4 (4-Sided)</option>
+            <option value="8">💎 d8 (8-Sided)</option>
+            <option value="10">🔟 d10 (10-Sided)</option>
+            <option value="12">⬡ d12 (12-Sided)</option>
+            <option value="20">⚔️ d20 (D&D / RPG)</option>
+            <option value="100">💯 d100 (Percentile)</option>
+          </select>
+
+          <!-- Count Selector -->
+          <div style="display: inline-flex; align-items: center; gap: 0.35rem; background: var(--bg-surface-subtle); padding: 0.25rem 0.5rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-left: 0.25rem;">Qty:</span>
+            <button class="preset-chip active" data-count="1">1</button>
+            <button class="preset-chip" data-count="2">2</button>
+            <button class="preset-chip" data-count="3">3</button>
+            <button class="preset-chip" data-count="4">4</button>
+            <button class="preset-chip" data-count="6">6</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dice Tray -->
+      <div class="dice-tray" id="dice-tray">
+        <div class="dice-rack" id="dice-rack">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Total Sum -->
+        <div class="dice-total-display" id="dice-total">
+          Total: <strong>6</strong>
+        </div>
+
+        <!-- Action Button -->
+        <div style="margin-top: 1.25rem;">
+          <button id="btn-roll" class="btn-giant btn-giant-primary" style="background: var(--accent-purple); color: #FFF; box-shadow: 0 8px 24px rgba(139, 92, 246, 0.35);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 8h.01M8 8h.01M8 16h.01M16 16h.01M12 12h.01"/></svg>
+            <span>Roll Dice (Space)</span>
+          </button>
+        </div>
+
+        <!-- Roll History Drawer -->
+        <div style="margin-top: 1.5rem; width: 100%; display: flex; flex-direction: column; align-items: center;">
+          <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem;">Recent Roll History</span>
+          <div class="dice-history-drawer" id="dice-history">
+            <span class="history-chip">Rolls will appear here</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational & Gaming SEO Guide -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Online Polyhedral Dice Roller for Games, Math & Tabletop RPGs</h2>
+            <p>Whether you're running a Dungeons & Dragons tabletop encounter, playing a board game, or teaching probability distributions in a statistics class, ClassPanel's Dice Roller delivers instant, unbiasable rolls:</p>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Multi-Die Summation:</strong> Automatically sums up all rolled dice in real time, eliminating manual arithmetic errors during rapid tabletop combat or classroom probability drills.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Full Polyhedral Support:</strong> Includes d4, d6, d8, d10, d12, d20, and d100 (percentile) for all standard tabletop RPG mechanics (D&D 5e, Pathfinder, Call of Cthulhu).</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Bell Curve Probability Demonstration:</strong> Rolling two 6-sided dice demonstrates the classic triangular probability curve (where 7 has the highest probability of 16.67%, and 2 or 12 have only 2.78%).</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Cryptographic Fairness:</strong> Uses browser hardware entropy for uniform random number distributions with zero physical dice imperfections.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Chance & Gaming Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/coin-flip/">3D Metallic Coin Flip</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/rock-paper-scissors/">Rock Paper Scissors</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-number-generator/">Random Number Generator</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-name-picker/">Wheel of Names Decision Spinner</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="brand-logo">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <p class="footer-desc">Free, lightning-fast smartboard & screen tools for classrooms, study, and daily decisions. Zero ads, zero tracking, works offline.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4 class="footer-title">Tools</h4>
+          <ul class="footer-list">
+            <li><a href="/tools/dice-roller/">Dice Roller</a></li>
+            <li><a href="/tools/coin-flip/">Coin Flip</a></li>
+            <li><a href="/tools/rock-paper-scissors/">Rock Paper Scissors</a></li>
+            <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-list">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 ClassPanel.online. Free for personal & educational use.</p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function() {
+      let diceCount = 1;
+      let diceSides = 6;
+      let isRolling = false;
+      const history = [];
+
+      const selectSides = document.getElementById('select-dice-sides');
+      const diceRack = document.getElementById('dice-rack');
+      const diceTotal = document.getElementById('dice-total');
+      const btnRoll = document.getElementById('btn-roll');
+      const diceHistory = document.getElementById('dice-history');
+      const countButtons = document.querySelectorAll('[data-count]');
+
+      const PIP_MAP = {
+        1: [4],
+        2: [0, 8],
+        3: [0, 4, 8],
+        4: [0, 2, 6, 8],
+        5: [0, 2, 4, 6, 8],
+        6: [0, 2, 3, 5, 6, 8]
+      };
+
+      function createDieFace(value, sides) {
+        const die = document.createElement('div');
+        die.className = 'die-face';
+
+        if (sides === 6) {
+          const grid = document.createElement('div');
+          grid.className = 'die-pip-grid';
+          const pips = PIP_MAP[value] || [4];
+          for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            if (pips.includes(i)) {
+              const pip = document.createElement('div');
+              pip.className = 'die-pip';
+              cell.appendChild(pip);
+            }
+            grid.appendChild(cell);
+          }
+          die.appendChild(grid);
+        } else {
+          die.style.background = 'var(--bg-surface)';
+          die.style.borderColor = 'var(--primary)';
+          die.innerHTML = `
+            <span class="die-poly-num" style="color: var(--primary);">${value}</span>
+            <span class="die-poly-tag">d${sides}</span>
+          `;
+        }
+
+        die.addEventListener('click', rollDice);
+        return die;
+      }
+
+      function renderInitialDice() {
+        diceRack.innerHTML = '';
+        for (let i = 0; i < diceCount; i++) {
+          diceRack.appendChild(createDieFace(diceSides === 6 ? 6 : diceSides, diceSides));
+        }
+        diceTotal.innerHTML = `Total: <strong>${diceCount * (diceSides === 6 ? 6 : diceSides)}</strong>`;
+      }
+
+      function rollDice() {
+        if (isRolling) return;
+        isRolling = true;
+        btnRoll.disabled = true;
+
+        if (window.SoundFX && window.SoundFX.playClick) {
+          window.SoundFX.playClick();
+        }
+
+        const currentFaces = diceRack.querySelectorAll('.die-face');
+        currentFaces.forEach(f => f.classList.add('is-rolling'));
+
+        setTimeout(() => {
+          diceRack.innerHTML = '';
+          const rollValues = [];
+          let sum = 0;
+
+          for (let i = 0; i < diceCount; i++) {
+            // Cryptographic random
+            const arr = new Uint32Array(1);
+            window.crypto.getRandomValues(arr);
+            const val = (arr[0] % diceSides) + 1;
+            rollValues.push(val);
+            sum += val;
+            diceRack.appendChild(createDieFace(val, diceSides));
+          }
+
+          if (diceCount === 1) {
+            diceTotal.innerHTML = `Result: <strong style="color: var(--primary); font-size: 1.2em;">${sum}</strong>`;
+          } else {
+            diceTotal.innerHTML = `Total: <strong style="color: var(--primary);">${sum}</strong> <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">(${rollValues.join(' + ')})</span>`;
+          }
+
+          // Update History
+          const historyEntry = `${diceCount}d${diceSides} → [${rollValues.join(', ')}] = ${sum}`;
+          history.unshift(historyEntry);
+          if (history.length > 8) history.pop();
+
+          diceHistory.innerHTML = history.map(h => `<span class="history-chip">${h}</span>`).join('');
+
+          isRolling = false;
+          btnRoll.disabled = false;
+        }, 500);
+      }
+
+      countButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          countButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          diceCount = parseInt(btn.dataset.count, 10);
+          renderInitialDice();
+        });
+      });
+
+      selectSides.addEventListener('change', () => {
+        diceSides = parseInt(selectSides.value, 10);
+        renderInitialDice();
+      });
+
+      btnRoll.addEventListener('click', rollDice);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !e.target.matches('input, textarea, select')) {
+          e.preventDefault();
+          rollDice();
+        }
+      });
+
+      renderInitialDice();
+    })();
+  </script>
+</body>
+</html>

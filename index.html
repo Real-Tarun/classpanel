@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClassPanel — Free Smartboard & Projector Tools for Teachers</title>
-  <meta name="description" content="Free, projector-ready classroom tools for teachers. Giant countdown timers, random name pickers, group makers, and clocks. Zero ads, works offline.">
-  <meta name="keywords" content="classroom timer, random name picker, group generator, online stopwatch for schools, projector tools, teacher smartboard utilities">
+  <title>ClassPanel — Free Online Timers, Wheels & Tools for Classrooms & Study</title>
+  <meta name="description" content="Free, ad-free online tools for teachers, students, gamers, and organizers. Giant countdown timers, Pomodoro focus timers, wheel of names, dice roller, coin flip, and stopwatch. Works offline.">
+  <meta name="keywords" content="online timer, classroom timer, study timer, pomodoro timer, wheel of names, random name picker, dice roller, coin flip, rock paper scissors, online stopwatch">
   
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="ClassPanel — Free Smartboard & Projector Tools for Teachers">
-  <meta property="og:description" content="Instant countdown timers, student name pickers, random groups, dice, and exam boards. Zero signups, zero ads, 100% offline-ready.">
+  <meta property="og:title" content="ClassPanel — Free Online Timers, Wheels & Productivity Tools">
+  <meta property="og:description" content="Instant countdown timers, Pomodoro study timers, wheel of names, polyhedral dice, split stopwatches, and exam boards. Zero signups, zero ads, 100% offline-ready.">
   <meta property="og:url" content="https://classpanel.online/">
   <meta property="og:image" content="/assets/icons/icon-512.png">
   
   <link rel="canonical" href="https://classpanel.online/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
   <link rel="shortcut icon" href="/favicon.ico">
@@ -32,9 +34,9 @@
     "@type": "WebApplication",
     "name": "ClassPanel",
     "url": "https://classpanel.online/",
-    "applicationCategory": "EducationalApplication",
+    "applicationCategory": "EducationalApplication, ProductivityApplication",
     "operatingSystem": "All",
-    "description": "Free projector-friendly classroom tools for teachers including countdown timers, random name pickers, group generators, and clocks.",
+    "description": "Free web utilities for classrooms, studying, and everyday decisions including countdown timers, Pomodoro timers, wheel of names, group makers, polyhedral dice, and stopwatches.",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -88,20 +90,20 @@
     <section style="padding: 3.5rem 0 2.5rem; text-align: center; background: radial-gradient(circle at 50% 10%, var(--primary-light), transparent 70%);">
       <div class="container" style="max-width: 920px;">
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); background: var(--bg-surface); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 1.25rem; box-shadow: var(--shadow-sm);">
-          <span style="font-size: 1rem;">✨</span> 100% Free • No Signups • Projector Ready
+          <span style="font-size: 1rem;">✨</span> 17 Free Online Tools • Zero Ads • Fullscreen Ready
         </div>
 
         <h1 style="font-size: clamp(2.2rem, 5.5vw, 3.75rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1.25rem; color: var(--text-primary);">
-          Smartboard & Projector Tools for <span style="background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Modern Classrooms</span>
+          Free Online Timers & Tools for <span style="background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Classrooms, Study & Everyday Decisions</span>
         </h1>
 
-        <p style="font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-secondary); max-width: 720px; margin: 0 auto 2.25rem; line-height: 1.6;">
-          Zero-distraction digital utilities engineered for teachers. Massive high-contrast typography, synthesized offline audio alerts, and instant full-screen modes.
+        <p style="font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-secondary); max-width: 760px; margin: 0 auto 2.25rem; line-height: 1.6;">
+          Fast, distraction-free web utilities for teachers, students, gamers, and everyday organizers. Fullscreen countdown timers, decision wheels, polyhedral dice, split stopwatches, and ambient chimes — 100% free and works offline.
         </p>
 
         <!-- Category Filters -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;" id="category-filters">
-          <button class="category-pill active" data-category="all">✨ All Tools</button>
+          <button class="category-pill active" data-category="all">✨ All 17 Tools</button>
           <button class="category-pill" data-category="timers">⏱️ Timers</button>
           <button class="category-pill" data-category="randomizers">🎯 Randomizers</button>
           <button class="category-pill" data-category="clocks">🕒 Clocks & Counters</button>
@@ -118,10 +120,10 @@
           <!-- 1. Classroom Timer -->
           <a href="/tools/classroom-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
             <div class="tool-card-icon"><img src="/assets/icons/classroom-timer.png" alt="Classroom Timer Icon"></div>
-            <h2 class="tool-card-title">Classroom Timer</h2>
-            <p class="tool-card-desc">Giant digital countdown timer & stopwatch with visual color progress bar, quick presets, and pleasant school bell audio alarms.</p>
+            <h2 class="tool-card-title">Classroom & Study Timer</h2>
+            <p class="tool-card-desc">Giant digital countdown timer & Pomodoro study timer with relaxing ambient background audio, progress bar, and bell chimes.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Most Popular</span>
+              <span class="tool-card-badge">Pomodoro & Music</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -129,10 +131,10 @@
           <!-- 2. Random Name Picker -->
           <a href="/tools/random-name-picker/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
             <div class="tool-card-icon"><img src="/assets/icons/random-name-picker.png" alt="Random Name Picker Icon"></div>
-            <h2 class="tool-card-title">Random Name Picker</h2>
-            <p class="tool-card-desc">Exciting spinning wheel and card draw picker. Save multiple class rosters, eliminate picked names, with confetti celebrations.</p>
+            <h2 class="tool-card-title">Wheel of Names & Picker</h2>
+            <p class="tool-card-desc">Exciting spinning wheel for student rosters, raffle giveaways, dinner choices, and daily decisions with eliminate-on-pick.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Roster Ready</span>
+              <span class="tool-card-badge">Decision Wheel</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -140,8 +142,8 @@
           <!-- 3. Group Generator -->
           <a href="/tools/group-generator/" class="tool-card" data-category="randomizers" style="--card-accent: var(--primary); --card-light: var(--primary-light);">
             <div class="tool-card-icon"><img src="/assets/icons/group-generator.png" alt="Group Generator Icon"></div>
-            <h2 class="tool-card-title">Group Generator</h2>
-            <p class="tool-card-desc">Split your class into balanced study teams, lab pairs, or table groups instantly. Easy drag-and-drop adjustments and clipboard export.</p>
+            <h2 class="tool-card-title">Random Group Generator</h2>
+            <p class="tool-card-desc">Split classes, work colleagues, or tournament players into balanced teams or pairs instantly with drag-and-drop and copy export.</p>
             <div class="tool-card-meta">
               <span class="tool-card-badge">Team Creator</span>
               <span>Launch Tool →</span>
@@ -152,31 +154,31 @@
           <a href="/tools/exam-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
             <div class="tool-card-icon"><img src="/assets/icons/exam-timer.png" alt="Official Exam Timer Icon"></div>
             <h2 class="tool-card-title">Official Exam Timer</h2>
-            <p class="tool-card-desc">Formal examination board with synchronized live clock, countdown, silent 15m/5m/1m warnings, and customizable test instructions.</p>
+            <p class="tool-card-desc">Standardized test board with synchronized live wall clock, silent milestone reminders, reading period, and proctor instructions.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Formal Tests</span>
+              <span class="tool-card-badge">Silent Test Board</span>
               <span>Launch Tool →</span>
             </div>
           </a>
 
-          <!-- 5. Sensory & Calming Timer -->
+          <!-- 5. Sensory & Meditation Timer -->
           <a href="/tools/sensory-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
             <div class="tool-card-icon"><img src="/assets/icons/sensory-timer.png" alt="Sensory Timer Icon"></div>
-            <h2 class="tool-card-title">Sensory & Calming Timer</h2>
-            <p class="tool-card-desc">Soothing visual timers for calm-down corners, transitions, and mindfulness. Liquid bubble drip, sand hourglass, and box breathing guide.</p>
+            <h2 class="tool-card-title">Sensory & Meditation Timer</h2>
+            <p class="tool-card-desc">Calming visual timers with soothing lava bubbles, guided box breathing rhythms (4-4-4-4), and singing bowl sound healing.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Mindfulness</span>
+              <span class="tool-card-badge">Breathing & Calm</span>
               <span>Launch Tool →</span>
             </div>
           </a>
 
-          <!-- 6. Classroom Clocks -->
+          <!-- 6. Online Clocks -->
           <a href="/tools/clocks/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
             <div class="tool-card-icon"><img src="/assets/icons/clocks.png" alt="Classroom Clocks Icon"></div>
-            <h2 class="tool-card-title">Classroom Clocks</h2>
-            <p class="tool-card-desc">High-visibility analog and digital clock display. Features interactive time-teaching mode with Roman/Standard numerals and schedule tracking.</p>
+            <h2 class="tool-card-title">Online Clock & Display</h2>
+            <p class="tool-card-desc">Aesthetic fullscreen analog clock face and digital time display with 12/24 hour modes, study desk view, and quiz mode.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Teaching Time</span>
+              <span class="tool-card-badge">Analog & Digital</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -185,9 +187,9 @@
           <a href="/tools/random-number-generator/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-coral); --card-light: var(--accent-coral-light);">
             <div class="tool-card-icon"><img src="/assets/icons/random-number-generator.png" alt="Random Number Generator Icon"></div>
             <h2 class="tool-card-title">Random Number Generator</h2>
-            <p class="tool-card-desc">Flexible number generator for math games, bingo, and student ticket draws. Set min/max ranges, batch generate, and prevent repeat numbers.</p>
+            <p class="tool-card-desc">Generate numbers in custom min/max ranges for ticket raffles, lottery picks, gaming dice, and math probability with history.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Math & Draws</span>
+              <span class="tool-card-badge">Custom Ranges</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -195,10 +197,10 @@
           <!-- 8. Dice & Chance Games -->
           <a href="/tools/chance-games/" class="tool-card" data-category="games" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
             <div class="tool-card-icon"><img src="/assets/icons/chance-games.png" alt="Dice & Chance Games Icon"></div>
-            <h2 class="tool-card-title">Dice & Chance Games</h2>
-            <p class="tool-card-desc">Interactive 3D animated dice (1-6 dice), realistic physics coin flip, and decision spinner for classroom games and probability lessons.</p>
+            <h2 class="tool-card-title">Dice & Chance Hub</h2>
+            <p class="tool-card-desc">Bundled probability games: 3D animated dice, realistic physics coin toss, and rock-paper-scissors showdown for classroom lessons.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Classroom Games</span>
+              <span class="tool-card-badge">Games Hub</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -206,10 +208,10 @@
           <!-- 9. Multi-Team Tally Counter -->
           <a href="/tools/tally-counter/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
             <div class="tool-card-icon"><img src="/assets/icons/tally-counter.png" alt="Multi-Team Tally Counter Icon"></div>
-            <h2 class="tool-card-title">Multi-Team Tally Counter</h2>
-            <p class="tool-card-desc">Interactive classroom scoreboard and tally counter. Track house points, attendance, or behavior milestones with quick keyboard shortcuts.</p>
+            <h2 class="tool-card-title">Online Tally Counter</h2>
+            <p class="tool-card-desc">Multi-track clicker counter & scoreboard. Track exercise reps, inventory counts, votes, attendance, and team game scores.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Scoreboard</span>
+              <span class="tool-card-badge">Multi-Counter</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -217,32 +219,87 @@
           <!-- 10. Presentation Timer -->
           <a href="/tools/presentation-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
             <div class="tool-card-icon"><img src="/assets/icons/presentation-timer.png" alt="Presentation Timer Icon"></div>
-            <h2 class="tool-card-title">Presentation & Speech Timer</h2>
-            <p class="tool-card-desc">Pacing timer for student presentations, debates, and teacher mini-lessons with intuitive traffic-light signals (Green, Amber, Red).</p>
+            <h2 class="tool-card-title">Toastmasters & Speech Timer</h2>
+            <p class="tool-card-desc">Speech pacing display with automated traffic light indicators (Green, Amber, Red) for Toastmasters, conference talks, and debates.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Speech & Debate</span>
+              <span class="tool-card-badge">Traffic Lights</span>
               <span>Launch Tool →</span>
             </div>
           </a>
 
-          <!-- 11. Fun Race Timers -->
+          <!-- 11. Fun Race Timers & F1 Start Lights -->
           <a href="/tools/race-timers/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-coral); --card-light: var(--accent-coral-light);">
             <div class="tool-card-icon"><img src="/assets/icons/race-timers.png" alt="Race Timers Icon"></div>
-            <h2 class="tool-card-title">Fun Race Timers</h2>
-            <p class="tool-card-desc">Animated classroom sprint timer where students or teams cheer on animal avatars (Turtle, Bunny, Cheetah) during quick clean-up drills.</p>
+            <h2 class="tool-card-title">Race Timers & F1 Start Lights</h2>
+            <p class="tool-card-desc">Animated track sprint countdown plus Formula 1 starting gantry reaction simulator to test launch reflex times in milliseconds.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Gamified Focus</span>
+              <span class="tool-card-badge">F1 & Sprints</span>
               <span>Launch Tool →</span>
             </div>
           </a>
 
-          <!-- 12. Holiday Countdown Timers -->
+          <!-- 12. Countdown to Any Date -->
           <a href="/tools/holiday-timers/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
             <div class="tool-card-icon"><img src="/assets/icons/holiday-timers.png" alt="Holiday Timers Icon"></div>
-            <h2 class="tool-card-title">Holiday & Break Timers</h2>
-            <p class="tool-card-desc">Live countdowns to school milestones: Summer Vacation, Winter Break, Thanksgiving, Halloween, and 100th Day of School.</p>
+            <h2 class="tool-card-title">Countdown to Any Date</h2>
+            <p class="tool-card-desc">Live countdown ticker to birthdays, deadlines, holidays, and events with fullscreen OBS live stream broadcast mode and shareable links.</p>
             <div class="tool-card-meta">
-              <span class="tool-card-badge">Milestones</span>
+              <span class="tool-card-badge">Live Stream Ready</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 13. Rock Paper Scissors (NEW) -->
+          <a href="/tools/rock-paper-scissors/" class="tool-card" data-category="games" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/rock-paper-scissors.png" alt="Rock Paper Scissors Icon"></div>
+            <h2 class="tool-card-title">Rock Paper Scissors</h2>
+            <p class="tool-card-desc">Fast, animated game against the computer with Best of 3 / 5 / 7 match modes, instant feedback, sound effects, and win-streak tracking.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Match Modes</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 14. Flip a Coin Simulator (NEW) -->
+          <a href="/tools/coin-flip/" class="tool-card" data-category="games" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/coin-flip.png" alt="Coin Flip Icon"></div>
+            <h2 class="tool-card-title">Flip a Coin Simulator</h2>
+            <p class="tool-card-desc">Satisfying 3D metallic coin toss with sound effects, multi-coin flips (1 to 5 coins simultaneously), and live probability tracking.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Instant 50/50</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 15. Polyhedral Dice Roller (NEW) -->
+          <a href="/tools/dice-roller/" class="tool-card" data-category="games" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/dice-roller.png" alt="Dice Roller Icon"></div>
+            <h2 class="tool-card-title">Polyhedral Dice Roller</h2>
+            <p class="tool-card-desc">Roll 1 to 6+ polyhedral RPG dice (d4, d6, d8, d10, d12, d20, d100) with running sum totals, physics roll animation, and roll history.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Tabletop & D&D</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 16. Color Picker & Palette Converter (NEW) -->
+          <a href="/tools/color-picker/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/color-picker.png" alt="Color Picker Icon"></div>
+            <h2 class="tool-card-title">Color Picker & Converter</h2>
+            <p class="tool-card-desc">Lightweight visual color picker with instant 1-click copy for HEX, RGB, HSL, and CMYK codes, curated palettes, and WCAG contrast check.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Design Utility</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 17. Online Stopwatch & Split Laps (NEW) -->
+          <a href="/tools/stopwatch/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/stopwatch.png" alt="Stopwatch Icon"></div>
+            <h2 class="tool-card-title">Online Stopwatch & Laps</h2>
+            <p class="tool-card-desc">Precision millisecond count-up stopwatch with lap recording, fastest/slowest lap comparison badges, keyboard shortcuts, and export.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Speed & Splits</span>
               <span>Launch Tool →</span>
             </div>
           </a>

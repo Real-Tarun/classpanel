@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sensory Calming Timer — Free Visual Breathing & Liquid Timer</title>
-  <meta name="description" content="Free sensory calming timer for classrooms, quiet corners, and transitions. Features liquid bubble drip, box breathing circle guide, and gentle hourglass.">
+  <title>Meditation & Sensory Timer — Free Guided Breathing & Visual Calm Timer</title>
+  <meta name="description" content="Free online meditation timer and sensory calming tool. Guided breathing rhythm guide (Box Breathing, 4-7-8, Deep Calm), soothing liquid visual droplets, and customizable session lengths.">
   <link rel="canonical" href="https://classpanel.online/tools/sensory-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -107,16 +107,23 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1><img src="/assets/icons/sensory-timer.png" alt="Sensory Calming Timer Icon" class="tool-title-icon"> Sensory Calming Timer</h1>
-          <p class="tool-title-subtitle">Low-stimulation visual pacing for transitions, mindfulness & calm-down corners</p>
+          <h1><img src="/assets/icons/sensory-timer.png" alt="Sensory Calming Timer Icon" class="tool-title-icon"> Meditation & Sensory Timer</h1>
+          <p class="tool-title-subtitle">Guided Breathing Pacing, Mindfulness & Soothing Visual Relaxation</p>
         </div>
 
         <div class="tool-control-bar">
           <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
-            <button id="btn-mode-breathing" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">🫁 Box Breathing</button>
+            <button id="btn-mode-breathing" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">🫁 Guided Breathing</button>
             <button id="btn-mode-liquid" class="preset-chip" style="background: transparent; border: none;">💧 Liquid Droplets</button>
           </div>
         </div>
+      </div>
+
+      <!-- Breathing Rhythm Presets (visible in breathing mode) -->
+      <div id="rhythm-selector-bar" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <button class="preset-chip active" data-rhythm="box" title="Box Breathing: 4s In, 4s Hold, 4s Out, 4s Hold">🫁 Box Breathing (4-4-4-4)</button>
+        <button class="preset-chip" data-rhythm="478" title="Relaxing Breath: 4s In, 7s Hold, 8s Out">🌙 4-7-8 Deep Calm</button>
+        <button class="preset-chip" data-rhythm="coherence" title="Coherent Breathing: 5s In, 5s Out">🌊 5-5 Coherence</button>
       </div>
 
       <!-- Giant Digital Display (Clickable to customize) -->
@@ -161,14 +168,28 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Supporting Classroom Mindfulness & Emotional Regulation</h2>
-            <p>Classrooms are vibrant and energetic, but overstimulation can lead to fatigue, sensory overload, and loss of focus. Sensory timers provide visual pacing that guides students toward autonomic calming.</p>
+            <h2>Guided Breathing Rhythms for Meditation, Stress Relief & Focus</h2>
+            <p>Whether you are taking a 3-minute mindfulness break between work calls or helping students settle down after recess, rhythmic breathing synchronizes your heart rate variability (HRV) and soothes the central nervous system:</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Box Breathing Technique (4-4-4-4)</h3>
-            <p>Used by athletes and wellness professionals, box breathing triggers the parasympathetic nervous system: Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds, and hold for 4 seconds. Our animated breathing orb gives students an intuitive focal point.</p>
-            
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Calm-Down Corner Support</h3>
-            <p>Place a tablet or Chromebook in your classroom calm-down corner running the liquid bubble timer. Watching the slow descent of droplets helps dysregulated students regain composure without feeling punished.</p>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Scientific Breathing Patterns Explained</h3>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Box Breathing (4-4-4-4):</strong> Used by Navy SEALs, athletes, and meditators for instant situational composure under pressure. 4s Inhale, 4s Hold, 4s Exhale, 4s Hold.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>4-7-8 Relaxing Breath:</strong> Dr. Andrew Weil's natural tranquilizer technique. A prolonged 8-second exhale activates the vagus nerve to slow racing heartbeats.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>5-5 Heart Coherence:</strong> Balances sympathetic (fight or flight) and parasympathetic (rest and digest) nervous states for calm mental clarity.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Sensory Calming Liquid Droplets:</strong> Non-demanding visual focus designed for classrooms, neurodivergent students, quiet rooms, and sensory decompression corners.</span>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -218,11 +239,12 @@
   <script>
     (function () {
       let mode = 'breathing'; // 'breathing' or 'liquid'
+      let activeRhythm = 'box';
       let totalSeconds = 180;
       let remainingSeconds = 180;
       let isRunning = false;
       let timerInterval = null;
-      let breathingCycleInterval = null;
+      let breathTimeoutId = null;
 
       const sensoryTime = document.getElementById('sensory-time');
       const btnStart = document.getElementById('btn-sensory-start');
@@ -230,26 +252,45 @@
       const btnBreathing = document.getElementById('btn-mode-breathing');
       const btnLiquid = document.getElementById('btn-mode-liquid');
       const breathingContainer = document.getElementById('breathing-container');
+      const rhythmSelectorBar = document.getElementById('rhythm-selector-bar');
       const circle = document.getElementById('circle');
       const breathingText = document.getElementById('breathing-text');
       const canvas = document.getElementById('liquid-canvas');
       const ctx = canvas.getContext('2d');
+      const rhythmButtons = document.querySelectorAll('#rhythm-selector-bar [data-rhythm]');
 
-      // Box breathing cycle: 4s Inhale, 4s Hold, 4s Exhale, 4s Hold
-      const BREATH_STEPS = [
-        { text: 'Inhale gently...', scale: 1.8, bg: 'radial-gradient(circle, #38BDF8, #818CF8)' },
-        { text: 'Hold your breath...', scale: 1.8, bg: 'radial-gradient(circle, #818CF8, #6366F1)' },
-        { text: 'Exhale slowly...', scale: 1.0, bg: 'radial-gradient(circle, #34D399, #059669)' },
-        { text: 'Rest and pause...', scale: 1.0, bg: 'radial-gradient(circle, #6EE7B7, #10B981)' }
-      ];
+      // Breathing rhythm step sequences
+      const RHYTHMS = {
+        box: [
+          { text: 'Inhale gently (4s)...', duration: 4, scale: 1.85, bg: 'radial-gradient(circle, #38BDF8, #818CF8)' },
+          { text: 'Hold your breath (4s)...', duration: 4, scale: 1.85, bg: 'radial-gradient(circle, #818CF8, #6366F1)' },
+          { text: 'Exhale slowly (4s)...', duration: 4, scale: 1.0, bg: 'radial-gradient(circle, #34D399, #059669)' },
+          { text: 'Rest and pause (4s)...', duration: 4, scale: 1.0, bg: 'radial-gradient(circle, #6EE7B7, #10B981)' }
+        ],
+        478: [
+          { text: 'Inhale through nose (4s)...', duration: 4, scale: 1.85, bg: 'radial-gradient(circle, #38BDF8, #818CF8)' },
+          { text: 'Hold your breath (7s)...', duration: 7, scale: 1.85, bg: 'radial-gradient(circle, #818CF8, #6366F1)' },
+          { text: 'Exhale fully (8s)...', duration: 8, scale: 1.0, bg: 'radial-gradient(circle, #34D399, #059669)' }
+        ],
+        coherence: [
+          { text: 'Inhale smoothly (5s)...', duration: 5, scale: 1.85, bg: 'radial-gradient(circle, #38BDF8, #818CF8)' },
+          { text: 'Exhale smoothly (5s)...', duration: 5, scale: 1.0, bg: 'radial-gradient(circle, #34D399, #059669)' }
+        ]
+      };
       let stepIndex = 0;
 
-      function updateBreathingOrb() {
-        const step = BREATH_STEPS[stepIndex];
+      function runNextBreathStep() {
+        if (!isRunning || mode !== 'breathing') return;
+        const steps = RHYTHMS[activeRhythm] || RHYTHMS.box;
+        const step = steps[stepIndex];
+
+        circle.style.transition = `transform ${step.duration}s ease-in-out, background ${step.duration}s ease-in-out`;
         breathingText.textContent = step.text;
         circle.style.transform = `scale(${step.scale})`;
         circle.style.background = step.bg;
-        stepIndex = (stepIndex + 1) % BREATH_STEPS.length;
+
+        stepIndex = (stepIndex + 1) % steps.length;
+        breathTimeoutId = setTimeout(runNextBreathStep, step.duration * 1000);
       }
 
       function formatTime(s) {
@@ -323,9 +364,12 @@
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `<span>Pause Calm</span>`;
 
+        if (window.SoundFX && window.SoundFX.playGentleChime) {
+          window.SoundFX.playGentleChime();
+        }
+
         if (mode === 'breathing') {
-          updateBreathingOrb();
-          breathingCycleInterval = setInterval(updateBreathingOrb, 4000);
+          runNextBreathStep();
         } else {
           initLiquidCanvas();
           renderLiquid();
@@ -344,7 +388,7 @@
       function pause() {
         isRunning = false;
         clearInterval(timerInterval);
-        clearInterval(breathingCycleInterval);
+        clearTimeout(breathTimeoutId);
         if (liquidAnimId) cancelAnimationFrame(liquidAnimId);
         btnStart.classList.remove('is-running');
         btnStart.innerHTML = `<span>Resume</span>`;
@@ -465,6 +509,17 @@
         sensoryTime.addEventListener('click', openCustomSensoryModal);
       }
 
+      rhythmButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          rhythmButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeRhythm = btn.dataset.rhythm;
+          stepIndex = 0;
+          reset();
+          if (window.SoundFX) window.SoundFX.playClick();
+        });
+      });
+
       btnBreathing.addEventListener('click', () => {
         if (mode === 'breathing') return;
         mode = 'breathing';
@@ -473,6 +528,7 @@
         btnLiquid.style.background = 'transparent';
         btnLiquid.style.color = 'inherit';
         breathingContainer.style.display = 'flex';
+        rhythmSelectorBar.style.display = 'flex';
         canvas.style.display = 'none';
         reset();
       });
@@ -485,6 +541,7 @@
         btnBreathing.style.background = 'transparent';
         btnBreathing.style.color = 'inherit';
         breathingContainer.style.display = 'none';
+        rhythmSelectorBar.style.display = 'none';
         canvas.style.display = 'block';
         initLiquidCanvas();
         reset();

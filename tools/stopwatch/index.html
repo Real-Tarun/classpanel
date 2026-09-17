@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Stopwatch — Free Millisecond Precision Stopwatch with Laps</title>
+  <meta name="description" content="Free online stopwatch with millisecond precision, split laps tracker, and fullscreen projector mode. Perfect for workouts, speedcubing, running, study sprints, and science labs.">
+  <link rel="canonical" href="https://classpanel.online/tools/stopwatch/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/assets/css/main.css?v=8">
+  <style>
+    .stopwatch-display-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+    .stopwatch-big-display {
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      user-select: none;
+    }
+    .stopwatch-millis {
+      font-size: clamp(1.8rem, 6vw, 4.2rem);
+      color: var(--primary);
+    }
+    .laps-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 2rem auto 0;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .laps-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 0.75rem;
+    }
+    .laps-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: ui-monospace, monospace;
+      font-size: 1rem;
+    }
+    .laps-table th {
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      padding: 0.5rem 0.75rem;
+    }
+    .laps-table td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    .laps-table tr:last-child td {
+      border-bottom: none;
+    }
+    .lap-fastest td {
+      color: var(--accent-emerald) !important;
+    }
+    .lap-slowest td {
+      color: var(--accent-rose) !important;
+    }
+    .lap-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .lap-badge-fastest {
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .lap-badge-slowest {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Stopwatch</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="stopwatch-stage-container">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/stopwatch.png" alt="Stopwatch Icon" class="tool-title-icon"> Online Stopwatch</h1>
+          <p class="tool-title-subtitle">Millisecond Precision • Lap Splits • Spacebar: Start/Stop • L: Lap • R: Reset</p>
+        </div>
+      </div>
+
+      <!-- Giant Digital Display with Milliseconds -->
+      <div class="stopwatch-display-container">
+        <div class="stopwatch-big-display" id="display-time">
+          00:00:00<span class="stopwatch-millis">.00</span>
+        </div>
+      </div>
+
+      <!-- Giant Action Buttons -->
+      <div class="timer-actions">
+        <button id="btn-start" class="btn-giant btn-giant-primary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start</span>
+        </button>
+
+        <button id="btn-lap" class="btn-giant preset-chip" style="height: 3.8rem; font-size: 1.15rem; padding: 0 1.75rem; border-radius: var(--radius-full);" disabled>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Lap (Split)</span>
+        </button>
+
+        <button id="btn-reset" class="btn-giant btn-giant-secondary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>Reset</span>
+        </button>
+      </div>
+
+      <!-- Laps Table -->
+      <div class="laps-container" id="laps-container" style="display: none;">
+        <div class="laps-header">
+          <span style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">Recorded Laps (<span id="laps-count">0</span>)</span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="btn-copy-laps" class="preset-chip" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">📋 Copy Laps</button>
+            <button id="btn-clear-laps" class="preset-chip" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Clear</button>
+          </div>
+        </div>
+        <div style="max-height: 280px; overflow-y: auto;">
+          <table class="laps-table">
+            <thead>
+              <tr>
+                <th>Lap #</th>
+                <th>Split Time</th>
+                <th>Overall Time</th>
+                <th style="text-align: right;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="laps-body">
+              <!-- Laps appended dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational & Athletic SEO Guide -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Why Use an Online Stopwatch with Split Laps?</h2>
+            <p>ClassPanel's Online Stopwatch provides accurate, high-contrast time measurement down to hundredths of a second (10 milliseconds). Designed without distracting popups or battery-draining bloat, it serves diverse personal and educational applications:</p>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Sports & Athletics Coaching:</strong> Measure sprint intervals, track laps, swimming paces, and HIIT circuit workout splits with instant fastest/slowest lap comparison.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Speedcubing & Rubik's Cube Practice:</strong> Accurate millisecond timing helps speedcubers record and analyze CFOP/Roux solves and inspection splits.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Study Sprints & Deep Work:</strong> Count up elapsed focus time on challenging coding problems, reading chapters, or writing sessions to track stamina.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Science & Physics Labs:</strong> Measure pendulum periods, rolling ball velocities, and chemical reaction rates with exportable split logs.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Timing & Pacing Tools</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Classroom & Pomodoro Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/race-timers/">Race Timers & F1 Start Lights</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/presentation-timer/">Presentation & Speech Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/exam-timer/">Official Exam & Test Timer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="brand-logo">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <p class="footer-desc">Free, lightning-fast smartboard & screen tools for classrooms, study, and daily decisions. Zero ads, zero tracking, works offline.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4 class="footer-title">Tools</h4>
+          <ul class="footer-list">
+            <li><a href="/tools/stopwatch/">Stopwatch</a></li>
+            <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+            <li><a href="/tools/race-timers/">Race Timers</a></li>
+            <li><a href="/tools/coin-flip/">Coin Flip</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-list">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 ClassPanel.online. Free for personal & educational use.</p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function() {
+      let isRunning = false;
+      let startTime = 0;
+      let elapsedPausedTime = 0;
+      let animFrameId = null;
+      let laps = [];
+      let lastLapTime = 0;
+
+      const display = document.getElementById('display-time');
+      const btnStart = document.getElementById('btn-start');
+      const btnLap = document.getElementById('btn-lap');
+      const btnReset = document.getElementById('btn-reset');
+      const lapsContainer = document.getElementById('laps-container');
+      const lapsBody = document.getElementById('laps-body');
+      const lapsCount = document.getElementById('laps-count');
+      const btnCopyLaps = document.getElementById('btn-copy-laps');
+      const btnClearLaps = document.getElementById('btn-clear-laps');
+
+      function formatTimeParts(ms) {
+        const totalSecs = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSecs / 3600);
+        const minutes = Math.floor((totalSecs % 3600) / 60);
+        const seconds = totalSecs % 60;
+        const millis = Math.floor((ms % 1000) / 10);
+
+        const hh = String(hours).padStart(2, '0');
+        const mm = String(minutes).padStart(2, '0');
+        const ss = String(seconds).padStart(2, '0');
+        const msStr = String(millis).padStart(2, '0');
+
+        return { main: `${hh}:${mm}:${ss}`, ms: `.${msStr}`, full: `${hh}:${mm}:${ss}.${msStr}` };
+      }
+
+      function updateDisplay() {
+        const now = isRunning ? (performance.now() - startTime + elapsedPausedTime) : elapsedPausedTime;
+        const formatted = formatTimeParts(now);
+        display.innerHTML = `${formatted.main}<span class="stopwatch-millis">${formatted.ms}</span>`;
+
+        if (isRunning) {
+          animFrameId = requestAnimationFrame(updateDisplay);
+        }
+      }
+
+      function start() {
+        if (isRunning) return;
+        isRunning = true;
+        startTime = performance.now();
+        btnLap.disabled = false;
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          <span>Pause</span>
+        `;
+        btnStart.classList.replace('btn-giant-primary', 'btn-giant-secondary');
+        if (window.SoundFX) window.SoundFX.playClick();
+        animFrameId = requestAnimationFrame(updateDisplay);
+      }
+
+      function pause() {
+        if (!isRunning) return;
+        isRunning = false;
+        elapsedPausedTime += performance.now() - startTime;
+        cancelAnimationFrame(animFrameId);
+        btnLap.disabled = true;
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Resume</span>
+        `;
+        btnStart.classList.replace('btn-giant-secondary', 'btn-giant-primary');
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function reset() {
+        pause();
+        elapsedPausedTime = 0;
+        startTime = 0;
+        lastLapTime = 0;
+        btnStart.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start</span>
+        `;
+        btnStart.classList.replace('btn-giant-secondary', 'btn-giant-primary');
+        btnLap.disabled = true;
+        display.innerHTML = `00:00:00<span class="stopwatch-millis">.00</span>`;
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      function renderLaps() {
+        if (laps.length === 0) {
+          lapsContainer.style.display = 'none';
+          return;
+        }
+        lapsContainer.style.display = 'block';
+        lapsCount.textContent = laps.length;
+
+        let fastestIdx = -1, slowestIdx = -1;
+        if (laps.length > 1) {
+          let minSplit = Infinity, maxSplit = -Infinity;
+          laps.forEach((l, idx) => {
+            if (l.splitMs < minSplit) { minSplit = l.splitMs; fastestIdx = idx; }
+            if (l.splitMs > maxSplit) { maxSplit = l.splitMs; slowestIdx = idx; }
+          });
+        }
+
+        lapsBody.innerHTML = laps.map((lap, idx) => {
+          let cls = '';
+          let badge = '';
+          if (idx === fastestIdx) {
+            cls = 'lap-fastest';
+            badge = '<span class="lap-badge lap-badge-fastest">Fastest</span>';
+          } else if (idx === slowestIdx) {
+            cls = 'lap-slowest';
+            badge = '<span class="lap-badge lap-badge-slowest">Slowest</span>';
+          }
+          return `
+            <tr class="${cls}">
+              <td>#${lap.num}</td>
+              <td>+${formatTimeParts(lap.splitMs).full}</td>
+              <td>${formatTimeParts(lap.totalMs).full}</td>
+              <td style="text-align: right;">${badge}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function recordLap() {
+        if (!isRunning) return;
+        const currentTotal = performance.now() - startTime + elapsedPausedTime;
+        const split = currentTotal - lastLapTime;
+        lastLapTime = currentTotal;
+
+        laps.unshift({
+          num: laps.length + 1,
+          splitMs: split,
+          totalMs: currentTotal
+        });
+
+        renderLaps();
+        if (window.SoundFX) window.SoundFX.playClick();
+      }
+
+      btnStart.addEventListener('click', () => {
+        if (isRunning) pause();
+        else start();
+      });
+
+      btnLap.addEventListener('click', recordLap);
+      btnReset.addEventListener('click', reset);
+
+      btnClearLaps.addEventListener('click', () => {
+        laps = [];
+        lastLapTime = isRunning ? (performance.now() - startTime + elapsedPausedTime) : elapsedPausedTime;
+        renderLaps();
+      });
+
+      btnCopyLaps.addEventListener('click', () => {
+        if (laps.length === 0) return;
+        const text = laps.map(l => `Lap #${l.num}: Split +${formatTimeParts(l.splitMs).full} | Total: ${formatTimeParts(l.totalMs).full}`).join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+          if (window.ClassPanel) window.ClassPanel.showToast('Copied lap splits to clipboard!');
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.matches('input, textarea, select')) return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          if (isRunning) pause();
+          else start();
+        } else if (e.key === 'l' || e.key === 'L') {
+          recordLap();
+        } else if (e.key === 'r' || e.key === 'R') {
+          reset();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -321,18 +321,23 @@
 
   // --- 6. Quick Tools Search / Command Palette ---
   const TOOLS_LIST = [
-    { title: 'Classroom Timer', url: '/tools/classroom-timer/', icon: '⏱️', desc: 'Giant countdown timer & stopwatch with audio alarms' },
-    { title: 'Random Name Picker', url: '/tools/random-name-picker/', icon: '🎯', desc: 'Pick student names with wheel spin & celebration' },
-    { title: 'Group Generator', url: '/tools/group-generator/', icon: '👥', desc: 'Split class roster into balanced teams & tables' },
-    { title: 'Official Exam Timer', url: '/tools/exam-timer/', icon: '📝', desc: 'Formal test timer with reading time & milestone warnings' },
-    { title: 'Sensory & Calming Timer', url: '/tools/sensory-timer/', icon: '🫧', desc: 'Relaxing visual timers for mindfulness & transitions' },
-    { title: 'Classroom Clocks', url: '/tools/clocks/', icon: '🕒', desc: 'Interactive analog & digital clocks for time teaching' },
-    { title: 'Random Number Generator', url: '/tools/random-number-generator/', icon: '🎲', desc: 'Generate numbers, ranges, and unique sequences' },
-    { title: 'Dice & Chance Games', url: '/tools/chance-games/', icon: '🪙', desc: '3D dice roller, coin flip, and decision spinner' },
-    { title: 'Multi-Team Tally Counter', url: '/tools/tally-counter/', icon: '🔢', desc: 'Scoreboard & classroom attendance tally tracker' },
-    { title: 'Presentation & Speech Timer', url: '/tools/presentation-timer/', icon: '🚦', desc: 'Speaker timer with green, yellow, red pacing lights' },
-    { title: 'Fun Race Timers', url: '/tools/race-timers/', icon: '🏁', desc: 'Animated animal races for timed classroom drills' },
-    { title: 'Holiday Countdown Timers', url: '/tools/holiday-timers/', icon: '🎄', desc: 'Seasonal timers for breaks, holidays, and milestones' }
+    { title: 'Classroom & Study Timer', url: '/tools/classroom-timer/', icon: '⏱️', desc: 'Giant countdown, stopwatch, ambient music & Pomodoro focus timer' },
+    { title: 'Standalone Stopwatch', url: '/tools/stopwatch/', icon: '⏱️', desc: 'Precision millisecond stopwatch with split lap times & rankings' },
+    { title: 'Rock Paper Scissors', url: '/tools/rock-paper-scissors/', icon: '✂️', desc: 'Play rock paper scissors vs computer with best-of series & score tracker' },
+    { title: 'Coin Flip (Heads or Tails)', url: '/tools/coin-flip/', icon: '🪙', desc: '3D metallic coin toss, multi-coin flips & probability breakdown' },
+    { title: 'Dice Roller (d4–d100)', url: '/tools/dice-roller/', icon: '🎲', desc: 'Roll multiple dice with customizable sides, sums, and roll history' },
+    { title: 'Color Picker & Converter', url: '/tools/color-picker/', icon: '🎨', desc: 'Visual palette picker, HEX/RGB/HSL converter & contrast tester' },
+    { title: 'Wheel of Names & Random Picker', url: '/tools/random-name-picker/', icon: '🎯', desc: 'Spinning wheel of names, decisions, raffles & classroom rosters' },
+    { title: 'Group Generator & Team Maker', url: '/tools/group-generator/', icon: '👥', desc: 'Split rosters, work teams, and study circles into balanced groups' },
+    { title: 'Official Exam & Test Timer', url: '/tools/exam-timer/', icon: '📝', desc: 'Formal examination board with synchronized clock & milestone warnings' },
+    { title: 'Meditation & Sensory Timer', url: '/tools/sensory-timer/', icon: '🫧', desc: 'Guided box breathing rhythms, meditation chimes & liquid calm timers' },
+    { title: 'Online Clocks (Analog & Digital)', url: '/tools/clocks/', icon: '🕒', desc: 'Interactive full-screen analog, digital, and 24-hour clocks' },
+    { title: 'Random Number Generator', url: '/tools/random-number-generator/', icon: '🔢', desc: 'True RNG picker, custom ranges, lottery draws & no-duplicate sets' },
+    { title: 'Multi-Team Tally Counter', url: '/tools/tally-counter/', icon: '📊', desc: 'Scoreboard, workout reps, event attendance & multi-team clicker counter' },
+    { title: 'Presentation & Speech Timer', url: '/tools/presentation-timer/', icon: '🚦', desc: 'Traffic light green/yellow/red talk, pitch & debate pacing timer' },
+    { title: 'Race Timers & F1 Start Lights', url: '/tools/race-timers/', icon: '🏁', desc: 'Formula 1 start reaction test & animated sprints' },
+    { title: 'Countdown to Any Date', url: '/tools/holiday-timers/', icon: '🎉', desc: 'Live countdown timer for deadlines, events, birthdays & holidays' },
+    { title: 'Dice & Chance Games', url: '/tools/chance-games/', icon: '🎰', desc: 'All-in-one suite with 3D dice, coin flips, and decision games' }
   ];
 
   function createQuickSearchModal() {

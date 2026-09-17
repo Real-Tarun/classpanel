@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Color Picker — Free HEX, RGB & HSL Palette Generator</title>
+  <meta name="description" content="Free online color picker and palette generator. Select colors visually, convert between HEX, RGB, and HSL codes with 1-click copy, and check WCAG contrast.">
+  <link rel="canonical" href="https://classpanel.online/tools/color-picker/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/assets/css/main.css?v=8">
+  <style>
+    .color-studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .color-studio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .color-swatch-hero {
+      width: 100%;
+      height: 240px;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      border: 4px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .color-native-input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .color-swatch-label {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .color-swatch-hint {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 0.4rem;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+    .code-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .code-card {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .code-card-type {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      width: 50px;
+    }
+    .code-card-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      font-family: ui-monospace, monospace;
+      color: var(--text-primary);
+      flex: 1;
+    }
+    .palette-swatches-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 0.75rem 0;
+    }
+    .palette-swatch-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 3px solid var(--bg-surface);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .palette-swatch-btn:hover {
+      transform: scale(1.18);
+    }
+    .wcag-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      margin-top: 1rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-around;
+    }
+    .wcag-item {
+      text-align: center;
+    }
+    .wcag-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Color Picker</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="color-stage-container">
+      
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/color-picker.png" alt="Color Picker Icon" class="tool-title-icon"> Color Picker & Converter</h1>
+          <p class="tool-title-subtitle">Pick Colors Visually • Instant HEX, RGB, HSL & CMYK One-Click Copy</p>
+        </div>
+
+        <div class="tool-control-bar">
+          <button id="btn-random-color" class="btn-primary" style="padding: 0.45rem 1.1rem; border-radius: var(--radius-full); font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem;">
+            <span>🎲 Random Color</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Color Studio Grid -->
+      <div class="color-studio-grid">
+        <!-- Left: Interactive Swatch -->
+        <div>
+          <div class="color-swatch-hero" id="color-swatch-hero" style="background-color: #4F46E5;">
+            <input type="color" id="native-color-picker" class="color-native-input" value="#4F46E5" aria-label="Choose color">
+            <div class="color-swatch-label" id="hero-hex-label" style="color: #FFFFFF;">#4F46E5</div>
+            <div class="color-swatch-hint" id="hero-hint-label" style="color: #FFFFFF;">👆 Click anywhere to choose color</div>
+          </div>
+
+          <!-- Curated Palettes -->
+          <div style="margin-top: 1.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Trending Palettes</span>
+            
+            <div class="palette-swatches-row" id="palette-presets">
+              <button class="palette-swatch-btn" style="background: #4F46E5;" data-color="#4F46E5" title="Indigo"></button>
+              <button class="palette-swatch-btn" style="background: #06B6D4;" data-color="#06B6D4" title="Cyan"></button>
+              <button class="palette-swatch-btn" style="background: #10B981;" data-color="#10B981" title="Emerald"></button>
+              <button class="palette-swatch-btn" style="background: #F59E0B;" data-color="#F59E0B" title="Amber"></button>
+              <button class="palette-swatch-btn" style="background: #EF4444;" data-color="#EF4444" title="Rose"></button>
+              <button class="palette-swatch-btn" style="background: #8B5CF6;" data-color="#8B5CF6" title="Purple"></button>
+              <button class="palette-swatch-btn" style="background: #EC4899;" data-color="#EC4899" title="Pink"></button>
+              <button class="palette-swatch-btn" style="background: #0F172A;" data-color="#0F172A" title="Slate Dark"></button>
+              <button class="palette-swatch-btn" style="background: #F8FAFC; border: 2px solid #CBD5E1;" data-color="#F8FAFC" title="Ghost White"></button>
+            </div>
+          </div>
+
+          <!-- Contrast Ratio Checker -->
+          <div class="wcag-box">
+            <div class="wcag-item">
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">On White Background</div>
+              <div id="wcag-white-sample" style="font-size: 1.25rem; font-weight: 900; color: #4F46E5; margin: 0.25rem 0;">Sample Text</div>
+              <span class="wcag-badge" id="wcag-white-badge" style="background: #DCFCE7; color: #166534;">AAA Normal</span>
+            </div>
+            <div class="wcag-item">
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">On Dark Background</div>
+              <div id="wcag-dark-sample" style="font-size: 1.25rem; font-weight: 900; color: #4F46E5; margin: 0.25rem 0; background: #0F172A; padding: 0.1rem 0.5rem; border-radius: 4px;">Sample Text</div>
+              <span class="wcag-badge" id="wcag-dark-badge" style="background: #DCFCE7; color: #166534;">AA Large</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Code Converters & Copy Cards -->
+        <div class="code-cards-list">
+          <!-- HEX -->
+          <div class="code-card">
+            <span class="code-card-type">HEX</span>
+            <span class="code-card-value" id="val-hex">#4F46E5</span>
+            <button class="btn-primary copy-btn" data-target="val-hex" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; border-radius: var(--radius-full);">Copy</button>
+          </div>
+
+          <!-- RGB -->
+          <div class="code-card">
+            <span class="code-card-type">RGB</span>
+            <span class="code-card-value" id="val-rgb">rgb(79, 70, 229)</span>
+            <button class="btn-primary copy-btn" data-target="val-rgb" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; border-radius: var(--radius-full);">Copy</button>
+          </div>
+
+          <!-- HSL -->
+          <div class="code-card">
+            <span class="code-card-type">HSL</span>
+            <span class="code-card-value" id="val-hsl">hsl(244, 76%, 60%)</span>
+            <button class="btn-primary copy-btn" data-target="val-hsl" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; border-radius: var(--radius-full);">Copy</button>
+          </div>
+
+          <!-- CMYK -->
+          <div class="code-card">
+            <span class="code-card-type">CMYK</span>
+            <span class="code-card-value" id="val-cmyk">cmyk(66%, 69%, 0%, 10%)</span>
+            <button class="btn-primary copy-btn" data-target="val-cmyk" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; border-radius: var(--radius-full);">Copy</button>
+          </div>
+
+          <!-- CSS Variable -->
+          <div class="code-card">
+            <span class="code-card-type">CSS</span>
+            <span class="code-card-value" id="val-css">--color-brand: #4F46E5;</span>
+            <button class="btn-primary copy-btn" data-target="val-css" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; border-radius: var(--radius-full);">Copy</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational & Design SEO Guide -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Understanding Digital Color Spaces: HEX, RGB, HSL, and CMYK</h2>
+            <p>Digital design and classroom presentations depend on consistent color rendering across different screens, projectors, and print materials:</p>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>HEX (Hexadecimal):</strong> The 6-character web standard representing red, green, and blue light channels in base-16 notation (e.g. <code>#4F46E5</code>).</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>RGB (Red, Green, Blue):</strong> Additive color model used for computer monitors, phone screens, and digital classroom smartboards (values 0–255).</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>HSL (Hue, Saturation, Lightness):</strong> The most human-intuitive color model. Modifying the lightness or saturation percentage lets you generate cohesive tints and shades effortlessly.</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>WCAG Accessibility:</strong> The Web Content Accessibility Guidelines require a contrast ratio of at least 4.5:1 for normal body text and 3:1 for large display titles to ensure students with visual impairments can read clearly.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="seo-card">
+            <h2>Related Digital Utilities</h2>
+            <ul class="seo-features-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/classroom-timer/">Online Classroom & Study Timer</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-name-picker/">Wheel of Names Decision Spinner</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/tally-counter/">Multi-Team Tally Counter</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="brand-logo">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <p class="footer-desc">Free, lightning-fast smartboard & screen tools for classrooms, study, and daily decisions. Zero ads, zero tracking, works offline.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4 class="footer-title">Tools</h4>
+          <ul class="footer-list">
+            <li><a href="/tools/color-picker/">Color Picker</a></li>
+            <li><a href="/tools/stopwatch/">Stopwatch</a></li>
+            <li><a href="/tools/dice-roller/">Dice Roller</a></li>
+            <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-list">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 ClassPanel.online. Free for personal & educational use.</p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/audio.js"></script>
+  <script src="/assets/js/fullscreen.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    (function() {
+      const nativePicker = document.getElementById('native-color-picker');
+      const swatchHero = document.getElementById('color-swatch-hero');
+      const heroHexLabel = document.getElementById('hero-hex-label');
+      const heroHintLabel = document.getElementById('hero-hint-label');
+      const btnRandom = document.getElementById('btn-random-color');
+
+      const valHex = document.getElementById('val-hex');
+      const valRgb = document.getElementById('val-rgb');
+      const valHsl = document.getElementById('val-hsl');
+      const valCmyk = document.getElementById('val-cmyk');
+      const valCss = document.getElementById('val-css');
+
+      const wcagWhiteSample = document.getElementById('wcag-white-sample');
+      const wcagWhiteBadge = document.getElementById('wcag-white-badge');
+      const wcagDarkSample = document.getElementById('wcag-dark-sample');
+      const wcagDarkBadge = document.getElementById('wcag-dark-badge');
+      const paletteBtns = document.querySelectorAll('.palette-swatch-btn');
+      const copyButtons = document.querySelectorAll('.copy-btn');
+
+      function hexToRgb(hex) {
+        let c = hex.replace('#', '');
+        if (c.length === 3) c = c.split('').map(x => x + x).join('');
+        const num = parseInt(c, 16);
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      function rgbToHsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          l: Math.round(l * 100)
+        };
+      }
+
+      function rgbToCmyk(r, g, b) {
+        let c = 1 - (r / 255);
+        let m = 1 - (g / 255);
+        let y = 1 - (b / 255);
+        let k = Math.min(c, Math.min(m, y));
+        if (k === 1) return { c: 0, m: 0, y: 0, k: 100 };
+        return {
+          c: Math.round(((c - k) / (1 - k)) * 100),
+          m: Math.round(((m - k) / (1 - k)) * 100),
+          y: Math.round(((y - k) / (1 - k)) * 100),
+          k: Math.round(k * 100)
+        };
+      }
+
+      function getLuminance(r, g, b) {
+        const a = [r, g, b].map(v => {
+          v /= 255;
+          return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        });
+        return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+      }
+
+      function getContrast(lum1, lum2) {
+        const brightest = Math.max(lum1, lum2);
+        const darkest = Math.min(lum1, lum2);
+        return (brightest + 0.05) / (darkest + 0.05);
+      }
+
+      function updateColor(hex) {
+        hex = hex.toUpperCase();
+        nativePicker.value = hex;
+        swatchHero.style.backgroundColor = hex;
+
+        const rgb = hexToRgb(hex);
+        const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+        const cmyk = rgbToCmyk(rgb.r, rgb.g, rgb.b);
+
+        heroHexLabel.textContent = hex;
+        // Text color on hero swatch
+        const heroTextColor = hsl.l > 60 ? '#0F172A' : '#FFFFFF';
+        heroHexLabel.style.color = heroTextColor;
+        heroHintLabel.style.color = heroTextColor;
+
+        valHex.textContent = hex;
+        valRgb.textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+        valHsl.textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+        valCmyk.textContent = `cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)`;
+        valCss.textContent = `--color-brand: ${hex};`;
+
+        // WCAG check
+        const lum = getLuminance(rgb.r, rgb.g, rgb.b);
+        const whiteContrast = getContrast(lum, 1.0);
+        const darkContrast = getContrast(lum, 0.0);
+
+        wcagWhiteSample.style.color = hex;
+        wcagDarkSample.style.color = hex;
+
+        if (whiteContrast >= 7) {
+          wcagWhiteBadge.textContent = `AAA (${whiteContrast.toFixed(1)}:1)`;
+          wcagWhiteBadge.style.background = '#DCFCE7';
+          wcagWhiteBadge.style.color = '#166534';
+        } else if (whiteContrast >= 4.5) {
+          wcagWhiteBadge.textContent = `AA (${whiteContrast.toFixed(1)}:1)`;
+          wcagWhiteBadge.style.background = '#FEF9C3';
+          wcagWhiteBadge.style.color = '#854D0E';
+        } else {
+          wcagWhiteBadge.textContent = `Fail (${whiteContrast.toFixed(1)}:1)`;
+          wcagWhiteBadge.style.background = '#FEE2E2';
+          wcagWhiteBadge.style.color = '#991B1B';
+        }
+
+        if (darkContrast >= 7) {
+          wcagDarkBadge.textContent = `AAA (${darkContrast.toFixed(1)}:1)`;
+          wcagDarkBadge.style.background = '#DCFCE7';
+          wcagDarkBadge.style.color = '#166534';
+        } else if (darkContrast >= 4.5) {
+          wcagDarkBadge.textContent = `AA (${darkContrast.toFixed(1)}:1)`;
+          wcagDarkBadge.style.background = '#FEF9C3';
+          wcagDarkBadge.style.color = '#854D0E';
+        } else {
+          wcagDarkBadge.textContent = `Fail (${darkContrast.toFixed(1)}:1)`;
+          wcagDarkBadge.style.background = '#FEE2E2';
+          wcagDarkBadge.style.color = '#991B1B';
+        }
+      }
+
+      nativePicker.addEventListener('input', (e) => {
+        updateColor(e.target.value);
+      });
+
+      paletteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          updateColor(btn.dataset.color);
+        });
+      });
+
+      btnRandom.addEventListener('click', () => {
+        const rand = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        updateColor(rand);
+        if (window.SoundFX) window.SoundFX.playClick();
+      });
+
+      copyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.dataset.target;
+          const text = document.getElementById(targetId).textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = originalText, 1500);
+            if (window.ClassPanel) window.ClassPanel.showToast(`Copied ${text} to clipboard!`);
+          });
+        });
+      });
+
+      updateColor('#4F46E5');
+    })();
+  </script>
+</body>
+</html>

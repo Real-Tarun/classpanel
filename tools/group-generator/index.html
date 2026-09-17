@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random Group Generator — Free Classroom Team Maker</title>
-  <meta name="description" content="Free classroom group generator and team maker. Split student rosters into balanced groups or pairs with instant shuffle and projector mode.">
+  <title>Random Group Generator & Team Maker — Free Balanced Team Splitter</title>
+  <meta name="description" content="Free online random group generator and team maker. Split rosters or lists into balanced groups, pairs, or tournament teams with instant shuffle, customizable group sizes, and projector display.">
   <link rel="canonical" href="https://classpanel.online/tools/group-generator/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -164,32 +164,32 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1><img src="/assets/icons/group-generator.png" alt="Class Group Generator Icon" class="tool-title-icon"> Class Group Generator</h1>
-          <p class="tool-title-subtitle" id="group-subtitle">Split roster into balanced teams, lab pairs, and project tables</p>
+          <h1><img src="/assets/icons/group-generator.png" alt="Group Generator Icon" class="tool-title-icon"> Random Group Generator & Team Maker</h1>
+          <p class="tool-title-subtitle" id="group-subtitle">Split names, rosters, work colleagues, or players into balanced teams or pairs</p>
         </div>
 
         <div class="tool-control-bar" style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
-          <button id="active-class-badge" class="preset-chip" style="cursor: pointer; background: var(--bg-surface); border: 1px solid var(--border-color); font-weight: 700;" title="Click to view or switch active class roster">
-            <span id="active-class-badge-text">📚 Class: Sample Class (16)</span>
+          <button id="active-class-badge" class="preset-chip" style="cursor: pointer; background: var(--bg-surface); border: 1px solid var(--border-color); font-weight: 700;" title="Click to view or switch active roster">
+            <span id="active-class-badge-text">📚 List: Sample Class (16)</span>
           </button>
           <button id="btn-edit-roster" class="btn-primary" style="padding: 0.55rem 1.25rem; border-radius: var(--radius-full); font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: var(--shadow-sm);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
             </svg>
-            <span>+ Add / Edit Student Names</span>
+            <span>+ Edit Names & Roster</span>
           </button>
         </div>
       </div>
 
-      <!-- Empty State Card (Visible when roster is empty) -->
+      <!-- Empty State Card -->
       <div id="group-empty-state" style="display: none; background: var(--bg-surface-subtle); border: 2px dashed var(--primary); border-radius: var(--radius-xl); padding: 3rem 1.5rem; text-align: center; margin: 1.5rem auto; max-width: 520px;">
         <div style="font-size: 3rem; margin-bottom: 0.75rem;">👥</div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">No Students in Class List</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem;">Add or paste your student names to automatically divide your class into teams!</p>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">No Names or Roster Found</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.5;">Add participant names, student rosters, or coworkers to create instant randomized teams!</p>
         <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
           <button id="btn-empty-add-names" class="btn-giant btn-giant-primary" style="height: 3.5rem; font-size: 1.1rem; padding: 0 1.5rem;">
-            <span>+ Add Student Names</span>
+            <span>+ Add Your Names</span>
           </button>
           <button id="btn-empty-load-sample" class="preset-chip" style="height: 3.5rem; padding: 0 1.25rem;">
             <span>Load Sample Class</span>
@@ -197,13 +197,6 @@
         </div>
       </div>
 
-      <!-- Generator Settings Bar (Beginner Friendly) -->
-      <div id="group-controls-bar" style="background: var(--bg-surface-subtle); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.85rem;">
-        
-        <!-- Primary Controls Row -->
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;" id="quick-presets-container">
-            <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-primary); margin-right: 0.25rem;">Quick Setup:</span>
             <button class="preset-chip" data-quick="pairs">👥 Pairs (2/grp)</button>
             <button class="preset-chip" data-quick="2">2 Groups</button>
             <button class="preset-chip" data-quick="3">3 Groups</button>
@@ -289,42 +282,35 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Instant, Fair Student Group Formation</h2>
-            <p>Forming student groups manually can waste valuable instructional minutes and inadvertently encourage social cliques. ClassPanel's Group Generator provides instant, impartial randomized group creation for collaborative learning.</p>
+            <h2>Instant, Fair Group Formation for Workplaces, Sports & Classrooms</h2>
+            <p>Forming groups manually can consume valuable time and inadvertently create social cliques. ClassPanel's Random Group Generator creates balanced, unbiased groups with one click for any meeting, project, or sport:</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Best Classroom Practices for Group Work</h3>
-            <ul class="seo-features-list">
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Think-Pair-Share:</strong> Set the generator to "By Students Per Group: 2" to form rapid peer-discussion pairs.</span>
-              </li>
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Science Lab Stations:</strong> Select the exact number of lab tables available (e.g. 5 stations) to evenly distribute students.</span>
-              </li>
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Projector Display:</strong> Project the groups on the board so students immediately know where to sit without teacher confusion.</span>
-              </li>
-            </ul>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Workshops, Agile Teams & Hackathons</h3>
+            <p>Form rapid breakout teams for brainstorming sprints, pair-programming sessions, or company offsite icebreakers. Click "Copy Groups" to paste the roster distribution directly into Slack, Microsoft Teams, or Notion.</p>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Sports Tournaments & Recreation Leagues</h3>
+            <p>Split players into two evenly sized competitive squads (Red Team vs. Blue Team) or 4 round-robin bracket pods with zero arguments about fairness.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Classroom Lab Pairs & Seating Arrangements</h3>
+            <p>Teachers use the "Pairs (2 each)" preset for instant Think-Pair-Share routines or split students evenly across available science lab stations without social friction.</p>
           </div>
         </div>
 
         <div>
           <div class="seo-card">
-            <h2>Related Classroom Tools</h2>
+            <h2>Related Productivity & Randomizer Tools</h2>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/classroom-timer/">Classroom Timer</a>
+                <a href="/tools/random-name-picker/">Wheel of Names Picker</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/random-name-picker/">Random Name Picker</a>
+                <a href="/tools/tally-counter/">Online Tally Counter & Scoreboard</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/tally-counter/">Team Score Counter</a>
+                <a href="/tools/classroom-timer/">Classroom & Focus Timer</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classroom Holiday & Break Countdown — School Vacation Timers</title>
-  <meta name="description" content="Free school holiday countdown timer. Live countdowns to Summer Vacation, Winter Break, Thanksgiving, Halloween, and custom school milestones.">
+  <title>Countdown to Any Date & Event — Free Live Online Countdown Timer</title>
+  <meta name="description" content="Free online countdown timer to any date, event, birthday, holiday, or deadline. Fullscreen live countdown clock with days, hours, minutes, and seconds for streams, screens, and classrooms.">
   <link rel="canonical" href="https://classpanel.online/tools/holiday-timers/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -13,7 +13,7 @@
     .countdown-cards-grid {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
+      gap: clamp(0.75rem, 2vw, 1.5rem);
       margin: 2rem 0;
       flex-wrap: wrap;
     }
@@ -21,13 +21,18 @@
       background: var(--bg-surface-subtle);
       border: 2px solid var(--border-color);
       border-radius: var(--radius-xl);
-      padding: 1.5rem 2rem;
-      min-width: 130px;
+      padding: clamp(1rem, 2.5vw, 1.75rem) clamp(1.25rem, 3vw, 2.25rem);
+      min-width: clamp(100px, 18vw, 150px);
       text-align: center;
       box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .countdown-unit-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
     }
     .countdown-unit-number {
-      font-size: clamp(3rem, 7vw, 5rem);
+      font-size: clamp(2.75rem, 8vw, 5.5rem);
       font-weight: 900;
       font-family: ui-monospace, monospace;
       color: var(--primary);
@@ -37,9 +42,119 @@
       font-size: 0.85rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
+    }
+
+    /* Event Creator Controls */
+    .event-setup-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .event-setup-input {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+    }
+    .event-setup-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-subtle);
+    }
+
+    /* Broadcast & Live Stream Overlay */
+    .broadcast-container {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #090D16;
+      color: #FFFFFF;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .broadcast-container.active {
+      display: flex;
+    }
+    .broadcast-title {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #FFF 30%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .broadcast-date-sub {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 600;
+      color: #64748B;
+      margin-bottom: 3rem;
+    }
+    .broadcast-units-grid {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .broadcast-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.75rem, 4vw, 3rem);
+      min-width: clamp(110px, 18vw, 180px);
+      backdrop-filter: blur(12px);
+    }
+    .broadcast-num {
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #38BDF8;
+      line-height: 1;
+    }
+    .broadcast-lbl {
+      font-size: clamp(0.75rem, 1.5vw, 1rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #94A3B8;
+      margin-top: 0.75rem;
+    }
+    .broadcast-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFF;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s ease;
+    }
+    .broadcast-close-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -54,10 +169,17 @@
           <span>Class<span style="color: var(--primary);">Panel</span></span>
         </a>
         <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
-        <span style="font-weight: 700; color: var(--text-primary);">Holiday Timers</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Event Countdown</span>
       </div>
 
       <div class="header-actions">
+        <button id="btn-broadcast-mode" class="btn-projector" title="Fullscreen Live Stream / Broadcast View">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+          <span>Live Stream Mode</span>
+        </button>
         <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
@@ -80,19 +202,43 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1 id="holiday-event-title">☀️ Summer Vacation Countdown</h1>
-          <p class="tool-title-subtitle" id="holiday-target-date">Target Date: June 15, 2027</p>
+          <h1 id="holiday-event-title">🎉 Countdown to Any Date & Event</h1>
+          <p class="tool-title-subtitle" id="holiday-target-date">Target Date: Loading...</p>
         </div>
 
         <div class="tool-control-bar">
-          <select id="select-holiday" class="select-input" style="width: auto; padding: 0.4rem 0.8rem; font-weight: 700;">
-            <option value="summer" selected>☀️ Summer Vacation</option>
-            <option value="winter">❄️ Winter Break</option>
-            <option value="halloween">🎃 Halloween</option>
-            <option value="thanksgiving">🦃 Thanksgiving</option>
-            <option value="custom">📅 Custom Date...</option>
+          <select id="select-holiday" class="select-input" style="width: auto; padding: 0.4rem 0.8rem; font-weight: 700;" title="Select Event Preset">
+            <optgroup label="Popular Events & Deadlines">
+              <option value="newyear">🎆 New Year's Day</option>
+              <option value="weekend">🥳 Next Weekend (Friday 5 PM)</option>
+              <option value="custom" selected>📅 Custom Date & Title...</option>
+            </optgroup>
+            <optgroup label="School Holidays & Breaks">
+              <option value="summer">☀️ Summer Vacation</option>
+              <option value="winter">❄️ Winter Break</option>
+              <option value="halloween">🎃 Halloween</option>
+              <option value="thanksgiving">🦃 Thanksgiving</option>
+              <option value="springbreak">🌸 Spring Break</option>
+            </optgroup>
           </select>
         </div>
+      </div>
+
+      <!-- Quick Custom Event Creator -->
+      <div class="event-setup-bar" id="event-setup-bar">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1 1 220px;">
+          <label for="input-event-name" style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); white-space: nowrap;">Event Title:</label>
+          <input type="text" id="input-event-name" class="event-setup-input" style="flex: 1;" placeholder="e.g. My Birthday, Product Launch, Summer Vacation" value="Summer Vacation">
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <label for="input-event-date" style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);">Date:</label>
+          <input type="date" id="input-event-date" class="event-setup-input">
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <label for="input-event-time" style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);">Time:</label>
+          <input type="time" id="input-event-time" class="event-setup-input" value="00:00">
+        </div>
+        <button id="btn-apply-custom" class="preset-chip active" style="padding: 0.5rem 1rem; font-weight: 800;">Update Countdown</button>
       </div>
 
       <!-- Ticker Cards Grid -->
@@ -115,10 +261,52 @@
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 1rem;">
-        <button id="btn-celebrate" class="preset-chip" style="font-weight: 700; padding: 0.6rem 1.5rem;">🎉 Fire Celebration Confetti</button>
+      <!-- Action Buttons Toolbar -->
+      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+        <button id="btn-share-countdown" class="preset-chip" style="font-weight: 700; padding: 0.6rem 1.25rem;">
+          🔗 Copy Shareable Link
+        </button>
+        <button id="btn-trigger-broadcast" class="preset-chip" style="font-weight: 700; padding: 0.6rem 1.25rem;">
+          📺 Open Live Stream Screen
+        </button>
+        <button id="btn-celebrate" class="preset-chip" style="font-weight: 700; padding: 0.6rem 1.25rem;">
+          🎉 Fire Confetti
+        </button>
       </div>
 
+    </div>
+
+    <!-- Live Stream Broadcast Fullscreen Overlay -->
+    <div class="broadcast-container" id="broadcast-overlay">
+      <button class="broadcast-close-btn" id="btn-close-broadcast">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Exit Live View (Esc)
+      </button>
+
+      <h2 class="broadcast-title" id="broadcast-title-text">Event Countdown</h2>
+      <p class="broadcast-date-sub" id="broadcast-sub-text">Target: Date</p>
+
+      <div class="broadcast-units-grid">
+        <div class="broadcast-card">
+          <div class="broadcast-num" id="b-unit-days">00</div>
+          <div class="broadcast-lbl">Days</div>
+        </div>
+        <div class="broadcast-card">
+          <div class="broadcast-num" id="b-unit-hours">00</div>
+          <div class="broadcast-lbl">Hours</div>
+        </div>
+        <div class="broadcast-card">
+          <div class="broadcast-num" id="b-unit-minutes">00</div>
+          <div class="broadcast-lbl">Minutes</div>
+        </div>
+        <div class="broadcast-card">
+          <div class="broadcast-num" id="b-unit-seconds">00</div>
+          <div class="broadcast-lbl">Seconds</div>
+        </div>
+      </div>
     </div>
 
     <!-- Educational SEO Guide Section -->
@@ -126,22 +314,39 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Building Anticipation for School Milestones</h2>
-            <p>Displaying a live countdown to seasonal holidays and breaks creates a cheerful morning meeting ritual. Discussing the days, hours, and minutes remaining is also a fantastic daily real-world calendar math routine for elementary students.</p>
+            <h2>Countdown to Any Date: Personal Deadlines, Birthdays, Holidays & Live Streams</h2>
+            <p>Whether you are tracking the remaining days until summer vacation, a wedding date, a critical project launch, or streaming a live New Year's countdown for your YouTube audience, a clear digital ticker turns waiting into anticipation:</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Live Broadcast & Screen-Share Mode for Streamers</h3>
+            <p>Click "Live Stream Mode" to launch a distraction-free, cinematic full-screen display with high-contrast typography. Ideal for OBS browser sources, YouTube live streams, Twitch stream waiting screens, and smart TV displays.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Classroom Breaks & Calendar Math</h3>
+            <p>For educators, counting down to seasonal milestones (Winter Break, Thanksgiving, Halloween, 100th Day of School) creates a beloved morning meeting ritual. Calculating days and converting remaining hours reinforces real-world calendar math for students.</p>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Shareable Countdown URLs</h3>
+            <p>Customize your event title, pick any date and time, and click "Copy Shareable Link". Anyone who opens the URL will see your exact custom countdown running in real time synced to their device clock.</p>
           </div>
         </div>
 
         <div>
           <div class="seo-card">
-            <h2>Related Classroom Tools</h2>
+            <h2>Related Timing & Productivity Tools</h2>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/classroom-timer/">Classroom Timer</a>
+                <a href="/tools/classroom-timer/">Classroom & Study Timer</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/clocks/">Classroom Clocks</a>
+                <a href="/tools/stopwatch/">Online Stopwatch & Split Laps</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/clocks/">Classroom & Desk Clocks</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/race-timers/">Race Timers & F1 Start Lights</a>
               </li>
             </ul>
           </div>
@@ -154,7 +359,7 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-bottom" style="border-top: none; padding-top: 0;">
-        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div>© 2026 ClassPanel.online • Free Online Timers & Productivity Tools</div>
         <div style="display: flex; gap: 1.25rem;">
           <a href="/">All Tools</a>
           <a href="/blog/">Blog</a>
@@ -174,71 +379,138 @@
   <script>
     (function () {
       let targetDate = new Date();
-      targetDate.setMonth(5); // June
-      targetDate.setDate(15);
-      if (targetDate < new Date()) {
-        targetDate.setFullYear(targetDate.getFullYear() + 1);
-      }
+      let eventName = 'Summer Vacation';
+      let hasCelebrated = false;
 
       const eventTitle = document.getElementById('holiday-event-title');
       const targetDateEl = document.getElementById('holiday-target-date');
       const selectHoliday = document.getElementById('select-holiday');
+      const inputEventName = document.getElementById('input-event-name');
+      const inputEventDate = document.getElementById('input-event-date');
+      const inputEventTime = document.getElementById('input-event-time');
+      const btnApplyCustom = document.getElementById('btn-apply-custom');
+
       const unitDays = document.getElementById('unit-days');
       const unitHours = document.getElementById('unit-hours');
       const unitMinutes = document.getElementById('unit-minutes');
       const unitSeconds = document.getElementById('unit-seconds');
+
+      // Broadcast elements
+      const broadcastOverlay = document.getElementById('broadcast-overlay');
+      const btnBroadcastMode = document.getElementById('btn-broadcast-mode');
+      const btnTriggerBroadcast = document.getElementById('btn-trigger-broadcast');
+      const btnCloseBroadcast = document.getElementById('btn-close-broadcast');
+      const broadcastTitleText = document.getElementById('broadcast-title-text');
+      const broadcastSubText = document.getElementById('broadcast-sub-text');
+      const bUnitDays = document.getElementById('b-unit-days');
+      const bUnitHours = document.getElementById('b-unit-hours');
+      const bUnitMinutes = document.getElementById('b-unit-minutes');
+      const bUnitSeconds = document.getElementById('b-unit-seconds');
+
       const btnCelebrate = document.getElementById('btn-celebrate');
+      const btnShareCountdown = document.getElementById('btn-share-countdown');
 
-      function updateTarget() {
+      // Date helper: format YYYY-MM-DD
+      function toDateInputValue(date) {
+        const local = new Date(date);
+        local.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+        return local.toISOString().slice(0, 10);
+      }
+
+      function getNextOccurrence(monthIndex, dayOfMonth, hour = 0, minute = 0) {
         const now = new Date();
-        const year = now.getFullYear();
+        let target = new Date(now.getFullYear(), monthIndex, dayOfMonth, hour, minute, 0);
+        if (target <= now) {
+          target = new Date(now.getFullYear() + 1, monthIndex, dayOfMonth, hour, minute, 0);
+        }
+        return target;
+      }
 
-        switch (selectHoliday.value) {
+      function getNextFriday5PM() {
+        const now = new Date();
+        const day = now.getDay(); // 0 Sun, 5 Fri, 6 Sat
+        let daysUntilFriday = (5 - day + 7) % 7;
+        const target = new Date(now);
+        target.setDate(now.getDate() + daysUntilFriday);
+        target.setHours(17, 0, 0, 0);
+        if (target <= now) {
+          target.setDate(target.getDate() + 7);
+        }
+        return target;
+      }
+
+      function setCountdown(name, date) {
+        eventName = name;
+        targetDate = new Date(date);
+        hasCelebrated = false;
+
+        eventTitle.textContent = `${eventName} Countdown`;
+        const dateString = targetDate.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) +
+          ` at ${targetDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        targetDateEl.textContent = `Target Date: ${dateString}`;
+
+        broadcastTitleText.textContent = `${eventName}`;
+        broadcastSubText.textContent = `Counting down to ${dateString}`;
+
+        inputEventName.value = name;
+        inputEventDate.value = toDateInputValue(targetDate);
+        const hh = String(targetDate.getHours()).padStart(2, '0');
+        const mm = String(targetDate.getMinutes()).padStart(2, '0');
+        inputEventTime.value = `${hh}:${mm}`;
+
+        updateTicker();
+      }
+
+      function handlePresetSelection() {
+        const val = selectHoliday.value;
+        const year = new Date().getFullYear();
+
+        switch (val) {
           case 'summer':
-            eventTitle.textContent = '☀️ Summer Vacation Countdown';
-            targetDate = new Date(year, 5, 15);
-            if (targetDate < now) targetDate = new Date(year + 1, 5, 15);
+            setCountdown('☀️ Summer Vacation', getNextOccurrence(5, 15, 15, 0));
             break;
           case 'winter':
-            eventTitle.textContent = '❄️ Winter Break Countdown';
-            targetDate = new Date(year, 11, 20);
-            if (targetDate < now) targetDate = new Date(year + 1, 11, 20);
+            setCountdown('❄️ Winter Break', getNextOccurrence(11, 20, 15, 0));
             break;
           case 'halloween':
-            eventTitle.textContent = '🎃 Halloween Countdown';
-            targetDate = new Date(year, 9, 31);
-            if (targetDate < now) targetDate = new Date(year + 1, 9, 31);
+            setCountdown('🎃 Halloween', getNextOccurrence(9, 31, 0, 0));
             break;
           case 'thanksgiving':
-            eventTitle.textContent = '🦃 Thanksgiving Break Countdown';
-            targetDate = new Date(year, 10, 26);
-            if (targetDate < now) targetDate = new Date(year + 1, 10, 26);
+            setCountdown('🦃 Thanksgiving', getNextOccurrence(10, 26, 0, 0));
+            break;
+          case 'springbreak':
+            setCountdown('🌸 Spring Break', getNextOccurrence(2, 20, 15, 0));
+            break;
+          case 'newyear':
+            setCountdown('🎆 New Year\'s Day', getNextOccurrence(0, 1, 0, 0));
+            break;
+          case 'weekend':
+            setCountdown('🥳 Next Weekend', getNextFriday5PM());
             break;
           case 'custom':
-            if (window.ClassPanel) {
-              window.ClassPanel.prompt({
-                title: 'Custom School Milestone',
-                label: 'Choose target date (YYYY-MM-DD):',
-                defaultValue: `${year + 1}-01-01`,
-                inputType: 'date',
-                confirmText: 'Set Countdown Date'
-              }).then(customInput => {
-                if (customInput) {
-                  const parsed = new Date(customInput);
-                  if (!isNaN(parsed.getTime())) {
-                    targetDate = parsed;
-                    eventTitle.textContent = '📅 Custom Milestone Countdown';
-                    targetDateEl.textContent = `Target: ${targetDate.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })}`;
-                    updateTicker();
-                  }
-                }
-              });
-            }
             break;
         }
+      }
 
-        targetDateEl.textContent = `Target: ${targetDate.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })}`;
-        updateTicker();
+      function applyCustomEvent() {
+        const name = inputEventName.value.trim() || 'Custom Event';
+        const dateVal = inputEventDate.value;
+        const timeVal = inputEventTime.value || '00:00';
+
+        if (!dateVal) {
+          if (window.ClassPanel) window.ClassPanel.showToast('Please select a target date.');
+          return;
+        }
+
+        const dateObj = new Date(`${dateVal}T${timeVal}:00`);
+        if (isNaN(dateObj.getTime())) {
+          if (window.ClassPanel) window.ClassPanel.showToast('Invalid date/time format.');
+          return;
+        }
+
+        setCountdown(name, dateObj);
+        selectHoliday.value = 'custom';
+        if (window.ClassPanel) window.ClassPanel.showToast(`Countdown set to ${name}!`);
       }
 
       function updateTicker() {
@@ -250,6 +522,18 @@
           unitHours.textContent = '00';
           unitMinutes.textContent = '00';
           unitSeconds.textContent = '00';
+
+          bUnitDays.textContent = '00';
+          bUnitHours.textContent = '00';
+          bUnitMinutes.textContent = '00';
+          bUnitSeconds.textContent = '00';
+
+          if (!hasCelebrated && dist > -10000) {
+            hasCelebrated = true;
+            if (window.SoundFX) window.SoundFX.playFanfare();
+            if (window.Confetti) window.Confetti.fire({ count: 200 });
+            if (window.ClassPanel) window.ClassPanel.showToast(`🎉 ${eventName} has arrived!`);
+          }
           return;
         }
 
@@ -258,19 +542,92 @@
         const minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((dist % (1000 * 60)) / 1000);
 
-        unitDays.textContent = String(days).padStart(2, '0');
-        unitHours.textContent = String(hours).padStart(2, '0');
-        unitMinutes.textContent = String(minutes).padStart(2, '0');
-        unitSeconds.textContent = String(seconds).padStart(2, '0');
+        const dStr = String(days).padStart(2, '0');
+        const hStr = String(hours).padStart(2, '0');
+        const mStr = String(minutes).padStart(2, '0');
+        const sStr = String(seconds).padStart(2, '0');
+
+        unitDays.textContent = dStr;
+        unitHours.textContent = hStr;
+        unitMinutes.textContent = mStr;
+        unitSeconds.textContent = sStr;
+
+        bUnitDays.textContent = dStr;
+        bUnitHours.textContent = hStr;
+        bUnitMinutes.textContent = mStr;
+        bUnitSeconds.textContent = sStr;
       }
 
-      selectHoliday.addEventListener('change', updateTarget);
+      function openBroadcastMode() {
+        broadcastOverlay.classList.add('active');
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      }
+
+      function closeBroadcastMode() {
+        broadcastOverlay.classList.remove('active');
+        if (document.fullscreenElement && document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+
+      function copyShareLink() {
+        const params = new URLSearchParams();
+        params.set('title', eventName);
+        params.set('date', targetDate.toISOString());
+        const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          if (window.ClassPanel) window.ClassPanel.showToast('✅ Shareable link copied to clipboard!');
+          else alert('Link copied: ' + shareUrl);
+        }).catch(() => {
+          prompt('Copy this countdown URL:', shareUrl);
+        });
+      }
+
+      // Check URL parameters on load
+      function parseUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        const titleParam = params.get('title');
+        const dateParam = params.get('date');
+
+        if (dateParam) {
+          const parsed = new Date(dateParam);
+          if (!isNaN(parsed.getTime())) {
+            const title = titleParam ? titleParam.trim() : 'Event';
+            selectHoliday.value = 'custom';
+            setCountdown(title, parsed);
+            return true;
+          }
+        }
+        return false;
+      }
+
+      selectHoliday.addEventListener('change', handlePresetSelection);
+      btnApplyCustom.addEventListener('click', applyCustomEvent);
+      if (btnBroadcastMode) btnBroadcastMode.addEventListener('click', openBroadcastMode);
+      if (btnTriggerBroadcast) btnTriggerBroadcast.addEventListener('click', openBroadcastMode);
+      if (btnCloseBroadcast) btnCloseBroadcast.addEventListener('click', closeBroadcastMode);
+      if (btnShareCountdown) btnShareCountdown.addEventListener('click', copyShareLink);
+
       btnCelebrate.addEventListener('click', () => {
         if (window.SoundFX) window.SoundFX.playFanfare();
         if (window.Confetti) window.Confetti.fire({ count: 180 });
       });
 
-      updateTarget();
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && broadcastOverlay.classList.contains('active')) {
+          closeBroadcastMode();
+        }
+      });
+
+      // Initialize
+      const hadParams = parseUrlParams();
+      if (!hadParams) {
+        setCountdown('☀️ Summer Vacation', getNextOccurrence(5, 15, 15, 0));
+      }
+
       setInterval(updateTicker, 1000);
     })();
   </script>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v12';
+const CACHE_NAME = 'classpanel-v13';
 const STATIC_ASSETS = [
   '/',
   '/tools/',
@@ -29,6 +29,11 @@ const STATIC_ASSETS = [
   '/assets/icons/presentation-timer.png',
   '/assets/icons/race-timers.png',
   '/assets/icons/holiday-timers.png',
+  '/assets/icons/rock-paper-scissors.png',
+  '/assets/icons/coin-flip.png',
+  '/assets/icons/dice-roller.png',
+  '/assets/icons/color-picker.png',
+  '/assets/icons/stopwatch.png',
   '/tools/classroom-timer/',
   '/tools/race-timers/',
   '/tools/holiday-timers/',
@@ -41,7 +46,15 @@ const STATIC_ASSETS = [
   '/tools/group-generator/',
   '/tools/presentation-timer/',
   '/tools/tally-counter/',
+  '/tools/rock-paper-scissors/',
+  '/tools/coin-flip/',
+  '/tools/dice-roller/',
+  '/tools/color-picker/',
+  '/tools/stopwatch/',
   '/blog/',
+  '/blog/best-free-online-timer-for-studying-pomodoro/',
+  '/blog/how-to-use-meditation-timer-for-mindfulness/',
+  '/blog/rock-paper-scissors-rules-strategy-play-online/',
   '/about/',
   '/privacy/',
   '/contact/'

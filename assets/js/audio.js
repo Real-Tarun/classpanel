@@ -215,7 +215,135 @@ class SoundSynthesizer {
         break;
     }
   }
+
+  // --- Procedural Royalty-Free Ambient Music Generator ---
+  startAmbient(track = 'focus', userVol = 0.5) {
+    this.stopAmbient();
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx) return;
+
+    this.ambientNodes = [];
+    this.ambientGain = this.ctx.createGain();
+    const effectiveVol = Math.max(0, Math.min(1, userVol)) * this.volume * 0.35;
+    this.ambientGain.gain.setValueAtTime(0.001, this.ctx.currentTime);
+    this.ambientGain.gain.linearRampToValueAtTime(effectiveVol, this.ctx.currentTime + 1.2);
+    this.ambientGain.connect(this.ctx.destination);
+
+    if (track === 'focus') {
+      // Warm meditative pad chords: C3 (130.81), G3 (196.00), E4 (329.63), B4 (493.88)
+      const freqs = [130.81, 196.00, 329.63, 493.88];
+      freqs.forEach((f, idx) => {
+        const osc = this.ctx.createOscillator();
+        const filter = this.ctx.createBiquadFilter();
+        const nodeGain = this.ctx.createGain();
+
+        osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(f, this.ctx.currentTime);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(600, this.ctx.currentTime);
+
+        // Gentle undulating LFO
+        const lfo = this.ctx.createOscillator();
+        const lfoGain = this.ctx.createGain();
+        lfo.frequency.setValueAtTime(0.2 + idx * 0.08, this.ctx.currentTime);
+        lfoGain.gain.setValueAtTime(150, this.ctx.currentTime);
+        lfo.connect(lfoGain);
+        lfoGain.connect(filter.frequency);
+        lfo.start();
+
+        nodeGain.gain.value = 0.25;
+        osc.connect(filter);
+        filter.connect(nodeGain);
+        nodeGain.connect(this.ambientGain);
+
+        osc.start();
+        this.ambientNodes.push(osc, lfo);
+      });
+    } else if (track === 'rain') {
+      // Procedural calming rain / white noise buffer
+      const bufferSize = this.ctx.sampleRate * 2;
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        output[i] = (lastOut + (0.02 * white)) / 1.02; // Pink noise filter
+        lastOut = output[i];
+        output[i] *= 3.5;
+      }
+
+      const whiteNoise = this.ctx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      whiteNoise.loop = true;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(800, this.ctx.currentTime);
+
+      whiteNoise.connect(filter);
+      filter.connect(this.ambientGain);
+      whiteNoise.start();
+      this.ambientNodes.push(whiteNoise);
+    } else if (track === 'zen') {
+      // Periodic Tibetan singing bowl & chime intervals
+      const playZenChime = () => {
+        if (!this.ambientGain) return;
+        const freqs = [528, 660, 792, 1056];
+        const f = freqs[Math.floor(Math.random() * freqs.length)];
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, this.ctx.currentTime);
+        g.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 3.5);
+        osc.connect(g);
+        g.connect(this.ambientGain);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 3.6);
+      };
+
+      playZenChime();
+      this.zenInterval = setInterval(playZenChime, 4500);
+    }
+  }
+
+  stopAmbient() {
+    if (this.zenInterval) {
+      clearInterval(this.zenInterval);
+      this.zenInterval = null;
+    }
+    if (this.ambientGain && this.ctx) {
+      try {
+        this.ambientGain.gain.linearRampToValueAtTime(0.0001, this.ctx.currentTime + 0.5);
+        setTimeout(() => {
+          if (this.ambientNodes) {
+            this.ambientNodes.forEach(node => {
+              try { node.stop(); } catch(e) {}
+              try { node.disconnect(); } catch(e) {}
+            });
+            this.ambientNodes = [];
+          }
+          if (this.ambientGain) {
+            try { this.ambientGain.disconnect(); } catch(e) {}
+            this.ambientGain = null;
+          }
+        }, 550);
+      } catch(e) {
+        this.ambientGain = null;
+      }
+    }
+  }
+
+  setAmbientVolume(vol) {
+    if (this.ambientGain && this.ctx) {
+      const effectiveVol = Math.max(0, Math.min(1, vol)) * this.volume * 0.35;
+      this.ambientGain.gain.setValueAtTime(effectiveVol, this.ctx.currentTime);
+    }
+  }
 }
 
 // Global audio singleton
 window.SoundFX = new SoundSynthesizer();
+

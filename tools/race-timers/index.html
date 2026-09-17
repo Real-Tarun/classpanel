@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classroom Race Timers — Free Animated Track Countdown</title>
-  <meta name="description" content="Free animated classroom race timer. Students cheer on turtle, bunny, cheetah, or rocket during clean up drills, math sprints, and timed transitions.">
+  <title>Online Race Timer & F1 Start Lights — Free Reaction & Sprint Countdown</title>
+  <meta name="description" content="Free online race timer and Formula 1 start lights simulator. Test reaction times, run animated animal sprint timers, and gamify clean-ups or sports drills.">
   <link rel="canonical" href="https://classpanel.online/tools/race-timers/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -228,11 +228,16 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1><img src="/assets/icons/race-timers.png" alt="Race Timers Icon" class="tool-title-icon"> Animated Classroom Race Timers</h1>
-          <p class="tool-title-subtitle">Turn quick classroom clean-ups and math drills into an exciting sprint</p>
+          <h1><img src="/assets/icons/race-timers.png" alt="Race Timers Icon" class="tool-title-icon"> Race Timers & F1 Start Lights</h1>
+          <p class="tool-title-subtitle" id="race-mode-subtitle">Animated Track Sprints & Formula 1 Start Lights Reaction Test</p>
         </div>
 
         <div class="tool-control-bar">
+          <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
+            <button id="btn-mode-race" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">🐾 Animated Race</button>
+            <button id="btn-mode-f1" class="preset-chip" style="background: transparent; border: none;">🏎️ F1 Start Lights</button>
+          </div>
+
           <select id="select-race-theme" class="select-input" style="padding: 0.4rem 0.8rem; font-weight: 700; font-size: 0.85rem;" title="Change Racer Theme">
             <option value="animals">🐾 Animals & Rocket</option>
             <option value="teams">🔴 Classroom Teams</option>
@@ -247,6 +252,38 @@
       <!-- Dynamic Live Race Commentary Banner -->
       <div class="race-commentary-bar" id="race-commentary">
         <span>🏁</span> <span id="race-commentary-text">Ready to race! Click Start Race to begin.</span>
+      </div>
+
+      <!-- F1 Starting Gantry Container -->
+      <div id="f1-gantry-container" style="display: none; flex-direction: column; align-items: center; justify-content: center; background: #0F172A; border-radius: var(--radius-xl); padding: 2.5rem 1.5rem; margin: 1.5rem 0; border: 4px solid #1E293B; box-shadow: var(--shadow-xl); cursor: pointer;" title="Click anywhere or press Space when lights go out!">
+        <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94A3B8; margin-bottom: 1.25rem;">Formula 1 Starting Gantry</div>
+        <div style="display: flex; gap: clamp(0.75rem, 2.5vw, 1.75rem); background: #1E293B; padding: 1.25rem 2rem; border-radius: var(--radius-lg); border: 3px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <!-- 5 Towers with dual lamps -->
+          <div class="f1-tower" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <div class="f1-lamp-top" style="width: 44px; height: 44px; border-radius: 50%; background: #1E293B; border: 3px solid #0F172A;"></div>
+            <div class="f1-lamp-red" id="f1-red-0" style="width: 44px; height: 44px; border-radius: 50%; background: #450A0A; border: 3px solid #0F172A; transition: all 0.1s ease;"></div>
+          </div>
+          <div class="f1-tower" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <div class="f1-lamp-top" style="width: 44px; height: 44px; border-radius: 50%; background: #1E293B; border: 3px solid #0F172A;"></div>
+            <div class="f1-lamp-red" id="f1-red-1" style="width: 44px; height: 44px; border-radius: 50%; background: #450A0A; border: 3px solid #0F172A; transition: all 0.1s ease;"></div>
+          </div>
+          <div class="f1-tower" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <div class="f1-lamp-top" style="width: 44px; height: 44px; border-radius: 50%; background: #1E293B; border: 3px solid #0F172A;"></div>
+            <div class="f1-lamp-red" id="f1-red-2" style="width: 44px; height: 44px; border-radius: 50%; background: #450A0A; border: 3px solid #0F172A; transition: all 0.1s ease;"></div>
+          </div>
+          <div class="f1-tower" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <div class="f1-lamp-top" style="width: 44px; height: 44px; border-radius: 50%; background: #1E293B; border: 3px solid #0F172A;"></div>
+            <div class="f1-lamp-red" id="f1-red-3" style="width: 44px; height: 44px; border-radius: 50%; background: #450A0A; border: 3px solid #0F172A; transition: all 0.1s ease;"></div>
+          </div>
+          <div class="f1-tower" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+            <div class="f1-lamp-top" style="width: 44px; height: 44px; border-radius: 50%; background: #1E293B; border: 3px solid #0F172A;"></div>
+            <div class="f1-lamp-red" id="f1-red-4" style="width: 44px; height: 44px; border-radius: 50%; background: #450A0A; border: 3px solid #0F172A; transition: all 0.1s ease;"></div>
+          </div>
+        </div>
+
+        <div id="f1-feedback-banner" style="margin-top: 1.75rem; font-size: clamp(1.2rem, 3.5vw, 1.6rem); font-weight: 900; color: #F8FAFC; text-align: center; min-height: 2.5rem;">
+          Click "Start Lights" below, then tap when lights go OUT!
+        </div>
       </div>
 
       <!-- Race Track View -->
@@ -285,8 +322,9 @@
         </div>
       </div>
 
-      <!-- Live Race Results / Podium Card -->
-      <div class="podium-card" id="podium-card">
+      <!-- Podium Modal Overlay -->
+      <div class="podium-overlay" id="podium-overlay">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
         <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--text-primary);" id="podium-winner-title">🏆 Winner Crossed the Finish Line!</h2>
         <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem;">Official Finish Order & Placement</p>
         <div class="podium-grid" id="podium-grid"></div>
@@ -322,8 +360,14 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Gamified Clean-Up and Transition Timing</h2>
-            <p>Young learners thrive when routine chores are transformed into a cooperative game. Running a 1-minute animated race timer motivates the whole class to pack away supplies, return books to the shelves, and be seated before the runners cross the finish line.</p>
+            <h2>Formula 1 Start Lights, Reaction Training & Gamified Sprint Timers</h2>
+            <p>From high-speed motorsport starting grids to fast-paced classroom clean-up routines, visual race timing combines focus, excitement, and cooperative motivation:</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">F1 Start Lights Procedure & Reaction Testing</h3>
+            <p>In Formula 1 Grand Prix races, five red lights illuminate sequentially at 1-second intervals. Once all five are lit, there is an unpredictable random pause (0.2 to 3 seconds) before all lights extinguish simultaneously ("Lights out and away we go!"). Our test records your exact millisecond reflex time, comparing it to elite race drivers (sub-200ms).</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Gamified Clean-Up & Math Transition Sprints</h3>
+            <p>Young learners thrive when routine chores are transformed into a cooperative game. Running a 1-minute animated animal race motivates the entire class to pack away supplies, return books to shelves, and be seated before the runners cross the finish line.</p>
           </div>
         </div>
 
@@ -418,10 +462,30 @@
       const track = document.getElementById('race-track');
       const commentaryText = document.getElementById('race-commentary-text');
       const commentaryBar = document.getElementById('race-commentary');
-      const podiumCard = document.getElementById('podium-card');
+      const podiumCard = document.getElementById('podium-overlay');
       const podiumGrid = document.getElementById('podium-grid');
       const podiumWinnerTitle = document.getElementById('podium-winner-title');
       const btnPodiumClose = document.getElementById('btn-podium-close');
+
+      // F1 Starting Lights Elements
+      const btnModeRace = document.getElementById('btn-mode-race');
+      const btnModeF1 = document.getElementById('btn-mode-f1');
+      const f1Gantry = document.getElementById('f1-gantry-container');
+      const f1Feedback = document.getElementById('f1-feedback-banner');
+      const racePresetsGroup = document.getElementById('race-presets-group');
+      const raceModeSubtitle = document.getElementById('race-mode-subtitle');
+      const f1Lamps = [
+        document.getElementById('f1-red-0'),
+        document.getElementById('f1-red-1'),
+        document.getElementById('f1-red-2'),
+        document.getElementById('f1-red-3'),
+        document.getElementById('f1-red-4')
+      ];
+
+      let currentMode = 'race'; // 'race' | 'f1'
+      let f1State = 'idle'; // 'idle' | 'starting' | 'holding' | 'lights_out' | 'finished'
+      let f1Timers = [];
+      let f1StartTime = null;
 
       const avatarBoxes = [
         document.getElementById('avatar-box-0'),
@@ -480,90 +544,65 @@
       }
 
       function resetPhysicsSeeds() {
-        racerStates.forEach((st, i) => {
-          st.pos = 0;
-          st.seed = Math.random() * 80 + i * 25;
-          st.isTurbo = false;
-        });
+        racerStates = [
+          { pos: 0, seed: Math.random() * 80 + 1, isTurbo: false },
+          { pos: 0, seed: Math.random() * 80 + 20, isTurbo: false },
+          { pos: 0, seed: Math.random() * 80 + 40, isTurbo: false },
+          { pos: 0, seed: Math.random() * 80 + 60, isTurbo: false }
+        ];
         lastLeaderIndex = -1;
         commentaryCooldown = 0;
       }
 
       function renderPositions() {
-        const trackWidth = track.clientWidth || 600;
-        const startX = 54;
-        const finishX = Math.max(120, trackWidth - 120);
-        const distance = finishX - startX;
+        if (currentMode !== 'race') return;
+        const trackWidth = track.clientWidth;
+        const startOffset = 54;
+        const finishOffset = 48;
+        const availableDist = Math.max(100, trackWidth - startOffset - finishOffset);
 
-        avatarBoxes.forEach((box, i) => {
-          const st = racerStates[i];
-          const px = st.pos * distance;
-          box.style.transform = `translateX(${px}px)`;
-
-          if (isRunning) {
-            box.classList.add('is-running');
-            if (st.isTurbo) box.classList.add('is-turbo');
-            else box.classList.remove('is-turbo');
-          } else {
-            box.classList.remove('is-running', 'is-turbo');
+        racerStates.forEach((st, i) => {
+          const px = Math.min(availableDist + 30, st.pos * availableDist);
+          if (avatarBoxes[i]) {
+            avatarBoxes[i].style.transform = `translateX(${px}px)`;
+            if (isRunning) {
+              avatarBoxes[i].classList.add('is-running');
+              if (st.isTurbo) avatarBoxes[i].classList.add('is-turbo');
+              else avatarBoxes[i].classList.remove('is-turbo');
+            } else {
+              avatarBoxes[i].classList.remove('is-running', 'is-turbo');
+            }
           }
         });
       }
 
       function animationLoop(timestamp) {
         if (!isRunning) return;
-
         if (!lastTimestamp) lastTimestamp = timestamp;
-        const dt = Math.min(0.1, (timestamp - lastTimestamp) / 1000); // delta in seconds
+        const dt = Math.min(0.1, (timestamp - lastTimestamp) / 1000);
         lastTimestamp = timestamp;
 
         remainingSeconds = Math.max(0, remainingSeconds - dt);
         display.textContent = formatTime(Math.ceil(remainingSeconds));
 
-        const baseProgress = Math.min(1, (totalDuration - remainingSeconds) / totalDuration);
+        const baseProgress = Math.min(1, Math.max(0, 1 - (remainingSeconds / totalDuration)));
 
-        // Update each racer's dynamic physics position
         racerStates.forEach((st, i) => {
-          const trait = racers[i].trait;
-          let wave = 0;
-          let turbo = false;
+          const personality = (st.seed * 0.05);
+          const wave = Math.sin(baseProgress * Math.PI * 4 + personality) * 0.045
+                     + Math.sin(baseProgress * Math.PI * 8 + st.seed) * 0.025;
 
-          if (trait === 'turtle') {
-            // Steady pace, then surprise rocket bursts
-            const boostVal = Math.sin(baseProgress * 12 + st.seed);
-            turbo = boostVal > 0.6;
-            wave = turbo ? 0.09 : (Math.sin(baseProgress * 6 + st.seed) * 0.02 - 0.02);
-          } else if (trait === 'bunny') {
-            // Fast hops, pauses
-            const hop = Math.sin(baseProgress * 20 + st.seed);
-            wave = hop * 0.055;
-            turbo = hop > 0.75;
-          } else if (trait === 'cheetah') {
-            // Sprints & coasting
-            const sprint = Math.cos(baseProgress * 15 + st.seed);
-            wave = sprint * 0.06;
-            turbo = sprint > 0.7;
-          } else {
-            // Rocket: starts slow, accelerates dramatically
-            const accel = Math.pow(baseProgress, 1.3) * 0.11 - 0.03;
-            const flutter = Math.sin(baseProgress * 25 + st.seed) * 0.025;
-            wave = accel + flutter;
-            turbo = baseProgress > 0.55 && Math.sin(baseProgress * 8) > 0;
-          }
-
-          st.isTurbo = turbo;
+          st.isTurbo = wave > 0.04 && isRunning;
 
           if (baseProgress < 0.90) {
             st.pos = Math.max(0, Math.min(0.88, baseProgress + wave * 0.7));
           } else {
-            // Final sprint: racers surge toward and across the finish line as time runs out
             const sprintRatio = (baseProgress - 0.90) / 0.10;
             const finalSeedAdvantage = ((st.seed % 10) - 4.5) * 0.008;
             st.pos = Math.min(1.06, 0.88 + sprintRatio * (0.12 + finalSeedAdvantage));
           }
         });
 
-        // Determine current race leader
         let leaderIdx = 0;
         let maxP = -1;
         racerStates.forEach((st, i) => {
@@ -592,7 +631,6 @@
 
         renderPositions();
 
-        // Finish condition: exactly when the classroom countdown reaches 0
         if (remainingSeconds <= 0) {
           finishRace();
           return;
@@ -609,7 +647,7 @@
         isRunning = true;
         raceFinished = false;
         lastTimestamp = null;
-        podiumCard.style.display = 'none';
+        if (podiumCard) podiumCard.style.display = 'none';
 
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `<span>Pause</span>`;
@@ -648,7 +686,7 @@
 
         btnStart.classList.remove('is-running');
         btnStart.innerHTML = `<span>Start Race</span>`;
-        podiumCard.style.display = 'none';
+        if (podiumCard) podiumCard.style.display = 'none';
         setCommentary('🏁 Ready to race! Click Start Race to begin.');
       }
 
@@ -665,7 +703,6 @@
         btnStart.classList.remove('is-running');
         btnStart.innerHTML = `<span>Start Race</span>`;
 
-        // Rank by actual physical finish position descending
         const ranking = racerStates
           .map((st, i) => ({ index: i, racer: racers[i], pos: st.pos }))
           .sort((a, b) => b.pos - a.pos);
@@ -677,26 +714,234 @@
         if (window.Confetti) window.Confetti.fire({ count: 180 });
         if (window.ClassPanel) window.ClassPanel.showToast(`🏆 ${winner.icon} ${winner.name} crossed the finish line!`);
 
-        // Render podium card
-        podiumWinnerTitle.textContent = `🏆 ${winner.icon} ${winner.name} Wins!`;
+        if (podiumWinnerTitle) podiumWinnerTitle.textContent = `🏆 ${winner.icon} ${winner.name} Wins!`;
         const medals = ['🥇 1st Place (Winner)', '🥈 2nd Place', '🥉 3rd Place', '🎖️ 4th Place'];
-        podiumGrid.innerHTML = ranking.map((r, rank) => `
-          <div class="podium-rank-item ${rank === 0 ? 'winner' : ''}">
-            <div style="font-size: 2.2rem;">${r.racer.icon}</div>
-            <strong style="font-size: 1rem; color: var(--text-primary);">${r.racer.name}</strong>
-            <span class="preset-chip active" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; ${rank === 0 ? 'background: #F59E0B; color: #000; font-weight: 800;' : ''}">${medals[rank]}</span>
-          </div>
-        `).join('');
+        if (podiumGrid) {
+          podiumGrid.innerHTML = ranking.map((r, rank) => `
+            <div class="podium-rank-item ${rank === 0 ? 'winner' : ''}">
+              <div style="font-size: 2.2rem;">${r.racer.icon}</div>
+              <strong style="font-size: 1rem; color: var(--text-primary);">${r.racer.name}</strong>
+              <span class="preset-chip active" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; ${rank === 0 ? 'background: #F59E0B; color: #000; font-weight: 800;' : ''}">${medals[rank]}</span>
+            </div>
+          `).join('');
+        }
 
-        podiumCard.style.display = 'block';
+        if (podiumCard) podiumCard.style.display = 'block';
       }
 
-      btnStart.addEventListener('click', () => {
-        if (isRunning) pause();
-        else start();
+      // ==========================================
+      // F1 START LIGHTS LOGIC
+      // ==========================================
+      function clearF1Timers() {
+        f1Timers.forEach(t => clearTimeout(t));
+        f1Timers = [];
+      }
+
+      function resetF1Lamps() {
+        f1Lamps.forEach(lamp => {
+          if (lamp) {
+            lamp.style.background = '#450A0A';
+            lamp.style.boxShadow = 'none';
+          }
+        });
+      }
+
+      function turnF1LampOn(index) {
+        if (f1Lamps[index]) {
+          f1Lamps[index].style.background = '#EF4444';
+          f1Lamps[index].style.boxShadow = '0 0 30px #EF4444, inset 0 0 10px #FFF';
+        }
+      }
+
+      function resetF1() {
+        clearF1Timers();
+        resetF1Lamps();
+        f1State = 'idle';
+        f1StartTime = null;
+        if (f1Feedback) {
+          f1Feedback.textContent = 'Click "Start Lights" below, then tap when lights go OUT!';
+          f1Feedback.style.color = '#F8FAFC';
+        }
+        btnStart.classList.remove('is-running');
+        btnStart.innerHTML = '<span>Start Lights</span>';
+      }
+
+      function startF1Sequence() {
+        clearF1Timers();
+        resetF1Lamps();
+        f1State = 'starting';
+        f1StartTime = null;
+
+        if (f1Feedback) {
+          f1Feedback.textContent = 'Get ready... Hold your focus!';
+          f1Feedback.style.color = '#F8FAFC';
+        }
+        btnStart.classList.add('is-running');
+        btnStart.innerHTML = '<span>TAP WHEN LIGHTS GO OUT!</span>';
+
+        // Illuminate lamps 0..4 sequentially at 1-second intervals
+        for (let i = 0; i < 5; i++) {
+          const tid = setTimeout(() => {
+            if (f1State !== 'starting') return;
+            turnF1LampOn(i);
+            if (window.SoundFX) window.SoundFX.playBeep(false);
+          }, (i + 1) * 1000);
+          f1Timers.push(tid);
+        }
+
+        // After all 5 are lit (5s), hold for random suspense duration (0.2s to 2.5s)
+        const randomHold = 200 + Math.random() * 2300;
+        const holdTid = setTimeout(() => {
+          if (f1State !== 'starting') return;
+          f1State = 'holding';
+          if (f1Feedback) f1Feedback.textContent = 'HOLD... Anticipating the green flag!';
+
+          const extinguishTid = setTimeout(() => {
+            if (f1State !== 'holding') return;
+            triggerF1LightsOut();
+          }, randomHold);
+          f1Timers.push(extinguishTid);
+        }, 5000);
+        f1Timers.push(holdTid);
+      }
+
+      function triggerF1LightsOut() {
+        f1State = 'lights_out';
+        f1StartTime = performance.now();
+        resetF1Lamps();
+
+        if (window.SoundFX) window.SoundFX.playBeep(true);
+        if (f1Feedback) {
+          f1Feedback.textContent = '🟢 LIGHTS OUT! TAP / PRESS SPACE NOW!';
+          f1Feedback.style.color = '#22C55E';
+        }
+      }
+
+      function handleF1Interaction() {
+        if (f1State === 'idle') {
+          startF1Sequence();
+          return;
+        }
+
+        if (f1State === 'starting' || f1State === 'holding') {
+          // Jump start detected!
+          clearF1Timers();
+          f1State = 'finished';
+          f1Lamps.forEach(lamp => {
+            if (lamp) {
+              lamp.style.background = '#F59E0B';
+              lamp.style.boxShadow = '0 0 20px #F59E0B';
+            }
+          });
+          if (window.SoundFX) window.SoundFX.playBuzzer();
+          if (f1Feedback) {
+            f1Feedback.textContent = '⚡ JUMP START! False start penalty. You reacted before the lights went out!';
+            f1Feedback.style.color = '#EF4444';
+          }
+          btnStart.classList.remove('is-running');
+          btnStart.innerHTML = '<span>Try Again</span>';
+          return;
+        }
+
+        if (f1State === 'lights_out') {
+          const reactionMs = Math.round(performance.now() - f1StartTime);
+          f1State = 'finished';
+
+          let rating = '';
+          if (reactionMs < 200) {
+            rating = `⚡ Sub-200ms! Elite Formula 1 Champion Reflexes! (${reactionMs} ms)`;
+            if (window.Confetti) window.Confetti.fire({ count: 150 });
+            if (window.SoundFX) window.SoundFX.playFanfare();
+          } else if (reactionMs <= 250) {
+            rating = `🏎️ Superhuman Speed! Podium Contender! (${reactionMs} ms)`;
+            if (window.Confetti) window.Confetti.fire({ count: 80 });
+            if (window.SoundFX) window.SoundFX.playFanfare();
+          } else if (reactionMs <= 320) {
+            rating = `🟢 Sharp & Fast Reaction! Excellent start! (${reactionMs} ms)`;
+            if (window.SoundFX) window.SoundFX.playClick();
+          } else if (reactionMs <= 450) {
+            rating = `🟡 Solid Reaction Time (${reactionMs} ms). Practice for sub-250ms!`;
+            if (window.SoundFX) window.SoundFX.playClick();
+          } else {
+            rating = `🐢 Stalled on the Grid! (${reactionMs} ms). Have some coffee and try again!`;
+            if (window.SoundFX) window.SoundFX.playClick();
+          }
+
+          if (f1Feedback) {
+            f1Feedback.textContent = rating;
+            f1Feedback.style.color = reactionMs <= 250 ? '#10B981' : '#F59E0B';
+          }
+          btnStart.classList.remove('is-running');
+          btnStart.innerHTML = '<span>Test Again</span>';
+          return;
+        }
+
+        if (f1State === 'finished') {
+          startF1Sequence();
+        }
+      }
+
+      function setMode(mode) {
+        currentMode = mode;
+        if (mode === 'race') {
+          btnModeRace.style.background = 'var(--primary)';
+          btnModeRace.style.color = '#FFF';
+          btnModeF1.style.background = 'transparent';
+          btnModeF1.style.color = 'inherit';
+
+          track.style.display = 'block';
+          display.style.display = 'block';
+          commentaryBar.style.display = 'flex';
+          racePresetsGroup.style.display = 'flex';
+          if (selectTheme && selectTheme.parentElement) selectTheme.parentElement.style.display = 'inline-flex';
+          f1Gantry.style.display = 'none';
+
+          if (raceModeSubtitle) {
+            raceModeSubtitle.textContent = 'Animated Track Sprints & Formula 1 Start Lights Reaction Test';
+          }
+          clearF1Timers();
+          reset();
+        } else {
+          btnModeF1.style.background = 'var(--primary)';
+          btnModeF1.style.color = '#FFF';
+          btnModeRace.style.background = 'transparent';
+          btnModeRace.style.color = 'inherit';
+
+          track.style.display = 'none';
+          display.style.display = 'none';
+          commentaryBar.style.display = 'none';
+          racePresetsGroup.style.display = 'none';
+          if (selectTheme && selectTheme.parentElement) selectTheme.parentElement.style.display = 'none';
+          f1Gantry.style.display = 'flex';
+
+          if (raceModeSubtitle) {
+            raceModeSubtitle.textContent = 'Formula 1 Starting Gantry — Test Your Launch Reaction Time in Milliseconds';
+          }
+          pause();
+          resetF1();
+        }
+      }
+
+      btnModeRace.addEventListener('click', () => setMode('race'));
+      btnModeF1.addEventListener('click', () => setMode('f1'));
+      f1Gantry.addEventListener('click', () => {
+        if (currentMode === 'f1') handleF1Interaction();
       });
 
-      btnReset.addEventListener('click', reset);
+      btnStart.addEventListener('click', () => {
+        if (currentMode === 'f1') {
+          handleF1Interaction();
+        } else {
+          if (isRunning) pause();
+          else start();
+        }
+      });
+
+      btnReset.addEventListener('click', () => {
+        if (currentMode === 'f1') resetF1();
+        else reset();
+      });
+
       if (btnPodiumClose) btnPodiumClose.addEventListener('click', reset);
 
       if (selectTheme) {
@@ -788,7 +1033,11 @@
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.isContentEditable) return;
         if (e.code === 'Space') {
           e.preventDefault();
-          btnStart.click();
+          if (currentMode === 'f1') {
+            handleF1Interaction();
+          } else {
+            btnStart.click();
+          }
         } else if (e.code === 'KeyR') {
           btnReset.click();
         }

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Classroom Timer — Free Smartboard Countdown & Stopwatch</title>
-  <meta name="description" content="Free online classroom timer with giant digits, visual progress bar, sound alarms, and fullscreen mode. Perfect for school lessons and student activities.">
+  <title>Online Timer & Pomodoro Focus Timer — Free Study & Classroom Countdown</title>
+  <meta name="description" content="Free online timer with giant digits, Pomodoro focus mode, relaxing background music, audio alarms, and fullscreen projector mode. Perfect for studying and classrooms.">
   <link rel="canonical" href="https://classpanel.online/tools/classroom-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=8">
@@ -132,12 +132,13 @@
       <div class="tool-header-bar">
         <div class="tool-title-group">
           <h1><img src="/assets/icons/classroom-timer.png" alt="Classroom Timer Icon" class="tool-title-icon"> Classroom Timer</h1>
-          <p class="tool-title-subtitle" id="timer-mode-subtitle">Countdown Mode • Designed for Projectors & Smartboards</p>
+          <p class="tool-title-subtitle" id="timer-mode-subtitle">Countdown Mode • Designed for Projectors, Smartboards & Study Sprints</p>
         </div>
 
         <div class="tool-control-bar">
           <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
             <button id="btn-mode-countdown" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">Countdown</button>
+            <button id="btn-mode-pomodoro" class="preset-chip" style="background: transparent; border: none;">🍅 Focus (Pomodoro)</button>
             <button id="btn-mode-stopwatch" class="preset-chip" style="background: transparent; border: none;">Stopwatch</button>
           </div>
 
@@ -233,6 +234,31 @@
         <button class="preset-chip" data-seconds="3600">1 hr</button>
       </div>
 
+      <!-- Pomodoro Session Banner -->
+      <div id="pomodoro-banner" style="display: none; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 1.25rem; font-weight: 800; font-size: 1rem; padding: 0.4rem 1.2rem; border-radius: var(--radius-full); background: var(--bg-surface-subtle); border: 1px solid var(--border-color); color: var(--text-primary);">
+        <span id="pomodoro-phase-icon">🍅</span>
+        <span id="pomodoro-phase-text">Focus Period (25:00)</span>
+        <span style="color: var(--border-strong);">•</span>
+        <span id="pomodoro-cycle-text" style="color: var(--text-muted); font-size: 0.85rem;">Cycle 1 of 4</span>
+      </div>
+
+      <!-- Ambient Background Music Toolbar -->
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem; padding: 0.45rem 1rem; background: var(--bg-surface-subtle); border-radius: var(--radius-full); border: 1px solid var(--border-color); max-width: 580px; margin-left: auto; margin-right: auto;">
+        <label style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; user-select: none;">
+          <input type="checkbox" id="check-ambient-music" style="accent-color: var(--primary); width: 1.1rem; height: 1.1rem;">
+          <span>🎵 Background Music</span>
+        </label>
+        <select id="select-ambient-track" class="select-input" style="width: auto; padding: 0.25rem 0.6rem; font-size: 0.8rem; font-weight: 600;" title="Select Royalty-Free Ambient Music">
+          <option value="focus">🧘 Calm Focus Drone</option>
+          <option value="rain">🌧️ Gentle Rain & Lo-Fi</option>
+          <option value="zen">🔔 Zen Tibetan Chimes</option>
+        </select>
+        <div style="display: inline-flex; align-items: center; gap: 0.35rem;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">Vol:</span>
+          <input type="range" id="ambient-volume" min="0" max="1" step="0.05" value="0.5" style="width: 70px; accent-color: var(--primary); cursor: pointer;" title="Music Volume">
+        </div>
+      </div>
+
     </div>
 
     <!-- SEO Educational Guide Section -->
@@ -240,31 +266,31 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>The Best Free Online Timer for Classrooms and Smartboards</h2>
-            <p>ClassPanel's Classroom Timer is purposefully engineered for teachers and educators. Unlike ordinary phone timers or commercial timer websites cluttered with distracting advertisements and video popups, this tool is built for high-stakes classroom environments.</p>
+            <h2>The Best Free Online Timer for Classrooms, Study Sessions & Focus Sprints</h2>
+            <p>ClassPanel's Online Timer is engineered for zero distractions. Built equally for teachers projecting to 30 students and individual learners studying alone at a desk, this tool delivers clean visual timing without video popups, cookies, or battery-draining bloat.</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Key Classroom Benefits</h3>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Dual-Use Core Capabilities</h3>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Massive High-Contrast Digits:</strong> Easily legible from the back of large lecture halls, science labs, and standard classrooms.</span>
+                <span><strong>Massive High-Contrast Digits:</strong> Clearly visible from across a large lecture hall, living room, or study desk.</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Visual Color Shifting Progress:</strong> The color transition (from soothing green to alerting yellow and warning red) teaches students visual time management.</span>
+                <span><strong>Pomodoro (25/5) Focus Method:</strong> Built-in study timer alternates automatically between 25-minute deep focus sprints and 5-minute restorative breaks to avoid mental burnout.</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Pleasant Synthesized Audio Chimes:</strong> Generates crisp school bell and gentle chime frequencies directly in the browser without loading slow MP3 files.</span>
+                <span><strong>Royalty-Free Ambient Background Audio:</strong> Optional calming drone chords, gentle rain, and zen chimes play softly in the background to mask background chatter.</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Zero Ad Interruption:</strong> Never suffer through an embarrassing video ad or cookie popup in front of 30 students.</span>
+                <span><strong>Visual Color-Shifting Progress:</strong> Green turns to caution yellow and alerting red as time expires, establishing natural time awareness.</span>
               </li>
             </ul>
 
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--text-primary);">Effective Classroom Timing Strategies</h3>
-            <p>Effective teachers use timers for routine predictability. Running a 3-minute "Do Now" entry ticket establishes calm focus when the period begins. During collaborative group stations, a 10-minute countdown keeps student discussions on task without requiring constant teacher interjections.</p>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--text-primary);">Study & Classroom Timing Strategies</h3>
+            <p>For students, timed 25-minute sprints reduce procrastination on thesis writing, coding, and exam revision. For educators, a predictable 3-minute entry ticket or 10-minute workshop countdown keeps collaborative group discussions disciplined without verbal interruptions.</p>
           </div>
         </div>
 
@@ -343,12 +369,43 @@
       const btnStart = document.getElementById('btn-start');
       const btnReset = document.getElementById('btn-reset');
       const btnCountdown = document.getElementById('btn-mode-countdown');
+      const btnPomodoro = document.getElementById('btn-mode-pomodoro');
       const btnStopwatch = document.getElementById('btn-mode-stopwatch');
       const modeSubtitle = document.getElementById('timer-mode-subtitle');
       const soundSelect = document.getElementById('select-alarm-sound');
       const presetContainer = document.getElementById('countdown-presets');
       const presetButtons = document.querySelectorAll('#countdown-presets [data-seconds]');
       const timeAdjustButtons = document.getElementById('time-adjust-buttons');
+
+      const pomodoroBanner = document.getElementById('pomodoro-banner');
+      const pomodoroPhaseIcon = document.getElementById('pomodoro-phase-icon');
+      const pomodoroPhaseText = document.getElementById('pomodoro-phase-text');
+      const pomodoroCycleText = document.getElementById('pomodoro-cycle-text');
+
+      const checkAmbient = document.getElementById('check-ambient-music');
+      const selectAmbient = document.getElementById('select-ambient-track');
+      const ambientVol = document.getElementById('ambient-volume');
+
+      let pomodoroPhase = 'work'; // 'work' | 'break'
+      let pomodoroCycle = 1;
+
+      function updatePomodoroUI() {
+        if (mode !== 'pomodoro') {
+          pomodoroBanner.style.display = 'none';
+          return;
+        }
+        pomodoroBanner.style.display = 'inline-flex';
+        if (pomodoroPhase === 'work') {
+          pomodoroPhaseIcon.textContent = '🍅';
+          pomodoroPhaseText.textContent = 'Focus Session (25:00)';
+          pomodoroBanner.style.borderColor = 'var(--primary)';
+        } else {
+          pomodoroPhaseIcon.textContent = '☕';
+          pomodoroPhaseText.textContent = pomodoroCycle === 4 ? 'Long Rest Break (15:00)' : 'Short Rest Break (05:00)';
+          pomodoroBanner.style.borderColor = 'var(--accent-emerald)';
+        }
+        pomodoroCycleText.textContent = `Cycle ${pomodoroCycle} of 4`;
+      }
 
       function formatTime(totalSecs) {
         const h = Math.floor(totalSecs / 3600);
@@ -361,7 +418,7 @@
       }
 
       function updateDisplay() {
-        if (mode === 'countdown') {
+        if (mode === 'countdown' || mode === 'pomodoro') {
           display.textContent = formatTime(remainingSeconds);
           const ratio = initialSeconds > 0 ? (remainingSeconds / initialSeconds) : 0;
           progressFill.style.width = `${Math.max(0, Math.min(100, ratio * 100))}%`;
@@ -391,7 +448,7 @@
       }
 
       function openInlineEditor() {
-        if (mode !== 'countdown') return;
+        if (mode === 'stopwatch') return;
         pauseTimer();
 
         const cur = remainingSeconds > 0 ? remainingSeconds : initialSeconds;
@@ -453,7 +510,7 @@
       btnSaveInline.addEventListener('click', () => closeInlineEditor(true));
       btnCancelInline.addEventListener('click', () => closeInlineEditor(false));
 
-      [editHh, editMm, editSs].forEach((input, idx, arr) => {
+      [editHh, editMm, editSs].forEach(input => {
         input.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -461,14 +518,6 @@
           } else if (e.key === 'Escape') {
             e.preventDefault();
             closeInlineEditor(false);
-          }
-        });
-
-        // Quick digit advance: if user types 2 digits, automatically focus next field
-        input.addEventListener('input', () => {
-          if (input.value.length >= 2 && idx < arr.length - 1) {
-            arr[idx + 1].focus();
-            arr[idx + 1].select();
           }
         });
       });
@@ -479,15 +528,19 @@
         btnStart.classList.add('is-running');
         btnStart.innerHTML = `
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="4" height="16" rx="1"/>
-            <rect x="14" y="4" width="4" height="16" rx="1"/>
+            <rect x="6" y="4" width="4" height="16"/>
+            <rect x="14" y="4" width="4" height="16"/>
           </svg>
           <span>Pause</span>
         `;
         if (window.SoundFX) window.SoundFX.playClick();
 
+        if (checkAmbient.checked && window.SoundFX && window.SoundFX.startAmbient) {
+          window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
+        }
+
         timerInterval = setInterval(() => {
-          if (mode === 'countdown') {
+          if (mode === 'countdown' || mode === 'pomodoro') {
             if (remainingSeconds > 0) {
               remainingSeconds--;
               updateDisplay();
@@ -513,7 +566,10 @@
           </svg>
           <span>Resume</span>
         `;
-        if (window.SoundFX) window.SoundFX.playClick();
+        if (window.SoundFX) {
+          window.SoundFX.playClick();
+          if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+        }
       }
 
       function resetTimer() {
@@ -524,25 +580,55 @@
           </svg>
           <span>Start</span>
         `;
-        if (mode === 'countdown') {
+        if (mode === 'countdown' || mode === 'pomodoro') {
           remainingSeconds = initialSeconds;
         } else {
           stopwatchSeconds = 0;
         }
         updateDisplay();
-        if (window.SoundFX) window.SoundFX.playClick();
+        if (window.SoundFX) {
+          window.SoundFX.playClick();
+          if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+        }
       }
 
       function completeCountdown() {
         pauseTimer();
         if (window.SoundFX) {
           window.SoundFX.playAlarm(soundSelect.value);
+          if (window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
         }
         if (window.Confetti) {
           window.Confetti.fire({ count: 140 });
         }
-        if (window.ClassPanel) {
-          window.ClassPanel.showToast("⏰ Time's up!");
+
+        if (mode === 'pomodoro') {
+          if (pomodoroPhase === 'work') {
+            const isLong = pomodoroCycle === 4;
+            pomodoroPhase = 'break';
+            initialSeconds = isLong ? 15 * 60 : 5 * 60;
+            remainingSeconds = initialSeconds;
+            updatePomodoroUI();
+            updateDisplay();
+            if (window.ClassPanel) {
+              window.ClassPanel.showToast(isLong ? "🌟 Great work! Enjoy your 15-min long break." : "☕ Work session complete! Take a 5-minute break.");
+            }
+          } else {
+            pomodoroPhase = 'work';
+            if (pomodoroCycle === 4) pomodoroCycle = 1;
+            else pomodoroCycle++;
+            initialSeconds = 25 * 60;
+            remainingSeconds = initialSeconds;
+            updatePomodoroUI();
+            updateDisplay();
+            if (window.ClassPanel) {
+              window.ClassPanel.showToast("🍅 Break over! Ready for Focus Session #" + pomodoroCycle);
+            }
+          }
+        } else {
+          if (window.ClassPanel) {
+            window.ClassPanel.showToast("⏰ Time's up!");
+          }
         }
       }
 
@@ -556,7 +642,7 @@
 
       // Adjustments (Hours + Minutes)
       document.getElementById('btn-add-1h').addEventListener('click', () => {
-        if (mode === 'countdown') {
+        if (mode === 'countdown' || mode === 'pomodoro') {
           initialSeconds += 3600;
           remainingSeconds += 3600;
           updateActivePresetChip(initialSeconds);
@@ -564,7 +650,7 @@
         }
       });
       document.getElementById('btn-add-5m').addEventListener('click', () => {
-        if (mode === 'countdown') {
+        if (mode === 'countdown' || mode === 'pomodoro') {
           initialSeconds += 300;
           remainingSeconds += 300;
           updateActivePresetChip(initialSeconds);
@@ -572,7 +658,7 @@
         }
       });
       document.getElementById('btn-add-1m').addEventListener('click', () => {
-        if (mode === 'countdown') {
+        if (mode === 'countdown' || mode === 'pomodoro') {
           initialSeconds += 60;
           remainingSeconds += 60;
           updateActivePresetChip(initialSeconds);
@@ -580,7 +666,7 @@
         }
       });
       document.getElementById('btn-sub-1m').addEventListener('click', () => {
-        if (mode === 'countdown' && remainingSeconds > 60) {
+        if ((mode === 'countdown' || mode === 'pomodoro') && remainingSeconds > 60) {
           initialSeconds = Math.max(60, initialSeconds - 60);
           remainingSeconds = Math.max(1, remainingSeconds - 60);
           updateActivePresetChip(initialSeconds);
@@ -599,21 +685,49 @@
         });
       });
 
-      // Mode toggle
+      // Mode toggles
       btnCountdown.addEventListener('click', () => {
         if (mode === 'countdown') return;
         mode = 'countdown';
         btnCountdown.style.background = 'var(--primary)';
         btnCountdown.style.color = '#FFF';
+        btnPomodoro.style.background = 'transparent';
+        btnPomodoro.style.color = 'inherit';
         btnStopwatch.style.background = 'transparent';
         btnStopwatch.style.color = 'inherit';
-        modeSubtitle.textContent = 'Countdown Mode • Designed for Projectors & Smartboards';
+        modeSubtitle.textContent = 'Countdown Mode • Designed for Projectors, Smartboards & Study Sprints';
         progressTrack.style.display = 'block';
         presetContainer.style.display = 'flex';
         timeEditHint.style.display = 'inline-flex';
         display.style.cursor = 'pointer';
         display.title = 'Click to edit time directly';
         if (timeAdjustButtons) timeAdjustButtons.style.display = 'inline-flex';
+        updatePomodoroUI();
+        resetTimer();
+      });
+
+      btnPomodoro.addEventListener('click', () => {
+        if (mode === 'pomodoro') return;
+        mode = 'pomodoro';
+        btnPomodoro.style.background = 'var(--primary)';
+        btnPomodoro.style.color = '#FFF';
+        btnCountdown.style.background = 'transparent';
+        btnCountdown.style.color = 'inherit';
+        btnStopwatch.style.background = 'transparent';
+        btnStopwatch.style.color = 'inherit';
+        modeSubtitle.textContent = 'Pomodoro Study Mode • 25m Focus / 5m Rest Cycles';
+        progressTrack.style.display = 'block';
+        presetContainer.style.display = 'none';
+        timeEditHint.style.display = 'inline-flex';
+        display.style.cursor = 'pointer';
+        display.title = 'Click to edit time directly';
+        if (timeAdjustButtons) timeAdjustButtons.style.display = 'inline-flex';
+
+        pomodoroPhase = 'work';
+        pomodoroCycle = 1;
+        initialSeconds = 25 * 60;
+        remainingSeconds = 25 * 60;
+        updatePomodoroUI();
         resetTimer();
       });
 
@@ -625,14 +739,40 @@
         btnStopwatch.style.color = '#FFF';
         btnCountdown.style.background = 'transparent';
         btnCountdown.style.color = 'inherit';
-        modeSubtitle.textContent = 'Stopwatch Mode • Track elapsed class activity time';
+        btnPomodoro.style.background = 'transparent';
+        btnPomodoro.style.color = 'inherit';
+        modeSubtitle.textContent = 'Stopwatch Mode • Track elapsed time';
         progressTrack.style.display = 'none';
         presetContainer.style.display = 'none';
         timeEditHint.style.display = 'none';
         display.style.cursor = 'default';
         display.title = '';
         if (timeAdjustButtons) timeAdjustButtons.style.display = 'none';
+        updatePomodoroUI();
         resetTimer();
+      });
+
+      // Ambient Audio Listeners
+      checkAmbient.addEventListener('change', () => {
+        if (!checkAmbient.checked) {
+          if (window.SoundFX && window.SoundFX.stopAmbient) window.SoundFX.stopAmbient();
+        } else if (isRunning) {
+          if (window.SoundFX && window.SoundFX.startAmbient) {
+            window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
+          }
+        }
+      });
+
+      selectAmbient.addEventListener('change', () => {
+        if (isRunning && checkAmbient.checked && window.SoundFX && window.SoundFX.startAmbient) {
+          window.SoundFX.startAmbient(selectAmbient.value, parseFloat(ambientVol.value));
+        }
+      });
+
+      ambientVol.addEventListener('input', () => {
+        if (window.SoundFX && window.SoundFX.setAmbientVolume) {
+          window.SoundFX.setAmbientVolume(parseFloat(ambientVol.value));
+        }
       });
 
       // Keyboard shortcuts: Space to toggle, R to reset

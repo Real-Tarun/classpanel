@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classroom Dice & Coin Flip — Free Probability & Chance Games</title>
-  <meta name="description" content="Free classroom 3D dice roller, metallic coin flipper, and rock-paper-scissors showdown for smartboards, math lessons, and probability games.">
+  <title>Chance Games & Probability — Free Dice Roller, Coin Flip & RPS</title>
+  <meta name="description" content="Free online dice roller, coin flip, and rock paper scissors games. Roll virtual dice, flip realistic 3D coins, and simulate probability for tabletop gaming, classrooms, and daily choices.">
   <link rel="canonical" href="https://classpanel.online/tools/chance-games/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -92,7 +92,7 @@
           <span>Class<span style="color: var(--primary);">Panel</span></span>
         </a>
         <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
-        <span style="font-weight: 700; color: var(--text-primary);">Dice & Chance Games</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Chance Games</span>
       </div>
 
       <div class="header-actions">
@@ -125,7 +125,7 @@
       <div class="tool-header-bar">
         <div class="tool-title-group">
           <h1><img src="/assets/icons/chance-games.png" alt="Dice & Chance Games Icon" class="tool-title-icon"> Dice & Chance Games</h1>
-          <p class="tool-title-subtitle">Interactive 3D dice rolls, coin flips, and probability simulations</p>
+          <p class="tool-title-subtitle">Virtual 3D dice rolls, coin flips, and RPS for tabletop gaming, math & quick decisions</p>
         </div>
       </div>
 
@@ -138,61 +138,68 @@
 
       <!-- Area 1: Dice Roller -->
       <div id="dice-section" class="chance-area">
-        <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-          <span style="font-weight: 700; color: var(--text-muted);">Number of Dice:</span>
-          <select id="select-dice-count" class="select-input" style="width: auto; padding: 0.4rem 0.8rem; font-weight: 700;">
-            <option value="1">1 Die</option>
-            <option value="2" selected>2 Dice</option>
-            <option value="3">3 Dice</option>
-            <option value="4">4 Dice</option>
-            <option value="5">5 Dice</option>
-            <option value="6">6 Dice</option>
-          </select>
-        </div>
-
         <div class="dice-rack" id="dice-rack"></div>
-
-        <div style="margin-top: 1.75rem; font-size: 1.6rem; font-weight: 900; color: var(--text-primary);" id="dice-total-display">
-          Total Sum: <span style="color: var(--primary);">7</span>
-        </div>
-
-        <div class="timer-actions" style="margin-top: 1.5rem;">
-          <button id="btn-roll-dice" class="btn-giant btn-giant-primary" style="background: var(--primary);">
-            <span>Roll Dice</span>
-          </button>
-        </div>
+        <div id="dice-total-display" style="font-size: 1.5rem; font-weight: 800; margin-top: 1.5rem; color: var(--text-primary);">Total: 0</div>
       </div>
 
       <!-- Area 2: Coin Flipper -->
       <div id="coin-section" class="chance-area" style="display: none;">
         <div class="coin-wrapper">
-          <div class="coin" id="coin-el">
-            <span id="coin-icon">👑</span>
-            <span id="coin-text">HEADS</span>
+          <div class="coin" id="coin">
+            <span id="coin-face">🪙</span>
+            <span id="coin-text" style="font-size: 1rem; margin-top: 0.25rem;">HEADS</span>
           </div>
-        </div>
-
-        <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 1rem;" id="coin-stats">
-          Heads: <span id="heads-count" style="color: var(--accent-emerald);">0</span> • Tails: <span id="tails-count" style="color: var(--primary);">0</span>
-        </div>
-
-        <div class="timer-actions">
-          <button id="btn-flip-coin" class="btn-giant btn-giant-primary" style="background: var(--accent-amber); color: #FFF;">
-            <span>Flip Coin</span>
-          </button>
-          <button id="btn-reset-coin" class="preset-chip">Reset Counts</button>
         </div>
       </div>
 
       <!-- Area 3: Rock Paper Scissors -->
       <div id="rps-section" class="chance-area" style="display: none;">
-        <div id="rps-hand" style="font-size: clamp(5rem, 15vw, 9rem); margin-bottom: 1rem; transition: transform 0.2s;">✊</div>
-        <div id="rps-title" style="font-size: 2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 1.5rem;">Ready?</div>
+        <div style="display: flex; gap: 2rem; align-items: center; justify-content: center; flex-wrap: wrap;">
+          <div style="text-align: center;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">YOUR HAND</div>
+            <div id="player-hand" style="font-size: 5rem; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface-subtle); border: 2px solid var(--border-color); border-radius: 20px;">❓</div>
+          </div>
+          <div style="font-size: 2rem; font-weight: 900; color: var(--text-muted);">VS</div>
+          <div style="text-align: center;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">COMPUTER</div>
+            <div id="comp-hand" style="font-size: 5rem; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface-subtle); border: 2px solid var(--border-color); border-radius: 20px;">❓</div>
+          </div>
+        </div>
+        <div id="rps-result-text" style="font-size: 1.5rem; font-weight: 800; margin-top: 1.5rem; color: var(--primary);">Choose Rock, Paper, or Scissors!</div>
+      </div>
 
-        <div class="timer-actions">
-          <button id="btn-play-rps" class="btn-giant btn-giant-primary" style="background: var(--accent-purple); color: #FFF;">
-            <span>Shoot! (1-2-3)</span>
+      <!-- Action Controls -->
+      <div class="timer-actions">
+        <!-- Dice Controls -->
+        <div id="dice-controls" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; justify-content: center;">
+          <button id="btn-roll-dice" class="btn-giant btn-giant-primary">
+            <span>Roll Dice</span>
           </button>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <label for="select-dice-count" style="font-weight: 700; font-size: 0.9rem;">Dice Count:</label>
+            <select id="select-dice-count" class="select-input" style="padding: 0.4rem 0.8rem; font-weight: 700;">
+              <option value="1">1 Die</option>
+              <option value="2" selected>2 Dice</option>
+              <option value="3">3 Dice</option>
+              <option value="4">4 Dice</option>
+              <option value="5">5 Dice</option>
+              <option value="6">6 Dice</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Coin Controls -->
+        <div id="coin-controls" style="display: none; justify-content: center;">
+          <button id="btn-flip-coin" class="btn-giant btn-giant-primary">
+            <span>Flip Coin</span>
+          </button>
+        </div>
+
+        <!-- RPS Controls -->
+        <div id="rps-controls" style="display: none; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button class="preset-chip btn-rps-pick" data-choice="rock" style="font-size: 1.25rem; padding: 0.75rem 1.5rem;">🪨 Rock</button>
+          <button class="preset-chip btn-rps-pick" data-choice="paper" style="font-size: 1.25rem; padding: 0.75rem 1.5rem;">📄 Paper</button>
+          <button class="preset-chip btn-rps-pick" data-choice="scissors" style="font-size: 1.25rem; padding: 0.75rem 1.5rem;">✂️ Scissors</button>
         </div>
       </div>
 
@@ -203,38 +210,36 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Teaching Probability and Chance with Smartboard Tools</h2>
-            <p>Abstract mathematical concepts like theoretical probability vs. experimental frequency become instantly clear when students watch live classroom trials.</p>
+            <h2>Online Probability, Dice Rolling & Decision Games</h2>
+            <p>From settling everyday decisions to running tabletop roleplaying games and exploring mathematics concepts, random chance tools make uncertainty visual, fair, and fun:</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Lesson Ideas for Teachers</h3>
-            <ul class="seo-features-list">
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Law of Large Numbers:</strong> Have students flip the coin 50 times and graph how the ratio of Heads to Tails approaches 50%.</span>
-              </li>
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>2-Dice Sum Distribution:</strong> Roll two dice and tally why a sum of 7 appears more frequently than 2 or 12.</span>
-              </li>
-            </ul>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Tabletop Gaming & Everyday Decisions</h3>
+            <p>Need a quick decision or missing physical dice? Roll up to 6 dice simultaneously or flip a virtual coin with realistic physics and sound effects. For dedicated multi-sided dice (d4–d20), visit our standalone <a href="/tools/dice-roller/">Polyhedral Dice Roller</a>.</p>
+            
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Classroom Probability Lessons</h3>
+            <p>Explore theoretical vs. experimental probability with students. Have the class tally 50 flips to test the Law of Large Numbers, or examine the bell-curve distribution of two six-sided dice sums.</p>
           </div>
         </div>
 
         <div>
           <div class="seo-card">
-            <h2>Related Classroom Tools</h2>
+            <h2>Dedicated Standalone Tools</h2>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/random-number-generator/">Random Number Generator</a>
+                <a href="/tools/coin-flip/">Dedicated Coin Flip Simulator</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/random-name-picker/">Random Name Picker</a>
+                <a href="/tools/dice-roller/">Standalone Dice Roller (d4–d100)</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/tally-counter/">Tally Counter</a>
+                <a href="/tools/rock-paper-scissors/">Rock Paper Scissors Game</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/random-name-picker/">Wheel of Names Picker</a>
               </li>
             </ul>
           </div>

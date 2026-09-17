@@ -6,9 +6,9 @@ import { MetadataRoute } from 'next';
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://classpanel.online';
-  const lastModified = new Date('2026-09-16');
+  const lastModified = new Date('2026-09-17');
 
-  // Interactive classroom tools
+  // Interactive online tools (17 tools)
   const tools = [
     '/tools/race-timers/',
     '/tools/classroom-timer/',
@@ -22,10 +22,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/group-generator/',
     '/tools/presentation-timer/',
     '/tools/tally-counter/',
+    '/tools/rock-paper-scissors/',
+    '/tools/coin-flip/',
+    '/tools/dice-roller/',
+    '/tools/color-picker/',
+    '/tools/stopwatch/',
   ];
 
   // Blog guide articles
   const blogPosts = [
+    '/blog/best-free-online-timer-for-studying-pomodoro/',
+    '/blog/how-to-use-meditation-timer-for-mindfulness/',
+    '/blog/rock-paper-scissors-rules-strategy-play-online/',
     '/blog/how-to-run-fair-classroom-raffle-name-draw/',
     '/blog/10-classroom-timer-tricks-to-keep-students-on-task/',
     '/blog/how-to-split-class-into-balanced-groups-fairly/',
@@ -36,6 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Core information pages
   const staticPages = [
+    '/tools/',
     '/blog/',
     '/about/',
     '/privacy/',

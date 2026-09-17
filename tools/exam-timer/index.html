@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Official Exam Timer & Clock — Free Classroom Test Board</title>
-  <meta name="description" content="Free official exam timer for schools. Features synchronized live clock, reading time, silent milestone banners, and custom test notes board.">
+  <title>Exam Timer & Test Clock — Free Silent Mock Test Board</title>
+  <meta name="description" content="Free online exam timer and test countdown board. Live synchronized clock, optional reading period, silent milestone banners, and editable instruction board for certifications, university exams, mock tests, and classrooms.">
   <link rel="canonical" href="https://classpanel.online/tools/exam-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
@@ -100,8 +100,8 @@
       <!-- Stage Bar -->
       <div class="tool-header-bar">
         <div class="tool-title-group">
-          <h1><img src="/assets/icons/exam-timer.png" alt="Official Exam Timer Icon" class="tool-title-icon"> Official Exam Timer</h1>
-          <p class="tool-title-subtitle">Standardized Test & Assessment Clock Board</p>
+          <h1><img src="/assets/icons/exam-timer.png" alt="Official Exam Timer Icon" class="tool-title-icon"> Official Exam & Test Timer</h1>
+          <p class="tool-title-subtitle">Synchronized live clock, silent milestones, and instructions for mock tests, certifications & exams</p>
         </div>
 
         <div class="tool-control-bar">
@@ -145,7 +145,7 @@
         <div class="timer-progress-fill" id="exam-progress-fill" style="width: 100%;"></div>
       </div>
 
-      <!-- Action Controls -->
+      <!-- Action Buttons Toolbar -->
       <div class="timer-actions">
         <button id="btn-exam-start" class="btn-giant btn-giant-primary">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -158,44 +158,41 @@
           <span>Reset</span>
         </button>
 
-        <div class="presets-group" id="exam-presets-group" style="margin: 0;">
-          <button class="preset-chip" data-time="1800">30 Min</button>
-          <button class="preset-chip" data-time="2700">45 Min</button>
-          <button class="preset-chip active" data-time="3600">60 Min</button>
-          <button class="preset-chip" data-time="5400">90 Min</button>
-          <button class="preset-chip" data-time="7200">120 Min</button>
-          <button class="preset-chip" id="btn-custom-time" title="Set custom exam duration">⏱️ Custom Time</button>
+        <div class="presets-group" style="margin: 0;">
+          <button class="preset-chip" data-mins="15">15 Min Quiz</button>
+          <button class="preset-chip" data-mins="30">30 Min</button>
+          <button class="preset-chip" data-mins="45">45 Min</button>
+          <button class="preset-chip active" data-mins="60">60 Min Exam</button>
+          <button class="preset-chip" data-mins="90">90 Min</button>
+          <button class="preset-chip" data-mins="120">2 Hours</button>
+          <button class="preset-chip" id="btn-custom-duration" title="Set exact custom hours and minutes">⏱️ Custom Duration</button>
         </div>
       </div>
 
-      <!-- Custom Time Modal Dialog -->
-      <div class="modal-backdrop" id="modal-custom-time" style="display: none;">
-        <div class="modal-card" style="max-width: 440px;">
+      <!-- Custom Duration In-Page Modal -->
+      <div class="modal-backdrop" id="custom-exam-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 440px; text-align: left;">
           <div class="modal-header">
-            <h3 class="modal-title">⏱️ Set Custom Exam Duration</h3>
+            <h3 class="modal-title" style="font-size: 1.25rem;">Set Custom Exam Duration</h3>
             <button class="modal-close-btn" id="btn-close-custom-modal" aria-label="Close">✕</button>
           </div>
           
-          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem;">Specify the exact exam duration in hours and minutes:</p>
-
-          <div style="display: flex; gap: 1rem; margin-bottom: 1.25rem; justify-content: center; align-items: center;">
-            <div style="flex: 1; text-align: center;">
-              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem;">Hours</label>
-              <input type="number" id="input-custom-hours" min="0" max="12" value="1" class="input-text" style="font-size: 1.5rem; font-weight: 800; text-align: center; padding: 0.6rem;">
+          <div style="margin: 1.5rem 0;">
+            <div style="display: flex; gap: 1rem; justify-content: center; align-items: center;">
+              <div style="text-align: center;">
+                <label for="input-custom-hours" style="display: block; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Hours</label>
+                <input type="number" id="input-custom-hours" class="input-text" min="0" max="12" value="1" style="width: 90px; text-align: center; font-size: 1.75rem; font-weight: 800; font-family: monospace; padding: 0.5rem;">
+              </div>
+              <span style="font-size: 2rem; font-weight: 800; color: var(--text-muted); margin-top: 1rem;">:</span>
+              <div style="text-align: center;">
+                <label for="input-custom-mins" style="display: block; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Minutes</label>
+                <input type="number" id="input-custom-mins" class="input-text" min="0" max="59" value="0" style="width: 90px; text-align: center; font-size: 1.75rem; font-weight: 800; font-family: monospace; padding: 0.5rem;">
+              </div>
             </div>
-            <span style="font-size: 1.8rem; font-weight: 900; color: var(--text-muted); margin-top: 1.2rem;">:</span>
-            <div style="flex: 1; text-align: center;">
-              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem;">Minutes</label>
-              <input type="number" id="input-custom-minutes" min="0" max="59" value="0" class="input-text" style="font-size: 1.5rem; font-weight: 800; text-align: center; padding: 0.6rem;">
-            </div>
-          </div>
 
-          <!-- Quick Duration Shortcuts inside modal -->
-          <div style="margin-bottom: 1.5rem;">
-            <span style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em;">Quick Options:</span>
-            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-              <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="15" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">15m</button>
-              <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="20" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">20m</button>
+            <!-- Quick duration shortcut chips inside modal -->
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 1.25rem;">
+              <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="25" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">25m</button>
               <button type="button" class="preset-chip modal-quick-btn" data-h="0" data-m="50" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">50m</button>
               <button type="button" class="preset-chip modal-quick-btn" data-h="1" data-m="15" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">75m (1h 15m)</button>
               <button type="button" class="preset-chip modal-quick-btn" data-h="1" data-m="30" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">90m (1h 30m)</button>
@@ -218,7 +215,7 @@
           <span style="font-size: 0.8rem; color: var(--text-muted);">Editable for projector display</span>
         </div>
         <div class="exam-instruction-box" contenteditable="true" id="exam-instructions" title="Click to edit instructions on the board">
-• SUBJECT: Midterm Examination
+• SUBJECT: Midterm Examination / Certification Assessment
 • NO ELECTRONIC DEVICES OR SMARTPHONES
 • WRITE NAME AND CANDIDATE NUMBER ON ALL SHEETS
 • RAISING HAND: Remain seated if you need spare paper or assistance
@@ -233,42 +230,49 @@
       <div class="seo-content-grid">
         <div>
           <div class="seo-card">
-            <h2>Standardized Examination Timing for Schools and Universities</h2>
-            <p>Administering exams demands absolute clarity, strict silence, and total transparency. ClassPanel's Official Exam Timer provides test proctors, invigilators, and teachers with an authoritative, distraction-free board.</p>
+            <h2>Standardized Examination Timing for Certifications, Universities & Schools</h2>
+            <p>Administering exams demands absolute clarity, strict silence, and total transparency. ClassPanel's Official Exam Timer provides proctors, invigilators, students, and self-study candidates with an authoritative, distraction-free board.</p>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Exam Room Features</h3>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Test Center & Self-Study Features</h3>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Synchronized Live Wall Clock:</strong> Displays exact local time alongside remaining exam duration so students can pace their test sections.</span>
+                <span><strong>Synchronized Live Wall Clock:</strong> Displays exact local real time alongside remaining exam countdown so candidates can accurately calculate time per section.</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Dedicated Reading Time:</strong> Configure an automated pre-exam reading period (5m, 10m, 15m) that seamlessly rolls into writing time.</span>
+                <span><strong>Dedicated Reading Period:</strong> Configure an automated pre-exam reading period (5m, 10m, 15m) that automatically rolls into writing time with visual status transitions.</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span><strong>Silent Visual Milestones:</strong> Prevents loud alarming that disrupts test concentration while flashing clear banner reminders.</span>
+                <span><strong>Silent Visual Milestones:</strong> Avoids startling candidates with shrill audio alerts during quiet test halls while flashing clear banner reminders at key intervals (Halfway, 15 Min, 5 Min).</span>
               </li>
             </ul>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-primary);">Standardized Test Practice (SAT, GRE, MCAT, AWS)</h3>
+            <p>Simulate realistic test day conditions at home. Configure the exact time limit for each test section, project the screen, and practice pacing under genuine exam pressure.</p>
           </div>
         </div>
 
         <div>
           <div class="seo-card">
-            <h2>Related Classroom Tools</h2>
+            <h2>Related Timing & Productivity Tools</h2>
             <ul class="seo-features-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/classroom-timer/">Classroom Timer</a>
+                <a href="/tools/stopwatch/">Online Stopwatch & Split Laps</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/clocks/">Classroom Clocks</a>
+                <a href="/tools/classroom-timer/">Classroom & Study Timer</a>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <a href="/tools/presentation-timer/">Presentation Timer</a>
+                <a href="/tools/clocks/">Full-Screen Clocks</a>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <a href="/tools/presentation-timer/">Presentation & Speech Timer</a>
               </li>
             </ul>
           </div>

@@ -1,5 +1,5 @@
 # ==============================================================================
-# ClassPanel.online — Free Classroom Digital Tools for Teachers
+# ClassPanel.online — Free Online Productivity, Study & Classroom Digital Tools
 # Canonical URL: https://classpanel.online/
 # ==============================================================================
 
@@ -31,6 +31,8 @@ User-agent: Googlebot
 Allow: /
 
 User-agent: Googlebot-Image
+Allow: /
+Allow: /favicon.ico
 Allow: /assets/
 
 # Microsoft Bing

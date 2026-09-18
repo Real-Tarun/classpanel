@@ -433,5 +433,24 @@
   <script defer src="/assets/js/storage.js"></script>
   <script defer src="/assets/js/fullscreen.js?v=21"></script>
   <script defer src="/assets/js/common.js?v=21"></script>
+  <script>
+    // Category pill filtering logic
+    document.querySelectorAll('.category-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const cat = pill.getAttribute('data-category');
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach(card => {
+          if (cat === 'all' || card.getAttribute('data-category') === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>

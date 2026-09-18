@@ -186,19 +186,19 @@
           <span>Reset</span>
         </button>
 
-        <div class="presets-group" style="margin: 0;">
-          <button class="preset-chip" data-mins="15">15 Min Quiz</button>
-          <button class="preset-chip" data-mins="30">30 Min</button>
-          <button class="preset-chip" data-mins="45">45 Min</button>
-          <button class="preset-chip active" data-mins="60">60 Min Exam</button>
-          <button class="preset-chip" data-mins="90">90 Min</button>
-          <button class="preset-chip" data-mins="120">2 Hours</button>
-          <button class="preset-chip" id="btn-custom-duration" title="Set exact custom hours and minutes">⏱️ Custom Duration</button>
+        <div class="presets-group" id="exam-presets-group" style="margin: 0;">
+          <button class="preset-chip" data-time="900" data-mins="15">15 Min Quiz</button>
+          <button class="preset-chip" data-time="1800" data-mins="30">30 Min</button>
+          <button class="preset-chip" data-time="2700" data-mins="45">45 Min</button>
+          <button class="preset-chip active" data-time="3600" data-mins="60">60 Min Exam</button>
+          <button class="preset-chip" data-time="5400" data-mins="90">90 Min</button>
+          <button class="preset-chip" data-time="7200" data-mins="120">2 Hours</button>
+          <button class="preset-chip" id="btn-custom-time" title="Set exact custom hours and minutes">⏱️ Custom Duration</button>
         </div>
       </div>
 
       <!-- Custom Duration In-Page Modal -->
-      <div class="modal-backdrop" id="custom-exam-modal" style="display: none;">
+      <div class="modal-backdrop" id="modal-custom-time" style="display: none;">
         <div class="modal-card" style="max-width: 440px; text-align: left;">
           <div class="modal-header">
             <h3 class="modal-title" style="font-size: 1.25rem;">Set Custom Exam Duration</h3>
@@ -213,8 +213,8 @@
               </div>
               <span style="font-size: 2rem; font-weight: 800; color: var(--text-muted); margin-top: 1rem;">:</span>
               <div style="text-align: center;">
-                <label for="input-custom-mins" style="display: block; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Minutes</label>
-                <input type="number" id="input-custom-mins" class="input-text" min="0" max="59" value="0" style="width: 90px; text-align: center; font-size: 1.75rem; font-weight: 800; font-family: monospace; padding: 0.5rem;">
+                <label for="input-custom-minutes" style="display: block; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Minutes</label>
+                <input type="number" id="input-custom-minutes" class="input-text" min="0" max="59" value="0" style="width: 90px; text-align: center; font-size: 1.75rem; font-weight: 800; font-family: monospace; padding: 0.5rem;">
               </div>
             </div>
 
@@ -502,8 +502,13 @@
           else label = `Custom (${m}m)`;
           btnCustomTime.textContent = label;
         } else {
-          btnCustomTime.textContent = '⏱️ Custom Time';
-          const match = Array.from(presetChips).find(c => parseInt(c.getAttribute('data-time'), 10) === durationSeconds);
+          btnCustomTime.textContent = '⏱️ Custom Duration';
+          const match = Array.from(presetChips).find(c => {
+            const timeAttr = c.getAttribute('data-time');
+            const minsAttr = c.getAttribute('data-mins');
+            const secs = timeAttr ? parseInt(timeAttr, 10) : (minsAttr ? parseInt(minsAttr, 10) * 60 : null);
+            return secs === durationSeconds;
+          });
           if (match) {
             match.classList.add('active');
           }
@@ -512,7 +517,6 @@
 
       function openCustomModal() {
         if (state === 'writing' || state === 'reading') {
-          if (!confirm('Exam is currently in progress. Pause and change duration?')) return;
           pause();
         }
         const h = Math.floor(examDuration / 3600);
@@ -552,6 +556,15 @@
       btnCloseCustomModal.addEventListener('click', closeCustomModal);
       btnSaveCustomModal.addEventListener('click', applyCustomDuration);
 
+      if (selectReading) {
+        selectReading.addEventListener('change', () => {
+          if (state === 'idle') {
+            readingDuration = parseInt(selectReading.value, 10);
+            updateEndTimeEstimate();
+          }
+        });
+      }
+
       // Quick duration buttons in modal
       document.querySelectorAll('.modal-quick-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -574,12 +587,17 @@
       });
 
       // Preset click listeners
-      document.querySelectorAll('#exam-presets-group [data-time]').forEach(chip => {
+      document.querySelectorAll('#exam-presets-group .preset-chip').forEach(chip => {
+        if (chip === btnCustomTime) return;
         chip.addEventListener('click', () => {
-          const secs = parseInt(chip.getAttribute('data-time'), 10);
-          examDuration = secs;
-          setActivePreset(secs, false);
-          reset();
+          const timeAttr = chip.getAttribute('data-time');
+          const minsAttr = chip.getAttribute('data-mins');
+          const secs = timeAttr ? parseInt(timeAttr, 10) : (minsAttr ? parseInt(minsAttr, 10) * 60 : null);
+          if (secs) {
+            examDuration = secs;
+            setActivePreset(secs, false);
+            reset();
+          }
         });
       });
 

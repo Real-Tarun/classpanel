@@ -253,6 +253,7 @@
         <button class="preset-chip" data-seconds="900">15 min</button>
         <button class="preset-chip" data-seconds="1800">30 min</button>
         <button class="preset-chip" data-seconds="3600">1 hr</button>
+        <button class="preset-chip" id="btn-custom-time" title="Click to enter custom countdown time">⏱️ Custom</button>
       </div>
 
       <!-- Pomodoro Session Banner -->
@@ -496,13 +497,20 @@
       }
 
       function updateActivePresetChip(secs) {
+        let matched = false;
         presetButtons.forEach(btn => {
           if (parseInt(btn.getAttribute('data-seconds'), 10) === secs) {
             btn.classList.add('active');
+            matched = true;
           } else {
             btn.classList.remove('active');
           }
         });
+        const btnCustom = document.getElementById('btn-custom-time');
+        if (btnCustom) {
+          if (!matched) btnCustom.classList.add('active');
+          else btnCustom.classList.remove('active');
+        }
       }
 
       function openInlineEditor() {
@@ -556,6 +564,8 @@
       }
 
       // Time Click / Interaction Listeners
+      const btnCustomTimer = document.getElementById('btn-custom-time');
+      if (btnCustomTimer) btnCustomTimer.addEventListener('click', openInlineEditor);
       display.addEventListener('click', openInlineEditor);
       timeEditHint.addEventListener('click', openInlineEditor);
       display.addEventListener('keydown', (e) => {

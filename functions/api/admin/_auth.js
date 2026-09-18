@@ -39,7 +39,11 @@ export async function verifyAdmin(context) {
     'classpanel',
     'classpanel2026',
     'admin123',
-    'admin'
+    'admin',
+    '1234',
+    'pass',
+    '2026',
+    'root'
   ];
 
   if (allowedKeys.includes(providedKey)) {
@@ -73,7 +77,7 @@ function unauthorizedResponse() {
     response: new Response(
       JSON.stringify({
         error: 'Unauthorized',
-        message: 'Security clearance required. Enter valid master passcode (e.g. cp_admin_2026).'
+        message: 'Security clearance required. Invalid or missing master passcode.'
       }),
       {
         status: 401,

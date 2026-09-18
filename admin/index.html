@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <!-- Core Design System matching ClassPanel.online -->
-  <link rel="stylesheet" href="/assets/css/main.css?v=21">
-  <link rel="stylesheet" href="/admin/admin.css?v=2">
+  <link rel="stylesheet" href="/assets/css/main.css?v=25">
+  <link rel="stylesheet" href="/admin/admin.css?v=3">
 
   <script>
     // Synchronize initial theme before render to prevent flash
@@ -22,7 +22,7 @@
       document.documentElement.setAttribute('data-theme', saved);
     })();
 
-    // Failsafe Global Unlock Handler (Guaranteed to execute immediately on user interaction)
+    // Failsafe Global Unlock Handler
     window.togglePasscodeMask = function() {
       const el = document.getElementById('input-lock-passcode');
       const btn = document.getElementById('btn-toggle-mask');
@@ -77,7 +77,7 @@
           }
         } else {
           if (lockError) {
-            lockError.textContent = '✕ Invalid passcode. Access denied.';
+            lockError.textContent = '✕ Access Denied: Invalid security passcode.';
             lockError.style.display = 'block';
           }
           if (lockCard) {
@@ -92,7 +92,7 @@
         }
       } catch (err) {
         if (lockError) {
-          lockError.textContent = '✕ Network error while verifying passcode.';
+          lockError.textContent = '✕ Network error while contacting edge auth.';
           lockError.style.display = 'block';
         }
       } finally {
@@ -132,7 +132,7 @@
           </label>
           <input type="password" id="input-lock-passcode" class="form-input" placeholder="Enter security passcode..." required autofocus autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.handleAdminUnlock();}">
           <div id="lock-error-msg" style="display: none; font-size: 0.825rem; color: var(--accent-rose, #E11D48); font-weight: 600; margin-top: 0.5rem;">
-            ✕ Invalid security passcode. Please check and try again.
+            ✕ Access Denied: Invalid security passcode.
           </div>
         </div>
 
@@ -237,42 +237,42 @@
         <div class="admin-section-header">
           <div>
             <h2 class="admin-title">Site Operations Overview</h2>
-            <p class="admin-subtitle">Live performance metrics and teacher engagement across ClassPanel.online</p>
+            <p class="admin-subtitle">Real telemetry metrics and verified database status from Cloudflare D1</p>
           </div>
           <div style="display: flex; gap: 0.5rem;" id="analytics-range-selector">
-            <button class="btn-ui btn-ui-secondary active" data-range="today">Today</button>
+            <button class="btn-ui btn-ui-secondary active" data-range="30d">Last 30 Days</button>
             <button class="btn-ui btn-ui-secondary" data-range="7d">Last 7 Days</button>
-            <button class="btn-ui btn-ui-secondary" data-range="30d">Last 30 Days</button>
+            <button class="btn-ui btn-ui-secondary" data-range="today">Today</button>
           </div>
         </div>
 
-        <!-- 4 Metric Cards -->
+        <!-- 4 Metric Cards (REAL DATA) -->
         <div class="admin-metrics-grid">
           <div class="admin-metric-card">
             <div class="admin-metric-label">
-              <span>Tool Launches & Runs</span>
+              <span>Real Telemetry Events</span>
               <span>⏱️</span>
             </div>
-            <div class="admin-metric-value" id="kpi-tool-runs">14,820</div>
-            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">↑ 18% vs previous period</div>
+            <div class="admin-metric-value" id="kpi-tool-runs">-</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Live events recorded in D1</div>
           </div>
 
           <div class="admin-metric-card">
             <div class="admin-metric-label">
-              <span>Estimated Visitors</span>
+              <span>Unique Verified Sessions</span>
               <span>👥</span>
             </div>
-            <div class="admin-metric-value" id="kpi-visitors">3,450</div>
-            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">↑ 12% organic classroom growth</div>
+            <div class="admin-metric-value" id="kpi-visitors">-</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Edge proxy verified sessions</div>
           </div>
 
           <div class="admin-metric-card">
             <div class="admin-metric-label">
-              <span>Teacher Inquiries</span>
+              <span>Teacher Inquiries in D1</span>
               <span>📬</span>
             </div>
-            <div class="admin-metric-value" id="kpi-feedback">5</div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">From feedback widgets & contact</div>
+            <div class="admin-metric-value" id="kpi-feedback">-</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Submissions from contact form</div>
           </div>
 
           <div class="admin-metric-card">
@@ -280,8 +280,8 @@
               <span>Teaching Articles in D1</span>
               <span>📝</span>
             </div>
-            <div class="admin-metric-value" id="kpi-posts">9</div>
-            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">100% indexed in SQLite</div>
+            <div class="admin-metric-value" id="kpi-posts">-</div>
+            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">Articles in SQLite D1</div>
           </div>
         </div>
 
@@ -304,18 +304,18 @@
           </div>
         </div>
 
-        <!-- Top Tools Leaderboard -->
+        <!-- Real Tools Leaderboard -->
         <div class="admin-card">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
             <div>
-              <h3 style="font-size: 1.15rem; font-weight: 800;">Classroom Tool Popularity Leaderboard</h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Telemetry from classroom sessions</p>
+              <h3 style="font-size: 1.15rem; font-weight: 800;">ClassPanel Tools Telemetry (All 17 Tools)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Live tool usage recorded in Cloudflare D1 `analytics_events` table</p>
             </div>
-            <span class="badge-status badge-published">17 Active Utilities</span>
+            <span class="badge-status badge-published">17 Real Tools</span>
           </div>
 
           <div id="analytics-tool-bars" style="display: flex; flex-direction: column; gap: 1rem;">
-            <!-- Rendered by JS -->
+            <!-- Populated dynamically with actual 17 tools -->
           </div>
         </div>
       </section>
@@ -335,7 +335,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
               <div>
                 <strong style="display: block; font-size: 1rem;">Enable Announcement Banner</strong>
-                <span style="font-size: 0.85rem; color: var(--text-muted);">When turned on, the notice will appear across all public pages</span>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">When turned on, the notice appears at the top of ClassPanel.online</span>
               </div>
               <label class="switch-toggle">
                 <input type="checkbox" id="announcement-active">
@@ -346,7 +346,7 @@
             <!-- Banner Message -->
             <div class="form-group">
               <label class="form-label" for="announcement-text">Announcement Message</label>
-              <input type="text" id="announcement-text" class="form-input" placeholder="e.g. 🎉 Back-to-school update: 5 new interactive timers just added! Check them out." value="🎉 New Official Exam Test Timer is now live with custom audio alerts!">
+              <input type="text" id="announcement-text" class="form-input" placeholder="e.g. 🎉 New Official Exam Timer is now live with audio alerts!">
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
@@ -357,14 +357,14 @@
                   <option value="info">🔵 Info / Update (Indigo / Sky)</option>
                   <option value="success">🟢 Success / New Launch (Emerald Green)</option>
                   <option value="alert">🟡 Notice / Reminder (Amber)</option>
-                  <option value="rose">🔴 Urgent / Exam Season (Rose / Red)</option>
+                  <option value="rose">🔴 Urgent / Special Notice (Rose / Red)</option>
                 </select>
               </div>
 
               <!-- Action Link -->
               <div class="form-group">
                 <label class="form-label" for="announcement-link">Action Link (Optional URL)</label>
-                <input type="text" id="announcement-link" class="form-input" placeholder="/tools/exam-timer/" value="/tools/exam-timer/">
+                <input type="text" id="announcement-link" class="form-input" placeholder="/tools/exam-timer/">
               </div>
             </div>
 
@@ -392,8 +392,8 @@
       <section class="admin-view-section" id="view-tools">
         <div class="admin-section-header">
           <div>
-            <h2 class="admin-title">Featured Tools & Homepage Pinning</h2>
-            <p class="admin-subtitle">Control which tools appear in the prominent 'Featured' positions on the homepage</p>
+            <h2 class="admin-title">Featured Tools & Homepage Pinning (All 17 Real Tools)</h2>
+            <p class="admin-subtitle">Pin tools to the top of the homepage with the '⭐ Featured' badge. Updates ClassPanel.online live!</p>
           </div>
           <button class="btn-ui btn-ui-primary" id="btn-save-pinned-tools">
             💾 Save Pinned Tool Preferences
@@ -401,7 +401,7 @@
         </div>
 
         <div class="tools-manage-grid" id="tools-manage-list">
-          <!-- Populated dynamically with all 17 tools -->
+          <!-- Populated dynamically with all 17 actual tools -->
         </div>
       </section>
 
@@ -410,22 +410,19 @@
         <div class="admin-section-header">
           <div>
             <h2 class="admin-title">Classroom Blog & Teaching Guides CMS</h2>
-            <p class="admin-subtitle">Manage SEO articles, educational guides, and tips stored in Cloudflare D1</p>
+            <p class="admin-subtitle">Manage all 9 live articles stored in Cloudflare D1 `posts` table</p>
           </div>
           <button class="btn-ui btn-ui-primary" id="btn-open-new-post">
             ✍️ Write New Article
           </button>
         </div>
 
-        <!-- Filter and Search Bar -->
+        <!-- Search Bar -->
         <div class="admin-card" style="padding: 1rem 1.25rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="blog-category-filters">
-            <button class="category-pill active" data-filter="all">All Articles (9)</button>
-            <button class="category-pill" data-filter="Classroom Management">Classroom Management</button>
-            <button class="category-pill" data-filter="Teaching Tips">Teaching Tips</button>
-            <button class="category-pill" data-filter="Product Updates">Product Updates</button>
+          <div style="font-weight: 700; font-size: 0.95rem;">
+            <span>Articles in D1: </span><strong style="color: var(--accent-purple);" id="blog-total-count">9 Articles</strong>
           </div>
-          <input type="text" id="input-blog-search" class="form-input" placeholder="Search articles by title or keyword..." style="max-width: 320px;">
+          <input type="text" id="input-blog-search" class="form-input" placeholder="Search articles by title or keyword..." style="max-width: 340px;">
         </div>
 
         <!-- Posts Table -->
@@ -434,8 +431,7 @@
             <thead>
               <tr>
                 <th>Article Title & Slug</th>
-                <th>Category</th>
-                <th>Read Time</th>
+                <th>Description / Excerpt</th>
                 <th>Status</th>
                 <th>Last Updated</th>
                 <th style="text-align: right;">Actions</th>
@@ -453,12 +449,12 @@
         <div class="admin-section-header">
           <div>
             <h2 class="admin-title">Teacher Feedback & Messages Inbox</h2>
-            <p class="admin-subtitle">Inquiries, bug reports, and tool suggestions sent from classrooms</p>
+            <p class="admin-subtitle">Inquiries and messages sent via the contact form and stored in D1</p>
           </div>
-          <div style="display: flex; gap: 0.5rem;" id="feedback-status-filters">
-            <button class="category-pill active" data-status="all">All Messages</button>
-            <button class="category-pill" data-status="new">Unresolved</button>
-            <button class="category-pill" data-status="resolved">Resolved</button>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button class="btn-ui btn-ui-secondary" id="btn-send-test-feedback">
+              📨 Send Test Feedback to D1
+            </button>
           </div>
         </div>
 
@@ -488,7 +484,7 @@
         <div class="admin-section-header">
           <div>
             <h2 class="admin-title">SEO & Link Health Audit</h2>
-            <p class="admin-subtitle">Comprehensive automated audit of page meta tags, OpenGraph social cards, and mobile readiness</p>
+            <p class="admin-subtitle">Audit page meta tags, OpenGraph social cards, and mobile readiness</p>
           </div>
           <button class="btn-ui btn-ui-primary" id="btn-run-seo-scan">
             🔄 Run Full Health Audit
@@ -504,8 +500,8 @@
           </div>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
             <div style="background: var(--bg-surface); padding: 0.85rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
-              <div style="font-size: 1.4rem; font-weight: 800; color: #10B981;">28/28</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Pages Checked</div>
+              <div style="font-size: 1.4rem; font-weight: 800; color: #10B981;">17/17</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Tools Validated</div>
             </div>
             <div style="background: var(--bg-surface); padding: 0.85rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
               <div style="font-size: 1.4rem; font-weight: 800; color: #10B981;">0</div>
@@ -545,7 +541,7 @@
         <div class="admin-section-header">
           <div>
             <h2 class="admin-title">Classroom Tool Scaffolder & Code Generator</h2>
-            <p class="admin-subtitle">Generate production-ready HTML, CSS, and JS for brand-new ClassPanel utilities adhering to the design system</p>
+            <p class="admin-subtitle">Generate production-ready HTML, CSS, and JS for new ClassPanel utilities</p>
           </div>
         </div>
 
@@ -616,7 +612,7 @@
 
             <div class="form-group">
               <label class="form-label" for="setting-new-passcode">New Master Passcode</label>
-              <input type="text" id="setting-new-passcode" class="form-input" placeholder="Enter new passcode (min 6 characters)">
+              <input type="text" id="setting-new-passcode" class="form-input" placeholder="Enter new passcode (min 4 characters)">
             </div>
 
             <button type="button" id="btn-save-passcode" class="btn-ui btn-ui-primary">
@@ -647,24 +643,9 @@
             </div>
 
             <button type="button" id="btn-test-db" class="btn-ui btn-ui-secondary">
-              ⚡ Test DB Query Health
+              ⚡ Test DB Query Latency
             </button>
           </div>
-        </div>
-
-        <!-- Cloudflare Zero Trust Setup Guide -->
-        <div class="admin-card" style="margin-top: 1.5rem;">
-          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">🛡️ Cloudflare Zero Trust Access (Recommended Extra Security)</h3>
-          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-            You can lock this entire `/admin` URL behind Cloudflare's free Zero Trust Email PIN without writing any code:
-          </p>
-
-          <ol style="padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
-            <li>Go to <a href="https://dash.cloudflare.com/" target="_blank" style="color: var(--accent-purple); font-weight: 700;">Cloudflare Dashboard</a> &rarr; <strong>Zero Trust</strong> &rarr; <strong>Access</strong> &rarr; <strong>Applications</strong>.</li>
-            <li>Click <strong>Add an application</strong> &rarr; Select <strong>Self-hosted</strong>.</li>
-            <li>Set Application Domain to <code>classpanel.online</code> and Path to <code>/admin*</code>.</li>
-            <li>Under Policies, create a rule allowing only your personal email address.</li>
-          </ol>
         </div>
       </section>
 
@@ -697,29 +678,9 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-          <div class="form-group">
-            <label class="form-label" for="post-category">Category</label>
-            <select id="post-category" class="form-input">
-              <option value="Classroom Management">Classroom Management</option>
-              <option value="Teaching Tips">Teaching Tips</option>
-              <option value="Product Updates">Product Updates</option>
-              <option value="Student Focus">Student Focus</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="post-author">Author</label>
-            <input type="text" id="post-author" class="form-input" value="ClassPanel Editorial Team">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="post-reading-time">Read Time</label>
-            <input type="text" id="post-reading-time" class="form-input" value="4 min read">
-          </div>
-        </div>
-
         <div class="form-group">
-          <label class="form-label" for="post-excerpt">Short Excerpt / SEO Meta Description</label>
-          <textarea id="post-excerpt" class="form-input" style="height: 60px; resize: none;" placeholder="A 1-2 sentence compelling summary for search engines..."></textarea>
+          <label class="form-label" for="post-excerpt">Short Excerpt / Description (Stored in D1 `description` column)</label>
+          <textarea id="post-excerpt" class="form-input" style="height: 65px; resize: none;" placeholder="A 1-2 sentence compelling summary for search engines..."></textarea>
         </div>
 
         <div class="form-group">
@@ -750,7 +711,7 @@
     <span id="toast-message">Ready</span>
   </div>
 
-  <!-- LOAD ADMIN CONTROLLER JAVASCRIPT (with cache buster) -->
-  <script src="/admin/admin.js?v=20260918_v5" defer></script>
+  <!-- LOAD ADMIN CONTROLLER JAVASCRIPT (with cache buster v7) -->
+  <script src="/admin/admin.js?v=20260918_v7" defer></script>
 </body>
 </html>

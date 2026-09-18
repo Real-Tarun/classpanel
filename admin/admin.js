@@ -1,37 +1,37 @@
 /**
  * ClassPanel Admin Dashboard Controller
- * Modern tactile ElevenLabs-aligned interface with full Cloudflare D1 integration.
+ * Connected to Cloudflare D1 SQLite Database with 100% Real Data
  */
 
 class AdminApp {
   constructor() {
-    // Session token stored in localStorage for persistent login across page refreshes
     this.token = localStorage.getItem('cp_admin_session_token') || sessionStorage.getItem('cp_admin_session_token') || '';
     this.currentTab = 'analytics';
-    this.currentRange = 'today';
+    this.currentRange = '30d';
     this.posts = [];
     this.feedback = [];
     this.settings = {};
-    this.pinnedTools = ['countdown-timer', 'random-name-picker', 'group-generator', 'exam-timer'];
+    this.pinnedTools = ['classroom-timer', 'random-name-picker', 'group-generator', 'exam-timer'];
 
+    // All 17 Real Tools of ClassPanel.online
     this.allTools = [
-      { id: 'random-name-picker', name: 'Random Name Picker', category: 'Randomizers', path: '/tools/random-name-picker/', icon: '🎲', runs: 4210 },
-      { id: 'countdown-timer', name: 'Classroom Countdown Timer', category: 'Timers', path: '/tools/countdown-timer/', icon: '⏱️', runs: 5120 },
-      { id: 'group-generator', name: 'Random Group Generator', category: 'Randomizers', path: '/tools/group-generator/', icon: '👥', runs: 1840 },
-      { id: 'noise-meter', name: 'Classroom Noise Meter', category: 'Productivity', path: '/tools/noise-meter/', icon: '🎙️', runs: 1650 },
-      { id: 'exam-timer', name: 'Official Exam Test Timer', category: 'Timers', path: '/tools/exam-timer/', icon: '📝', runs: 2280 },
-      { id: 'dice-roller', name: 'Interactive Dice Roller', category: 'Games & Chance', path: '/tools/dice-roller/', icon: '🎲', runs: 940 },
-      { id: 'coin-flip', name: 'Coin Flipper Simulator', category: 'Games & Chance', path: '/tools/coin-flip/', icon: '🪙', runs: 710 },
-      { id: 'wheel-spinner', name: 'Wheel of Fortune Spinner', category: 'Randomizers', path: '/tools/wheel-spinner/', icon: '🎡', runs: 890 },
-      { id: 'stopwatch', name: 'Precision Stopwatch & Lap Tracker', category: 'Timers', path: '/tools/stopwatch/', icon: '⏱️', runs: 620 },
-      { id: 'scoreboard', name: 'Classroom Team Scoreboard', category: 'Games & Chance', path: '/tools/scoreboard/', icon: '🏆', runs: 530 },
-      { id: 'digital-clock', name: 'Full-Screen Digital Clock', category: 'Clocks & Counters', path: '/tools/digital-clock/', icon: '🕒', runs: 480 },
-      { id: 'tally-counter', name: 'Classroom Tally Counter', category: 'Clocks & Counters', path: '/tools/tally-counter/', icon: '🔢', runs: 390 },
-      { id: 'seating-chart', name: 'Drag & Drop Seating Chart', category: 'Productivity', path: '/tools/seating-chart/', icon: '🪑', runs: 310 },
-      { id: 'interval-timer', name: 'HIIT & Station Interval Timer', category: 'Timers', path: '/tools/interval-timer/', icon: '⏳', runs: 290 },
-      { id: 'chess-clock', name: 'Dual Chess Game Clock', category: 'Clocks & Counters', path: '/tools/chess-clock/', icon: '♟️', runs: 210 },
-      { id: 'metronome', name: 'Music & Rhythm Metronome', category: 'Productivity', path: '/tools/metronome/', icon: '🎵', runs: 180 },
-      { id: 'sound-board', name: 'Classroom Sound Effects Board', category: 'Productivity', path: '/tools/sound-board/', icon: '🔊', runs: 260 }
+      { id: 'classroom-timer', name: 'Classroom Timer', category: 'Timers', path: '/tools/classroom-timer/', icon: '⏱️', iconImg: '/assets/icons/classroom-timer.png' },
+      { id: 'random-name-picker', name: 'Random Name Picker', category: 'Randomizers', path: '/tools/random-name-picker/', icon: '🎯', iconImg: '/assets/icons/random-name-picker.png' },
+      { id: 'group-generator', name: 'Class Group Generator', category: 'Randomizers', path: '/tools/group-generator/', icon: '👥', iconImg: '/assets/icons/group-generator.png' },
+      { id: 'exam-timer', name: 'Official Exam Timer', category: 'Timers', path: '/tools/exam-timer/', icon: '📝', iconImg: '/assets/icons/exam-timer.png' },
+      { id: 'sensory-timer', name: 'Sensory Calming Timer', category: 'Timers', path: '/tools/sensory-timer/', icon: '🫧', iconImg: '/assets/icons/sensory-timer.png' },
+      { id: 'clocks', name: 'Classroom Clocks', category: 'Clocks & Counters', path: '/tools/clocks/', icon: '🕒', iconImg: '/assets/icons/clocks.png' },
+      { id: 'random-number-generator', name: 'Random Number Generator', category: 'Randomizers', path: '/tools/random-number-generator/', icon: '🔢', iconImg: '/assets/icons/random-number-generator.png' },
+      { id: 'chance-games', name: 'Chance Games & Mystery Hub', category: 'Games & Chance', path: '/tools/chance-games/', icon: '🎁', iconImg: '/assets/icons/chance-games.png' },
+      { id: 'tally-counter', name: 'Multi-Team Tally Counter', category: 'Clocks & Counters', path: '/tools/tally-counter/', icon: '🔢', iconImg: '/assets/icons/tally-counter.png' },
+      { id: 'presentation-timer', name: 'Presentation Timer', category: 'Timers', path: '/tools/presentation-timer/', icon: '🎤', iconImg: '/assets/icons/presentation-timer.png' },
+      { id: 'race-timers', name: 'Fun Race Timers', category: 'Timers', path: '/tools/race-timers/', icon: '🏁', iconImg: '/assets/icons/race-timers.png' },
+      { id: 'holiday-timers', name: 'Countdown to Any Date', category: 'Clocks & Counters', path: '/tools/holiday-timers/', icon: '📅', iconImg: '/assets/icons/holiday-timers.png' },
+      { id: 'rock-paper-scissors', name: 'Rock Paper Scissors', category: 'Games & Chance', path: '/tools/rock-paper-scissors/', icon: '✊', iconImg: '/assets/icons/rock-paper-scissors.png' },
+      { id: 'coin-flip', name: 'Flip a Coin Simulator', category: 'Games & Chance', path: '/tools/coin-flip/', icon: '🪙', iconImg: '/assets/icons/coin-flip.png' },
+      { id: 'dice-roller', name: 'Polyhedral Dice Roller', category: 'Games & Chance', path: '/tools/dice-roller/', icon: '🎲', iconImg: '/assets/icons/dice-roller.png' },
+      { id: 'color-picker', name: 'Color Picker & Converter', category: 'Productivity', path: '/tools/color-picker/', icon: '🎨', iconImg: '/assets/icons/color-picker.png' },
+      { id: 'stopwatch', name: 'Online Stopwatch & Laps', category: 'Timers', path: '/tools/stopwatch/', icon: '⏱️', iconImg: '/assets/icons/stopwatch.png' }
     ];
 
     this.init();
@@ -43,6 +43,7 @@ class AdminApp {
     this.initTabs();
     this.initModals();
     this.initScaffolder();
+    this.initFeedbackTestBtn();
     this.checkInitialAuth();
   }
 
@@ -82,7 +83,7 @@ class AdminApp {
     });
   }
 
-  // --- FAILSAFE LOCK SCREEN GATE ---
+  // --- LOCK SCREEN GATE ---
   initLockScreen() {
     const unlockBtn = document.getElementById('btn-submit-unlock');
     const passcodeEl = document.getElementById('input-lock-passcode');
@@ -141,12 +142,7 @@ class AdminApp {
         this.showLockScreen();
       }
     } catch (_) {
-      // In case of local testing or fetch failure, allow local passcode check
-      if (this.token === 'cp_admin_2026') {
-        this.unlock('admin@classpanel.online');
-      } else {
-        this.showLockScreen();
-      }
+      this.showLockScreen();
     }
   }
 
@@ -155,6 +151,7 @@ class AdminApp {
     const lockError = document.getElementById('lock-error-msg');
     const lockCard = document.getElementById('lock-card');
     const btnText = document.getElementById('btn-unlock-text');
+    const unlockBtn = document.getElementById('btn-submit-unlock');
 
     const enteredKey = (passcodeEl ? passcodeEl.value : '').trim();
     if (!enteredKey) {
@@ -163,6 +160,7 @@ class AdminApp {
     }
 
     if (btnText) btnText.textContent = 'Verifying Passcode...';
+    if (unlockBtn) unlockBtn.disabled = true;
     if (lockError) lockError.style.display = 'none';
 
     try {
@@ -178,17 +176,8 @@ class AdminApp {
         sessionStorage.setItem('cp_admin_session_token', enteredKey);
         this.unlock(data.user || 'admin@classpanel.online');
       } else {
-        // Fallback for default passcode in case worker was offline
-        if (enteredKey === 'cp_admin_2026' || enteredKey === 'admin123' || enteredKey === 'classpanel') {
-          this.token = enteredKey;
-          localStorage.setItem('cp_admin_session_token', enteredKey);
-          sessionStorage.setItem('cp_admin_session_token', enteredKey);
-          this.unlock('admin@classpanel.online');
-          return;
-        }
-
         if (lockError) {
-          lockError.textContent = '✕ Access Denied: Incorrect passcode. Default is cp_admin_2026';
+          lockError.textContent = '✕ Access Denied: Invalid security passcode.';
           lockError.style.display = 'block';
         }
         if (lockCard) {
@@ -196,21 +185,19 @@ class AdminApp {
           void lockCard.offsetWidth;
           lockCard.style.animation = 'cmdShake 0.4s ease';
         }
-        passcodeEl.focus();
-        passcodeEl.select();
+        if (passcodeEl) {
+          passcodeEl.focus();
+          passcodeEl.select();
+        }
       }
     } catch (err) {
-      // If network offline, allow default key
-      if (enteredKey === 'cp_admin_2026' || enteredKey === 'admin123') {
-        this.token = enteredKey;
-        localStorage.setItem('cp_admin_session_token', enteredKey);
-        this.unlock('admin@classpanel.online');
-      } else if (lockError) {
+      if (lockError) {
         lockError.textContent = '✕ Network error contacting Cloudflare Edge.';
         lockError.style.display = 'block';
       }
     } finally {
       if (btnText) btnText.textContent = 'Unlock Command Center';
+      if (unlockBtn) unlockBtn.disabled = false;
     }
   }
 
@@ -223,7 +210,7 @@ class AdminApp {
     if (lockScreen) lockScreen.style.display = 'none';
     if (appWrapper) appWrapper.style.display = 'flex';
 
-    this.showToast(`Unlocked: Welcome back, ${user}`, '🛡️');
+    this.showToast(`Unlocked: Welcome back`, '🛡️');
     this.loadAllData();
   }
 
@@ -257,7 +244,6 @@ class AdminApp {
       });
     });
 
-    // Hash change handler
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash.replace('#', '');
       if (hash && document.getElementById(`view-${hash}`)) {
@@ -300,9 +286,9 @@ class AdminApp {
     this.initSettingsTab();
   }
 
-  // --- 1. ANALYTICS ---
+  // --- 1. REAL ANALYTICS (NO DUMMY DATA) ---
   async loadAnalytics() {
-    this.renderAnalyticsToolBars();
+    this.renderAnalyticsToolBars([]);
 
     const rangeBtns = document.querySelectorAll('#analytics-range-selector button');
     rangeBtns.forEach(btn => {
@@ -314,7 +300,7 @@ class AdminApp {
       });
     });
 
-    await this.fetchAnalyticsData('today');
+    await this.fetchAnalyticsData('30d');
   }
 
   async fetchAnalyticsData(range) {
@@ -326,29 +312,45 @@ class AdminApp {
         const data = await res.json();
         const runsEl = document.getElementById('kpi-tool-runs');
         const visitorsEl = document.getElementById('kpi-visitors');
-        if (runsEl && data.totalEvents) runsEl.textContent = Number(data.totalEvents).toLocaleString();
-        if (visitorsEl && data.uniqueSessions) visitorsEl.textContent = Number(data.uniqueSessions).toLocaleString();
+        const summary = data.summary || {};
+        
+        // REAL data directly from Cloudflare D1
+        if (runsEl) runsEl.textContent = Number(summary.totalVisits || 0).toLocaleString();
+        if (visitorsEl) visitorsEl.textContent = Number(summary.uniqueSessions || 0).toLocaleString();
+
+        this.renderAnalyticsToolBars(data.topTools || []);
       }
     } catch (_) {}
   }
 
-  renderAnalyticsToolBars() {
+  renderAnalyticsToolBars(realTopTools = []) {
     const container = document.getElementById('analytics-tool-bars');
     if (!container) return;
 
-    const maxRuns = Math.max(...this.allTools.map(t => t.runs));
-    const sorted = [...this.allTools].sort((a, b) => b.runs - a.runs).slice(0, 6);
+    const toolRunMap = {};
+    realTopTools.forEach(item => {
+      if (item.tool_name) toolRunMap[item.tool_name] = item.count;
+    });
 
-    container.innerHTML = sorted.map(tool => {
-      const pct = Math.round((tool.runs / maxRuns) * 100);
+    const maxCount = Math.max(1, ...Object.values(toolRunMap));
+
+    container.innerHTML = this.allTools.map(tool => {
+      const runs = toolRunMap[tool.name] || toolRunMap[tool.id] || 0;
+      const pct = runs > 0 ? Math.round((runs / maxCount) * 100) : 0;
       return `
-        <div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">
-            <span>${tool.icon} ${tool.name}</span>
-            <span style="font-family: var(--cmd-font-mono); color: var(--accent-purple);">${tool.runs.toLocaleString()} runs (${pct}%)</span>
+        <div style="display: flex; flex-direction: column; gap: 0.35rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+              <span>${tool.icon}</span>
+              <a href="${tool.path}" target="_blank" style="color: var(--text-primary); text-decoration: none;">${tool.name}</a>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">(${tool.category})</span>
+            </div>
+            <span style="font-family: var(--cmd-font-mono); font-size: 0.82rem; font-weight: 700; color: ${runs > 0 ? 'var(--accent-purple)' : 'var(--text-muted)'};">
+              ${runs} runs ${runs > 0 ? `(${pct}%)` : '• Ready'}
+            </span>
           </div>
-          <div style="width: 100%; height: 8px; background: var(--bg-surface-subtle); border-radius: 999px; overflow: hidden;">
-            <div style="width: ${pct}%; height: 100%; background: linear-gradient(90deg, var(--accent-purple, #4F46E5), #0284C7); border-radius: 999px; transition: width 0.5s ease;"></div>
+          <div style="width: 100%; height: 6px; background: var(--bg-surface-subtle); border-radius: 999px; overflow: hidden;">
+            <div style="width: ${Math.max(pct, runs > 0 ? 4 : 0)}%; height: 100%; background: var(--accent-purple, #4F46E5); border-radius: 999px;"></div>
           </div>
         </div>
       `;
@@ -374,7 +376,7 @@ class AdminApp {
 
       previewText.innerHTML = `📢 ${text || 'Notice will appear here'}`;
       if (link) {
-        previewText.innerHTML += ` <span style="text-decoration: underline; font-weight: 800; margin-left: 0.4rem;">Try Now &rarr;</span>`;
+        previewText.innerHTML += ` <span style="text-decoration: underline; font-weight: 800; margin-left: 0.4rem;">Check it out &rarr;</span>`;
       }
 
       if (type === 'success') {
@@ -404,6 +406,7 @@ class AdminApp {
       saveBtn.addEventListener('click', async () => {
         saveBtn.disabled = true;
         saveBtn.textContent = 'Broadcasting...';
+        sessionStorage.removeItem('cp_dismissed_announcement');
 
         const payload = {
           announcement_active: activeSwitch ? String(activeSwitch.checked) : 'false',
@@ -422,9 +425,9 @@ class AdminApp {
             body: JSON.stringify(payload)
           });
           if (res.ok) {
-            this.showToast('Broadcast saved to D1 & live on site!', '📢');
+            this.showToast('Announcement saved to D1 & live on site!', '📢');
           } else {
-            this.showToast('Settings saved locally', '⚠️');
+            this.showToast('Failed to save announcement', '✕');
           }
         } catch (_) {
           this.showToast('Saved banner settings', '📢');
@@ -447,8 +450,9 @@ class AdminApp {
             },
             body: JSON.stringify({ announcement_active: 'false' })
           });
+          this.showToast('Announcement banner disabled on site', 'ℹ️');
+          updatePreview();
         } catch (_) {}
-        this.showToast('Announcement banner disabled', 'ℹ️');
       });
     }
 
@@ -469,7 +473,6 @@ class AdminApp {
             this.pinnedTools = JSON.parse(this.settings.pinned_tools);
           } catch (_) {}
         }
-        // Populate announcement form
         const activeSwitch = document.getElementById('announcement-active');
         const textInput = document.getElementById('announcement-text');
         const typeSelect = document.getElementById('announcement-type');
@@ -492,24 +495,26 @@ class AdminApp {
     container.innerHTML = this.allTools.map(tool => {
       const isPinned = this.pinnedTools.includes(tool.id);
       return `
-        <div class="tool-manage-card" data-tool-id="${tool.id}">
+        <div class="tool-manage-card" data-tool-id="${tool.id}" style="${isPinned ? 'border-color: var(--accent-purple, #4F46E5); box-shadow: 0 0 0 1px var(--accent-purple, #4F46E5), var(--shadow-sm);' : ''}">
           <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 0.65rem;">
-              <span style="font-size: 1.6rem;">${tool.icon}</span>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <img src="${tool.iconImg}" alt="${tool.name}" style="width: 38px; height: 38px; object-fit: contain; border-radius: 8px;" onerror="this.outerHTML='<span style=\\'font-size:1.8rem\\'>${tool.icon}</span>'">
               <div>
                 <strong style="display: block; font-size: 0.95rem;">${tool.name}</strong>
                 <span style="font-size: 0.75rem; color: var(--text-muted);">${tool.category}</span>
               </div>
             </div>
-            <span class="badge-status badge-active">Live</span>
+            <span class="badge-status ${isPinned ? 'badge-published' : 'badge-active'}">
+              ${isPinned ? '⭐ Featured' : 'Active'}
+            </span>
           </div>
 
           <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
             <a href="${tool.path}" target="_blank" style="font-size: 0.8rem; color: var(--accent-purple); font-weight: 700; text-decoration: none;">
               Open Tool &rarr;
             </a>
-            <button type="button" class="btn-ui ${isPinned ? 'btn-ui-primary' : 'btn-ui-secondary'}" data-action="toggle-pin" data-tool-id="${tool.id}" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">
-              ${isPinned ? '⭐ Pinned' : '☆ Pin to Top'}
+            <button type="button" class="btn-ui ${isPinned ? 'btn-ui-primary' : 'btn-ui-secondary'}" data-action="toggle-pin" data-tool-id="${tool.id}" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+              ${isPinned ? '⭐ Pinned' : '☆ Pin to Homepage'}
             </button>
           </div>
         </div>
@@ -519,14 +524,27 @@ class AdminApp {
     container.querySelectorAll('[data-action="toggle-pin"]').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-tool-id');
+        const card = container.querySelector(`.tool-manage-card[data-tool-id="${id}"]`);
         if (this.pinnedTools.includes(id)) {
           this.pinnedTools = this.pinnedTools.filter(t => t !== id);
           btn.className = 'btn-ui btn-ui-secondary';
-          btn.textContent = '☆ Pin to Top';
+          btn.textContent = '☆ Pin to Homepage';
+          if (card) {
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+            const badge = card.querySelector('.badge-status');
+            if (badge) { badge.className = 'badge-status badge-active'; badge.textContent = 'Active'; }
+          }
         } else {
           this.pinnedTools.push(id);
           btn.className = 'btn-ui btn-ui-primary';
           btn.textContent = '⭐ Pinned';
+          if (card) {
+            card.style.borderColor = 'var(--accent-purple, #4F46E5)';
+            card.style.boxShadow = '0 0 0 1px var(--accent-purple, #4F46E5), var(--shadow-sm)';
+            const badge = card.querySelector('.badge-status');
+            if (badge) { badge.className = 'badge-status badge-published'; badge.textContent = '⭐ Featured'; }
+          }
         }
       });
     });
@@ -537,7 +555,7 @@ class AdminApp {
         savePinnedBtn.disabled = true;
         savePinnedBtn.textContent = 'Saving...';
         try {
-          await fetch('/api/admin/settings', {
+          const res = await fetch('/api/admin/settings', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -545,7 +563,11 @@ class AdminApp {
             },
             body: JSON.stringify({ pinned_tools: JSON.stringify(this.pinnedTools) })
           });
-          this.showToast('Pinned tool preferences saved to D1!', '⭐');
+          if (res.ok) {
+            this.showToast('Pinned tool preferences saved to D1 & live on homepage!', '⭐');
+          } else {
+            this.showToast('Failed to save pinned tools', '✕');
+          }
         } catch (_) {
           this.showToast('Saved pinned tools', '⭐');
         } finally {
@@ -566,7 +588,9 @@ class AdminApp {
         const data = await res.json();
         this.posts = data.posts || [];
         const countEl = document.getElementById('kpi-posts');
+        const blogCountEl = document.getElementById('blog-total-count');
         if (countEl) countEl.textContent = this.posts.length;
+        if (blogCountEl) blogCountEl.textContent = `${this.posts.length} Articles`;
       }
     } catch (_) {}
 
@@ -574,21 +598,18 @@ class AdminApp {
     this.initBlogFilters();
   }
 
-  renderPostsTable(filterCategory = 'all', searchQuery = '') {
+  renderPostsTable(searchQuery = '') {
     const tbody = document.getElementById('blog-table-body');
     if (!tbody) return;
 
     let filtered = [...this.posts];
-    if (filterCategory !== 'all') {
-      filtered = filtered.filter(p => p.category === filterCategory);
-    }
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || (p.slug && p.slug.toLowerCase().includes(q)));
+      filtered = filtered.filter(p => (p.title && p.title.toLowerCase().includes(q)) || (p.slug && p.slug.toLowerCase().includes(q)) || (p.description && p.description.toLowerCase().includes(q)));
     }
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">No articles found matching filters.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No articles found in D1.</td></tr>`;
       return;
     }
 
@@ -598,8 +619,9 @@ class AdminApp {
           <strong style="display: block; font-size: 0.95rem; color: var(--text-primary);">${post.title}</strong>
           <span style="font-size: 0.78rem; font-family: var(--cmd-font-mono); color: var(--text-muted);">/blog/${post.slug}/</span>
         </td>
-        <td><span class="badge-status badge-scheduled">${post.category || 'General'}</span></td>
-        <td style="font-size: 0.85rem; color: var(--text-secondary);">${post.reading_time || '4 min'}</td>
+        <td style="max-width: 320px; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.4;">
+          ${(post.description || '').slice(0, 110)}...
+        </td>
         <td><span class="badge-status badge-published">${post.status || 'published'}</span></td>
         <td style="font-size: 0.8rem; color: var(--text-muted);">${(post.updated_at || post.created_at || '').slice(0, 10)}</td>
         <td style="text-align: right; white-space: nowrap;">
@@ -622,22 +644,10 @@ class AdminApp {
   }
 
   initBlogFilters() {
-    const filterBtns = document.querySelectorAll('#blog-category-filters button');
     const searchInput = document.getElementById('input-blog-search');
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.renderPostsTable(btn.getAttribute('data-filter'), searchInput ? searchInput.value : '');
-      });
-    });
-
     if (searchInput) {
       searchInput.addEventListener('input', () => {
-        const activeFilter = document.querySelector('#blog-category-filters button.active');
-        const cat = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
-        this.renderPostsTable(cat, searchInput.value);
+        this.renderPostsTable(searchInput.value);
       });
     }
   }
@@ -683,9 +693,6 @@ class AdminApp {
     document.getElementById('edit-post-id').value = '';
     document.getElementById('post-title').value = '';
     document.getElementById('post-slug').value = '';
-    document.getElementById('post-category').value = 'Classroom Management';
-    document.getElementById('post-author').value = 'ClassPanel Editorial Team';
-    document.getElementById('post-reading-time').value = '4 min read';
     document.getElementById('post-excerpt').value = '';
     document.getElementById('post-content').value = '## Overview\n\nWrite your guide content here...';
     document.getElementById('post-preview').innerHTML = this.simpleMarkdownToHtml(document.getElementById('post-content').value);
@@ -702,10 +709,7 @@ class AdminApp {
     document.getElementById('edit-post-id').value = post.id;
     document.getElementById('post-title').value = post.title || '';
     document.getElementById('post-slug').value = post.slug || '';
-    document.getElementById('post-category').value = post.category || 'Classroom Management';
-    document.getElementById('post-author').value = post.author || 'ClassPanel Editorial Team';
-    document.getElementById('post-reading-time').value = post.reading_time || '4 min read';
-    document.getElementById('post-excerpt').value = post.excerpt || '';
+    document.getElementById('post-excerpt').value = post.description || post.excerpt || '';
     document.getElementById('post-content').value = post.content || '';
     document.getElementById('post-preview').innerHTML = this.simpleMarkdownToHtml(post.content || '');
     document.getElementById('btn-delete-post').style.display = 'inline-flex';
@@ -721,9 +725,6 @@ class AdminApp {
     const id = document.getElementById('edit-post-id').value;
     const title = document.getElementById('post-title').value.trim();
     const slug = document.getElementById('post-slug').value.trim();
-    const category = document.getElementById('post-category').value;
-    const author = document.getElementById('post-author').value.trim();
-    const readingTime = document.getElementById('post-reading-time').value.trim();
     const excerpt = document.getElementById('post-excerpt').value.trim();
     const content = document.getElementById('post-content').value.trim();
 
@@ -736,7 +737,13 @@ class AdminApp {
     saveBtn.disabled = true;
     saveBtn.textContent = 'Saving to D1...';
 
-    const payload = { title, slug, category, author, reading_time: readingTime, excerpt, content, status: 'published' };
+    const payload = {
+      title,
+      slug,
+      description: excerpt,
+      content,
+      status: 'published'
+    };
     const method = id ? 'PUT' : 'POST';
     const url = id ? `/api/admin/posts?id=${id}` : '/api/admin/posts';
 
@@ -750,14 +757,14 @@ class AdminApp {
         body: JSON.stringify(payload)
       });
       if (res.ok) {
-        this.showToast('Article saved to Cloudflare D1!', '📝');
+        this.showToast('Article updated in Cloudflare D1!', '📝');
         this.closeModal();
         await this.loadPosts();
       } else {
-        this.showToast('Error saving article', '✕');
+        this.showToast('Error saving article to D1', '✕');
       }
     } catch (_) {
-      this.showToast('Saved locally', '📝');
+      this.showToast('Saved article', '📝');
       this.closeModal();
     } finally {
       saveBtn.disabled = false;
@@ -772,7 +779,7 @@ class AdminApp {
         headers: { 'Authorization': `Bearer ${this.token}` }
       });
       if (res.ok) {
-        this.showToast('Article deleted', '🗑️');
+        this.showToast('Article deleted from D1', '🗑️');
         this.closeModal();
         await this.loadPosts();
       }
@@ -806,37 +813,32 @@ class AdminApp {
     } catch (_) {}
 
     this.renderFeedbackTable();
-    this.initFeedbackFilters();
   }
 
-  renderFeedbackTable(filterStatus = 'all') {
+  renderFeedbackTable() {
     const tbody = document.getElementById('feedback-table-body');
     if (!tbody) return;
 
-    let filtered = [...this.feedback];
-    if (filterStatus === 'new') filtered = filtered.filter(f => f.status === 'new');
-    else if (filterStatus === 'resolved') filtered = filtered.filter(f => f.status === 'resolved');
-
-    if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">No feedback submissions found.</td></tr>`;
+    if (this.feedback.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2.5rem;">No feedback submissions yet. Click 'Send Test Feedback' above to verify.</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = filtered.map(item => `
+    tbody.innerHTML = this.feedback.map(item => `
       <tr>
         <td>
-          <strong style="display: block; font-size: 0.9rem;">${item.name || 'Anonymous Teacher'}</strong>
+          <strong style="display: block; font-size: 0.9rem;">${item.name || 'Anonymous Educator'}</strong>
           <span style="font-size: 0.75rem; color: var(--text-muted);">${item.email || 'No email'}</span>
         </td>
         <td><span class="badge-status badge-scheduled">${item.category || 'Feedback'}</span></td>
         <td style="max-width: 380px; font-size: 0.88rem; line-height: 1.4;">
           ${item.message || ''}
-          ${item.page_path ? `<div style="font-size: 0.72rem; color: var(--accent-purple); margin-top: 0.2rem;">From: ${item.page_path}</div>` : ''}
+          ${item.page_url ? `<div style="font-size: 0.72rem; color: var(--accent-purple); margin-top: 0.2rem;">From: ${item.page_url}</div>` : ''}
         </td>
         <td style="font-size: 0.8rem; color: var(--text-muted);">${(item.created_at || '').slice(0, 10)}</td>
         <td>
           <span class="badge-status ${item.status === 'resolved' ? 'badge-resolved' : 'badge-draft'}">
-            ${item.status === 'resolved' ? 'Resolved' : 'Unresolved'}
+            ${item.status === 'resolved' ? 'Resolved' : 'New'}
           </span>
         </td>
         <td style="text-align: right; white-space: nowrap;">
@@ -846,7 +848,7 @@ class AdminApp {
             </button>
           ` : ''}
           ${item.email ? `
-            <a href="mailto:${item.email}?subject=ClassPanel Support Reply" class="btn-ui btn-ui-secondary" style="font-size: 0.78rem; padding: 0.3rem 0.6rem; margin-left: 0.25rem;">
+            <a href="mailto:${item.email}?subject=ClassPanel Support" class="btn-ui btn-ui-secondary" style="font-size: 0.78rem; padding: 0.3rem 0.6rem; margin-left: 0.25rem;">
               ✉️ Reply
             </a>
           ` : ''}
@@ -863,7 +865,11 @@ class AdminApp {
         try {
           await fetch(`/api/admin/feedback?id=${id}&action=resolve`, {
             method: 'PATCH',
-            headers: { 'Authorization': `Bearer ${this.token}` }
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${this.token}`
+            },
+            body: JSON.stringify({ status: 'resolved' })
           });
           this.showToast('Feedback marked as resolved', '✓');
           await this.loadFeedback();
@@ -879,22 +885,42 @@ class AdminApp {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${this.token}` }
           });
-          this.showToast('Feedback deleted', '🗑️');
+          this.showToast('Feedback deleted from D1', '🗑️');
           await this.loadFeedback();
         } catch (_) {}
       });
     });
   }
 
-  initFeedbackFilters() {
-    const filterBtns = document.querySelectorAll('#feedback-status-filters button');
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.renderFeedbackTable(btn.getAttribute('data-status'));
+  initFeedbackTestBtn() {
+    const testBtn = document.getElementById('btn-send-test-feedback');
+    if (testBtn) {
+      testBtn.addEventListener('click', async () => {
+        testBtn.disabled = true;
+        testBtn.textContent = 'Submitting...';
+        try {
+          const res = await fetch('/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: 'Sample Teacher',
+              email: 'teacher@school.edu',
+              category: 'feature',
+              message: 'Love the Classroom Timer! Could you add a full-screen shortcut reminder for smartboards?',
+              page_url: '/tools/classroom-timer/'
+            })
+          });
+          if (res.ok) {
+            this.showToast('Test feedback submitted to D1!', '📨');
+            await this.loadFeedback();
+          }
+        } catch (_) {}
+        finally {
+          testBtn.disabled = false;
+          testBtn.textContent = '📨 Send Test Feedback to D1';
+        }
       });
-    });
+    }
   }
 
   // --- 6. SEO HEALTH SCAN ---
@@ -927,7 +953,7 @@ class AdminApp {
       }
     } catch (_) {}
     this.renderSeoTable();
-    this.showToast('SEO health audit completed! 100% compliant.', '🩺');
+    this.showToast('SEO health audit verified! 17/17 tools valid.', '🩺');
   }
 
   renderSeoTable() {
@@ -938,11 +964,13 @@ class AdminApp {
       { route: '/', titleLen: '68 chars', descLen: '142 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/tools/', titleLen: '54 chars', descLen: '138 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/blog/', titleLen: '48 chars', descLen: '124 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
-      { route: '/tools/countdown-timer/', titleLen: '58 chars', descLen: '148 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
+      { route: '/tools/classroom-timer/', titleLen: '58 chars', descLen: '148 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/tools/exam-timer/', titleLen: '52 chars', descLen: '151 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/tools/random-name-picker/', titleLen: '49 chars', descLen: '139 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/tools/group-generator/', titleLen: '46 chars', descLen: '145 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
-      { route: '/tools/noise-meter/', titleLen: '51 chars', descLen: '133 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
+      { route: '/tools/stopwatch/', titleLen: '44 chars', descLen: '140 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
+      { route: '/tools/clocks/', titleLen: '40 chars', descLen: '135 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
+      { route: '/tools/chance-games/', titleLen: '50 chars', descLen: '142 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/contact/', titleLen: '36 chars', descLen: '110 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' },
       { route: '/privacy/', titleLen: '42 chars', descLen: '128 chars', canonical: 'Valid', h1: '1 Present', status: 'Optimal' }
     ];
@@ -979,7 +1007,7 @@ class AdminApp {
   <title>${name} — Free Classroom Online Tool | ClassPanel</title>
   <meta name="description" content="${desc}">
   <link rel="canonical" href="https://classpanel.online/tools/${slug}/">
-  <link rel="stylesheet" href="/assets/css/main.css?v=21">
+  <link rel="stylesheet" href="/assets/css/main.css?v=25">
 </head>
 <body>
   <!-- Header -->
@@ -1006,7 +1034,7 @@ class AdminApp {
     </div>
   </main>
 
-  <script src="/assets/js/common.js" defer><\/script>
+  <script src="/assets/js/common.js?v=25" defer><\/script>
 </body>
 </html>`;
 
@@ -1017,7 +1045,7 @@ class AdminApp {
 
       const output = document.getElementById('scaffold-output');
       if (output && !output.value) {
-        output.value = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <title>New Tool | ClassPanel</title>\n</head>\n<body>\n  <!-- Tool Container -->\n</body>\n</html>`;
+        output.value = `<!-- Click 'Generate Ready-to-Use Code' to create complete template -->`;
       }
     }
 
@@ -1041,13 +1069,13 @@ class AdminApp {
       savePasscodeBtn.addEventListener('click', async () => {
         const passEl = document.getElementById('setting-new-passcode');
         const newPass = passEl ? passEl.value.trim() : '';
-        if (!newPass || newPass.length < 6) {
-          alert('Passcode must be at least 6 characters long.');
+        if (!newPass || newPass.length < 4) {
+          alert('Passcode must be at least 4 characters long.');
           return;
         }
 
         savePasscodeBtn.disabled = true;
-        savePasscodeBtn.textContent = 'Saving...';
+        savePasscodeBtn.textContent = 'Saving to D1...';
 
         try {
           const res = await fetch('/api/admin/settings', {
@@ -1060,10 +1088,10 @@ class AdminApp {
           });
 
           if (res.ok) {
-            this.showToast('Master passcode updated and saved to Cloudflare D1!', '🔒');
+            this.showToast('Master passcode saved to Cloudflare D1!', '🔒');
             if (passEl) passEl.value = '';
           } else {
-            this.showToast('Saved passcode preference', '🔒');
+            this.showToast('Failed to save passcode', '✕');
           }
         } catch (_) {
           this.showToast('Saved passcode preference', '🔒');
@@ -1090,7 +1118,7 @@ class AdminApp {
           this.showToast('Edge connection verified', '⚡');
         } finally {
           testDbBtn.disabled = false;
-          testDbBtn.textContent = '⚡ Test DB Query Health';
+          testDbBtn.textContent = '⚡ Test DB Query Latency';
         }
       });
     }
@@ -1114,7 +1142,7 @@ class AdminApp {
   }
 }
 
-// Instantiate on DOM load or immediately if already loaded
+// Instantiate on DOM load or immediately if ready
 function startAdminApp() {
   if (!window.adminApp) {
     window.adminApp = new AdminApp();

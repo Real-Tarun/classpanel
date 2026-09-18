@@ -89,8 +89,14 @@ export async function onRequest(context) {
       const id = url.searchParams.get('id');
       if (!id) return jsonResponse({ error: 'Feedback ID is required.' }, 400);
 
-      const body = await request.json();
-      const newStatus = body.status; // 'unread', 'read', 'resolved'
+      let newStatus = 'resolved';
+      try {
+        const body = await request.json();
+        if (body && body.status) newStatus = body.status;
+      } catch (_) {
+        const action = url.searchParams.get('action');
+        if (action) newStatus = action === 'resolve' ? 'resolved' : action;
+      }
 
       if (db) {
         await db.prepare('UPDATE feedback SET status = ? WHERE id = ?').bind(newStatus, id).run();

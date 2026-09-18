@@ -10,7 +10,7 @@ let mockSettings = {
   announcement_text: 'Welcome to ClassPanel! Explore our 17+ free classroom timers and randomizers.',
   announcement_type: 'info',
   announcement_link: '/tools/',
-  pinned_tools: JSON.stringify(['countdown-timer', 'random-name-picker', 'group-generator', 'exam-timer'])
+  pinned_tools: JSON.stringify(['classroom-timer', 'random-name-picker', 'group-generator', 'exam-timer'])
 };
 
 export async function onRequest(context) {

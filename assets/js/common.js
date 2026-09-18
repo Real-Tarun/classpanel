@@ -660,53 +660,106 @@
     });
   }
 
-  // --- Live Announcement Banner ---
-  async function initAnnouncementBanner() {
-    if (window.location.pathname.startsWith('/admin')) return; // Don't show public banner inside admin panel
+  // --- Live Announcement Banner & Homepage Tool Pinning ---
+  async function initSiteFeatures() {
+    if (window.location.pathname.startsWith('/admin')) return; // Exclude admin panel
+
     try {
-      const dismissed = sessionStorage.getItem('cp_dismissed_announcement');
-      const res = await fetch('/api/announcement');
+      // 1. Log anonymous pageview telemetry to D1
+      try {
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            path: window.location.pathname,
+            tool_name: document.title ? document.title.split('—')[0].trim() : null,
+            referrer: document.referrer || '',
+            event_type: 'pageview'
+          })
+        }).catch(() => {});
+      } catch (_) {}
+
+      // 2. Fetch live site settings from D1
+      const res = await fetch('/api/site-meta');
       if (!res.ok) return;
       const data = await res.json();
-      if (!data || !data.active || !data.text || dismissed === data.text) return;
+      if (!data) return;
 
-      const banner = document.createElement('div');
-      banner.id = 'cp-live-announcement-banner';
-      banner.style.cssText = 'position:relative; z-index:9999; padding:0.6rem 1.25rem; font-size:0.875rem; font-weight:600; text-align:center; display:flex; align-items:center; justify-content:center; gap:0.75rem; line-height:1.4;';
-      
-      let bg = '#EEF2FF', color = '#4F46E5', border = '#C7D2FE';
-      if (data.type === 'success') { bg = '#ECFDF5'; color = '#059669'; border = '#A7F3D0'; }
-      else if (data.type === 'alert') { bg = '#FFFBEB'; color = '#B45309'; border = '#FDE68A'; }
-      else if (data.type === 'rose') { bg = '#FFF1F2'; color = '#E11D48'; border = '#FECDD3'; }
-      
-      banner.style.background = bg;
-      banner.style.color = color;
-      banner.style.borderBottom = `1px solid ${border}`;
+      // 3. Render Announcement Banner
+      const announcement = data.announcement;
+      if (announcement && announcement.active && announcement.text) {
+        const dismissed = sessionStorage.getItem('cp_dismissed_announcement');
+        if (dismissed !== announcement.text) {
+          const existingBanner = document.getElementById('cp-live-announcement-banner');
+          if (existingBanner) existingBanner.remove();
 
-      let linkHtml = '';
-      if (data.link) {
-        linkHtml = `<a href="${data.link}" style="color:inherit; text-decoration:underline; font-weight:700; margin-left:0.35rem;">Learn More &rarr;</a>`;
+          const banner = document.createElement('div');
+          banner.id = 'cp-live-announcement-banner';
+          banner.style.cssText = 'position:relative; z-index:9999; padding:0.65rem 1.25rem; font-size:0.88rem; font-weight:600; text-align:center; display:flex; align-items:center; justify-content:center; gap:0.75rem; line-height:1.4;';
+          
+          let bg = '#EEF2FF', color = '#4F46E5', border = '#C7D2FE';
+          if (announcement.type === 'success') { bg = '#ECFDF5'; color = '#059669'; border = '#A7F3D0'; }
+          else if (announcement.type === 'alert') { bg = '#FFFBEB'; color = '#B45309'; border = '#FDE68A'; }
+          else if (announcement.type === 'rose') { bg = '#FFF1F2'; color = '#E11D48'; border = '#FECDD3'; }
+          
+          banner.style.background = bg;
+          banner.style.color = color;
+          banner.style.borderBottom = `1px solid ${border}`;
+
+          let linkHtml = '';
+          if (announcement.link) {
+            linkHtml = `<a href="${announcement.link}" style="color:inherit; text-decoration:underline; font-weight:700; margin-left:0.35rem;">Check it out &rarr;</a>`;
+          }
+
+          banner.innerHTML = `
+            <span>📢 ${announcement.text} ${linkHtml}</span>
+            <button type="button" aria-label="Dismiss banner" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.25rem; line-height:1; padding:0.2rem 0.5rem; opacity:0.8; font-weight:700;">&times;</button>
+          `;
+
+          banner.querySelector('button').addEventListener('click', () => {
+            sessionStorage.setItem('cp_dismissed_announcement', announcement.text);
+            banner.remove();
+          });
+
+          document.body.prepend(banner);
+        }
       }
 
-      banner.innerHTML = `
-        <span>📢 ${data.text} ${linkHtml}</span>
-        <button type="button" aria-label="Dismiss banner" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.2rem; line-height:1; padding:0.2rem 0.5rem; opacity:0.75; font-weight:700;">&times;</button>
-      `;
+      // 4. Render Pinned Tools to Top of Grid
+      const pinnedTools = data.pinned_tools;
+      if (Array.isArray(pinnedTools) && pinnedTools.length > 0) {
+        const grid = document.getElementById('tools-grid');
+        if (grid) {
+          // Reorder pinned tools to front
+          const cards = Array.from(grid.querySelectorAll('.tool-card'));
+          pinnedTools.slice().reverse().forEach(toolId => {
+            const match = cards.find(card => {
+              const href = card.getAttribute('href') || '';
+              return href.includes(`/tools/${toolId}/`) || href.endsWith(`/tools/${toolId}`);
+            });
+            if (match) {
+              grid.prepend(match);
+              let metaBadge = match.querySelector('.tool-card-badge');
+              if (metaBadge) {
+                metaBadge.innerHTML = '⭐ Featured';
+                metaBadge.style.background = 'var(--accent-purple, #4F46E5)';
+                metaBadge.style.color = '#FFFFFF';
+              }
+              match.style.borderColor = 'var(--accent-purple, #4F46E5)';
+              match.style.boxShadow = '0 0 0 1px var(--accent-purple, #4F46E5), var(--shadow-md)';
+            }
+          });
+        }
+      }
 
-      banner.querySelector('button').addEventListener('click', () => {
-        sessionStorage.setItem('cp_dismissed_announcement', data.text);
-        banner.remove();
-      });
-
-      document.body.prepend(banner);
     } catch (_) {}
   }
 
-  // Auto-init banner
+  // Auto-init site features
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAnnouncementBanner);
+    document.addEventListener('DOMContentLoaded', initSiteFeatures);
   } else {
-    initAnnouncementBanner();
+    initSiteFeatures();
   }
 
   // Expose global ClassPanel helpers

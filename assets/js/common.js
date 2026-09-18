@@ -660,6 +660,55 @@
     });
   }
 
+  // --- Live Announcement Banner ---
+  async function initAnnouncementBanner() {
+    if (window.location.pathname.startsWith('/admin')) return; // Don't show public banner inside admin panel
+    try {
+      const dismissed = sessionStorage.getItem('cp_dismissed_announcement');
+      const res = await fetch('/api/announcement');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data || !data.active || !data.text || dismissed === data.text) return;
+
+      const banner = document.createElement('div');
+      banner.id = 'cp-live-announcement-banner';
+      banner.style.cssText = 'position:relative; z-index:9999; padding:0.6rem 1.25rem; font-size:0.875rem; font-weight:600; text-align:center; display:flex; align-items:center; justify-content:center; gap:0.75rem; line-height:1.4;';
+      
+      let bg = '#EEF2FF', color = '#4F46E5', border = '#C7D2FE';
+      if (data.type === 'success') { bg = '#ECFDF5'; color = '#059669'; border = '#A7F3D0'; }
+      else if (data.type === 'alert') { bg = '#FFFBEB'; color = '#B45309'; border = '#FDE68A'; }
+      else if (data.type === 'rose') { bg = '#FFF1F2'; color = '#E11D48'; border = '#FECDD3'; }
+      
+      banner.style.background = bg;
+      banner.style.color = color;
+      banner.style.borderBottom = `1px solid ${border}`;
+
+      let linkHtml = '';
+      if (data.link) {
+        linkHtml = `<a href="${data.link}" style="color:inherit; text-decoration:underline; font-weight:700; margin-left:0.35rem;">Learn More &rarr;</a>`;
+      }
+
+      banner.innerHTML = `
+        <span>📢 ${data.text} ${linkHtml}</span>
+        <button type="button" aria-label="Dismiss banner" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.2rem; line-height:1; padding:0.2rem 0.5rem; opacity:0.75; font-weight:700;">&times;</button>
+      `;
+
+      banner.querySelector('button').addEventListener('click', () => {
+        sessionStorage.setItem('cp_dismissed_announcement', data.text);
+        banner.remove();
+      });
+
+      document.body.prepend(banner);
+    } catch (_) {}
+  }
+
+  // Auto-init banner
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnnouncementBanner);
+  } else {
+    initAnnouncementBanner();
+  }
+
   // Expose global ClassPanel helpers
   window.ClassPanel = {
     showToast,

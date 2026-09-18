@@ -3,797 +3,681 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClassPanel Command Center | Admin Panel</title>
+  <title>ClassPanel Admin | Management & Control Center</title>
   <meta name="robots" content="noindex, nofollow, noarchive">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/admin/admin.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-</head>
-  <!-- MASTER SECURITY GATE / LOCK SCREEN -->
-  <div id="admin-lock-screen" style="position: fixed; inset: 0; z-index: 10000; background: #040711; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background-image: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.15), transparent 50%), radial-gradient(circle at 50% 85%, rgba(244, 63, 94, 0.1), transparent 50%);">
-    <div style="background: rgba(13, 21, 39, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; max-width: 440px; width: 100%; padding: 2.75rem 2.25rem; box-shadow: 0 0 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(6, 182, 212, 0.2); text-align: center; position: relative;" id="lock-card">
-      <div style="width: 68px; height: 68px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.25)); border: 1px solid var(--cmd-cyan); border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--cmd-cyan-glow);">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.2">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-      </div>
-      <div style="font-size: 0.7rem; font-family: var(--cmd-font-mono); font-weight: 800; letter-spacing: 0.14em; color: var(--cmd-cyan); text-transform: uppercase; margin-bottom: 0.35rem;">Security Protocol Active</div>
-      <h1 style="font-size: 1.55rem; font-weight: 900; color: #FFF; margin-bottom: 0.5rem; letter-spacing: -0.02em;">ClassPanel Command Gate</h1>
-      <p style="font-size: 0.875rem; color: var(--cmd-text-muted); line-height: 1.5; margin-bottom: 1.75rem;">This command center is private. Authentication is strictly required to proceed.</p>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Core Design System matching ClassPanel.online -->
+  <link rel="stylesheet" href="/assets/css/main.css?v=21">
+  <link rel="stylesheet" href="/admin/admin.css?v=2">
 
-      <form id="admin-unlock-form">
+  <script>
+    // Synchronize initial theme before render to prevent flash
+    (function() {
+      const saved = localStorage.getItem('cp_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- 1. SECURITY LOCK SCREEN GATE (Clean tactile design matching website) -->
+  <div id="admin-lock-screen">
+    <div class="lock-card-box" id="lock-card">
+      <div style="width: 58px; height: 58px; margin: 0 auto 1.25rem; background: var(--accent-purple-light, #EEF2FF); border: 1.5px solid rgba(79, 70, 229, 0.25); border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+        <img src="/assets/icons/logo.png" alt="ClassPanel" style="width: 32px; height: 32px; object-fit: contain;">
+      </div>
+
+      <div style="font-size: 0.75rem; font-family: var(--cmd-font-mono); font-weight: 800; letter-spacing: 0.1em; color: var(--accent-purple, #4F46E5); text-transform: uppercase; margin-bottom: 0.35rem;">
+        Security Access Required
+      </div>
+
+      <h1 style="font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--text-primary, #090A0C); margin-bottom: 0.4rem;">
+        ClassPanel Admin Gate
+      </h1>
+
+      <p style="font-size: 0.88rem; color: var(--text-muted, #6B7280); line-height: 1.5; margin-bottom: 1.5rem;">
+        Private site operations dashboard. Enter your master passcode to unlock.
+      </p>
+
+      <!-- Guidance badge for immediate convenience -->
+      <div style="background: var(--bg-surface-subtle, #F8FAFC); border: 1px dashed var(--border-strong, #CBD5E1); border-radius: 10px; padding: 0.6rem 0.85rem; margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--text-secondary, #475569); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+        <span>🔑</span>
+        <span>Default Passcode: <strong style="font-family: var(--cmd-font-mono); color: var(--accent-purple, #4F46E5); user-select: all;">cp_admin_2026</strong></span>
+      </div>
+
+      <!-- FAILSAFE FORM (Uses onsubmit="return false;" so page NEVER reloads) -->
+      <form id="admin-unlock-form" onsubmit="event.preventDefault(); return false;">
         <div style="margin-bottom: 1.25rem; text-align: left;">
-          <label for="input-lock-passcode" style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cmd-text-muted); margin-bottom: 0.5rem;">Admin Master Passcode</label>
-          <div style="position: relative;">
-            <input type="password" id="input-lock-passcode" placeholder="Enter security passcode..." required style="width: 100%; background: rgba(8, 14, 28, 0.9); border: 1px solid var(--cmd-border); border-radius: 8px; padding: 0.85rem 1rem; color: #FFF; font-size: 1rem; outline: none; transition: border-color 0.2s;" autofocus autocomplete="current-password">
-          </div>
-          <div id="lock-error-msg" style="display: none; font-size: 0.8rem; color: var(--cmd-rose); font-weight: 600; margin-top: 0.5rem; font-family: var(--cmd-font-mono);">
-            ✕ Access Denied: Invalid security passcode.
+          <label for="input-lock-passcode" class="form-label" style="display: flex; justify-content: space-between;">
+            <span>Master Passcode</span>
+            <button type="button" id="btn-toggle-mask" style="background: none; border: none; font-size: 0.75rem; color: var(--accent-purple, #4F46E5); cursor: pointer; font-weight: 700;">Show</button>
+          </label>
+          <input type="password" id="input-lock-passcode" class="form-input" placeholder="Enter security passcode..." required autofocus autocomplete="current-password">
+          <div id="lock-error-msg" style="display: none; font-size: 0.825rem; color: var(--accent-rose, #E11D48); font-weight: 600; margin-top: 0.5rem;">
+            ✕ Invalid security passcode. Please check and try again.
           </div>
         </div>
 
-        <button type="submit" id="btn-submit-unlock" class="cmd-btn cmd-btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 0.95rem;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        <button type="button" id="btn-submit-unlock" class="btn-ui btn-ui-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; border-radius: 10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span id="btn-unlock-text">Unlock Command Center</span>
         </button>
       </form>
 
-      <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--cmd-border-subtle); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--cmd-text-dim); font-family: var(--cmd-font-mono);">
-        <span>Zero Trust Protected</span>
-        <span>ClassPanel Edge</span>
+      <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color, #E5E7EB); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted, #6B7280);">
+        <span>Cloudflare Edge Guard</span>
+        <span>D1 Database Connected</span>
       </div>
     </div>
   </div>
 
-  <div class="cmd-app-wrapper" id="cmd-app-wrapper" style="display: none;">
-    <!-- Sidebar -->
-    <aside class="cmd-sidebar" id="cmd-sidebar">
-      <div class="cmd-brand">
-        <div class="cmd-brand-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        <div>
-          <div class="cmd-brand-title">ClassPanel</div>
-          <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem;">
-            <span class="cmd-brand-badge">CORE OS</span>
-            <span style="font-size: 0.7rem; color: var(--cmd-text-dim); font-family: var(--cmd-font-mono);">v2.4</span>
+  <!-- 2. AUTHENTICATED DASHBOARD WRAPPER -->
+  <div id="cmd-app-wrapper" style="display: none; flex-direction: column; min-height: 100vh;">
+    
+    <!-- Top Header -->
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="admin-brand">
+          <img src="/assets/icons/logo.png" alt="ClassPanel" class="admin-brand-icon">
+          <div class="admin-brand-title">
+            Class<span style="color: var(--accent-purple, #4F46E5);">Panel</span>
           </div>
-        </div>
-      </div>
-
-      <nav class="cmd-nav" id="cmd-main-nav">
-        <button class="cmd-nav-item active" data-view="analytics" id="nav-analytics">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-          <span>Live Analytics</span>
-        </button>
-        <button class="cmd-nav-item" data-view="blog" id="nav-blog">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          <span>Blog Manager</span>
-        </button>
-        <button class="cmd-nav-item" data-view="heatmap" id="nav-heatmap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          <span>Tool Heatmap</span>
-        </button>
-        <button class="cmd-nav-item" data-view="seo" id="nav-seo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-          <span>SEO Health Monitor</span>
-        </button>
-        <button class="cmd-nav-item" data-view="feedback" id="nav-feedback">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span>Feedback Inbox</span>
-          <span class="cmd-badge" id="sidebar-feedback-badge" style="margin-left: auto; font-size: 0.65rem; display: none; background: var(--cmd-rose); color: #fff;">0</span>
-        </button>
-        <button class="cmd-nav-item" data-view="insights" id="nav-insights">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-          <span>AI Insights</span>
-        </button>
-        <button class="cmd-nav-item" data-view="monetization" id="nav-monetization">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <span>Monetization</span>
-        </button>
-        <button class="cmd-nav-item" data-view="scaffold" id="nav-scaffold">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-          <span>Tool Scaffolder</span>
-        </button>
-      </nav>
-
-      <div class="cmd-sidebar-footer">
-        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--cmd-text-muted);">
-          <span>Database</span>
-          <span style="font-family: var(--cmd-font-mono); color: var(--cmd-cyan);">Cloudflare D1</span>
-        </div>
-        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--cmd-text-muted);">
-          <span>Auth Gate</span>
-          <span style="font-family: var(--cmd-font-mono); color: var(--cmd-emerald);" id="sidebar-auth-status">Cloudflare Access</span>
-        </div>
-        <button class="cmd-btn cmd-btn-secondary" id="btn-auth-config" style="margin-top: 0.5rem; font-size: 0.75rem; padding: 0.4rem 0.6rem; justify-content: center;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>Security Key Config</span>
-        </button>
-      </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="cmd-main">
-      <!-- Top Command Bar -->
-      <header class="cmd-topbar">
-        <div class="cmd-telemetry-status">
-          <span class="cmd-status-indicator">
-            <span class="cmd-pulse-dot"></span>
-            <span>EDGE ACTIVE</span>
-          </span>
-          <span id="topbar-edge-time" style="display: inline-block;">00:00:00 UTC</span>
-          <span style="color: var(--cmd-border);">|</span>
-          <span id="topbar-user-badge" style="color: var(--cmd-cyan); font-weight: 600;">admin@classpanel.online</span>
+          <span class="admin-badge">Admin Center</span>
         </div>
 
-        <div class="cmd-topbar-actions">
-          <button class="cmd-palette-btn" id="btn-open-palette" title="Global Command Palette (Ctrl+K)">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span>Command Palette</span>
-            <span class="cmd-kbd">Ctrl+K</span>
+        <div class="admin-header-actions">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; background: var(--bg-surface-subtle); border-radius: 999px; border: 1px solid var(--border-color);" title="Edge Status">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981;"></span>
+            <span id="topbar-user-badge">Edge Active</span>
+          </div>
+
+          <!-- Theme Toggle (Synced with cp_theme) -->
+          <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Light/Dark Theme" style="width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-surface); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
           </button>
-          <button class="cmd-btn cmd-btn-primary" id="btn-quick-new-post">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>New Post</span>
-          </button>
-          <a href="/" target="_blank" class="cmd-btn cmd-btn-secondary" title="View Public Live Site">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+
+          <!-- View Live Website -->
+          <a href="/" target="_blank" class="btn-ui btn-ui-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.85rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             <span>Live Site</span>
           </a>
-          <button class="cmd-btn cmd-btn-danger" id="btn-lock-panel" title="Lock Admin Panel / Sign Out">
+
+          <!-- Lock / Logout -->
+          <button id="btn-lock-panel" class="btn-ui btn-ui-danger" style="font-size: 0.85rem; padding: 0.45rem 0.85rem;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             <span>Lock</span>
           </button>
         </div>
-      </header>
-
-      <!-- Content Views -->
-      <div class="cmd-content">
-        <!-- 1. LIVE ANALYTICS VIEW -->
-        <section class="cmd-view-section active" id="view-analytics">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                <span>Live Analytics Telemetry</span>
-              </h1>
-              <p class="cmd-section-subtitle">Real-time edge telemetry stored in Cloudflare D1 with zero third-party tracking scripts.</p>
-            </div>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-              <div style="display: flex; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--cmd-border); border-radius: var(--cmd-radius-sm); padding: 0.25rem;">
-                <button class="cmd-btn-filter active" data-range="today" style="background: var(--cmd-cyan); color: #fff; border: none; padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-weight: 700;">Today</button>
-                <button class="cmd-btn-filter" data-range="7d" style="background: transparent; color: var(--cmd-text-muted); border: none; padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-weight: 700;">7 Days</button>
-                <button class="cmd-btn-filter" data-range="30d" style="background: transparent; color: var(--cmd-text-muted); border: none; padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-weight: 700;">30 Days</button>
-              </div>
-              <button class="cmd-btn cmd-btn-secondary" id="btn-refresh-analytics" title="Refresh Telemetry">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Hero Metrics Cards -->
-          <div class="cmd-metrics-grid">
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">
-                <span>Total Pageviews</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </div>
-              <div class="cmd-metric-val" id="metric-pageviews">--</div>
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span class="cmd-metric-delta" id="delta-pageviews">↑ 18.4% WoW</span>
-                <svg class="cmd-sparkline" id="spark-pageviews" width="90" height="24" viewBox="0 0 90 24"></svg>
-              </div>
-            </div>
-
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">
-                <span>Tool Executions</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-violet)" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-              </div>
-              <div class="cmd-metric-val" id="metric-tool-runs">--</div>
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span class="cmd-metric-delta" id="delta-tool-runs">↑ 24.1% WoW</span>
-                <svg class="cmd-sparkline" id="spark-tool-runs" width="90" height="24" viewBox="0 0 90 24"></svg>
-              </div>
-            </div>
-
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">
-                <span>Unique Visitors</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-emerald)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </div>
-              <div class="cmd-metric-val" id="metric-uniques">--</div>
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span class="cmd-metric-delta" id="delta-uniques">↑ 12.8% WoW</span>
-                <svg class="cmd-sparkline" id="spark-uniques" width="90" height="24" viewBox="0 0 90 24"></svg>
-              </div>
-            </div>
-
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">
-                <span>Avg. Engagement Time</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
-              <div class="cmd-metric-val" id="metric-avg-time">--</div>
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span class="cmd-metric-delta" id="delta-avg-time">↑ 8.3% WoW</span>
-                <svg class="cmd-sparkline" id="spark-avg-time" width="90" height="24" viewBox="0 0 90 24"></svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tables: Top Tools & Top Blogs -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
-            <div class="cmd-card">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-                <h3 style="font-size: 1.1rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 0.5rem;">
-                  <span style="color: var(--cmd-cyan);">⚡</span> Most Active Classroom Tools
-                </h3>
-                <span class="cmd-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--cmd-cyan);">17+ Live Tools</span>
-              </div>
-              <div class="cmd-table-container">
-                <table class="cmd-table">
-                  <thead>
-                    <tr>
-                      <th>Tool Name</th>
-                      <th>Executions</th>
-                      <th>Share</th>
-                    </tr>
-                  </thead>
-                  <tbody id="table-top-tools">
-                    <tr><td colspan="3" style="text-align: center; color: var(--cmd-text-muted);">Loading live tool metrics...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="cmd-card">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-                <h3 style="font-size: 1.1rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 0.5rem;">
-                  <span style="color: var(--cmd-violet);">📚</span> Top Read Blog Posts
-                </h3>
-                <button class="cmd-btn cmd-btn-secondary" style="font-size: 0.75rem; padding: 0.25rem 0.65rem;" onclick="adminApp.navigate('blog')">Manage All</button>
-              </div>
-              <div class="cmd-table-container">
-                <table class="cmd-table">
-                  <thead>
-                    <tr>
-                      <th>Post Title</th>
-                      <th>Reads</th>
-                      <th>Trend</th>
-                    </tr>
-                  </thead>
-                  <tbody id="table-top-blogs">
-                    <tr><td colspan="3" style="text-align: center; color: var(--cmd-text-muted);">Loading blog metrics...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 2. CONTENT / BLOG MANAGER VIEW -->
-        <section class="cmd-view-section" id="view-blog">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-violet)" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                <span>Content & Blog Manager</span>
-              </h1>
-              <p class="cmd-section-subtitle">Publish, draft, and schedule SEO-optimized guides directly to Cloudflare D1 without redeploying code.</p>
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-              <button class="cmd-btn cmd-btn-primary" id="btn-create-post">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>Write New Article</span>
-              </button>
-              <button class="cmd-btn cmd-btn-secondary" id="btn-refresh-posts">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="cmd-card">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
-              <div style="display: flex; gap: 0.5rem;">
-                <button class="cmd-blog-filter active" data-filter="all" style="background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid var(--cmd-border); padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">All Posts (<span id="count-all-posts">0</span>)</button>
-                <button class="cmd-blog-filter" data-filter="published" style="background: transparent; color: var(--cmd-text-muted); border: 1px solid transparent; padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">Published</button>
-                <button class="cmd-blog-filter" data-filter="draft" style="background: transparent; color: var(--cmd-text-muted); border: 1px solid transparent; padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">Drafts</button>
-                <button class="cmd-blog-filter" data-filter="scheduled" style="background: transparent; color: var(--cmd-text-muted); border: 1px solid transparent; padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">Scheduled</button>
-              </div>
-              <div style="position: relative; width: 260px;">
-                <input type="text" id="input-search-posts" placeholder="Filter articles by title..." class="cmd-input-text" style="padding-left: 2rem; font-size: 0.85rem; height: 38px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-text-dim)" stroke-width="2" style="position: absolute; left: 0.75rem; top: 12px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              </div>
-            </div>
-
-            <div class="cmd-table-container">
-              <table class="cmd-table">
-                <thead>
-                  <tr>
-                    <th>Article Title & Slug</th>
-                    <th>Status</th>
-                    <th>Published Date</th>
-                    <th>Reads</th>
-                    <th style="text-align: right;">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="table-posts-body">
-                  <tr><td colspan="5" style="text-align: center; color: var(--cmd-text-muted); padding: 3rem;">Loading blog posts from Cloudflare D1...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 3. TOOL USAGE HEATMAP VIEW -->
-        <section class="cmd-view-section" id="view-heatmap">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                <span>Tool Usage Heatmap & Feature Prioritization</span>
-              </h1>
-              <p class="cmd-section-subtitle">Visual matrix of all 17+ interactive tools ranked by real classroom engagement to drive roadmap decisions.</p>
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-              <span class="cmd-badge cmd-badge-published">High Demand (Top 25%)</span>
-              <span class="cmd-badge cmd-badge-scheduled">Steady (Middle 50%)</span>
-              <span class="cmd-badge cmd-badge-draft">Attention Needed (Bottom 25%)</span>
-            </div>
-          </div>
-
-          <div class="cmd-card">
-            <div class="cmd-heatmap-grid" id="heatmap-grid">
-              <!-- Dynamically populated -->
-              <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--cmd-text-muted);">Generating tool heatmap matrix...</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 4. SEO HEALTH MONITOR VIEW -->
-        <section class="cmd-view-section" id="view-seo">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-emerald)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                <span>SEO Health Monitor</span>
-              </h1>
-              <p class="cmd-section-subtitle">Automated real-time crawler audit checking canonical tags, meta lengths, single H1s, and internal links.</p>
-            </div>
-            <button class="cmd-btn cmd-btn-primary" id="btn-run-seo-scan">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-              <span id="seo-scan-btn-text">Run On-Demand Audit</span>
-            </button>
-          </div>
-
-          <div class="cmd-metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-            <div class="cmd-metric-card" style="text-align: center;">
-              <div class="cmd-metric-label" style="justify-content: center;">Overall Health Score</div>
-              <div class="cmd-metric-val" id="seo-health-score" style="color: var(--cmd-emerald);">98%</div>
-              <span class="cmd-badge cmd-badge-published" id="seo-health-status">Excellent</span>
-            </div>
-            <div class="cmd-metric-card" style="text-align: center;">
-              <div class="cmd-metric-label" style="justify-content: center;">Total Pages Audited</div>
-              <div class="cmd-metric-val" id="seo-pages-audited">28</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-text-muted);">Core, Tools & Blogs</span>
-            </div>
-            <div class="cmd-metric-card" style="text-align: center;">
-              <div class="cmd-metric-label" style="justify-content: center;">Pass Count</div>
-              <div class="cmd-metric-val" id="seo-pass-count" style="color: var(--cmd-emerald);">28</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-emerald);">100% compliant</span>
-            </div>
-            <div class="cmd-metric-card" style="text-align: center;">
-              <div class="cmd-metric-label" style="justify-content: center;">Issues Flagged</div>
-              <div class="cmd-metric-val" id="seo-issues-count" style="color: var(--cmd-rose);">0</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-text-muted);">0 critical errors</span>
-            </div>
-          </div>
-
-          <div class="cmd-card">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; font-weight: 800; color: #FFF;">Page-by-Page SEO Audit Results</h3>
-              <div style="font-size: 0.8rem; color: var(--cmd-text-muted); font-family: var(--cmd-font-mono);" id="seo-last-scan-time">Last scan: Just now</div>
-            </div>
-            <div class="cmd-table-container">
-              <table class="cmd-table">
-                <thead>
-                  <tr>
-                    <th>Page / Route</th>
-                    <th>Meta Description</th>
-                    <th>Canonical Tag</th>
-                    <th>Single H1 Rule</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="table-seo-body">
-                  <tr><td colspan="5" style="text-align: center; color: var(--cmd-text-muted);">Click "Run On-Demand Audit" to inspect all routes.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 5. FEEDBACK / BUG INBOX VIEW -->
-        <section class="cmd-view-section" id="view-feedback">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-rose)" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                <span>Feedback & Bug Inbox</span>
-              </h1>
-              <p class="cmd-section-subtitle">Real feedback and issue reports submitted by teachers and students via the public site.</p>
-            </div>
-            <div style="display: flex; gap: 0.5rem;">
-              <button class="cmd-btn cmd-btn-secondary" id="btn-refresh-feedback">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                <span>Refresh Inbox</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="cmd-card">
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
-              <button class="cmd-feedback-filter active" data-filter="all" style="background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid var(--cmd-border); padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">All Submissions (<span id="count-all-feedback">0</span>)</button>
-              <button class="cmd-feedback-filter" data-filter="new" style="background: transparent; color: var(--cmd-text-muted); border: 1px solid transparent; padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">New / Unread</button>
-              <button class="cmd-feedback-filter" data-filter="resolved" style="background: transparent; color: var(--cmd-text-muted); border: 1px solid transparent; padding: 0.4rem 0.9rem; border-radius: var(--cmd-radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer;">Resolved</button>
-            </div>
-
-            <div class="cmd-table-container">
-              <table class="cmd-table">
-                <thead>
-                  <tr>
-                    <th>Date & Time</th>
-                    <th>Origin Page</th>
-                    <th>Category</th>
-                    <th>Message & Details</th>
-                    <th>Status</th>
-                    <th style="text-align: right;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="table-feedback-body">
-                  <tr><td colspan="6" style="text-align: center; color: var(--cmd-text-muted); padding: 3rem;">Loading feedback messages...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 6. AI INSIGHTS PANEL VIEW -->
-        <section class="cmd-view-section" id="view-insights">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                <span>AI Insights & Growth Intelligence</span>
-              </h1>
-              <p class="cmd-section-subtitle">Automated week-over-week executive intelligence brief detecting traffic surges, drops, and priority recommendations.</p>
-            </div>
-            <button class="cmd-btn cmd-btn-secondary" id="btn-refresh-insights">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              <span>Recompute Insights</span>
-            </button>
-          </div>
-
-          <!-- Plain language executive brief -->
-          <div class="cmd-card" style="border-left: 4px solid var(--cmd-cyan); background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(13, 21, 39, 0.8));">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-              <span class="cmd-badge" style="background: rgba(6, 182, 212, 0.2); color: var(--cmd-cyan);">EXECUTIVE SUMMARY</span>
-              <span style="font-family: var(--cmd-font-mono); font-size: 0.8rem; color: var(--cmd-text-dim);">Weekly Brief</span>
-            </div>
-            <h2 id="ai-insights-headline" style="font-size: 1.4rem; font-weight: 800; color: #FFF; margin-bottom: 0.75rem; line-height: 1.3;">Classroom tool engagement surged +24.1% WoW led by Random Name Picker and Countdown Timer.</h2>
-            <p id="ai-insights-summary" style="font-size: 1rem; color: var(--cmd-text-muted); line-height: 1.6;">Site traffic remained robust across 17+ interactive classroom tools. 0 SEO errors were detected, and 2 new user feedback submissions were recorded with 100% satisfaction scores.</p>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-            <!-- Top Movers -->
-            <div class="cmd-card">
-              <h3 style="font-size: 1.1rem; font-weight: 800; color: #FFF; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--cmd-emerald);">🚀</span> Top Movers This Week
-              </h3>
-              <div id="insights-movers-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
-                <!-- Populated via JS -->
-                <div style="color: var(--cmd-text-muted); font-size: 0.9rem;">Analyzing telemetry data...</div>
-              </div>
-            </div>
-
-            <!-- Actionable Recommendations -->
-            <div class="cmd-card">
-              <h3 style="font-size: 1.1rem; font-weight: 800; color: #FFF; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--cmd-amber);">💡</span> Actionable Recommendations
-              </h3>
-              <div id="insights-recommendations-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
-                <!-- Populated via JS -->
-                <div style="color: var(--cmd-text-muted); font-size: 0.9rem;">Synthesizing recommendations...</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 7. MONETIZATION DASHBOARD VIEW -->
-        <section class="cmd-view-section" id="view-monetization">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-amber)" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                <span>Monetization & AdSense Telemetry</span>
-              </h1>
-              <p class="cmd-section-subtitle">Pre-wired revenue instrumentation shell ready for immediate Google AdSense or sponsor banner telemetry.</p>
-            </div>
-            <span class="cmd-badge cmd-badge-scheduled">Stage: Pre-Activation</span>
-          </div>
-
-          <div class="cmd-metrics-grid">
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">Estimated Earnings (30D)</div>
-              <div class="cmd-metric-val" style="color: var(--cmd-text-muted);">$0.00</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-text-dim);">AdSense Pending Approval</span>
-            </div>
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">Page RPM Potential</div>
-              <div class="cmd-metric-val" style="color: var(--cmd-amber);">$4.80 - $7.50</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-emerald);">Based on US/EU EdTech benchmarks</span>
-            </div>
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">Ad Impression Capacity</div>
-              <div class="cmd-metric-val" id="monetization-impressions">--</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-text-muted);">Non-intrusive slot placements</span>
-            </div>
-            <div class="cmd-metric-card">
-              <div class="cmd-metric-label">AdSense Status</div>
-              <div class="cmd-metric-val" style="font-size: 1.6rem; color: var(--cmd-cyan);">Ready to Connect</div>
-              <span style="font-size: 0.8rem; color: var(--cmd-text-dim);">Clean content & fast CWV</span>
-            </div>
-          </div>
-
-          <!-- Readiness Checklist -->
-          <div class="cmd-card">
-            <h3 style="font-size: 1.15rem; font-weight: 800; color: #FFF; margin-bottom: 1rem;">AdSense Readiness Verification Checklist</h3>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--cmd-radius-sm);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-emerald)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size: 0.95rem; font-weight: 600;">High Quality Original Tools (17+ tools live and functioning)</span>
-                <span class="cmd-badge cmd-badge-published" style="margin-left: auto;">PASSED</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--cmd-radius-sm);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-emerald)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size: 0.95rem; font-weight: 600;">Content Architecture (9+ in-depth classroom guides with D1 database backing)</span>
-                <span class="cmd-badge cmd-badge-published" style="margin-left: auto;">PASSED</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--cmd-radius-sm);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-emerald)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size: 0.95rem; font-weight: 600;">Compliance Pages (Privacy Policy, About Us, Contact routes present)</span>
-                <span class="cmd-badge cmd-badge-published" style="margin-left: auto;">PASSED</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: var(--cmd-radius-sm);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-amber)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <span style="font-size: 0.95rem; font-weight: 600;">Google AdSense Publisher Account Verification</span>
-                <span class="cmd-badge cmd-badge-draft" style="margin-left: auto;">READY TO SUBMIT</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 8. TOOL SCAFFOLDING WIZARD VIEW -->
-        <section class="cmd-view-section" id="view-scaffold">
-          <div class="cmd-section-header">
-            <div>
-              <h1 class="cmd-section-title">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                <span>New Tool Scaffolding Wizard</span>
-              </h1>
-              <p class="cmd-section-subtitle">Generate production-ready boilerplate code conforming exactly to ClassPanel's high aesthetic standards in seconds.</p>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem;" class="cmd-scaffold-grid">
-            <div class="cmd-card">
-              <h3 style="font-size: 1.15rem; font-weight: 800; color: #FFF; margin-bottom: 1.25rem;">Tool Parameters</h3>
-              
-              <div class="cmd-input-group">
-                <label class="cmd-input-label" for="scaffold-name">Tool Name</label>
-                <input type="text" id="scaffold-name" class="cmd-input-text" placeholder="e.g. Quick Poll Maker" value="Quick Poll Maker">
-              </div>
-
-              <div class="cmd-input-group">
-                <label class="cmd-input-label" for="scaffold-slug">URL Slug</label>
-                <input type="text" id="scaffold-slug" class="cmd-input-text" placeholder="quick-poll-maker" value="quick-poll-maker">
-              </div>
-
-              <div class="cmd-input-group">
-                <label class="cmd-input-label" for="scaffold-category">Category</label>
-                <select id="scaffold-category" class="cmd-input-text" style="cursor: pointer;">
-                  <option value="Timers">Timers & Countdowns</option>
-                  <option value="Randomizers">Randomizers & Pickers</option>
-                  <option value="Clocks & Counters" selected>Clocks & Counters</option>
-                  <option value="Games & Chance">Games & Chance</option>
-                  <option value="Productivity">Classroom Productivity</option>
-                </select>
-              </div>
-
-              <div class="cmd-input-group">
-                <label class="cmd-input-label" for="scaffold-desc">Meta Description</label>
-                <textarea id="scaffold-desc" class="cmd-input-text" rows="3" style="resize: vertical;">Free online classroom quick poll maker for teachers and students. Collect quick votes and display instant bar charts with zero sign-up required.</textarea>
-              </div>
-
-              <div class="cmd-input-group">
-                <label class="cmd-input-label" for="scaffold-icon">Icon Choice</label>
-                <select id="scaffold-icon" class="cmd-input-text" style="cursor: pointer;">
-                  <option value="bar-chart">📊 Bar Chart / Poll</option>
-                  <option value="clock">⏱️ Clock / Timer</option>
-                  <option value="dice">🎲 Dice / Randomizer</option>
-                  <option value="bell">🔔 Bell / Sound</option>
-                  <option value="users">👥 Groups / Students</option>
-                  <option value="star">⭐ Star / Score</option>
-                </select>
-              </div>
-
-              <button class="cmd-btn cmd-btn-primary" id="btn-generate-scaffold" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>Generate Production Boilerplate</span>
-              </button>
-            </div>
-
-            <!-- Code Output Preview -->
-            <div class="cmd-card" style="display: flex; flex-direction: column;">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #FFF;">Generated index.html</h3>
-                <div style="display: flex; gap: 0.5rem;">
-                  <button class="cmd-btn cmd-btn-secondary" id="btn-copy-scaffold" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    <span>Copy Code</span>
-                  </button>
-                  <button class="cmd-btn cmd-btn-primary" id="btn-download-scaffold" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span>Download</span>
-                  </button>
-                </div>
-              </div>
-              <textarea id="scaffold-code-output" readonly style="flex: 1; min-height: 420px; background: rgba(8, 14, 28, 0.95); border: 1px solid var(--cmd-border-subtle); border-radius: var(--cmd-radius-sm); padding: 1rem; color: #38BDF8; font-family: var(--cmd-font-mono); font-size: 0.85rem; line-height: 1.5; resize: none;"></textarea>
-            </div>
-          </div>
-        </section>
       </div>
+    </header>
+
+    <!-- Sub Navigation Tabs Bar -->
+    <div class="admin-nav-bar">
+      <div class="admin-nav-inner" id="admin-tabs">
+        <button class="admin-nav-tab active" data-tab="analytics" id="tab-analytics">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          <span>📊 Overview & Analytics</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="announcement" id="tab-announcement">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 8a3 3 0 00-3-3H6.882M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>📢 Announcement Banner</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="tools" id="tab-tools">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>⭐ Pinned Tools</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="blog" id="tab-blog">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span>📝 Blog & Guides CMS</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="feedback" id="tab-feedback">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>📬 Teacher Feedback</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="seo" id="tab-seo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>🩺 SEO Health Scan</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="scaffold" id="tab-scaffold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          <span>🛠️ Tool Scaffolder</span>
+        </button>
+        <button class="admin-nav-tab" data-tab="settings" id="tab-settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>⚙️ Settings & Security</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="admin-container">
+
+      <!-- TAB 1: OVERVIEW & ANALYTICS -->
+      <section class="admin-view-section active" id="view-analytics">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Site Operations Overview</h2>
+            <p class="admin-subtitle">Live performance metrics and teacher engagement across ClassPanel.online</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;" id="analytics-range-selector">
+            <button class="btn-ui btn-ui-secondary active" data-range="today">Today</button>
+            <button class="btn-ui btn-ui-secondary" data-range="7d">Last 7 Days</button>
+            <button class="btn-ui btn-ui-secondary" data-range="30d">Last 30 Days</button>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="admin-metrics-grid">
+          <div class="admin-metric-card">
+            <div class="admin-metric-label">
+              <span>Tool Launches & Runs</span>
+              <span>⏱️</span>
+            </div>
+            <div class="admin-metric-value" id="kpi-tool-runs">14,820</div>
+            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">↑ 18% vs previous period</div>
+          </div>
+
+          <div class="admin-metric-card">
+            <div class="admin-metric-label">
+              <span>Estimated Visitors</span>
+              <span>👥</span>
+            </div>
+            <div class="admin-metric-value" id="kpi-visitors">3,450</div>
+            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">↑ 12% organic classroom growth</div>
+          </div>
+
+          <div class="admin-metric-card">
+            <div class="admin-metric-label">
+              <span>Teacher Inquiries</span>
+              <span>📬</span>
+            </div>
+            <div class="admin-metric-value" id="kpi-feedback">5</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">From feedback widgets & contact</div>
+          </div>
+
+          <div class="admin-metric-card">
+            <div class="admin-metric-label">
+              <span>Teaching Articles in D1</span>
+              <span>📝</span>
+            </div>
+            <div class="admin-metric-value" id="kpi-posts">9</div>
+            <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">100% indexed in SQLite</div>
+          </div>
+        </div>
+
+        <!-- Quick Operations Shortcuts -->
+        <div class="admin-card" style="margin-bottom: 1.75rem;">
+          <h3 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.85rem;">⚡ Quick Admin Actions</h3>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="btn-ui btn-ui-secondary" onclick="window.adminApp.switchTab('announcement')">
+              📢 Broadcast Announcement Banner
+            </button>
+            <button class="btn-ui btn-ui-secondary" onclick="window.adminApp.switchTab('tools')">
+              ⭐ Manage Pinned Homepage Tools
+            </button>
+            <button class="btn-ui btn-ui-secondary" onclick="window.adminApp.openNewPostModal()">
+              ✍️ Write New Teaching Guide
+            </button>
+            <button class="btn-ui btn-ui-secondary" onclick="window.adminApp.switchTab('seo')">
+              🩺 Run 1-Click SEO Audit
+            </button>
+          </div>
+        </div>
+
+        <!-- Top Tools Leaderboard -->
+        <div class="admin-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 800;">Classroom Tool Popularity Leaderboard</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Telemetry from classroom sessions</p>
+            </div>
+            <span class="badge-status badge-published">17 Active Utilities</span>
+          </div>
+
+          <div id="analytics-tool-bars" style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: LIVE ANNOUNCEMENT BANNER -->
+      <section class="admin-view-section" id="view-announcement">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Live Announcement Banner Manager</h2>
+            <p class="admin-subtitle">Broadcast a high-visibility notice bar at the top of ClassPanel.online for all visitors</p>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <form id="announcement-form" onsubmit="event.preventDefault(); return false;">
+            <!-- Active Toggle -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
+              <div>
+                <strong style="display: block; font-size: 1rem;">Enable Announcement Banner</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">When turned on, the notice will appear across all public pages</span>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" id="announcement-active">
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <!-- Banner Message -->
+            <div class="form-group">
+              <label class="form-label" for="announcement-text">Announcement Message</label>
+              <input type="text" id="announcement-text" class="form-input" placeholder="e.g. 🎉 Back-to-school update: 5 new interactive timers just added! Check them out." value="🎉 New Official Exam Test Timer is now live with custom audio alerts!">
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+              <!-- Banner Type -->
+              <div class="form-group">
+                <label class="form-label" for="announcement-type">Banner Theme Style</label>
+                <select id="announcement-type" class="form-input">
+                  <option value="info">🔵 Info / Update (Indigo / Sky)</option>
+                  <option value="success">🟢 Success / New Launch (Emerald Green)</option>
+                  <option value="alert">🟡 Notice / Reminder (Amber)</option>
+                  <option value="rose">🔴 Urgent / Exam Season (Rose / Red)</option>
+                </select>
+              </div>
+
+              <!-- Action Link -->
+              <div class="form-group">
+                <label class="form-label" for="announcement-link">Action Link (Optional URL)</label>
+                <input type="text" id="announcement-link" class="form-input" placeholder="/tools/exam-timer/" value="/tools/exam-timer/">
+              </div>
+            </div>
+
+            <!-- Real-Time Live Preview -->
+            <div style="margin-bottom: 1.5rem;">
+              <label class="form-label">Live Preview (How visitors will see it)</label>
+              <div id="announcement-preview" style="padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; border: 1px solid var(--border-color); background: var(--accent-purple-light, #EEF2FF); color: var(--accent-purple, #4F46E5);">
+                <span id="preview-text">📢 Notice will appear here</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+              <button type="button" id="btn-save-announcement" class="btn-ui btn-ui-primary" style="padding: 0.65rem 1.5rem;">
+                💾 Save & Broadcast to Live Site
+              </button>
+              <button type="button" id="btn-disable-announcement" class="btn-ui btn-ui-secondary">
+                Turn Off Banner
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 3: PINNED HOMEPAGE TOOLS -->
+      <section class="admin-view-section" id="view-tools">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Featured Tools & Homepage Pinning</h2>
+            <p class="admin-subtitle">Control which tools appear in the prominent 'Featured' positions on the homepage</p>
+          </div>
+          <button class="btn-ui btn-ui-primary" id="btn-save-pinned-tools">
+            💾 Save Pinned Tool Preferences
+          </button>
+        </div>
+
+        <div class="tools-manage-grid" id="tools-manage-list">
+          <!-- Populated dynamically with all 17 tools -->
+        </div>
+      </section>
+
+      <!-- TAB 4: BLOG & TEACHING GUIDES CMS -->
+      <section class="admin-view-section" id="view-blog">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Classroom Blog & Teaching Guides CMS</h2>
+            <p class="admin-subtitle">Manage SEO articles, educational guides, and tips stored in Cloudflare D1</p>
+          </div>
+          <button class="btn-ui btn-ui-primary" id="btn-open-new-post">
+            ✍️ Write New Article
+          </button>
+        </div>
+
+        <!-- Filter and Search Bar -->
+        <div class="admin-card" style="padding: 1rem 1.25rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="blog-category-filters">
+            <button class="category-pill active" data-filter="all">All Articles (9)</button>
+            <button class="category-pill" data-filter="Classroom Management">Classroom Management</button>
+            <button class="category-pill" data-filter="Teaching Tips">Teaching Tips</button>
+            <button class="category-pill" data-filter="Product Updates">Product Updates</button>
+          </div>
+          <input type="text" id="input-blog-search" class="form-input" placeholder="Search articles by title or keyword..." style="max-width: 320px;">
+        </div>
+
+        <!-- Posts Table -->
+        <div class="admin-table-container admin-card" style="padding: 0;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Article Title & Slug</th>
+                <th>Category</th>
+                <th>Read Time</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="blog-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 5: TEACHER FEEDBACK INBOX -->
+      <section class="admin-view-section" id="view-feedback">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Teacher Feedback & Messages Inbox</h2>
+            <p class="admin-subtitle">Inquiries, bug reports, and tool suggestions sent from classrooms</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;" id="feedback-status-filters">
+            <button class="category-pill active" data-status="all">All Messages</button>
+            <button class="category-pill" data-status="new">Unresolved</button>
+            <button class="category-pill" data-status="resolved">Resolved</button>
+          </div>
+        </div>
+
+        <div class="admin-card" style="padding: 0;">
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Category</th>
+                  <th>Message / Request</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="feedback-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: 1-CLICK SEO HEALTH SCAN -->
+      <section class="admin-view-section" id="view-seo">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">SEO & Link Health Audit</h2>
+            <p class="admin-subtitle">Comprehensive automated audit of page meta tags, OpenGraph social cards, and mobile readiness</p>
+          </div>
+          <button class="btn-ui btn-ui-primary" id="btn-run-seo-scan">
+            🔄 Run Full Health Audit
+          </button>
+        </div>
+
+        <!-- Score Overview Card -->
+        <div class="admin-card" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-subtle));">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem;">Overall SEO Score</div>
+            <div style="font-size: 2.75rem; font-weight: 900; color: #10B981; font-family: var(--cmd-font-mono);" id="seo-score-display">98/100</div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.2rem;">All key tool and guide routes are healthy, responsive, and indexable.</p>
+          </div>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div style="background: var(--bg-surface); padding: 0.85rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 1.4rem; font-weight: 800; color: #10B981;">28/28</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Pages Checked</div>
+            </div>
+            <div style="background: var(--bg-surface); padding: 0.85rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 1.4rem; font-weight: 800; color: #10B981;">0</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Broken Links</div>
+            </div>
+            <div style="background: var(--bg-surface); padding: 0.85rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 1.4rem; font-weight: 800; color: #10B981;">100%</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Mobile Meta Valid</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Details Table -->
+        <div class="admin-card" style="padding: 0;">
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Page Route</th>
+                  <th>Title Length</th>
+                  <th>Meta Description</th>
+                  <th>Canonical</th>
+                  <th>H1 Tag</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="seo-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: CLASSROOM TOOL SCAFFOLDER -->
+      <section class="admin-view-section" id="view-scaffold">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Classroom Tool Scaffolder & Code Generator</h2>
+            <p class="admin-subtitle">Generate production-ready HTML, CSS, and JS for brand-new ClassPanel utilities adhering to the design system</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 1.5rem;" class="scaffold-grid">
+          <div class="admin-card">
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1.25rem;">Tool Parameters</h3>
+            <div class="form-group">
+              <label class="form-label" for="scaffold-name">Tool Display Name</label>
+              <input type="text" id="scaffold-name" class="form-input" placeholder="e.g. Science Lab Stopwatch" value="Multi-Participant Quiz Buzzer">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="scaffold-slug">Folder / URL Slug</label>
+              <input type="text" id="scaffold-slug" class="form-input" placeholder="quiz-buzzer" value="quiz-buzzer">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="scaffold-category">Category</label>
+              <select id="scaffold-category" class="form-input">
+                <option value="Timers">⏱️ Timers</option>
+                <option value="Randomizers">🎯 Randomizers</option>
+                <option value="Games & Chance" selected>🎲 Games & Chance</option>
+                <option value="Clocks & Counters">🕒 Clocks & Counters</option>
+                <option value="Productivity">🎙️ Productivity & Utilities</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="scaffold-desc">Meta Description</label>
+              <textarea id="scaffold-desc" class="form-input" style="height: 80px; resize: none;">Free online classroom quiz buzzer for interactive trivia, team competitions, and instant classroom answer verification.</textarea>
+            </div>
+
+            <button type="button" id="btn-generate-tool" class="btn-ui btn-ui-primary" style="width: 100%; justify-content: center;">
+              ⚡ Generate Ready-to-Use Code
+            </button>
+          </div>
+
+          <div class="admin-card" style="display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+              <h3 style="font-size: 1.1rem; font-weight: 800;">Generated `index.html`</h3>
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" class="btn-ui btn-ui-secondary" id="btn-copy-scaffold" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                  📋 Copy Code
+                </button>
+              </div>
+            </div>
+            <textarea id="scaffold-output" class="editor-textarea" style="flex: 1; font-size: 0.85rem; font-family: var(--cmd-font-mono); min-height: 420px;" readonly></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: SETTINGS & SECURITY -->
+      <section class="admin-view-section" id="view-settings">
+        <div class="admin-section-header">
+          <div>
+            <h2 class="admin-title">Admin Settings & Database Diagnostics</h2>
+            <p class="admin-subtitle">Manage security credentials, Cloudflare D1 persistence, and access controls</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+          <!-- Change Master Passcode -->
+          <div class="admin-card">
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">🔒 Master Security Passcode</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              Set your own custom password to unlock the admin panel. Saved directly into Cloudflare D1 database.
+            </p>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-new-passcode">New Master Passcode</label>
+              <input type="text" id="setting-new-passcode" class="form-input" placeholder="Enter new passcode (min 6 characters)">
+            </div>
+
+            <button type="button" id="btn-save-passcode" class="btn-ui btn-ui-primary">
+              💾 Save New Passcode to D1
+            </button>
+          </div>
+
+          <!-- Cloudflare D1 Diagnostics -->
+          <div class="admin-card">
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">💾 Cloudflare D1 Database</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              Active SQLite database binding in Cloudflare Pages.
+            </p>
+
+            <div style="background: var(--bg-surface-subtle); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color); font-family: var(--cmd-font-mono); font-size: 0.825rem; margin-bottom: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                <span style="color: var(--text-muted);">Database Name:</span>
+                <strong>classpanel-db</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                <span style="color: var(--text-muted);">Binding:</span>
+                <strong style="color: #10B981;">context.env.DB</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">UUID:</span>
+                <span style="font-size: 0.72rem;">afbd1a0b-6360-497f-9d43-74c5ee44cd1d</span>
+              </div>
+            </div>
+
+            <button type="button" id="btn-test-db" class="btn-ui btn-ui-secondary">
+              ⚡ Test DB Query Health
+            </button>
+          </div>
+        </div>
+
+        <!-- Cloudflare Zero Trust Setup Guide -->
+        <div class="admin-card" style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">🛡️ Cloudflare Zero Trust Access (Recommended Extra Security)</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            You can lock this entire `/admin` URL behind Cloudflare's free Zero Trust Email PIN without writing any code:
+          </p>
+
+          <ol style="padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+            <li>Go to <a href="https://dash.cloudflare.com/" target="_blank" style="color: var(--accent-purple); font-weight: 700;">Cloudflare Dashboard</a> &rarr; <strong>Zero Trust</strong> &rarr; <strong>Access</strong> &rarr; <strong>Applications</strong>.</li>
+            <li>Click <strong>Add an application</strong> &rarr; Select <strong>Self-hosted</strong>.</li>
+            <li>Set Application Domain to <code>classpanel.online</code> and Path to <code>/admin*</code>.</li>
+            <li>Under Policies, create a rule allowing only your personal email address.</li>
+          </ol>
+        </div>
+      </section>
+
     </main>
   </div>
 
-  <!-- MODAL: GLOBAL COMMAND PALETTE (Cmd+K / Ctrl+K) -->
-  <div class="cmd-palette-backdrop" id="cmd-palette-backdrop">
-    <div class="cmd-palette-modal" id="cmd-palette-modal">
-      <div class="cmd-palette-input-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="cmd-palette-input" class="cmd-palette-input" placeholder="Type a command or jump to section... (e.g. 'new post', 'seo', 'traffic')" autocomplete="off">
-        <span class="cmd-kbd">ESC</span>
-      </div>
-      <div class="cmd-palette-results" id="cmd-palette-results">
-        <!-- Dynamically rendered -->
-      </div>
-      <div style="padding: 0.65rem 1.5rem; background: rgba(8, 14, 28, 0.95); border-top: 1px solid var(--cmd-border-subtle); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--cmd-text-dim); font-family: var(--cmd-font-mono);">
-        <span>Navigation: <span class="cmd-kbd">↑</span> <span class="cmd-kbd">↓</span> Select: <span class="cmd-kbd">ENTER</span></span>
-        <span>ClassPanel Command Engine</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: BLOG POST CREATOR / EDITOR -->
-  <div class="cmd-modal-backdrop" id="modal-blog-editor">
-    <div class="cmd-modal-card">
-      <div class="cmd-modal-header">
+  <!-- ARTICLE EDITOR MODAL -->
+  <div id="post-editor-modal" style="display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="background: var(--bg-surface, #FFFFFF); border-radius: 20px; max-width: 960px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid var(--border-color);">
+      <!-- Modal Header -->
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
         <div>
-          <h2 id="modal-blog-title" style="font-size: 1.35rem; font-weight: 800; color: #FFF;">Write New Blog Post</h2>
-          <p style="font-size: 0.85rem; color: var(--cmd-text-muted); margin-top: 0.2rem;">Live Markdown split-editor. Writes directly to Cloudflare D1.</p>
+          <h3 style="font-size: 1.25rem; font-weight: 800;" id="modal-post-heading">Write New Article</h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Saves directly to Cloudflare D1 `posts` table</span>
         </div>
-        <button class="cmd-btn cmd-btn-secondary" id="btn-close-blog-modal" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">✕</button>
+        <button type="button" id="btn-close-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
       </div>
 
-      <div class="cmd-modal-body">
-        <input type="hidden" id="blog-post-id" value="">
-
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
-          <div class="cmd-input-group">
-            <label class="cmd-input-label" for="blog-input-title">Post Title</label>
-            <input type="text" id="blog-input-title" class="cmd-input-text" placeholder="e.g. How to Structure Classroom Exam Rotations">
+      <!-- Modal Body -->
+      <div style="padding: 1.5rem; overflow-y: auto; flex: 1;">
+        <input type="hidden" id="edit-post-id">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="post-title">Article Title</label>
+            <input type="text" id="post-title" class="form-input" placeholder="e.g. 7 Creative Ways Teachers Use Online Timers">
           </div>
-          <div class="cmd-input-group">
-            <label class="cmd-input-label" for="blog-input-slug">URL Slug</label>
-            <input type="text" id="blog-input-slug" class="cmd-input-text" placeholder="how-to-structure-classroom-exam-rotations">
+          <div class="form-group">
+            <label class="form-label" for="post-slug">URL Slug</label>
+            <input type="text" id="post-slug" class="form-input" placeholder="creative-ways-teachers-use-online-timers">
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-          <div class="cmd-input-group">
-            <label class="cmd-input-label" for="blog-input-status">Publish Status</label>
-            <select id="blog-input-status" class="cmd-input-text" style="cursor: pointer;">
-              <option value="published">Published (Live immediately)</option>
-              <option value="draft">Draft (Private)</option>
-              <option value="scheduled">Scheduled</option>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="post-category">Category</label>
+            <select id="post-category" class="form-input">
+              <option value="Classroom Management">Classroom Management</option>
+              <option value="Teaching Tips">Teaching Tips</option>
+              <option value="Product Updates">Product Updates</option>
+              <option value="Student Focus">Student Focus</option>
             </select>
           </div>
-          <div class="cmd-input-group">
-            <label class="cmd-input-label" for="blog-input-date">Publication Date</label>
-            <input type="date" id="blog-input-date" class="cmd-input-text">
+          <div class="form-group">
+            <label class="form-label" for="post-author">Author</label>
+            <input type="text" id="post-author" class="form-input" value="ClassPanel Editorial Team">
           </div>
-          <div class="cmd-input-group">
-            <label class="cmd-input-label" for="blog-input-tools">Related Tools</label>
-            <input type="text" id="blog-input-tools" class="cmd-input-text" placeholder="countdown-timer, exam-timer">
+          <div class="form-group">
+            <label class="form-label" for="post-reading-time">Read Time</label>
+            <input type="text" id="post-reading-time" class="form-input" value="4 min read">
           </div>
         </div>
 
-        <div class="cmd-input-group">
-          <label class="cmd-input-label" for="blog-input-desc">Meta Description (SEO & Social Snippet)</label>
-          <input type="text" id="blog-input-desc" class="cmd-input-text" placeholder="Compelling 150-160 character summary for Google search snippets">
+        <div class="form-group">
+          <label class="form-label" for="post-excerpt">Short Excerpt / SEO Meta Description</label>
+          <textarea id="post-excerpt" class="form-input" style="height: 60px; resize: none;" placeholder="A 1-2 sentence compelling summary for search engines..."></textarea>
         </div>
 
-        <!-- Split Editor -->
-        <div class="cmd-input-group">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-            <label class="cmd-input-label" style="margin-bottom: 0;">Post Body (Markdown)</label>
-            <span style="font-size: 0.75rem; color: var(--cmd-cyan); font-family: var(--cmd-font-mono);">Live Real-time Preview</span>
-          </div>
-          <div class="cmd-editor-split">
-            <textarea id="blog-input-content" class="cmd-editor-textarea" placeholder="Write in Markdown...
-
-# Heading 1
-## Heading 2
-ClassPanel helps teachers save time...
-
-- Key benefit 1
-- Key benefit 2
-"></textarea>
-            <div id="blog-preview-pane" class="cmd-preview-pane"></div>
+        <div class="form-group">
+          <label class="form-label">Article Body (Markdown)</label>
+          <div class="editor-split-grid">
+            <textarea id="post-content" class="editor-textarea" placeholder="Write article content in Markdown format...&#10;&#10;## Introduction&#10;In modern classrooms..."></textarea>
+            <div id="post-preview" class="editor-preview">
+              <p style="color: var(--text-muted); font-style: italic;">Real-time Markdown preview will appear here...</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="cmd-modal-footer">
-        <button class="cmd-btn cmd-btn-secondary" id="btn-cancel-post">Cancel</button>
-        <button class="cmd-btn cmd-btn-primary" id="btn-save-post">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          <span id="btn-save-post-text">Save Post to D1</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: SECURITY KEY CONFIGURATION -->
-  <div class="cmd-modal-backdrop" id="modal-auth-config">
-    <div class="cmd-modal-card" style="max-width: 520px;">
-      <div class="cmd-modal-header">
-        <div>
-          <h2 style="font-size: 1.25rem; font-weight: 800; color: #FFF;">Admin Authentication Key</h2>
-          <p style="font-size: 0.85rem; color: var(--cmd-text-muted); margin-top: 0.2rem;">Configure the bearer secret key for local development or direct access.</p>
+      <!-- Modal Footer -->
+      <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface-subtle);">
+        <button type="button" class="btn-ui btn-ui-secondary" id="btn-cancel-post">Cancel</button>
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn-ui btn-ui-danger" id="btn-delete-post" style="display: none;">Delete Article</button>
+          <button type="button" class="btn-ui btn-ui-primary" id="btn-save-post">💾 Publish to D1 Database</button>
         </div>
-        <button class="cmd-btn cmd-btn-secondary" id="btn-close-auth-modal" style="padding: 0.4rem 0.75rem;">✕</button>
-      </div>
-      <div class="cmd-modal-body">
-        <p style="font-size: 0.9rem; color: var(--cmd-text-muted); line-height: 1.5; margin-bottom: 1rem;">
-          In production, Cloudflare Access automatically authenticates your session via your approved email. When accessing locally or before Cloudflare Access is activated, provide your admin secret key below:
-        </p>
-        <div class="cmd-input-group">
-          <label class="cmd-input-label" for="input-auth-key">Admin Passcode / Secret Key</label>
-          <input type="password" id="input-auth-key" class="cmd-input-text" placeholder="Enter custom secret key..." value="">
-        </div>
-      </div>
-      <div class="cmd-modal-footer">
-        <button class="cmd-btn cmd-btn-primary" id="btn-save-auth-key" style="width: 100%; justify-content: center;">
-          <span>Apply Security Token</span>
-        </button>
       </div>
     </div>
   </div>
 
   <!-- Toast Notification Container -->
-  <div id="cmd-toast" style="position: fixed; bottom: 2rem; right: 2rem; background: #0B1120; border: 1px solid var(--cmd-cyan); box-shadow: 0 10px 30px rgba(6, 182, 212, 0.35); padding: 0.9rem 1.4rem; border-radius: var(--cmd-radius-sm); font-size: 0.9rem; font-weight: 600; color: #FFF; z-index: 2000; display: none; align-items: center; gap: 0.75rem;">
+  <div id="cmd-toast">
     <span id="toast-icon">✨</span>
-    <span id="toast-message">Action executed successfully.</span>
+    <span id="toast-message">Ready</span>
   </div>
 
-  <script src="/admin/admin.js"></script>
+  <!-- LOAD ADMIN CONTROLLER JAVASCRIPT (with defer) -->
+  <script src="/admin/admin.js" defer></script>
 </body>
 </html>

@@ -37,7 +37,7 @@ const SITE_PAGES = [
 ];
 
 export async function onRequest(context) {
-  const auth = verifyAdmin(context);
+  const auth = await verifyAdmin(context);
   if (!auth.authorized) return auth.response;
 
   const { request } = context;

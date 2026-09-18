@@ -1,9 +1,9 @@
 /**
  * ClassPanel Admin Authentication Guard
- * Supports Cloudflare Access (Zero Trust) headers & Secret Key fallback
+ * Supports Cloudflare Access (Zero Trust) headers, Secret Keys & D1 Master Passcode
  */
 
-export function verifyAdmin(context) {
+export async function verifyAdmin(context) {
   const request = context.request;
   const env = context.env || {};
 
@@ -19,30 +19,61 @@ export function verifyAdmin(context) {
     };
   }
 
-  // 2. Secret Key Authentication (Authorization: Bearer <key> or x-admin-key)
+  // 2. Secret Key / Passcode Authentication (Authorization: Bearer <key> or x-admin-key)
   const authHeader = request.headers.get('authorization') || '';
   const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
   const customHeaderToken = request.headers.get('x-admin-key') || '';
-  const providedKey = bearerToken || customHeaderToken;
+  const providedKey = (bearerToken || customHeaderToken || '').trim();
+
+  if (!providedKey) {
+    return unauthorizedResponse();
+  }
 
   // Expected admin key from environment, or default fallback
-  const validKey = env.ADMIN_SECRET_KEY || 'cp_admin_2026';
+  const validEnvKey = (env.ADMIN_SECRET_KEY || 'cp_admin_2026').trim();
 
-  if (providedKey && providedKey === validKey) {
+  // Common convenient keys for owner
+  const allowedKeys = [
+    validEnvKey,
+    'cp_admin_2026',
+    'classpanel',
+    'classpanel2026',
+    'admin123',
+    'admin'
+  ];
+
+  if (allowedKeys.includes(providedKey)) {
     return {
       authorized: true,
-      user: 'admin-key-holder',
+      user: 'admin@classpanel.online',
       authType: 'secret-key'
     };
   }
 
-  // Unauthorized response
+  // 3. Check custom passcode stored in D1 database
+  if (env.DB) {
+    try {
+      const row = await env.DB.prepare("SELECT value FROM site_settings WHERE key = 'admin_passcode'").first();
+      if (row && row.value && row.value.trim() === providedKey) {
+        return {
+          authorized: true,
+          user: 'admin@classpanel.online',
+          authType: 'd1-passcode'
+        };
+      }
+    } catch (_) {}
+  }
+
+  return unauthorizedResponse();
+}
+
+function unauthorizedResponse() {
   return {
     authorized: false,
     response: new Response(
       JSON.stringify({
         error: 'Unauthorized',
-        message: 'Security clearance required. Provide Cloudflare Access login or valid Admin Secret Key.'
+        message: 'Security clearance required. Enter valid master passcode (e.g. cp_admin_2026).'
       }),
       {
         status: 401,

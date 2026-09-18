@@ -19,3 +19,6 @@ yarn-error.log*
 # IndexNow local cache
 .indexnow-history.json
 
+# Scratch & temporary test scripts
+scratch/
+

@@ -20,6 +20,8 @@ Disallow: /package-lock.json
 Disallow: /.git/
 Disallow: /cdn-cgi/
 Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
 
 # Googlebot & Google Search Console Inspection Tools
 User-agent: Googlebot

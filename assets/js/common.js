@@ -492,7 +492,173 @@
     });
 
     updateAudioToggleButtons();
+    initTelemetryAndFeedback();
   });
+
+  // --- 8. Privacy-Friendly Edge Telemetry & Feedback Trigger ---
+  function initTelemetryAndFeedback() {
+    // Never track admin panel views as public visits
+    if (window.location.pathname.startsWith('/admin')) return;
+
+    // A. Lightweight, cookie-less pageview tracking
+    try {
+      const toolName = document.body.getAttribute('data-tool') || null;
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page: window.location.pathname,
+          tool: toolName,
+          referrer: document.referrer || null
+        }),
+        keepalive: true
+      }).catch(() => {});
+    } catch (_) {}
+
+    // B. Unobtrusive Floating Feedback Button & Modal
+    injectFeedbackWidget();
+  }
+
+  function injectFeedbackWidget() {
+    if (document.getElementById('cp-feedback-trigger')) return;
+
+    // Trigger button
+    const trigger = document.createElement('button');
+    trigger.id = 'cp-feedback-trigger';
+    trigger.setAttribute('aria-label', 'Send feedback or report an issue');
+    trigger.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>Feedback</span>
+    `;
+    trigger.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-primary, #0F172A);
+      background: var(--surface, #FFFFFF);
+      border: 1px solid var(--border, rgba(0,0,0,0.12));
+      border-radius: 999px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    `;
+
+    trigger.addEventListener('mouseenter', () => {
+      trigger.style.transform = 'translateY(-2px)';
+      trigger.style.boxShadow = '0 6px 20px rgba(0,0,0,0.15)';
+    });
+    trigger.addEventListener('mouseleave', () => {
+      trigger.style.transform = 'translateY(0)';
+      trigger.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+    });
+
+    // Modal
+    const modal = document.createElement('div');
+    modal.id = 'cp-feedback-modal';
+    modal.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    `;
+
+    modal.innerHTML = `
+      <div style="background: var(--surface, #FFF); color: var(--text-primary, #0F172A); border: 1px solid var(--border, #E2E8F0); border-radius: 16px; max-width: 440px; width: 100%; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); font-family: inherit; position: relative;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <h3 style="margin: 0; font-size: 18px; font-weight: 800;">Send Feedback or Bug</h3>
+          <button id="cp-feedback-close" style="background: none; border: none; font-size: 20px; cursor: pointer; color: inherit; padding: 4px 8px;">✕</button>
+        </div>
+        <form id="cp-feedback-form">
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; opacity: 0.8;">Feedback Type</label>
+            <select id="cp-feedback-category" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border, #CBD5E1); background: var(--surface, #FFF); color: inherit; font-size: 14px;">
+              <option value="Issue / Bug">Bug / Button Not Working</option>
+              <option value="Feature Request">Feature Request / New Tool Idea</option>
+              <option value="General Feedback" selected>General Feedback</option>
+            </select>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; opacity: 0.8;">Your Message</label>
+            <textarea id="cp-feedback-message" required rows="4" placeholder="Describe the issue, request, or note..." style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border, #CBD5E1); background: var(--surface, #FFF); color: inherit; font-size: 14px; font-family: inherit; resize: vertical; box-sizing: border-box;"></textarea>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; opacity: 0.8;">Email (Optional)</label>
+            <input type="email" id="cp-feedback-email" placeholder="teacher@school.edu" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border, #CBD5E1); background: var(--surface, #FFF); color: inherit; font-size: 14px; box-sizing: border-box;">
+          </div>
+          <button type="submit" id="cp-feedback-submit" style="width: 100%; padding: 10px; background: #0284C7; color: #FFF; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s;">
+            Submit Feedback
+          </button>
+        </form>
+        <div id="cp-feedback-success" style="display: none; text-align: center; padding: 20px 0;">
+          <div style="font-size: 36px; margin-bottom: 8px;">🎉</div>
+          <h4 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 800;">Thank You!</h4>
+          <p style="margin: 0; font-size: 13px; opacity: 0.8;">Your feedback has been sent directly to the site team.</p>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(trigger);
+    document.body.appendChild(modal);
+
+    trigger.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      document.getElementById('cp-feedback-form').style.display = 'block';
+      document.getElementById('cp-feedback-success').style.display = 'none';
+      setTimeout(() => document.getElementById('cp-feedback-message').focus(), 50);
+    });
+
+    const closeModal = () => { modal.style.display = 'none'; };
+    document.getElementById('cp-feedback-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    const form = document.getElementById('cp-feedback-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('cp-feedback-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      const payload = {
+        category: document.getElementById('cp-feedback-category').value,
+        message: document.getElementById('cp-feedback-message').value,
+        email: document.getElementById('cp-feedback-email').value,
+        page_path: window.location.pathname
+      };
+
+      try {
+        await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {}
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Feedback';
+      form.reset();
+      form.style.display = 'none';
+      document.getElementById('cp-feedback-success').style.display = 'block';
+      setTimeout(closeModal, 2500);
+    });
+  }
 
   // Expose global ClassPanel helpers
   window.ClassPanel = {

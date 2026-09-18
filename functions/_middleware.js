@@ -44,6 +44,8 @@ Disallow: /package-lock.json
 Disallow: /.git/
 Disallow: /cdn-cgi/
 Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
 
 # Googlebot & Google Search Console Inspection Tools
 User-agent: Googlebot
@@ -195,6 +197,12 @@ Sitemap: https://classpanel.online/sitemap.xml
   // 5. Normalize /tools to /tools/
   if (url.pathname === '/tools') {
     url.pathname = '/tools/';
+    return Response.redirect(url.toString(), 301);
+  }
+
+  // 6. Normalize /admin to /admin/
+  if (url.pathname === '/admin') {
+    url.pathname = '/admin/';
     return Response.redirect(url.toString(), 301);
   }
 

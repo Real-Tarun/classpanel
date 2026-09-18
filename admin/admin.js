@@ -1015,8 +1015,10 @@ class AdminApp {
         this.showToast('Turnkey tool template generated!', '⚡');
       });
 
-      // Auto-trigger on load
-      generateBtn.click();
+      const output = document.getElementById('scaffold-output');
+      if (output && !output.value) {
+        output.value = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <title>New Tool | ClassPanel</title>\n</head>\n<body>\n  <!-- Tool Container -->\n</body>\n</html>`;
+      }
     }
 
     if (copyBtn) {
@@ -1112,7 +1114,15 @@ class AdminApp {
   }
 }
 
-// Instantiate on DOM load
-document.addEventListener('DOMContentLoaded', () => {
-  window.adminApp = new AdminApp();
-});
+// Instantiate on DOM load or immediately if already loaded
+function startAdminApp() {
+  if (!window.adminApp) {
+    window.adminApp = new AdminApp();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startAdminApp);
+} else {
+  startAdminApp();
+}

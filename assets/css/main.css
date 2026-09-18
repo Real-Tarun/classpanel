@@ -653,6 +653,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: none !important;
 }
 
+/* Floating feedback trigger disabled so footer links are never blocked */
+#cp-feedback-trigger,
+#cp-feedback-modal {
+  display: none !important;
+  pointer-events: none !important;
+}
+
 .tool-header-bar {
   display: flex;
   align-items: center;

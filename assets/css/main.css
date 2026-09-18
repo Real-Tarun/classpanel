@@ -655,9 +655,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 /* Floating feedback trigger disabled so footer links are never blocked */
 #cp-feedback-trigger,
-#cp-feedback-modal {
+#cp-feedback-modal,
+.cp-feedback-trigger,
+[id^="cp-feedback"] {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
   pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: fixed !important;
+  bottom: -9999px !important;
+  right: -9999px !important;
+  z-index: -9999 !important;
 }
 
 .tool-header-bar {

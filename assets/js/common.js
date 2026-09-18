@@ -6,6 +6,25 @@
 (function () {
   'use strict';
 
+  // Purge any floating feedback elements immediately (guarantees footer links are never blocked)
+  const purgeFloatingFeedback = () => {
+    ['cp-feedback-trigger', 'cp-feedback-modal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+    document.querySelectorAll('[id^="cp-feedback"], .cp-feedback-trigger').forEach(el => el.remove());
+  };
+  purgeFloatingFeedback();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', purgeFloatingFeedback);
+  }
+  window.addEventListener('load', purgeFloatingFeedback);
+  if (typeof MutationObserver !== 'undefined') {
+    const feedbackObserver = new MutationObserver(purgeFloatingFeedback);
+    feedbackObserver.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(() => feedbackObserver.disconnect(), 10000);
+  }
+
   // --- 1. Service Worker Registration & Auto-Update ---
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

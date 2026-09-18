@@ -542,7 +542,6 @@ body {
   gap: 0.65rem;
 }
 
-/* Responsive */
 @media (max-width: 860px) {
   .editor-split-grid {
     grid-template-columns: 1fr;
@@ -551,3 +550,14 @@ body {
     flex-wrap: wrap;
   }
 }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+#cmd-lock-overlay {
+  animation: adminFade 0.2s ease-out;
+}
+

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v21';
+const CACHE_NAME = 'classpanel-v30';
 const STATIC_ASSETS = [
   '/',
   '/tools/',
@@ -101,10 +101,15 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event: NETWORK-FIRST for all assets (Ensures normal refresh always shows freshest changes immediately; falls back to cache offline)
+// Fetch Event: NETWORK-FIRST for all assets; NEVER cache admin or api routes
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
+
+  // Never touch or cache /admin or /api endpoints in the service worker
+  if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/api')) {
+    return;
+  }
 
   if (url.origin === location.origin) {
     event.respondWith(

@@ -5,7 +5,7 @@
 
 class AdminApp {
   constructor() {
-    this.token = 'cp_admin_2026';
+    this.token = localStorage.getItem('cp_admin_token') || 'cp_admin_2026';
     this.currentTab = 'analytics';
     this.currentRange = '30d';
     this.posts = [];

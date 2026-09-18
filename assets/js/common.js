@@ -500,16 +500,18 @@
     // Never track admin panel views as public visits
     if (window.location.pathname.startsWith('/admin')) return;
 
-    // A. Lightweight, cookie-less pageview tracking
+    // A. Lightweight, privacy-friendly tool & page telemetry
     try {
-      const toolName = document.body.getAttribute('data-tool') || null;
+      const toolMatch = window.location.pathname.match(/\/tools\/([^\/]+)/);
+      const toolSlug = toolMatch ? toolMatch[1] : (document.body.getAttribute('data-tool') || null);
       fetch('/api/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          page: window.location.pathname,
-          tool: toolName,
-          referrer: document.referrer || null
+          path: window.location.pathname,
+          tool_name: toolSlug,
+          referrer: document.referrer || '',
+          event_type: toolSlug ? 'tool_pageview' : 'pageview'
         }),
         keepalive: true
       }).catch(() => {});
@@ -637,9 +639,11 @@
       submitBtn.textContent = 'Submitting...';
 
       const payload = {
+        name: 'Teacher / Educator',
         category: document.getElementById('cp-feedback-category').value,
         message: document.getElementById('cp-feedback-message').value,
         email: document.getElementById('cp-feedback-email').value,
+        page_url: window.location.pathname,
         page_path: window.location.pathname
       };
 
@@ -660,26 +664,32 @@
     });
   }
 
+  // Helper to log explicit tool actions (e.g. Timer start, wheel spin)
+  function trackToolRun(toolId) {
+    try {
+      const match = window.location.pathname.match(/\/tools\/([^\/]+)/);
+      const id = toolId || (match ? match[1] : null);
+      if (!id) return;
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path: `/tools/${id}/`,
+          tool_name: id,
+          referrer: document.referrer || '',
+          event_type: 'tool_action'
+        }),
+        keepalive: true
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
   // --- Live Announcement Banner & Homepage Tool Pinning ---
   async function initSiteFeatures() {
     if (window.location.pathname.startsWith('/admin')) return; // Exclude admin panel
 
     try {
-      // 1. Log anonymous pageview telemetry to D1
-      try {
-        fetch('/api/track', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            path: window.location.pathname,
-            tool_name: document.title ? document.title.split('—')[0].trim() : null,
-            referrer: document.referrer || '',
-            event_type: 'pageview'
-          })
-        }).catch(() => {});
-      } catch (_) {}
-
-      // 2. Fetch live site settings from D1
+      // 1. Fetch live site settings from D1
       const res = await fetch('/api/site-meta');
       if (!res.ok) return;
       const data = await res.json();
@@ -769,6 +779,7 @@
     closeQuickSearch,
     setTheme,
     toggleTheme,
+    trackToolRun,
     confirm: confirmDialog,
     prompt: promptDialog,
     alert: alertDialog

@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "indexnow": "node scripts/indexnow.js",
-    "indexnow:all": "node scripts/indexnow.js --all"
+    "test": "node scratch/test_endpoints.js",
+    "indexnow": "node scripts/indexnow.cjs",
+    "indexnow:all": "node scripts/indexnow.cjs --all"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module"
 }

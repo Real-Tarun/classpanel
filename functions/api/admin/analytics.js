@@ -45,15 +45,63 @@ export async function onRequest(context) {
         WHERE timestamp >= datetime('now', '-' || ? || ' days')
       `).bind(days).first();
 
-      // Top Tools
-      const { results: topTools } = await db.prepare(`
-        SELECT tool_name, COUNT(*) as count
+      // Top Tools (Aggregate by path and tool_name so all tool runs are accurately reflected)
+      const { results: rawToolEvents } = await db.prepare(`
+        SELECT path, tool_name, COUNT(*) as count
         FROM analytics_events
-        WHERE tool_name IS NOT NULL AND timestamp >= datetime('now', '-' || ? || ' days')
-        GROUP BY tool_name
+        WHERE (path LIKE '/tools/%' OR tool_name IS NOT NULL)
+          AND timestamp >= datetime('now', '-' || ? || ' days')
+        GROUP BY path, tool_name
         ORDER BY count DESC
-        LIMIT 20
       `).bind(days).all();
+
+      const toolSlugMap = {
+        'classroom-timer': 'Classroom Timer',
+        'random-name-picker': 'Random Name Picker',
+        'group-generator': 'Class Group Generator',
+        'exam-timer': 'Official Exam Timer',
+        'sensory-timer': 'Sensory Calming Timer',
+        'clocks': 'Classroom Clocks',
+        'random-number-generator': 'Random Number Generator',
+        'chance-games': 'Chance Games & Mystery Hub',
+        'tally-counter': 'Multi-Team Tally Counter',
+        'presentation-timer': 'Presentation Timer',
+        'race-timers': 'Fun Race Timers',
+        'holiday-timers': 'Countdown to Any Date',
+        'rock-paper-scissors': 'Rock Paper Scissors',
+        'coin-flip': 'Flip a Coin Simulator',
+        'dice-roller': 'Polyhedral Dice Roller',
+        'color-picker': 'Color Picker & Converter',
+        'stopwatch': 'Online Stopwatch & Laps'
+      };
+
+      const toolCounts = {};
+      (rawToolEvents || []).forEach(row => {
+        let slug = null;
+        if (row.path && row.path.startsWith('/tools/')) {
+          const match = row.path.match(/\/tools\/([^\/]+)/);
+          if (match) slug = match[1];
+        }
+        if (!slug && row.tool_name) {
+          const nameLower = row.tool_name.toLowerCase();
+          for (const key of Object.keys(toolSlugMap)) {
+            if (nameLower.includes(key) || nameLower.includes(toolSlugMap[key].toLowerCase())) {
+              slug = key;
+              break;
+            }
+          }
+        }
+        if (slug && toolSlugMap[slug]) {
+          toolCounts[slug] = (toolCounts[slug] || 0) + Number(row.count || 0);
+        }
+      });
+
+      const topTools = Object.entries(toolCounts).map(([slug, count]) => ({
+        slug,
+        tool_name: toolSlugMap[slug],
+        path: `/tools/${slug}/`,
+        count
+      })).sort((a, b) => b.count - a.count);
 
       // Top Blog Posts
       const { results: topPosts } = await db.prepare(`

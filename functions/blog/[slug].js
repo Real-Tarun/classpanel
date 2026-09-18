@@ -5,7 +5,13 @@
 
 export async function onRequest(context) {
   const { request, env, params } = context;
-  const slug = params.slug;
+  let slug = params.slug;
+  if (!slug) {
+    const url = new URL(request.url);
+    const m = url.pathname.match(/\/blog\/([^\/]+)/);
+    if (m) slug = m[1];
+  }
+  if (slug) slug = slug.replace(/\/+$/, '').trim();
   const db = env.DB;
 
   if (!db || !slug) {

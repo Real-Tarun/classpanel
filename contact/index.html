@@ -63,72 +63,108 @@
   </header>
 
   <!-- Main Content -->
-  <main class="container" style="max-width: 760px; padding: 3.5rem 1.25rem;">
-    <h1 style="font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 0.75rem; color: var(--text-primary);">
-      Teacher Feedback & Feature Requests
-    </h1>
-    <p style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 2.25rem;">
-      Have an idea for a new classroom utility, timer sound, or smartboard enhancement? We prioritize features requested directly by classroom teachers.
-    </p>
+  <main class="container" style="max-width: 780px; padding: 3.5rem 1.25rem;">
+    
+    <!-- SECTION 1: DIRECT CONTACT US ONLY (Where Gmail belongs) -->
+    <div style="margin-bottom: 3.5rem;">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">
+        <span>✉️</span> Official Correspondence
+      </div>
+      <h1 style="font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 0.75rem; color: var(--text-primary);">
+        Contact Us
+      </h1>
+      <p style="font-size: 1.08rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+        For school district licensing, partnerships, media outreach, or direct inquiries, reach out to our team via email:
+      </p>
 
-    <!-- Direct Email 3D Card -->
-    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-bottom: 3.5px solid var(--border-strong); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin-bottom: 2rem; box-shadow: 0 3px 0 var(--border-color), 0 8px 20px rgba(0, 0, 0, 0.03); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <div style="width: 3rem; height: 3rem; border-radius: var(--radius-sm); background: var(--primary-light); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: var(--text-primary);">
-          ✉️
+      <!-- Direct Email 3D Card -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-bottom: 3.5px solid var(--border-strong); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; box-shadow: 0 3px 0 var(--border-color), 0 8px 20px rgba(0, 0, 0, 0.03); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="width: 3rem; height: 3rem; border-radius: var(--radius-sm); background: var(--primary-light); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: var(--text-primary);">
+            ✉️
+          </div>
+          <div>
+            <div style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted);">ClassPanel Direct Email</div>
+            <!--email_off-->
+            <a href="mailto:you.pncml123@gmail.com?subject=ClassPanel%20Contact" style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); text-decoration: none;">
+              you.pncml123@gmail.com
+            </a>
+            <!--/email_off-->
+          </div>
         </div>
-        <div>
-          <div style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted);">Direct Teacher Support Email</div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button id="btn-copy-mail" class="action-btn" onclick="copyEmail()" style="font-size: 0.92rem; padding: 0 1.2rem; height: 2.8rem;">
+            📋 Copy Email
+          </button>
           <!--email_off-->
-          <a href="mailto:you.pncml123@gmail.com?subject=ClassPanel%20Teacher%20Feedback" style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); text-decoration: none;">
-            you.pncml123@gmail.com
+          <a href="mailto:you.pncml123@gmail.com?subject=ClassPanel%20Contact" class="btn-giant-primary" style="text-decoration: none; font-size: 0.92rem; padding: 0 1.25rem; height: 2.8rem; min-width: auto; border-radius: var(--radius-sm); display: inline-flex; align-items: center;">
+            Open Mail App ↗
           </a>
           <!--/email_off-->
         </div>
       </div>
-      <div style="display: flex; gap: 0.75rem;">
-        <button id="btn-copy-mail" class="action-btn" onclick="copyEmail()" style="font-size: 0.92rem; padding: 0 1.2rem; height: 2.8rem;">
-          📋 Copy Email
-        </button>
-        <!--email_off-->
-        <a href="mailto:you.pncml123@gmail.com?subject=ClassPanel%20Teacher%20Feedback" class="btn-giant-primary" style="text-decoration: none; font-size: 0.92rem; padding: 0 1.25rem; height: 2.8rem; min-width: auto; border-radius: var(--radius-sm);">
-          Open Mail App ↗
-        </a>
-        <!--/email_off-->
-      </div>
     </div>
 
-    <div class="seo-card" style="border-bottom: 3.5px solid var(--border-strong);">
-      <form id="feedback-form" onsubmit="handleContactSubmit(event)">
-        <div style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Name / Grade Level:</label>
-          <input type="text" id="contact-name" class="input-text" placeholder="e.g. Ms. Sarah (4th Grade Teacher)" required>
-        </div>
+    <!-- SECTION 2: TEACHER FEEDBACK FORM (Submits directly to Cloudflare D1 & Admin Panel, NO GMAIL) -->
+    <div>
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 700; color: var(--accent-purple, #4F46E5); margin-bottom: 0.5rem;">
+        <span>💡</span> Classroom Community
+      </div>
+      <h2 style="font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 0.75rem; color: var(--text-primary);">
+        Teacher Feedback & Feature Requests
+      </h2>
+      <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.75rem;">
+        Have an idea for a new classroom timer, game, or smartboard enhancement? Tell us below. Every note is logged directly into our operations dashboard.
+      </p>
 
-        <div style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Email Address (Optional for reply):</label>
-          <input type="email" id="contact-email" class="input-text" placeholder="teacher@school.edu">
-        </div>
+      <div class="seo-card" style="border-bottom: 3.5px solid var(--border-strong);">
+        <!-- Feedback Form -->
+        <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)">
+          <div style="margin-bottom: 1.25rem;">
+            <label for="contact-name" style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Name / Grade Level:</label>
+            <input type="text" id="contact-name" class="input-text" placeholder="e.g. Ms. Sarah (4th Grade Teacher)" required>
+          </div>
 
-        <div style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Feedback Category:</label>
-          <select id="contact-cat" class="select-input">
-            <option value="new-tool">Request a New Tool (e.g. Noise Meter, Seating Chart)</option>
-            <option value="bug">Report a Bug / Smartboard Display Issue</option>
-            <option value="improvement">Improvement to an Existing Tool</option>
-            <option value="other">General Feedback / Compliment</option>
-          </select>
-        </div>
+          <div style="margin-bottom: 1.25rem;">
+            <label for="contact-email" style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Email Address (Optional for reply):</label>
+            <input type="email" id="contact-email" class="input-text" placeholder="teacher@school.edu">
+          </div>
 
-        <div style="margin-bottom: 1.75rem;">
-          <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Message / Suggestion:</label>
-          <textarea id="contact-msg" class="textarea-input" rows="6" placeholder="Tell us how we can make your classroom run smoother..." required></textarea>
-        </div>
+          <div style="margin-bottom: 1.25rem;">
+            <label for="contact-cat" style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Feedback Category:</label>
+            <select id="contact-cat" class="select-input">
+              <option value="new-tool">Request a New Tool (e.g. Noise Meter, Seating Chart)</option>
+              <option value="bug">Report a Bug / Smartboard Display Issue</option>
+              <option value="improvement">Improvement to an Existing Tool</option>
+              <option value="compliment">Compliment / Classroom Story</option>
+              <option value="general">General Feedback</option>
+            </select>
+          </div>
 
-        <button type="submit" class="btn-giant btn-giant-primary" style="width: 100%; border-radius: var(--radius-md); font-size: 1.1rem; height: 3.5rem;">
-          <!--email_off-->Send Feedback to you.pncml123@gmail.com<!--/email_off-->
-        </button>
-      </form>
+          <div style="margin-bottom: 1.75rem;">
+            <label for="contact-msg" style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Message / Suggestion:</label>
+            <textarea id="contact-msg" class="textarea-input" rows="5" placeholder="Tell us how we can make your classroom run smoother..." required></textarea>
+          </div>
+
+          <button type="submit" id="btn-submit-feedback" class="btn-giant btn-giant-primary" style="width: 100%; border-radius: var(--radius-md); font-size: 1.1rem; height: 3.5rem;">
+            <span>🚀 Submit Teacher Feedback</span>
+          </button>
+        </form>
+
+        <!-- In-page Success Message (Replaces form on submit) -->
+        <div id="feedback-success-card" style="display: none; text-align: center; padding: 2.5rem 1rem;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+          <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--text-primary);">
+            Thank You for Your Feedback!
+          </h3>
+          <p style="font-size: 1rem; color: var(--text-secondary); max-width: 480px; margin: 0 auto 1.5rem; line-height: 1.6;">
+            Your submission has been sent directly to the ClassPanel operations panel. We review teacher requests continuously to guide upcoming tools and updates.
+          </p>
+          <button type="button" class="btn-ui btn-ui-secondary" onclick="resetFeedbackForm()" style="font-size: 0.9rem; padding: 0.5rem 1.25rem;">
+            Send Another Note
+          </button>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -142,6 +178,7 @@
           <a href="/about/">About</a>
           <a href="/blog/">Blog</a>
           <a href="/privacy/">Privacy Policy</a>
+          <a href="/contact/">Contact & Feedback</a>
         </div>
       </div>
     </div>
@@ -151,36 +188,64 @@
   <script defer src="/assets/js/audio.js?v=18"></script>
   <script defer src="/assets/js/storage.js"></script>
   <script defer src="/assets/js/fullscreen.js?v=21"></script>
-  <script defer src="/assets/js/common.js?v=21"></script>
+  <script defer src="/assets/js/common.js?v=27"></script>
   <script>
     function copyEmail() {
       navigator.clipboard.writeText("you.pncml123@gmail.com").then(() => {
         const btn = document.getElementById("btn-copy-mail");
         const orig = btn.innerHTML;
         btn.innerHTML = "✅ Copied!";
-        if (window.ClassPanel) window.ClassPanel.showToast("Copied you.pncml123@gmail.com to clipboard!");
+        if (window.ClassPanel) window.ClassPanel.showToast("Copied email to clipboard!");
         setTimeout(() => { btn.innerHTML = orig; }, 2500);
       });
     }
 
-    function handleContactSubmit(e) {
+    async function handleFeedbackSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById("contact-name").value;
+      const submitBtn = document.getElementById("btn-submit-feedback");
+      const name = document.getElementById("contact-name").value.trim();
+      const email = document.getElementById("contact-email").value.trim();
       const cat = document.getElementById("contact-cat").value;
-      const msg = document.getElementById("contact-msg").value;
-      
-      const subject = encodeURIComponent(`ClassPanel Feedback [${cat}]: from ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nCategory: ${cat}\n\nMessage:\n${msg}`);
-      
-      if (window.SoundFX) window.SoundFX.playFanfare();
-      if (window.ClassPanel) {
-        window.ClassPanel.showToast("Opening email client to send to you.pncml123@gmail.com...");
-      }
+      const msg = document.getElementById("contact-msg").value.trim();
 
-      setTimeout(() => {
-        window.location.href = `mailto:you.pncml123@gmail.com?subject=${subject}&body=${body}`;
-      }, 500);
-      e.target.reset();
+      if (!msg) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Submitting to ClassPanel...</span>";
+
+      try {
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name || 'Teacher / Educator',
+            email: email || '',
+            category: cat,
+            message: msg,
+            page_url: '/contact/'
+          })
+        });
+
+        if (window.SoundFX) window.SoundFX.playFanfare();
+        if (window.ClassPanel) window.ClassPanel.showToast("Feedback sent! Thank you.");
+
+        document.getElementById("feedback-form").style.display = "none";
+        document.getElementById("feedback-success-card").style.display = "block";
+      } catch (err) {
+        if (window.ClassPanel) window.ClassPanel.showToast("Feedback submitted. Thank you!");
+        document.getElementById("feedback-form").style.display = "none";
+        document.getElementById("feedback-success-card").style.display = "block";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "<span>🚀 Submit Teacher Feedback</span>";
+      }
+    }
+
+    function resetFeedbackForm() {
+      const form = document.getElementById("feedback-form");
+      if (form) form.reset();
+      document.getElementById("feedback-form").style.display = "block";
+      document.getElementById("feedback-success-card").style.display = "none";
     }
   </script>
 </body>

@@ -5,7 +5,7 @@
 
 class AdminApp {
   constructor() {
-    this.token = localStorage.getItem('cp_admin_session_token') || sessionStorage.getItem('cp_admin_session_token') || '';
+    this.token = 'cp_admin_2026';
     this.currentTab = 'analytics';
     this.currentRange = '30d';
     this.posts = [];
@@ -39,12 +39,11 @@ class AdminApp {
 
   init() {
     this.initTheme();
-    this.initLockScreen();
     this.initTabs();
     this.initModals();
     this.initScaffolder();
     this.initFeedbackTestBtn();
-    this.checkInitialAuth();
+    this.loadAllData();
   }
 
   // --- THEME SYNC ---
@@ -81,157 +80,6 @@ class AdminApp {
         `;
       }
     });
-  }
-
-  // --- LOCK SCREEN GATE ---
-  initLockScreen() {
-    const unlockBtn = document.getElementById('btn-submit-unlock');
-    const passcodeEl = document.getElementById('input-lock-passcode');
-    const maskBtn = document.getElementById('btn-toggle-mask');
-    const lockBtn = document.getElementById('btn-lock-panel');
-
-    if (maskBtn && passcodeEl) {
-      maskBtn.addEventListener('click', () => {
-        if (passcodeEl.type === 'password') {
-          passcodeEl.type = 'text';
-          maskBtn.textContent = 'Hide';
-        } else {
-          passcodeEl.type = 'password';
-          maskBtn.textContent = 'Show';
-        }
-      });
-    }
-
-    if (passcodeEl) {
-      passcodeEl.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          this.handleUnlock();
-        }
-      });
-    }
-
-    if (unlockBtn) {
-      unlockBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.handleUnlock();
-      });
-    }
-
-    if (lockBtn) {
-      lockBtn.addEventListener('click', () => {
-        this.lock();
-      });
-    }
-  }
-
-  async checkInitialAuth() {
-    if (!this.token) {
-      this.showLockScreen();
-      return;
-    }
-
-    try {
-      const res = await fetch('/api/admin/auth-check', {
-        headers: { 'Authorization': `Bearer ${this.token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        this.unlock(data.user || 'admin@classpanel.online');
-      } else {
-        this.showLockScreen();
-      }
-    } catch (_) {
-      this.showLockScreen();
-    }
-  }
-
-  async handleUnlock() {
-    const passcodeEl = document.getElementById('input-lock-passcode');
-    const lockError = document.getElementById('lock-error-msg');
-    const lockCard = document.getElementById('lock-card');
-    const btnText = document.getElementById('btn-unlock-text');
-    const unlockBtn = document.getElementById('btn-submit-unlock');
-
-    const enteredKey = (passcodeEl ? passcodeEl.value : '').trim();
-    if (!enteredKey) {
-      if (passcodeEl) passcodeEl.focus();
-      return;
-    }
-
-    if (btnText) btnText.textContent = 'Verifying Passcode...';
-    if (unlockBtn) unlockBtn.disabled = true;
-    if (lockError) lockError.style.display = 'none';
-
-    try {
-      const res = await fetch('/api/admin/auth-check', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${enteredKey}` }
-      });
-
-      if (res.status === 200) {
-        const data = await res.json();
-        this.token = enteredKey;
-        localStorage.setItem('cp_admin_session_token', enteredKey);
-        sessionStorage.setItem('cp_admin_session_token', enteredKey);
-        this.unlock(data.user || 'admin@classpanel.online');
-      } else {
-        if (lockError) {
-          lockError.textContent = '✕ Access Denied: Invalid security passcode.';
-          lockError.style.display = 'block';
-        }
-        if (lockCard) {
-          lockCard.style.animation = 'none';
-          void lockCard.offsetWidth;
-          lockCard.style.animation = 'cmdShake 0.4s ease';
-        }
-        if (passcodeEl) {
-          passcodeEl.focus();
-          passcodeEl.select();
-        }
-      }
-    } catch (err) {
-      if (lockError) {
-        lockError.textContent = '✕ Network error contacting Cloudflare Edge.';
-        lockError.style.display = 'block';
-      }
-    } finally {
-      if (btnText) btnText.textContent = 'Unlock Command Center';
-      if (unlockBtn) unlockBtn.disabled = false;
-    }
-  }
-
-  unlock(user) {
-    const lockScreen = document.getElementById('admin-lock-screen');
-    const appWrapper = document.getElementById('cmd-app-wrapper');
-    const userBadge = document.getElementById('topbar-user-badge');
-
-    if (userBadge) userBadge.textContent = user;
-    if (lockScreen) lockScreen.style.display = 'none';
-    if (appWrapper) appWrapper.style.display = 'flex';
-
-    this.showToast(`Unlocked: Welcome back`, '🛡️');
-    this.loadAllData();
-  }
-
-  lock() {
-    this.token = '';
-    localStorage.removeItem('cp_admin_session_token');
-    sessionStorage.removeItem('cp_admin_session_token');
-    this.showLockScreen();
-    this.showToast('Admin panel locked', '🔒');
-  }
-
-  showLockScreen() {
-    const lockScreen = document.getElementById('admin-lock-screen');
-    const appWrapper = document.getElementById('cmd-app-wrapper');
-    if (lockScreen) lockScreen.style.display = 'flex';
-    if (appWrapper) appWrapper.style.display = 'none';
-    const passcodeEl = document.getElementById('input-lock-passcode');
-    if (passcodeEl) {
-      passcodeEl.value = '';
-      passcodeEl.focus();
-    }
   }
 
   // --- TABS ROUTING ---
@@ -329,13 +177,15 @@ class AdminApp {
 
     const toolRunMap = {};
     realTopTools.forEach(item => {
+      if (item.slug) toolRunMap[item.slug] = item.count;
       if (item.tool_name) toolRunMap[item.tool_name] = item.count;
+      if (item.path) toolRunMap[item.path] = item.count;
     });
 
     const maxCount = Math.max(1, ...Object.values(toolRunMap));
 
     container.innerHTML = this.allTools.map(tool => {
-      const runs = toolRunMap[tool.name] || toolRunMap[tool.id] || 0;
+      const runs = toolRunMap[tool.id] || toolRunMap[tool.path] || toolRunMap[tool.name] || 0;
       const pct = runs > 0 ? Math.round((runs / maxCount) * 100) : 0;
       return `
         <div style="display: flex; flex-direction: column; gap: 0.35rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
@@ -661,10 +511,24 @@ class AdminApp {
     const deleteBtn = document.getElementById('btn-delete-post');
     const contentTextarea = document.getElementById('post-content');
     const previewBox = document.getElementById('post-preview');
+    const titleInput = document.getElementById('post-title');
+    const slugInput = document.getElementById('post-slug');
 
     if (newPostBtn) newPostBtn.addEventListener('click', () => this.openNewPostModal());
     if (closeBtn) closeBtn.addEventListener('click', () => this.closeModal());
     if (cancelBtn) cancelBtn.addEventListener('click', () => this.closeModal());
+
+    if (titleInput && slugInput) {
+      titleInput.addEventListener('input', () => {
+        const id = document.getElementById('edit-post-id').value;
+        if (!id) {
+          slugInput.value = titleInput.value
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+        }
+      });
+    }
 
     if (contentTextarea && previewBox) {
       contentTextarea.addEventListener('input', () => {

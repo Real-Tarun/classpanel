@@ -12,7 +12,7 @@ export async function onRequestPost(context) {
     const email = (body.email || '').slice(0, 150);
     const category = body.category || 'general';
     const message = (body.message || '').trim().slice(0, 3000);
-    const pageUrl = (body.page_url || '').slice(0, 250);
+    const pageUrl = (body.page_url || body.page_path || body.path || '/contact/').slice(0, 250);
 
     if (!message) {
       return new Response(JSON.stringify({ error: 'Message cannot be empty.' }), {
@@ -22,6 +22,20 @@ export async function onRequestPost(context) {
     }
 
     if (env.DB) {
+      // Ensure feedback table exists
+      await env.DB.prepare(`
+        CREATE TABLE IF NOT EXISTS feedback (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT,
+          email TEXT,
+          category TEXT NOT NULL DEFAULT 'general',
+          message TEXT NOT NULL,
+          page_url TEXT,
+          status TEXT NOT NULL DEFAULT 'unread',
+          created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        )
+      `).run().catch(() => {});
+
       await env.DB.prepare(`
         INSERT INTO feedback (name, email, category, message, page_url, status, created_at)
         VALUES (?, ?, ?, ?, ?, 'unread', datetime('now'))
@@ -44,4 +58,15 @@ export async function onRequestPost(context) {
       headers: { 'Content-Type': 'application/json' }
     });
   }
+}
+
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    }
+  });
 }

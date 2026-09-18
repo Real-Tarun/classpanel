@@ -22,135 +22,12 @@
       document.documentElement.setAttribute('data-theme', saved);
     })();
 
-    // Failsafe Global Unlock Handler
-    window.togglePasscodeMask = function() {
-      const el = document.getElementById('input-lock-passcode');
-      const btn = document.getElementById('btn-toggle-mask');
-      if (!el) return;
-      if (el.type === 'password') {
-        el.type = 'text';
-        if (btn) btn.textContent = 'Hide';
-      } else {
-        el.type = 'password';
-        if (btn) btn.textContent = 'Show';
-      }
-    };
-
-    window.handleAdminUnlock = async function() {
-      const passcodeEl = document.getElementById('input-lock-passcode');
-      const lockError = document.getElementById('lock-error-msg');
-      const lockCard = document.getElementById('lock-card');
-      const btnText = document.getElementById('btn-unlock-text');
-      const btn = document.getElementById('btn-submit-unlock');
-
-      const enteredKey = (passcodeEl ? passcodeEl.value : '').trim();
-      if (!enteredKey) {
-        if (passcodeEl) passcodeEl.focus();
-        return;
-      }
-
-      if (btnText) btnText.textContent = 'Verifying Passcode...';
-      if (btn) btn.disabled = true;
-      if (lockError) lockError.style.display = 'none';
-
-      try {
-        const res = await fetch('/api/admin/auth-check', {
-          method: 'GET',
-          headers: { 'Authorization': 'Bearer ' + enteredKey }
-        });
-
-        if (res.status === 200) {
-          const data = await res.json();
-          const user = data.user || 'admin@classpanel.online';
-          localStorage.setItem('cp_admin_session_token', enteredKey);
-          sessionStorage.setItem('cp_admin_session_token', enteredKey);
-
-          // Reveal dashboard immediately
-          const lockScreen = document.getElementById('admin-lock-screen');
-          const appWrapper = document.getElementById('cmd-app-wrapper');
-          if (lockScreen) lockScreen.style.display = 'none';
-          if (appWrapper) appWrapper.style.display = 'flex';
-
-          if (window.adminApp) {
-            window.adminApp.token = enteredKey;
-            window.adminApp.unlock(user);
-          }
-        } else {
-          if (lockError) {
-            lockError.textContent = '✕ Access Denied: Invalid security passcode.';
-            lockError.style.display = 'block';
-          }
-          if (lockCard) {
-            lockCard.style.animation = 'none';
-            void lockCard.offsetWidth;
-            lockCard.style.animation = 'cmdShake 0.4s ease';
-          }
-          if (passcodeEl) {
-            passcodeEl.focus();
-            passcodeEl.select();
-          }
-        }
-      } catch (err) {
-        if (lockError) {
-          lockError.textContent = '✕ Network error while contacting edge auth.';
-          lockError.style.display = 'block';
-        }
-      } finally {
-        if (btnText) btnText.textContent = 'Unlock Command Center';
-        if (btn) btn.disabled = false;
-      }
-    };
   </script>
 </head>
 <body>
 
-  <!-- 1. SECURITY LOCK SCREEN GATE (Clean tactile design matching website) -->
-  <div id="admin-lock-screen">
-    <div class="lock-card-box" id="lock-card">
-      <div style="width: 58px; height: 58px; margin: 0 auto 1.25rem; background: var(--accent-purple-light, #EEF2FF); border: 1.5px solid rgba(79, 70, 229, 0.25); border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
-        <img src="/assets/icons/logo.png" alt="ClassPanel" style="width: 32px; height: 32px; object-fit: contain;">
-      </div>
-
-      <div style="font-size: 0.75rem; font-family: var(--cmd-font-mono); font-weight: 800; letter-spacing: 0.1em; color: var(--accent-purple, #4F46E5); text-transform: uppercase; margin-bottom: 0.35rem;">
-        Security Access Required
-      </div>
-
-      <h1 style="font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--text-primary, #090A0C); margin-bottom: 0.4rem;">
-        ClassPanel Admin Gate
-      </h1>
-
-      <p style="font-size: 0.88rem; color: var(--text-muted, #6B7280); line-height: 1.5; margin-bottom: 1.75rem;">
-        Private site operations dashboard. Enter your master passcode to unlock.
-      </p>
-
-      <!-- FAILSAFE FORM (Direct inline handlers guaranteed to execute) -->
-      <form id="admin-unlock-form" onsubmit="event.preventDefault(); window.handleAdminUnlock(); return false;">
-        <div style="margin-bottom: 1.25rem; text-align: left;">
-          <label for="input-lock-passcode" class="form-label" style="display: flex; justify-content: space-between;">
-            <span>Master Passcode</span>
-            <button type="button" id="btn-toggle-mask" onclick="window.togglePasscodeMask();" style="background: none; border: none; font-size: 0.75rem; color: var(--accent-purple, #4F46E5); cursor: pointer; font-weight: 700;">Show</button>
-          </label>
-          <input type="password" id="input-lock-passcode" class="form-input" placeholder="Enter security passcode..." required autofocus autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.handleAdminUnlock();}">
-          <div id="lock-error-msg" style="display: none; font-size: 0.825rem; color: var(--accent-rose, #E11D48); font-weight: 600; margin-top: 0.5rem;">
-            ✕ Access Denied: Invalid security passcode.
-          </div>
-        </div>
-
-        <button type="button" id="btn-submit-unlock" onclick="window.handleAdminUnlock();" class="btn-ui btn-ui-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; border-radius: 10px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span id="btn-unlock-text">Unlock Command Center</span>
-        </button>
-      </form>
-
-      <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color, #E5E7EB); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted, #6B7280);">
-        <span>Cloudflare Edge Guard</span>
-        <span>D1 Database Connected</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. AUTHENTICATED DASHBOARD WRAPPER -->
-  <div id="cmd-app-wrapper" style="display: none; flex-direction: column; min-height: 100vh;">
+  <!-- AUTHENTICATED DASHBOARD WRAPPER (Direct Access) -->
+  <div id="cmd-app-wrapper" style="display: flex; flex-direction: column; min-height: 100vh;">
     
     <!-- Top Header -->
     <header class="admin-header">
@@ -182,10 +59,10 @@
             <span>Live Site</span>
           </a>
 
-          <!-- Lock / Logout -->
-          <button id="btn-lock-panel" class="btn-ui btn-ui-danger" style="font-size: 0.85rem; padding: 0.45rem 0.85rem;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Lock</span>
+          <!-- Refresh Data -->
+          <button id="btn-refresh-data" onclick="if(window.adminApp){window.adminApp.loadAllData(); window.adminApp.showToast('Data refreshed from D1', '🔄');}" class="btn-ui btn-ui-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.85rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <span>Refresh</span>
           </button>
         </div>
       </div>

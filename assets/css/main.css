@@ -641,76 +641,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: inline-flex !important;
 }
 
-/* Branding Watermark — subtle, elegant, non-distracting mini branding pill */
+/* Branding Watermark — hidden as requested */
 .projector-watermark {
-  display: inline-flex !important;
-  position: fixed !important;
-  bottom: 1.15rem !important;
-  right: 1.25rem !important;
-  z-index: 2147483647 !important;
-  align-items: center !important;
-  gap: 0.45rem !important;
-  padding: 0.35rem 0.75rem 0.35rem 0.6rem !important;
-  border-radius: 9999px !important;
-  background: rgba(15, 23, 42, 0.82) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  color: rgba(255, 255, 255, 0.95) !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 0.78rem !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-  letter-spacing: 0.02em !important;
-  text-decoration: none !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
-  user-select: none !important;
-  pointer-events: auto;
-  opacity: 0.88 !important;
-  cursor: pointer !important;
-  will-change: transform;
-}
-
-.projector-watermark:hover {
-  opacity: 1 !important;
-  background: rgba(15, 23, 42, 0.96) !important;
-  color: #FFFFFF !important;
-  border-color: rgba(255, 255, 255, 0.55) !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
-  text-decoration: none !important;
-}
-
-.projector-watermark img {
-  width: 16px !important;
-  height: 16px !important;
-  object-fit: contain !important;
-  border-radius: 3px !important;
-  display: block !important;
-}
-
-.projector-watermark .watermark-highlight {
-  color: #818CF8 !important;
-}
-
-@media (max-width: 600px) {
-  .projector-watermark {
-    bottom: 0.75rem !important;
-    right: 0.75rem !important;
-    font-size: 0.72rem !important;
-    padding: 0.25rem 0.55rem !important;
-  }
-}
-
-/* Ensure only one watermark displays when nested inside stage in normal mode */
-.tool-stage:not(.is-fullscreen) > .projector-watermark {
   display: none !important;
 }
 
+.tool-stage:not(.is-fullscreen) > .projector-watermark,
 .tool-stage.is-fullscreen > .projector-watermark,
 :fullscreen .tool-stage > .projector-watermark,
 .tool-stage:fullscreen > .projector-watermark {
-  display: inline-flex !important;
+  display: none !important;
 }
 
 .tool-header-bar {

@@ -571,6 +571,12 @@ body {
   to { transform: scale(1); opacity: 1; }
 }
 
+@keyframes cmdShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
 .cmd-palette-input-box {
   display: flex;
   align-items: center;

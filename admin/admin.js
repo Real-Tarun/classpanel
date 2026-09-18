@@ -5,7 +5,8 @@
 
 class AdminApp {
   constructor() {
-    this.token = localStorage.getItem('cp_admin_token') || 'cp_admin_2026';
+    // Only read active session token; NEVER auto-authenticate by default
+    this.token = sessionStorage.getItem('cp_admin_session_token') || '';
     this.currentView = 'analytics';
     this.currentRange = 'today';
     this.posts = [];
@@ -13,6 +14,7 @@ class AdminApp {
     this.analyticsData = null;
     this.selectedPaletteIndex = 0;
     this.filteredCommands = [];
+    this.isUnlocked = false;
 
     this.allTools = [
       { id: 'random-name-picker', name: 'Random Name Picker', category: 'Randomizers', path: '/tools/random-name-picker/', icon: '🎲' },
@@ -38,6 +40,126 @@ class AdminApp {
   }
 
   init() {
+    this.initLockScreenGate();
+    this.checkInitialAuth();
+  }
+
+  // --- MASTER SECURITY LOCK SCREEN GATE ---
+  initLockScreenGate() {
+    const unlockForm = document.getElementById('admin-unlock-form');
+    const passcodeEl = document.getElementById('input-lock-passcode');
+    const lockError = document.getElementById('lock-error-msg');
+    const lockCard = document.getElementById('lock-card');
+    const lockBtn = document.getElementById('btn-lock-panel');
+
+    if (unlockForm) {
+      unlockForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const enteredKey = passcodeEl.value.trim();
+        if (!enteredKey) return;
+
+        const unlockBtnText = document.getElementById('btn-unlock-text');
+        if (unlockBtnText) unlockBtnText.textContent = 'Verifying Security Clearance...';
+
+        try {
+          const res = await fetch('/api/admin/auth-check', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${enteredKey}`
+            }
+          });
+
+          if (res.status === 200) {
+            const data = await res.json();
+            this.token = enteredKey;
+            sessionStorage.setItem('cp_admin_session_token', enteredKey);
+            if (lockError) lockError.style.display = 'none';
+
+            this.unlockCommandCenter(data.user || 'admin@classpanel.online');
+          } else {
+            if (lockError) lockError.style.display = 'block';
+            if (lockCard) {
+              lockCard.style.animation = 'none';
+              void lockCard.offsetWidth; // Trigger reflow
+              lockCard.style.animation = 'cmdShake 0.4s ease';
+            }
+            passcodeEl.focus();
+            passcodeEl.select();
+          }
+        } catch (err) {
+          if (lockError) {
+            lockError.textContent = '✕ Network error while contacting edge auth.';
+            lockError.style.display = 'block';
+          }
+        } finally {
+          if (unlockBtnText) unlockBtnText.textContent = 'Unlock Command Center';
+        }
+      });
+    }
+
+    if (lockBtn) {
+      lockBtn.addEventListener('click', () => {
+        this.lockCommandCenter();
+      });
+    }
+  }
+
+  async checkInitialAuth() {
+    const lockScreen = document.getElementById('admin-lock-screen');
+    const appWrapper = document.getElementById('cmd-app-wrapper');
+
+    // Probe if session token exists OR if Cloudflare Access header is active
+    try {
+      const headers = {};
+      if (this.token) headers['Authorization'] = `Bearer ${this.token}`;
+
+      const res = await fetch('/api/admin/auth-check', { method: 'GET', headers });
+      if (res.status === 200) {
+        const data = await res.json();
+        this.unlockCommandCenter(data.user || 'admin@classpanel.online');
+        return;
+      }
+    } catch (_) {}
+
+    // Not authenticated: keep dashboard hidden and lock screen visible
+    if (lockScreen) lockScreen.style.display = 'flex';
+    if (appWrapper) appWrapper.style.display = 'none';
+  }
+
+  unlockCommandCenter(userIdentifier = 'admin@classpanel.online') {
+    this.isUnlocked = true;
+    const lockScreen = document.getElementById('admin-lock-screen');
+    const appWrapper = document.getElementById('cmd-app-wrapper');
+    const userBadge = document.getElementById('topbar-user-badge');
+
+    if (userBadge) userBadge.textContent = userIdentifier;
+
+    if (lockScreen) lockScreen.style.display = 'none';
+    if (appWrapper) appWrapper.style.display = 'flex';
+
+    this.setupDashboard();
+    this.showToast(`Cleared: Welcome ${userIdentifier}`, '🛡️');
+  }
+
+  lockCommandCenter() {
+    this.isUnlocked = false;
+    this.token = '';
+    sessionStorage.removeItem('cp_admin_session_token');
+
+    const lockScreen = document.getElementById('admin-lock-screen');
+    const appWrapper = document.getElementById('cmd-app-wrapper');
+    const passInput = document.getElementById('input-lock-passcode');
+
+    if (appWrapper) appWrapper.style.display = 'none';
+    if (lockScreen) lockScreen.style.display = 'flex';
+    if (passInput) {
+      passInput.value = '';
+      passInput.focus();
+    }
+    this.showToast('Command center locked.', '🔒');
+  }
+
+  setupDashboard() {
     this.initClock();
     this.initNavigation();
     this.initCommandPalette();
@@ -1272,7 +1394,7 @@ class AdminApp {
         const val = input.value.trim();
         if (val) {
           this.token = val;
-          localStorage.setItem('cp_admin_token', val);
+          sessionStorage.setItem('cp_admin_session_token', val);
           this.showToast('Security token updated.', '🔑');
           this.closeAuthModal();
           this.loadAnalytics(this.currentRange);

@@ -11,8 +11,44 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
-  <div class="cmd-app-wrapper">
+  <!-- MASTER SECURITY GATE / LOCK SCREEN -->
+  <div id="admin-lock-screen" style="position: fixed; inset: 0; z-index: 10000; background: #040711; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background-image: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.15), transparent 50%), radial-gradient(circle at 50% 85%, rgba(244, 63, 94, 0.1), transparent 50%);">
+    <div style="background: rgba(13, 21, 39, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; max-width: 440px; width: 100%; padding: 2.75rem 2.25rem; box-shadow: 0 0 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(6, 182, 212, 0.2); text-align: center; position: relative;" id="lock-card">
+      <div style="width: 68px; height: 68px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.25)); border: 1px solid var(--cmd-cyan); border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--cmd-cyan-glow);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--cmd-cyan)" stroke-width="2.2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <div style="font-size: 0.7rem; font-family: var(--cmd-font-mono); font-weight: 800; letter-spacing: 0.14em; color: var(--cmd-cyan); text-transform: uppercase; margin-bottom: 0.35rem;">Security Protocol Active</div>
+      <h1 style="font-size: 1.55rem; font-weight: 900; color: #FFF; margin-bottom: 0.5rem; letter-spacing: -0.02em;">ClassPanel Command Gate</h1>
+      <p style="font-size: 0.875rem; color: var(--cmd-text-muted); line-height: 1.5; margin-bottom: 1.75rem;">This command center is private. Authentication is strictly required to proceed.</p>
+
+      <form id="admin-unlock-form">
+        <div style="margin-bottom: 1.25rem; text-align: left;">
+          <label for="input-lock-passcode" style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cmd-text-muted); margin-bottom: 0.5rem;">Admin Master Passcode</label>
+          <div style="position: relative;">
+            <input type="password" id="input-lock-passcode" placeholder="Enter security passcode..." required style="width: 100%; background: rgba(8, 14, 28, 0.9); border: 1px solid var(--cmd-border); border-radius: 8px; padding: 0.85rem 1rem; color: #FFF; font-size: 1rem; outline: none; transition: border-color 0.2s;" autofocus autocomplete="current-password">
+          </div>
+          <div id="lock-error-msg" style="display: none; font-size: 0.8rem; color: var(--cmd-rose); font-weight: 600; margin-top: 0.5rem; font-family: var(--cmd-font-mono);">
+            ✕ Access Denied: Invalid security passcode.
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-unlock" class="cmd-btn cmd-btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 0.95rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <span id="btn-unlock-text">Unlock Command Center</span>
+        </button>
+      </form>
+
+      <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--cmd-border-subtle); display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--cmd-text-dim); font-family: var(--cmd-font-mono);">
+        <span>Zero Trust Protected</span>
+        <span>ClassPanel Edge</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-app-wrapper" id="cmd-app-wrapper" style="display: none;">
     <!-- Sidebar -->
     <aside class="cmd-sidebar" id="cmd-sidebar">
       <div class="cmd-brand">
@@ -110,6 +146,10 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             <span>Live Site</span>
           </a>
+          <button class="cmd-btn cmd-btn-danger" id="btn-lock-panel" title="Lock Admin Panel / Sign Out">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Lock</span>
+          </button>
         </div>
       </header>
 
@@ -736,11 +776,8 @@ ClassPanel helps teachers save time...
           In production, Cloudflare Access automatically authenticates your session via your approved email. When accessing locally or before Cloudflare Access is activated, provide your admin secret key below:
         </p>
         <div class="cmd-input-group">
-          <label class="cmd-input-label" for="input-auth-key">Admin Secret Key</label>
-          <input type="password" id="input-auth-key" class="cmd-input-text" placeholder="cp_admin_2026" value="cp_admin_2026">
-        </div>
-        <div style="font-size: 0.8rem; color: var(--cmd-emerald); font-family: var(--cmd-font-mono);">
-          Default development key: cp_admin_2026
+          <label class="cmd-input-label" for="input-auth-key">Admin Passcode / Secret Key</label>
+          <input type="password" id="input-auth-key" class="cmd-input-text" placeholder="Enter custom secret key..." value="">
         </div>
       </div>
       <div class="cmd-modal-footer">

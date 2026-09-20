@@ -36,7 +36,16 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 Allow: /favicon.ico
+Allow: /favicon*
 Allow: /assets/
+
+# Googlebot Favicon Crawler (Search SERP Logos)
+User-agent: Googlebot-Favicon
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon*
+Allow: /assets/
+Allow: /assets/icons/
 
 # Microsoft Bing
 User-agent: Bingbot

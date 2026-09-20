@@ -58,6 +58,21 @@ CREATE TABLE IF NOT EXISTS site_settings (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- 5. Tool Ratings (In-page thumbs up / thumbs down widget)
+CREATE TABLE IF NOT EXISTS tool_ratings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tool_name TEXT NOT NULL,           -- slug e.g. 'classroom-timer'
+  page_url TEXT,                     -- full path e.g. '/tools/classroom-timer/'
+  rating TEXT NOT NULL DEFAULT 'thumbs_up', -- 'thumbs_up' | 'thumbs_down'
+  comment TEXT,                      -- optional user comment (max 1000 chars)
+  category TEXT DEFAULT 'positive',  -- 'positive' | 'improvement' | 'suggest'
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_ratings_tool ON tool_ratings(tool_name);
+CREATE INDEX IF NOT EXISTS idx_ratings_created ON tool_ratings(created_at);
+CREATE INDEX IF NOT EXISTS idx_ratings_rating ON tool_ratings(rating);
+
 -- ==============================================================================
 -- Initial Seed Data: Existing 9 Blog Posts
 -- ==============================================================================

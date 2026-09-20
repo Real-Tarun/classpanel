@@ -33,11 +33,17 @@ export async function onRequest(context) {
 
         const { results } = await db.prepare('SELECT key, value FROM site_settings').all();
         const settings = { ...mockSettings };
+        let hasCustomPasscode = false;
         if (results && results.length > 0) {
           results.forEach(row => {
-            settings[row.key] = row.value;
+            if (row.key === 'admin_passcode') {
+              hasCustomPasscode = true;
+            } else {
+              settings[row.key] = row.value;
+            }
           });
         }
+        settings.has_custom_passcode = hasCustomPasscode;
         return jsonResponse({ success: true, settings });
       }
 
@@ -50,18 +56,39 @@ export async function onRequest(context) {
         return jsonResponse({ error: 'Invalid settings payload' }, 400);
       }
 
+      // Handle password change request
+      const newPass = data.new_passcode || data.admin_passcode;
+      if (newPass !== undefined) {
+        const passStr = String(newPass).trim();
+        if (passStr.length < 6) {
+          return jsonResponse({ error: 'New passcode must be at least 6 characters long.' }, 400);
+        }
+        if (db) {
+          await db.prepare(`
+            INSERT INTO site_settings (key, value, updated_at)
+            VALUES ('admin_passcode', ?, datetime('now'))
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = datetime('now')
+          `).bind(passStr).run();
+        }
+        mockSettings.has_custom_passcode = true;
+      }
+
       if (db) {
         for (const [key, value] of Object.entries(data)) {
+          if (key === 'new_passcode' || key === 'admin_passcode') continue;
           await db.prepare(`
             INSERT INTO site_settings (key, value, updated_at)
             VALUES (?, ?, datetime('now'))
             ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = datetime('now')
           `).bind(key, String(value)).run();
         }
-        return jsonResponse({ success: true, message: 'Settings saved to D1.' });
+        return jsonResponse({ success: true, message: 'Settings saved to D1 successfully.' });
       }
 
-      mockSettings = { ...mockSettings, ...data };
+      for (const [key, value] of Object.entries(data)) {
+        if (key === 'new_passcode' || key === 'admin_passcode') continue;
+        mockSettings[key] = String(value);
+      }
       return jsonResponse({ success: true, message: 'Settings saved (memory mode).' });
     }
 

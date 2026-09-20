@@ -15,13 +15,19 @@ export async function onRequest(context) {
       const passcode = body.passcode ? String(body.passcode).trim() : '';
 
       if (!passcode) {
-        return new Response(JSON.stringify({ authorized: false, error: 'Passcode is required' }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
-        });
+        return jsonRes({ authorized: false, error: 'Passcode is required' }, 400);
       }
 
       const masterPasscode = await getMasterPasscode(env);
+
+      if (!masterPasscode) {
+        // No passcode set yet — first-time setup
+        return jsonRes({
+          authorized: false,
+          error: 'No admin passcode configured. Set ADMIN_PASSCODE in Cloudflare environment variables or via D1.',
+          setup_required: true
+        }, 401);
+      }
 
       if (passcode === masterPasscode) {
         const token = await generateSessionToken(masterPasscode);
@@ -36,25 +42,26 @@ export async function onRequest(context) {
           headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Cache-Control': 'no-store',
-            'Set-Cookie': `cp_admin_token=${encodeURIComponent(token)}; Path=/; Max-Age=2592000; SameSite=Strict; Secure`
+            // 8 hours — matches token expiry
+            'Set-Cookie': `cp_admin_token=${encodeURIComponent(token)}; Path=/; Max-Age=28800; SameSite=Strict; Secure`
           }
         });
       }
 
-      // Invalid passcode
-      return new Response(JSON.stringify({
-        authorized: false,
-        error: 'Invalid master passcode. Access denied.'
-      }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
-      });
+      // Wrong passcode — small delay to slow brute force
+      await new Promise(r => setTimeout(r, 400));
+      return jsonRes({ authorized: false, error: 'Incorrect passcode. Access denied.' }, 401);
+
     } catch (err) {
-      return new Response(JSON.stringify({ authorized: false, error: err.message }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
-      });
+      return jsonRes({ authorized: false, error: err.message }, 500);
     }
+  }
+
+  function jsonRes(data, status = 200) {
+    return new Response(JSON.stringify(data), {
+      status,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+    });
   }
 
   // Handle GET / OPTIONS: Validate existing session token

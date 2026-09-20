@@ -534,6 +534,15 @@
         }),
         keepalive: true
       }).catch(() => {});
+
+      // B. Load the in-page rating widget on tool pages
+      if (toolSlug && !document.getElementById('cp-rating-widget')) {
+        const widgetScript = document.createElement('script');
+        widgetScript.src = '/assets/js/tool-rating-widget.js';
+        widgetScript.async = true;
+        widgetScript.defer = true;
+        document.body.appendChild(widgetScript);
+      }
     } catch (_) {}
 
     // Ensure any lingering floating feedback button elements are removed
@@ -644,11 +653,16 @@
     } catch (_) {}
   }
 
-  // Auto-init site features
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSiteFeatures);
-  } else {
+  // Auto-init site features & in-page feedback widget
+  function initAll() {
+    initTelemetryAndFeedback();
     initSiteFeatures();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
   }
 
   // Expose global ClassPanel helpers

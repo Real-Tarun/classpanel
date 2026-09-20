@@ -50,6 +50,73 @@ export async function onRequest(context) {
     // --- GET /api/admin/feedback ---
     if (request.method === 'GET') {
       const statusFilter = url.searchParams.get('status') || 'all';
+      const view = url.searchParams.get('view');
+
+      // ── Ratings Summary View ──────────────────────────────────────────────
+      if (view === 'ratings' && db) {
+        try {
+          // Ensure table exists
+          await db.prepare(`
+            CREATE TABLE IF NOT EXISTS tool_ratings (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              tool_name TEXT NOT NULL,
+              page_url TEXT,
+              rating TEXT NOT NULL DEFAULT 'thumbs_up',
+              comment TEXT,
+              category TEXT DEFAULT 'positive',
+              created_at TEXT NOT NULL DEFAULT (datetime('now'))
+            )
+          `).run().catch(() => {});
+
+          const range = url.searchParams.get('range') || '7d';
+          const days = range === '30d' ? 30 : range === 'today' ? 1 : 7;
+
+          const { results: ratingsByTool } = await db.prepare(`
+            SELECT
+              tool_name,
+              SUM(CASE WHEN rating = 'thumbs_up'   THEN 1 ELSE 0 END) AS positive,
+              SUM(CASE WHEN rating = 'thumbs_down' THEN 1 ELSE 0 END) AS negative,
+              COUNT(*) as total
+            FROM tool_ratings
+            WHERE created_at >= datetime('now', '-' || ? || ' days')
+            GROUP BY tool_name
+            ORDER BY total DESC
+          `).bind(days).all();
+
+          const { results: recentComments } = await db.prepare(`
+            SELECT tool_name, rating, comment, created_at
+            FROM tool_ratings
+            WHERE comment IS NOT NULL AND comment != ''
+              AND created_at >= datetime('now', '-' || ? || ' days')
+            ORDER BY created_at DESC
+            LIMIT 20
+          `).bind(days).all();
+
+          const totalRatings = (ratingsByTool || []).reduce((s, r) => s + r.total, 0);
+          const totalPositive = (ratingsByTool || []).reduce((s, r) => s + r.positive, 0);
+
+          return jsonResponse({
+            source: 'd1',
+            range,
+            summary: {
+              totalRatings,
+              totalPositive,
+              totalNegative: totalRatings - totalPositive,
+              overallApproval: totalRatings > 0 ? Math.round((totalPositive / totalRatings) * 100) : null
+            },
+            byTool: (ratingsByTool || []).map(r => ({
+              tool_name: r.tool_name,
+              positive: r.positive,
+              negative: r.negative,
+              total: r.total,
+              approvalPct: r.total > 0 ? Math.round((r.positive / r.total) * 100) : null
+            })),
+            recentComments: recentComments || []
+          });
+        } catch (err) {
+          return jsonResponse({ error: 'Ratings query failed', message: err.message }, 500);
+        }
+      }
 
       if (db) {
         await db.prepare(`

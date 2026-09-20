@@ -1,42 +1,49 @@
 /**
  * ClassPanel Admin Authentication Guard
- * Supports Cloudflare Access (Zero Trust), HMAC-signed Session Tokens, & D1 Master Passcode
+ * SECURITY: Token is bound to current passcode — changing password invalidates all old sessions.
  */
 
-const DEFAULT_PASSCODE = 'cp_admin_2026';
-const SECRET_SALT = 'cp_admin_master_salt_2026_classpanel';
+const BASE_SALT = 'cp_classpanel_admin_2026_base';
 
 /**
- * Fetch current admin passcode from Cloudflare D1 site_settings table or env fallback
+ * Fetch current admin passcode from D1 or env
  */
 export async function getMasterPasscode(env) {
-  if (env && env.ADMIN_PASSCODE) {
-    return String(env.ADMIN_PASSCODE).trim();
-  }
-
   const db = env ? env.DB : null;
   if (db) {
     try {
       const row = await db.prepare("SELECT value FROM site_settings WHERE key = 'admin_passcode'").first();
-      if (row && row.value && row.value.trim().length >= 4) {
+      if (row && row.value && row.value.trim().length >= 6) {
         return row.value.trim();
       }
     } catch (_) {}
   }
-
-  return DEFAULT_PASSCODE;
+  if (env && env.ADMIN_PASSCODE) {
+    return String(env.ADMIN_PASSCODE).trim();
+  }
+  // Default initial passcode before first setup/change in Admin Settings
+  return 'cp_admin_2026';
 }
 
 /**
- * Generate a cryptographically signed session token (Valid for 30 days)
+ * SECURITY: Salt includes the current passcode.
+ * When passcode changes, salt changes, all old HMAC tokens become invalid.
+ */
+function getEffectiveSalt(passcode) {
+  return `${BASE_SALT}:${passcode}`;
+}
+
+/**
+ * Generate a cryptographically signed session token (valid for 8 hours)
  */
 export async function generateSessionToken(passcode) {
   const timestamp = Date.now();
   const data = `${timestamp}:${passcode}`;
+  const salt = getEffectiveSalt(passcode);
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
     'raw',
-    enc.encode(SECRET_SALT),
+    enc.encode(salt),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign']
@@ -47,32 +54,31 @@ export async function generateSessionToken(passcode) {
 }
 
 /**
- * Verify a signed session token
+ * Verify a signed session token against current passcode
+ * Token expires in 8 hours. Old tokens invalid after password change.
  */
 export async function validateSessionToken(token, passcode) {
   if (!token || typeof token !== 'string') return false;
-
-  // Direct passcode match
-  if (token === passcode) return true;
-
   if (!token.startsWith('cps_')) return false;
+
   const parts = token.split('_');
   if (parts.length !== 3) return false;
 
   const timestamp = parseInt(parts[1], 10);
   const sigHex = parts[2];
 
-  // Token expires after 30 days
-  if (isNaN(timestamp) || Date.now() - timestamp > 30 * 24 * 60 * 60 * 1000) {
+  // Token expires after 8 hours
+  if (isNaN(timestamp) || Date.now() - timestamp > 8 * 60 * 60 * 1000) {
     return false;
   }
 
   try {
     const data = `${timestamp}:${passcode}`;
+    const salt = getEffectiveSalt(passcode);
     const enc = new TextEncoder();
     const key = await crypto.subtle.importKey(
       'raw',
-      enc.encode(SECRET_SALT),
+      enc.encode(salt),
       { name: 'HMAC', hash: 'SHA-256' },
       false,
       ['sign']
@@ -92,19 +98,13 @@ export async function verifyAdmin(context) {
   const request = context.request;
   const env = context.env || {};
 
-  // 1. Cloudflare Access Headers (Zero Trust)
+  // 1. Cloudflare Access (Zero Trust)
   const cfAccessEmail = request.headers.get('cf-access-authenticated-user-email');
-  const cfAccessJwt = request.headers.get('cf-access-jwt-assertion');
-  if (cfAccessEmail || cfAccessJwt) {
-    return {
-      authorized: true,
-      user: cfAccessEmail || 'cloudflare-access-user',
-      email: cfAccessEmail || 'cloudflare-access-user',
-      authType: 'cloudflare-access'
-    };
+  if (cfAccessEmail) {
+    return { authorized: true, user: cfAccessEmail, authType: 'cloudflare-access' };
   }
 
-  // 2. Extract Authorization Bearer token or header
+  // 2. Extract Bearer token
   let token = null;
   const authHeader = request.headers.get('authorization') || request.headers.get('Authorization');
   if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
@@ -112,7 +112,6 @@ export async function verifyAdmin(context) {
   } else if (request.headers.get('x-admin-token')) {
     token = request.headers.get('x-admin-token').trim();
   } else {
-    // Check Cookie if present
     const cookieHeader = request.headers.get('cookie') || '';
     const match = cookieHeader.match(/cp_admin_token=([^;]+)/);
     if (match) token = decodeURIComponent(match[1]).trim();
@@ -120,18 +119,14 @@ export async function verifyAdmin(context) {
 
   if (token) {
     const masterPasscode = await getMasterPasscode(env);
-    const isValid = await validateSessionToken(token, masterPasscode);
-    if (isValid) {
-      return {
-        authorized: true,
-        user: 'admin@classpanel.online',
-        email: 'admin@classpanel.online',
-        authType: 'session-token'
-      };
+    if (masterPasscode) {
+      const isValid = await validateSessionToken(token, masterPasscode);
+      if (isValid) {
+        return { authorized: true, user: 'admin@classpanel.online', authType: 'session-token' };
+      }
     }
   }
 
-  // 3. Unauthorized
   return unauthorizedResponse();
 }
 
@@ -139,17 +134,8 @@ export function unauthorizedResponse() {
   return {
     authorized: false,
     response: new Response(
-      JSON.stringify({
-        error: 'Unauthorized',
-        message: 'Security clearance required. Please unlock with your admin master passcode.'
-      }),
-      {
-        status: 401,
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Cache-Control': 'no-store'
-        }
-      }
+      JSON.stringify({ error: 'Unauthorized', message: 'Invalid or expired session. Please log in again.' }),
+      { status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } }
     )
   };
 }

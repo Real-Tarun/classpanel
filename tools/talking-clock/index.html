@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Talking Clock — Free Online Clock That Speaks the Time Aloud</title>
+  <meta name="description" content="Free online talking clock that reads the current time aloud using your browser's built-in text-to-speech. 12/24 hour formats, auto-announce intervals, and large visual display.">
+  <link rel="canonical" href="https://classpanel.online/tools/talking-clock/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/talking-clock/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/talking-clock/">
+  <link rel="alternate" hreflang="es" href="https://classpanel.online/es/tools/talking-clock/">
+  <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/tools/talking-clock/">
+  <link rel="alternate" hreflang="de" href="https://classpanel.online/de/tools/talking-clock/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <style>
+    .talking-clock-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 2rem 0 1rem;
+    }
+    .talking-clock-time {
+      font-size: clamp(3.5rem, 14vw, 7rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--text-primary);
+      user-select: none;
+    }
+    .talking-clock-ampm {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--primary);
+      margin-left: 0.5rem;
+    }
+    .talking-clock-date {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .speaking-indicator {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 32px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .speaking-indicator.is-speaking { opacity: 1; }
+    .speaking-bar {
+      width: 4px;
+      background: var(--accent-emerald);
+      border-radius: 2px;
+      animation: speakBar 0.6s ease-in-out infinite alternate;
+    }
+    .speaking-bar:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .speaking-bar:nth-child(2) { height: 22px; animation-delay: 0.1s; }
+    .speaking-bar:nth-child(3) { height: 32px; animation-delay: 0.2s; }
+    .speaking-bar:nth-child(4) { height: 18px; animation-delay: 0.3s; }
+    .speaking-bar:nth-child(5) { height: 8px; animation-delay: 0.4s; }
+    @keyframes speakBar {
+      from { transform: scaleY(0.4); }
+      to { transform: scaleY(1); }
+    }
+    .format-toggle {
+      display: flex;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      background: var(--bg-surface-subtle);
+    }
+    .format-toggle-btn {
+      padding: 0.5rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .format-toggle-btn.active {
+      background: var(--primary);
+      color: var(--text-inverse);
+      border-radius: var(--radius-full);
+    }
+  </style>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Talking Clock — Free Online Clock That Speaks the Time Aloud">
+  <meta property="og:description" content="Free online talking clock with browser text-to-speech, 12/24 hour format, and auto-announce intervals.">
+  <meta property="og:url" content="https://classpanel.online/tools/talking-clock/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Talking Clock — Free Online Clock That Speaks the Time Aloud">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Talking Clock</span>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage">
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/talking-clock.png" alt="Talking Clock Icon" class="tool-title-icon"> Talking Clock</h1>
+          <p class="tool-title-subtitle">Current Time • Browser Text-to-Speech • 12/24 Hour • Auto-Announce Intervals</p>
+        </div>
+      </div>
+
+      <div class="talking-clock-display">
+        <!-- Time Display -->
+        <div style="display: flex; align-items: baseline;">
+          <div class="talking-clock-time" id="clock-display">12:00</div>
+          <span class="talking-clock-ampm" id="clock-ampm">PM</span>
+        </div>
+        <div class="talking-clock-date" id="clock-date"></div>
+
+        <!-- Speaking indicator -->
+        <div class="speaking-indicator" id="speak-indicator" aria-live="polite" aria-label="Speaking">
+          <div class="speaking-bar"></div>
+          <div class="speaking-bar"></div>
+          <div class="speaking-bar"></div>
+          <div class="speaking-bar"></div>
+          <div class="speaking-bar"></div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1.25rem; margin-bottom: 1rem;">
+        <!-- Format Toggle -->
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); text-align: center; margin-bottom: 0.5rem;">Time Format</div>
+          <div class="format-toggle">
+            <button class="format-toggle-btn active" id="btn-12h">12-Hour</button>
+            <button class="format-toggle-btn" id="btn-24h">24-Hour</button>
+          </div>
+        </div>
+
+        <!-- Speak Now Button -->
+        <button id="btn-speak" class="btn-giant btn-giant-primary" style="font-size: 1.2rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          <span>Speak Time Now</span>
+        </button>
+
+        <!-- Auto-Announce -->
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);">Auto-Announce Every:</span>
+          <select id="auto-interval" class="time-input" style="padding: 0.5rem 0.75rem; font-size: 0.9rem;">
+            <option value="0">Off</option>
+            <option value="1">1 minute</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+          </select>
+        </div>
+
+        <!-- Auto status indicator -->
+        <div id="auto-status" style="display:none; padding: 0.5rem 1rem; background: var(--accent-emerald-light); border: 1px solid var(--accent-emerald); border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; color: var(--accent-emerald);">
+          🔊 Auto-announcing every <span id="auto-min-display">5</span> minutes
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div><div class="seo-card">
+          <h2>How to Use the Talking Clock</h2>
+          <p>The large clock face shows the current time updating every second. Click <strong>"Speak Time Now"</strong> to have your browser read the current time aloud using built-in text-to-speech — no external service, no cost, no microphone needed. Set the auto-announce interval to hear the time spoken automatically every 1, 5, 10, 15, or 30 minutes — useful for time awareness in classrooms or as an accessibility aid.</p>
+          <ul class="seo-features-list" style="margin-top: 1rem;">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Classroom Time Awareness:</strong> Young students hear the time announced without constantly asking.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Accessibility Aid:</strong> Ideal for visually impaired users who need audible time updates.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Study Timer:</strong> Hear time announcements in background while staying focused on work.</span></li>
+          </ul>
+        </div></div>
+        <div><div class="seo-card">
+          <h2>Related Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/clocks/">Online Clock & Display</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Stopwatch</a></li>
+          </ul>
+        </div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo"><img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon"><span>Class<span style="color: var(--primary);">Panel</span></span></a>
+          <p>Free, privacy-friendly tools for classrooms and everyday use.</p>
+        </div>
+        <div class="footer-col"><h4>Clocks</h4><ul>
+          <li><a href="/tools/talking-clock/">Talking Clock</a></li>
+          <li><a href="/tools/clocks/">Online Clocks</a></li>
+          <li><a href="/tools/holiday-timers/">Countdown to Date</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Timers</h4><ul>
+          <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+          <li><a href="/tools/exam-timer/">Exam Timer</a></li>
+          <li><a href="/tools/stopwatch/">Stopwatch</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>About</h4><ul>
+          <li><a href="/about/">About ClassPanel</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+    </div>
+  </footer>
+
+  <script src="/assets/i18n/en.js"></script>
+  <script src="/assets/i18n/es.js"></script>
+  <script src="/assets/i18n/fr.js"></script>
+  <script src="/assets/i18n/de.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/fullscreen.js?v=21"></script>
+  <script src="/assets/js/common.js?v=31"></script>
+  <script>
+  (function() {
+    'use strict';
+    let use24 = false;
+    let autoIntervalId = null;
+    let isSpeaking = false;
+
+    const clockDisplay = document.getElementById('clock-display');
+    const clockAmpm = document.getElementById('clock-ampm');
+    const clockDate = document.getElementById('clock-date');
+    const speakIndicator = document.getElementById('speak-indicator');
+    const autoStatus = document.getElementById('auto-status');
+    const autoMinDisplay = document.getElementById('auto-min-display');
+
+    const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+      let ampm = h >= 12 ? 'PM' : 'AM';
+      if (!use24) { h = h % 12 || 12; }
+      clockDisplay.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      clockAmpm.textContent = use24 ? '' : ampm;
+      clockDate.textContent = DAYS[now.getDay()] + ', ' + MONTHS[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+    }
+
+    function getTimeString() {
+      const now = new Date();
+      let h = now.getHours(), m = now.getMinutes();
+      let suffix = '';
+      if (!use24) {
+        suffix = h >= 12 ? ' PM' : ' AM';
+        h = h % 12 || 12;
+      }
+      return `The time is ${h}:${String(m).padStart(2,'0')}${suffix}`;
+    }
+
+    function speakTime() {
+      if (!('speechSynthesis' in window)) {
+        if (window.ClassPanel) window.ClassPanel.showToast('Text-to-speech not supported in this browser.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(getTimeString());
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.onstart = () => {
+        isSpeaking = true;
+        speakIndicator.classList.add('is-speaking');
+      };
+      utterance.onend = utterance.onerror = () => {
+        isSpeaking = false;
+        speakIndicator.classList.remove('is-speaking');
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById('btn-speak').addEventListener('click', speakTime);
+
+    // Format toggle
+    document.getElementById('btn-12h').addEventListener('click', () => {
+      use24 = false;
+      document.getElementById('btn-12h').classList.add('active');
+      document.getElementById('btn-24h').classList.remove('active');
+      updateClock();
+    });
+    document.getElementById('btn-24h').addEventListener('click', () => {
+      use24 = true;
+      document.getElementById('btn-24h').classList.add('active');
+      document.getElementById('btn-12h').classList.remove('active');
+      updateClock();
+    });
+
+    // Auto-announce
+    document.getElementById('auto-interval').addEventListener('change', function() {
+      clearInterval(autoIntervalId);
+      const mins = parseInt(this.value);
+      if (mins > 0) {
+        autoIntervalId = setInterval(speakTime, mins * 60 * 1000);
+        autoStatus.style.display = 'block';
+        autoMinDisplay.textContent = mins;
+      } else {
+        autoStatus.style.display = 'none';
+      }
+    });
+
+    // Init
+    updateClock();
+    setInterval(updateClock, 1000);
+  })();
+  </script>
+</body>
+</html>

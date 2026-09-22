@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Chess Clock & Timer — Free Online Two-Player Chess Timer</title>
+  <meta name="description" content="Free online chess clock for two players. Choose Blitz, Rapid, or Custom time controls. Set increments, tap to switch clocks. No download needed.">
+  <link rel="canonical" href="https://classpanel.online/tools/chess-timer/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/chess-timer/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/chess-timer/">
+  <link rel="alternate" hreflang="es" href="https://classpanel.online/es/tools/chess-timer/">
+  <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/tools/chess-timer/">
+  <link rel="alternate" hreflang="de" href="https://classpanel.online/de/tools/chess-timer/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <style>
+    .chess-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      width: 100%;
+      max-width: 700px;
+      margin: 1.5rem auto;
+    }
+    @media (max-width: 560px) { .chess-board { grid-template-columns: 1fr; } }
+    .chess-player-panel {
+      background: var(--bg-surface-subtle);
+      border: 3px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      position: relative;
+      min-height: 220px;
+      justify-content: center;
+    }
+    .chess-player-panel.is-active {
+      border-color: var(--accent-emerald);
+      background: var(--accent-emerald-light);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15), var(--shadow-lg);
+    }
+    .chess-player-panel.is-lost {
+      border-color: var(--accent-rose);
+      background: var(--accent-rose-light);
+      opacity: 0.85;
+    }
+    .chess-player-name {
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .chess-player-panel.is-active .chess-player-name { color: var(--accent-emerald); }
+    .chess-time-display {
+      font-size: clamp(2.8rem, 9vw, 4.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .chess-player-panel.is-active .chess-time-display { color: var(--accent-emerald); }
+    .chess-player-panel.is-lost .chess-time-display { color: var(--accent-rose); }
+    .chess-tap-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .chess-active-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-emerald);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      display: none;
+    }
+    .chess-player-panel.is-active .chess-active-badge { display: block; }
+  </style>
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Chess Clock & Timer — Free Online Two-Player Chess Timer">
+  <meta property="og:description" content="Free online chess clock with Blitz, Rapid, and Custom time controls plus Fischer increment. Tap to switch clocks between players.">
+  <meta property="og:url" content="https://classpanel.online/tools/chess-timer/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chess Clock & Timer — Free Online Two-Player Chess Timer">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <!-- AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Chess Timer</span>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage">
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/chess-timer.png" alt="Chess Timer Icon" class="tool-title-icon"> Chess Clock & Timer</h1>
+          <p class="tool-title-subtitle">Two-Player Countdown • Tap Panels to Switch • Fischer Increment • Blitz, Rapid & Custom</p>
+        </div>
+      </div>
+
+      <!-- Preset Time Controls -->
+      <div style="text-align: center; margin: 1rem 0 0.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.75rem;">Time Control</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 0.75rem;">
+          <button class="preset-chip active" data-preset="300:0">Blitz 5 min</button>
+          <button class="preset-chip" data-preset="600:0">Rapid 10 min</button>
+          <button class="preset-chip" data-preset="900:10">15+10</button>
+          <button class="preset-chip" data-preset="1800:0">Classical 30 min</button>
+          <button class="preset-chip" data-preset="custom">Custom…</button>
+        </div>
+        <!-- Custom Input -->
+        <div id="custom-input" style="display: none; gap: 0.75rem; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 0.5rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Minutes:
+            <input id="custom-min" type="number" min="1" max="180" value="10" class="time-input" style="width: 70px; margin-left: 0.4rem;">
+          </label>
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Increment (sec):
+            <input id="custom-inc" type="number" min="0" max="60" value="0" class="time-input" style="width: 60px; margin-left: 0.4rem;">
+          </label>
+          <button class="preset-chip" id="apply-custom" style="padding: 0.4rem 1rem;">Apply</button>
+        </div>
+        <!-- Increment Display -->
+        <div id="increment-badge" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem; font-weight: 600;">
+          No increment (sudden death)
+        </div>
+      </div>
+
+      <!-- Chess Boards (player panels) -->
+      <div class="chess-board" id="chess-board">
+        <div class="chess-player-panel" id="panel-1" role="button" aria-label="Player 1 clock panel - tap to switch" tabindex="0">
+          <div class="chess-active-badge">▶ Your Turn</div>
+          <div class="chess-player-name">Player 1</div>
+          <div class="chess-time-display" id="time-1">5:00</div>
+          <div class="chess-tap-hint">Tap after your move</div>
+        </div>
+        <div class="chess-player-panel" id="panel-2" role="button" aria-label="Player 2 clock panel - tap to switch" tabindex="0">
+          <div class="chess-active-badge">▶ Your Turn</div>
+          <div class="chess-player-name">Player 2</div>
+          <div class="chess-time-display" id="time-2">5:00</div>
+          <div class="chess-tap-hint">Tap after your move</div>
+        </div>
+      </div>
+
+      <!-- Main Controls -->
+      <div class="timer-actions">
+        <button id="btn-start" class="btn-giant btn-giant-primary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start Game</span>
+        </button>
+        <button id="btn-pause" class="btn-giant preset-chip" style="height: 3.8rem; font-size: 1.15rem; padding: 0 1.75rem; border-radius: var(--radius-full);" disabled>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          <span>Pause</span>
+        </button>
+        <button id="btn-reset" class="btn-giant btn-giant-secondary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>Reset</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div><div class="seo-card">
+          <h2>How to Use the Chess Clock</h2>
+          <p>Select a time control preset (Blitz 5min, Rapid 10min, 15+10, or Custom) and optionally set an increment (seconds added after each move — Fischer clock style). Press <strong>Start Game</strong>. The first player's clock starts running immediately. After making your move, tap your panel to stop your clock and start your opponent's. The glowing panel shows whose turn it is. When a player's time hits zero, they lose on time.</p>
+          <ul class="seo-features-list" style="margin-top: 1rem;">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Pause:</strong> Pause both clocks (for restroom breaks or interruptions) without losing time.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Keyboard:</strong> Press Spacebar to switch the active player's clock.</span></li>
+          </ul>
+        </div></div>
+        <div><div class="seo-card">
+          <h2>Chess Time Controls Explained</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Bullet (1–2 min):</strong> Ultra-fast. Reaction speed matters more than deep calculation.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Blitz (3–5 min):</strong> The most popular online format. Quick games with real tactics.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Rapid (10–15 min):</strong> Good balance of speed and strategic depth.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Increment (Fischer):</strong> Seconds added after each move — prevents time scrambles and rewards good technique.</span></li>
+          </ul>
+        </div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo"><img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon"><span>Class<span style="color: var(--primary);">Panel</span></span></a>
+          <p>Free, privacy-friendly classroom utility tools. No sign-up, works offline.</p>
+        </div>
+        <div class="footer-col"><h4>Timers</h4><ul>
+          <li><a href="/tools/chess-timer/">Chess Timer</a></li>
+          <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+          <li><a href="/tools/stopwatch/">Stopwatch</a></li>
+          <li><a href="/tools/bomb-countdown/">Bomb Countdown</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Games</h4><ul>
+          <li><a href="/tools/dice-roller/">Dice Roller</a></li>
+          <li><a href="/tools/coin-flip/">Coin Flip</a></li>
+          <li><a href="/tools/rock-paper-scissors/">Rock Paper Scissors</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>About & Legal</h4><ul>
+          <li><a href="/about/">About ClassPanel</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+    </div>
+  </footer>
+
+  <script src="/assets/i18n/en.js"></script>
+  <script src="/assets/i18n/es.js"></script>
+  <script src="/assets/i18n/fr.js"></script>
+  <script src="/assets/i18n/de.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/audio.js?v=18"></script>
+  <script src="/assets/js/fullscreen.js?v=21"></script>
+  <script src="/assets/js/common.js?v=31"></script>
+  <script>
+  (function() {
+    'use strict';
+    let time1 = 300, time2 = 300;
+    let increment = 0;
+    let baseTime = 300;
+    let activePlayer = null; // 1 or 2, null = not started
+    let isRunning = false;
+    let isPaused = false;
+    let timerId = null;
+    let gameOver = false;
+
+    const panel1 = document.getElementById('panel-1');
+    const panel2 = document.getElementById('panel-2');
+    const disp1 = document.getElementById('time-1');
+    const disp2 = document.getElementById('time-2');
+    const btnStart = document.getElementById('btn-start');
+    const btnPause = document.getElementById('btn-pause');
+    const btnReset = document.getElementById('btn-reset');
+    const incBadge = document.getElementById('increment-badge');
+
+    function fmt(secs) {
+      const m = Math.floor(Math.abs(secs) / 60);
+      const s = Math.abs(secs) % 60;
+      return (secs < 0 ? '-' : '') + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+
+    function updateDisplays() {
+      disp1.textContent = fmt(time1);
+      disp2.textContent = fmt(time2);
+    }
+
+    function setActivePlayer(p) {
+      activePlayer = p;
+      panel1.classList.toggle('is-active', p === 1);
+      panel2.classList.toggle('is-active', p === 2);
+    }
+
+    function applyPreset(totalSecs, inc) {
+      baseTime = totalSecs;
+      increment = inc;
+      time1 = totalSecs;
+      time2 = totalSecs;
+      updateDisplays();
+      incBadge.textContent = inc > 0 ? `+${inc}s increment per move (Fischer clock)` : 'No increment (sudden death)';
+      resetGame(false);
+    }
+
+    function startGame() {
+      if (gameOver) return;
+      isRunning = true;
+      isPaused = false;
+      if (activePlayer === null) setActivePlayer(1);
+      btnStart.disabled = true;
+      btnStart.style.opacity = '0.5';
+      btnPause.disabled = false;
+      timerId = setInterval(tick, 1000);
+    }
+
+    function tick() {
+      if (!isRunning || isPaused || gameOver) return;
+      if (activePlayer === 1) {
+        time1--;
+        if (time1 <= 0) { time1 = 0; endGame(1); }
+      } else if (activePlayer === 2) {
+        time2--;
+        if (time2 <= 0) { time2 = 0; endGame(2); }
+      }
+      updateDisplays();
+    }
+
+    function switchPlayer() {
+      if (!isRunning || isPaused || gameOver) return;
+      // Add increment to the player who just moved
+      if (activePlayer === 1) { time1 += increment; setActivePlayer(2); }
+      else if (activePlayer === 2) { time2 += increment; setActivePlayer(1); }
+      updateDisplays();
+      if (window.SoundFX) window.SoundFX.playClick();
+    }
+
+    function pauseGame() {
+      if (!isRunning || gameOver) return;
+      isPaused = !isPaused;
+      btnPause.querySelector('span').textContent = isPaused ? 'Resume' : 'Pause';
+      if (isPaused) {
+        panel1.classList.remove('is-active');
+        panel2.classList.remove('is-active');
+      } else {
+        setActivePlayer(activePlayer);
+      }
+    }
+
+    function endGame(loser) {
+      gameOver = true;
+      isRunning = false;
+      clearInterval(timerId);
+      const winner = loser === 1 ? 2 : 1;
+      document.getElementById(`panel-${loser}`).classList.add('is-lost');
+      document.getElementById(`panel-${loser}`).classList.remove('is-active');
+      if (window.ClassPanel) window.ClassPanel.showToast(`Player ${winner} wins on time!`);
+    }
+
+    function resetGame(full = true) {
+      gameOver = false;
+      isRunning = false;
+      isPaused = false;
+      clearInterval(timerId);
+      activePlayer = null;
+      time1 = baseTime;
+      time2 = baseTime;
+      updateDisplays();
+      panel1.classList.remove('is-active', 'is-lost');
+      panel2.classList.remove('is-active', 'is-lost');
+      btnStart.disabled = false;
+      btnStart.style.opacity = '1';
+      btnPause.disabled = true;
+      btnPause.querySelector('span').textContent = 'Pause';
+    }
+
+    // Preset buttons
+    document.querySelectorAll('[data-preset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-preset]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const val = btn.getAttribute('data-preset');
+        if (val === 'custom') {
+          document.getElementById('custom-input').style.display = 'flex';
+        } else {
+          document.getElementById('custom-input').style.display = 'none';
+          const [secs, inc] = val.split(':').map(Number);
+          applyPreset(secs, inc);
+        }
+      });
+    });
+
+    document.getElementById('apply-custom').addEventListener('click', () => {
+      const mins = parseInt(document.getElementById('custom-min').value) || 10;
+      const inc = parseInt(document.getElementById('custom-inc').value) || 0;
+      applyPreset(mins * 60, inc);
+    });
+
+    // Panel tap
+    panel1.addEventListener('click', () => {
+      if (!isRunning && !gameOver) { startGame(); return; }
+      if (activePlayer === 1) switchPlayer();
+    });
+    panel2.addEventListener('click', () => {
+      if (!isRunning && !gameOver) { startGame(); setActivePlayer(2); return; }
+      if (activePlayer === 2) switchPlayer();
+    });
+    panel1.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') { e.preventDefault(); panel1.click(); }});
+    panel2.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') { e.preventDefault(); panel2.click(); }});
+
+    btnStart.addEventListener('click', startGame);
+    btnPause.addEventListener('click', pauseGame);
+    btnReset.addEventListener('click', () => resetGame(true));
+
+    // Spacebar to switch
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input,textarea,select')) return;
+      if (e.code === 'Space') { e.preventDefault(); switchPlayer(); }
+    });
+
+    updateDisplays();
+  })();
+  </script>
+</body>
+</html>

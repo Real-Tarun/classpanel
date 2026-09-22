@@ -1582,5 +1582,73 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 800;
 }
 
+/* ── Language Switcher ─────────────────────────────────────── */
+.cp-lang-switcher {
+  position: relative;
+}
+
+.cp-lang-btn {
+  gap: 0.35rem;
+  padding: 0 0.75rem;
+}
+
+.cp-lang-label {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.cp-lang-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 160px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.cp-lang-switcher.is-open .cp-lang-dropdown {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.cp-lang-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+}
+
+.cp-lang-option:hover {
+  background: var(--bg-surface-subtle);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.cp-lang-option.is-active {
+  color: var(--primary);
+  background: var(--primary-light);
+  font-weight: 700;
+}
+
+.cp-lang-option + .cp-lang-option {
+  border-top: 1px solid var(--border-color);
+}
+
 
 

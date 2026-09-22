@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Custom Timer — Make Your Own Countdown Timer with Label, Colors & Sounds</title>
+  <meta name="description" content="Create your own custom countdown timer with a personalized label, background color theme, end sound choice (bell, chime, alarm), and duration. Save your config for next time.">
+  <link rel="canonical" href="https://classpanel.online/tools/custom-timer/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/custom-timer/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/custom-timer/">
+  <link rel="alternate" hreflang="es" href="https://classpanel.online/es/tools/custom-timer/">
+  <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/tools/custom-timer/">
+  <link rel="alternate" hreflang="de" href="https://classpanel.online/de/tools/custom-timer/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <style>
+    .custom-timer-config {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .config-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .config-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+    }
+    .config-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--border-color);
+      border-bottom: 2px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      transition: border-color var(--transition-fast);
+    }
+    .config-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .duration-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .color-swatch-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .color-swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform var(--transition-fast), border-color var(--transition-fast);
+    }
+    .color-swatch.selected { border-color: var(--primary); transform: scale(1.15); }
+    .color-swatch:hover { transform: scale(1.1); }
+    .timer-run-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      transition: background 0.5s ease;
+    }
+    .timer-run-overlay.is-active { display: flex; }
+    .timer-run-label {
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 900;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .timer-run-display {
+      font-size: clamp(4rem, 16vw, 9rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: white;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .timer-run-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .timer-run-btn {
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius-full);
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.15);
+      color: white;
+      backdrop-filter: blur(8px);
+      transition: all var(--transition-fast);
+    }
+    .timer-run-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
+    .timer-end-message {
+      display: none;
+      font-size: clamp(2rem, 8vw, 4.5rem);
+      font-weight: 900;
+      color: white;
+      text-align: center;
+      animation: endPop 0.4s ease;
+    }
+    @keyframes endPop {
+      0% { transform: scale(0.7); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Custom Timer — Make Your Own Countdown Timer with Label, Colors & Sounds">
+  <meta property="og:url" content="https://classpanel.online/tools/custom-timer/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Custom Timer — Make Your Own Countdown Timer">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+</head>
+<body>
+
+  <!-- Fullscreen Timer Overlay -->
+  <div class="timer-run-overlay" id="timer-run-overlay" role="dialog" aria-modal="true" aria-label="Timer running">
+    <div class="timer-run-label" id="run-label">Lunch Break</div>
+    <div class="timer-run-display" id="run-display">5:00</div>
+    <div class="timer-end-message" id="end-message">⏰ Time's Up!</div>
+    <div class="timer-run-controls">
+      <button class="timer-run-btn" id="run-pause">⏸ Pause</button>
+      <button class="timer-run-btn" id="run-stop">✕ Close</button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Custom Timer</span>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage">
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/custom-timer.png" alt="Custom Timer Icon" class="tool-title-icon"> Make Your Own Timer</h1>
+          <p class="tool-title-subtitle">Custom Label • Duration • Theme Colors • End Sounds • Save Config</p>
+        </div>
+      </div>
+
+      <div class="custom-timer-config" style="margin: 1.5rem auto;">
+        <!-- Label -->
+        <div class="config-row">
+          <label class="config-label" for="timer-label">Timer Label</label>
+          <input class="config-input" id="timer-label" type="text" placeholder="e.g. Lunch Break, Pop Quiz, Group Work…" maxlength="60">
+        </div>
+
+        <!-- Duration -->
+        <div class="config-row">
+          <div class="config-label">Duration</div>
+          <div class="duration-row">
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Hours</label>
+              <input class="config-input" id="dur-hours" type="number" min="0" max="23" value="0" style="margin-top: 0.25rem; text-align: center; font-size: 1.1rem; font-weight: 800;">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Minutes</label>
+              <input class="config-input" id="dur-min" type="number" min="0" max="59" value="5" style="margin-top: 0.25rem; text-align: center; font-size: 1.1rem; font-weight: 800;">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Seconds</label>
+              <input class="config-input" id="dur-sec" type="number" min="0" max="59" value="0" style="margin-top: 0.25rem; text-align: center; font-size: 1.1rem; font-weight: 800;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Color -->
+        <div class="config-row">
+          <div class="config-label">Background Theme</div>
+          <div class="color-swatch-row" id="color-swatches">
+            <div class="color-swatch selected" data-color="#0C294A" style="background:#0C294A;" title="Navy"></div>
+            <div class="color-swatch" data-color="#10B981" style="background:#10B981;" title="Emerald"></div>
+            <div class="color-swatch" data-color="#4F46E5" style="background:#4F46E5;" title="Indigo"></div>
+            <div class="color-swatch" data-color="#E11D48" style="background:#E11D48;" title="Rose"></div>
+            <div class="color-swatch" data-color="#D97706" style="background:#D97706;" title="Amber"></div>
+            <div class="color-swatch" data-color="#0284C7" style="background:#0284C7;" title="Sky"></div>
+            <div class="color-swatch" data-color="#7C3AED" style="background:#7C3AED;" title="Violet"></div>
+            <div class="color-swatch" data-color="#1F2937" style="background:#1F2937;" title="Dark"></div>
+          </div>
+        </div>
+
+        <!-- End Sound -->
+        <div class="config-row">
+          <label class="config-label" for="end-sound">End Sound</label>
+          <select class="config-input" id="end-sound" style="cursor: pointer;">
+            <option value="bell">🔔 Bell</option>
+            <option value="chime">🎵 Chime</option>
+            <option value="alarm">🚨 Alarm</option>
+            <option value="horn">📯 Air Horn</option>
+            <option value="none">🔇 Silent</option>
+          </select>
+        </div>
+
+        <!-- Save Toggle -->
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+          <input type="checkbox" id="save-config" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+          <label for="save-config" style="font-weight: 700; font-size: 0.9rem; color: var(--text-secondary); cursor: pointer;">Remember this setup for next time</label>
+        </div>
+
+        <!-- Launch Button -->
+        <button id="btn-launch-timer" class="btn-giant btn-giant-primary" style="width: 100%; font-size: 1.2rem;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start Timer</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div><div class="seo-card">
+          <h2>How to Create Your Custom Timer</h2>
+          <p>Enter a label (e.g. "Lunch Break" or "Pop Quiz") that displays prominently on screen. Set your desired duration in hours, minutes, and seconds. Choose a background color theme for the fullscreen overlay. Pick an end sound from the built-in library. Toggle "Remember this setup" to save your configuration in browser localStorage for next time. Click <strong>Start Timer</strong> to launch your personalized fullscreen countdown.</p>
+          <ul class="seo-features-list" style="margin-top: 1rem;">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Teachers:</strong> Build named timers for each activity — "Group Work 10min", "Quiz 15min", "Reading 20min".</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Offices:</strong> Create "Stand-Up Meeting", "Focus Block", or "Coffee Break" timers.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Home:</strong> "Oven Timer", "Exercise", "Laundry" — anything you need.</span></li>
+          </ul>
+        </div></div>
+        <div><div class="seo-card">
+          <h2>Related Timer Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/bomb-countdown/">Bomb Countdown (Fun Mode)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Pomodoro Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Official Exam Board</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/split-timer/">Split / Lap Timer</a></li>
+          </ul>
+        </div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo"><img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon"><span>Class<span style="color: var(--primary);">Panel</span></span></a>
+          <p>Free, privacy-friendly tools for classrooms, offices, and everyday life.</p>
+        </div>
+        <div class="footer-col"><h4>Timers</h4><ul>
+          <li><a href="/tools/custom-timer/">Custom Timer</a></li>
+          <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+          <li><a href="/tools/bomb-countdown/">Bomb Countdown</a></li>
+          <li><a href="/tools/chess-timer/">Chess Clock</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Clocks</h4><ul>
+          <li><a href="/tools/stopwatch/">Stopwatch</a></li>
+          <li><a href="/tools/split-timer/">Split Timer</a></li>
+          <li><a href="/tools/clocks/">Online Clocks</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>About</h4><ul>
+          <li><a href="/about/">About ClassPanel</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+    </div>
+  </footer>
+
+  <script src="/assets/i18n/en.js"></script>
+  <script src="/assets/i18n/es.js"></script>
+  <script src="/assets/i18n/fr.js"></script>
+  <script src="/assets/i18n/de.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/fullscreen.js?v=21"></script>
+  <script src="/assets/js/common.js?v=31"></script>
+  <script>
+  (function() {
+    'use strict';
+    const LS_KEY = 'cp_custom_timer';
+    let selectedColor = '#0C294A';
+    let remaining = 0, total = 0;
+    let isRunning = false, isPaused = false;
+    let timerId = null;
+    let audioCtx = null;
+
+    // DOM
+    const overlay = document.getElementById('timer-run-overlay');
+    const runLabel = document.getElementById('run-label');
+    const runDisplay = document.getElementById('run-display');
+    const endMessage = document.getElementById('end-message');
+    const btnRunPause = document.getElementById('run-pause');
+    const btnRunStop = document.getElementById('run-stop');
+
+    // Load saved config
+    function loadConfig() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(LS_KEY));
+        if (!saved) return;
+        if (saved.label) document.getElementById('timer-label').value = saved.label;
+        if (saved.hours !== undefined) document.getElementById('dur-hours').value = saved.hours;
+        if (saved.min !== undefined) document.getElementById('dur-min').value = saved.min;
+        if (saved.sec !== undefined) document.getElementById('dur-sec').value = saved.sec;
+        if (saved.color) {
+          selectedColor = saved.color;
+          document.querySelectorAll('.color-swatch').forEach(s => {
+            s.classList.toggle('selected', s.getAttribute('data-color') === selectedColor);
+          });
+        }
+        if (saved.sound) document.getElementById('end-sound').value = saved.sound;
+        document.getElementById('save-config').checked = true;
+      } catch(e) {}
+    }
+
+    function saveConfig() {
+      const config = {
+        label: document.getElementById('timer-label').value,
+        hours: document.getElementById('dur-hours').value,
+        min: document.getElementById('dur-min').value,
+        sec: document.getElementById('dur-sec').value,
+        color: selectedColor,
+        sound: document.getElementById('end-sound').value,
+      };
+      localStorage.setItem(LS_KEY, JSON.stringify(config));
+    }
+
+    // Color swatches
+    document.querySelectorAll('.color-swatch').forEach(s => {
+      s.addEventListener('click', () => {
+        document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedColor = s.getAttribute('data-color');
+      });
+    });
+
+    function fmt(secs) {
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = secs % 60;
+      if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+
+    function playEndSound(type) {
+      if (type === 'none') return;
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const notes = {
+          bell: [880, 660, 440],
+          chime: [523, 659, 784, 1047],
+          alarm: [440, 440, 440, 440, 440],
+          horn: [110, 88]
+        };
+        const freqs = notes[type] || notes.bell;
+        freqs.forEach((f, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.frequency.value = f;
+          osc.type = type === 'alarm' ? 'square' : 'sine';
+          const t = ctx.currentTime + i * (type === 'alarm' ? 0.25 : 0.3);
+          gain.gain.setValueAtTime(0.4, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+          osc.start(t); osc.stop(t + 0.4);
+        });
+      } catch(e) {}
+    }
+
+    function tick() {
+      remaining--;
+      runDisplay.textContent = fmt(remaining);
+      if (remaining <= 0) {
+        clearInterval(timerId);
+        isRunning = false;
+        endMessage.style.display = 'block';
+        runDisplay.style.display = 'none';
+        const sound = document.getElementById('end-sound').value;
+        playEndSound(sound);
+      }
+    }
+
+    function startTimer() {
+      const h = parseInt(document.getElementById('dur-hours').value) || 0;
+      const m = parseInt(document.getElementById('dur-min').value) || 0;
+      const s = parseInt(document.getElementById('dur-sec').value) || 0;
+      total = h*3600 + m*60 + s;
+      if (total <= 0) { alert('Please set a duration greater than zero.'); return; }
+      if (document.getElementById('save-config').checked) saveConfig();
+
+      const label = document.getElementById('timer-label').value || 'Timer';
+      remaining = total;
+      runLabel.textContent = label;
+      runDisplay.textContent = fmt(remaining);
+      runDisplay.style.display = 'block';
+      endMessage.style.display = 'none';
+      overlay.style.background = `linear-gradient(135deg, ${selectedColor}dd, ${selectedColor}99)`;
+      overlay.classList.add('is-active');
+      isRunning = true;
+      isPaused = false;
+      btnRunPause.textContent = '⏸ Pause';
+      timerId = setInterval(tick, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerId);
+      isRunning = false;
+      overlay.classList.remove('is-active');
+      endMessage.style.display = 'none';
+      runDisplay.style.display = 'block';
+    }
+
+    function pauseTimer() {
+      if (!isRunning && !isPaused) return;
+      if (!isPaused) {
+        clearInterval(timerId);
+        isPaused = true;
+        btnRunPause.textContent = '▶ Resume';
+      } else {
+        isPaused = false;
+        timerId = setInterval(tick, 1000);
+        btnRunPause.textContent = '⏸ Pause';
+      }
+    }
+
+    document.getElementById('btn-launch-timer').addEventListener('click', startTimer);
+    btnRunStop.addEventListener('click', stopTimer);
+    btnRunPause.addEventListener('click', pauseTimer);
+
+    // Keyboard shortcuts in overlay
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('is-active')) return;
+      if (e.code === 'Space') { e.preventDefault(); pauseTimer(); }
+      if (e.key === 'Escape') stopTimer();
+    });
+
+    loadConfig();
+  })();
+  </script>
+</body>
+</html>

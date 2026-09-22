@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Bomb Countdown Timer — Defuse the Bomb Countdown with Explosion Animation</title>
+  <meta name="description" content="Fun bomb countdown timer with a burning fuse animation, tension-building color shifts, and explosion animation at zero. Set any duration. Perfect for games, quizzes, and escape rooms.">
+  <link rel="canonical" href="https://classpanel.online/tools/bomb-countdown/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/bomb-countdown/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/bomb-countdown/">
+  <link rel="alternate" hreflang="es" href="https://classpanel.online/es/tools/bomb-countdown/">
+  <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/tools/bomb-countdown/">
+  <link rel="alternate" hreflang="de" href="https://classpanel.online/de/tools/bomb-countdown/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <style>
+    .bomb-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 0;
+    }
+    .bomb-shell {
+      position: relative;
+      width: 160px;
+      height: 160px;
+    }
+    .bomb-body {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #334155, #0F172A);
+      border: 3px solid #475569;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 2px 8px rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      bottom: 0;
+      left: 10px;
+      transition: box-shadow 0.5s ease, background 0.5s ease;
+    }
+    .bomb-body.danger { background: radial-gradient(circle at 35% 35%, #7f1d1d, #450a0a); border-color: #ef4444; box-shadow: 0 8px 32px rgba(239,68,68,0.4), 0 0 60px rgba(239,68,68,0.2); }
+    .bomb-body.warning { background: radial-gradient(circle at 35% 35%, #78350f, #1c0a00); border-color: #f59e0b; box-shadow: 0 8px 32px rgba(245,158,11,0.3); }
+    .bomb-fuse-container {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      width: 40px;
+      height: 50px;
+    }
+    .bomb-fuse-svg {
+      width: 40px;
+      height: 50px;
+      overflow: visible;
+    }
+    .fuse-path {
+      stroke: #92400e;
+      stroke-width: 3;
+      fill: none;
+      stroke-linecap: round;
+    }
+    .fuse-burnt {
+      stroke: #7f1d1d;
+      stroke-width: 3;
+      fill: none;
+      stroke-linecap: round;
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      transition: stroke-dashoffset 0.5s linear;
+    }
+    .fuse-spark {
+      fill: #fcd34d;
+      filter: drop-shadow(0 0 4px #f59e0b);
+      transition: all 0.5s;
+    }
+    .bomb-time-display {
+      font-size: clamp(2.5rem, 9vw, 4.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      color: #22c55e;
+      text-shadow: 0 0 20px rgba(34,197,94,0.4);
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+      user-select: none;
+    }
+    .bomb-time-display.warning { color: #f59e0b; text-shadow: 0 0 20px rgba(245,158,11,0.4); }
+    .bomb-time-display.danger { color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.6); }
+    .boom-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .boom-overlay.is-boom {
+      display: flex;
+      animation: boomFlash 0.3s ease;
+    }
+    .boom-text {
+      font-size: clamp(3rem, 15vw, 8rem);
+      font-weight: 900;
+      color: #ef4444;
+      text-shadow: 0 0 40px rgba(239,68,68,0.8), 0 0 80px rgba(239,68,68,0.4);
+      animation: boomPulse 0.4s ease infinite alternate;
+      letter-spacing: -0.02em;
+    }
+    .boom-emoji {
+      font-size: clamp(4rem, 18vw, 10rem);
+      animation: boomBounce 0.3s ease-out;
+    }
+    @keyframes boomFlash {
+      0% { background: rgba(239,68,68,0.8); }
+      100% { background: rgba(0,0,0,0.85); }
+    }
+    @keyframes boomPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+    @keyframes boomBounce {
+      0% { transform: scale(0.5); }
+      60% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .defused-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .defused-overlay.is-defused {
+      display: flex;
+    }
+    .defused-text {
+      font-size: clamp(2rem, 8vw, 4rem);
+      font-weight: 900;
+      color: #22c55e;
+      text-shadow: 0 0 30px rgba(34,197,94,0.6);
+    }
+  </style>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Bomb Countdown Timer — Defuse the Bomb with Explosion Animation">
+  <meta property="og:url" content="https://classpanel.online/tools/bomb-countdown/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bomb Countdown Timer — Fun Defuse the Bomb Game Timer">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+</head>
+<body>
+  <!-- Boom overlay -->
+  <div class="boom-overlay" id="boom-overlay" role="dialog" aria-modal="true" aria-label="Explosion!" onclick="document.getElementById('boom-overlay').classList.remove('is-boom'); document.getElementById('btn-arm').textContent='Arm the Bomb!';">
+    <div class="boom-emoji">💥</div>
+    <div class="boom-text">BOOM!</div>
+    <div style="color: #fff; font-size: 1.1rem; font-weight: 600; margin-top: 0.5rem;">Click anywhere to reset</div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Bomb Countdown</span>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage">
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/bomb-countdown.png" alt="Bomb Countdown Icon" class="tool-title-icon"> Bomb Countdown Timer</h1>
+          <p class="tool-title-subtitle">Defuse the Bomb • Burning Fuse • Tension-Building Colors • Boom Animation</p>
+        </div>
+      </div>
+
+      <div class="bomb-stage">
+        <!-- Duration Inputs -->
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+          <label style="display: flex; flex-direction: column; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted);">
+            Minutes
+            <input id="input-min" type="number" min="0" max="99" value="3" class="time-input" style="width: 80px; text-align: center; font-size: 1.5rem; font-weight: 900;">
+          </label>
+          <span style="font-size: 2rem; font-weight: 900; color: var(--text-muted); margin-top: 1rem;">:</span>
+          <label style="display: flex; flex-direction: column; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted);">
+            Seconds
+            <input id="input-sec" type="number" min="0" max="59" value="0" class="time-input" style="width: 80px; text-align: center; font-size: 1.5rem; font-weight: 900;">
+          </label>
+        </div>
+
+        <!-- Bomb Visual -->
+        <div class="bomb-shell" aria-label="Bomb timer visual">
+          <div class="bomb-fuse-container">
+            <svg class="bomb-fuse-svg" viewBox="0 0 40 50">
+              <path class="fuse-path" d="M20,50 Q30,35 10,20 Q0,10 20,0" />
+              <path class="fuse-burnt" id="fuse-burnt" d="M20,50 Q30,35 10,20 Q0,10 20,0" />
+              <circle class="fuse-spark" id="fuse-spark" cx="20" cy="0" r="4" />
+            </svg>
+          </div>
+          <div class="bomb-body" id="bomb-body">
+            <div class="bomb-time-display" id="bomb-display">3:00</div>
+          </div>
+        </div>
+
+        <!-- Quick presets -->
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+          <button class="preset-chip" data-sec="30">30s</button>
+          <button class="preset-chip" data-sec="60">1 min</button>
+          <button class="preset-chip" data-sec="120">2 min</button>
+          <button class="preset-chip" data-sec="180">3 min</button>
+          <button class="preset-chip" data-sec="300">5 min</button>
+          <button class="preset-chip" data-sec="600">10 min</button>
+        </div>
+
+        <!-- Controls -->
+        <div class="timer-actions">
+          <button id="btn-arm" class="btn-giant btn-giant-primary">
+            <span>💣 Arm the Bomb!</span>
+          </button>
+          <button id="btn-defuse" class="btn-giant btn-giant-secondary">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Defuse (Reset)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div><div class="seo-card">
+          <h2>How to Use the Bomb Countdown Timer</h2>
+          <p>Set your desired countdown duration using the minutes and seconds inputs, or click a quick preset. Click <strong>"Arm the Bomb!"</strong> to start the ticking countdown. The fuse animation burns down as time decreases. When time gets low, the display shifts from green → amber → red, building dramatic tension. At zero, the "BOOM!" explosion animation fires. Click anywhere to dismiss. Click <strong>"Defuse (Reset)"</strong> at any time to stop and reset.</p>
+          <ul class="seo-features-list" style="margin-top: 1rem;">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Quiz & Game Shows:</strong> Add pressure to quiz rounds with a visible countdown and explosive ending.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Escape Rooms:</strong> Set the timer for your own escape room puzzle challenges at home.</span></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Classroom Activities:</strong> Use as a fun time pressure mechanism for group activities.</span></li>
+          </ul>
+        </div></div>
+        <div><div class="seo-card">
+          <h2>Related Timer Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/custom-timer/">Custom Timer (Make Your Own)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers & F1 Lights</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chess-timer/">Chess Clock</a></li>
+          </ul>
+        </div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo"><img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon"><span>Class<span style="color: var(--primary);">Panel</span></span></a>
+          <p>Free, privacy-friendly tools for classrooms, games, and everyday life.</p>
+        </div>
+        <div class="footer-col"><h4>Fun Timers</h4><ul>
+          <li><a href="/tools/bomb-countdown/">Bomb Countdown</a></li>
+          <li><a href="/tools/race-timers/">Race Timers</a></li>
+          <li><a href="/tools/custom-timer/">Custom Timer</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Games</h4><ul>
+          <li><a href="/tools/dice-roller/">Dice Roller</a></li>
+          <li><a href="/tools/coin-flip/">Coin Flip</a></li>
+          <li><a href="/tools/rock-paper-scissors/">Rock Paper Scissors</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>About</h4><ul>
+          <li><a href="/about/">About ClassPanel</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+    </div>
+  </footer>
+
+  <script src="/assets/i18n/en.js"></script>
+  <script src="/assets/i18n/es.js"></script>
+  <script src="/assets/i18n/fr.js"></script>
+  <script src="/assets/i18n/de.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/fullscreen.js?v=21"></script>
+  <script src="/assets/js/common.js?v=31"></script>
+  <script>
+  (function() {
+    'use strict';
+    let totalSeconds = 180;
+    let remaining = 180;
+    let isRunning = false;
+    let timerId = null;
+    let audioCtx = null;
+
+    const bombDisplay = document.getElementById('bomb-display');
+    const bombBody = document.getElementById('bomb-body');
+    const fuseBurnt = document.getElementById('fuse-burnt');
+    const fuseSpark = document.getElementById('fuse-spark');
+    const btnArm = document.getElementById('btn-arm');
+    const btnDefuse = document.getElementById('btn-defuse');
+    const boomOverlay = document.getElementById('boom-overlay');
+
+    // Fuse path total length (approximate for our SVG)
+    const FUSE_LEN = 60;
+
+    function fmt(secs) {
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+
+    function updateFuse() {
+      const ratio = remaining / totalSeconds;
+      // burnt = how much fuse is gone (from end/top of fuse)
+      const offset = FUSE_LEN * ratio; // remaining fuse
+      fuseBurnt.style.strokeDashoffset = String(offset);
+      // Move spark along path (simplified: spark at top if fresh, bottom if burnt)
+      const sparkY = 50 - (50 * (1 - ratio)); // moves from 50 to 0
+      const sparkX = 20 + Math.sin((1-ratio) * Math.PI) * 10;
+      fuseSpark.setAttribute('cx', sparkX.toFixed(1));
+      fuseSpark.setAttribute('cy', sparkY.toFixed(1));
+    }
+
+    function updateColors() {
+      const ratio = remaining / totalSeconds;
+      bombDisplay.classList.remove('warning','danger');
+      bombBody.classList.remove('warning','danger');
+      if (ratio <= 0.1) {
+        bombDisplay.classList.add('danger');
+        bombBody.classList.add('danger');
+      } else if (ratio <= 0.3) {
+        bombDisplay.classList.add('warning');
+        bombBody.classList.add('warning');
+      }
+    }
+
+    function tick() {
+      remaining--;
+      bombDisplay.textContent = fmt(remaining);
+      updateFuse();
+      updateColors();
+      if (remaining <= 0) {
+        clearInterval(timerId);
+        isRunning = false;
+        explode();
+      } else if (remaining <= 10) {
+        playBeep(remaining <= 5 ? 800 : 600);
+      }
+    }
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+
+    function playBeep(freq) {
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
+      } catch(e) {}
+    }
+
+    function explode() {
+      boomOverlay.classList.add('is-boom');
+      fuseSpark.style.display = 'none';
+    }
+
+    function arm() {
+      const mins = parseInt(document.getElementById('input-min').value) || 0;
+      const secs = parseInt(document.getElementById('input-sec').value) || 0;
+      totalSeconds = mins * 60 + secs;
+      if (totalSeconds <= 0) { alert('Please set a duration.'); return; }
+      remaining = totalSeconds;
+      isRunning = true;
+      fuseSpark.style.display = '';
+      fuseBurnt.style.strokeDashoffset = FUSE_LEN;
+      bombDisplay.textContent = fmt(remaining);
+      bombDisplay.classList.remove('warning','danger');
+      bombBody.classList.remove('warning','danger');
+      btnArm.querySelector('span').textContent = '💣 Running...';
+      btnArm.disabled = true;
+      document.getElementById('input-min').disabled = true;
+      document.getElementById('input-sec').disabled = true;
+      timerId = setInterval(tick, 1000);
+    }
+
+    function defuse() {
+      clearInterval(timerId);
+      isRunning = false;
+      boomOverlay.classList.remove('is-boom');
+      const mins = parseInt(document.getElementById('input-min').value) || 3;
+      const secs = parseInt(document.getElementById('input-sec').value) || 0;
+      remaining = mins * 60 + secs;
+      totalSeconds = remaining;
+      bombDisplay.textContent = fmt(remaining);
+      bombDisplay.classList.remove('warning','danger');
+      bombBody.classList.remove('warning','danger');
+      fuseBurnt.style.strokeDashoffset = FUSE_LEN;
+      fuseSpark.setAttribute('cx','20'); fuseSpark.setAttribute('cy','0'); fuseSpark.style.display = '';
+      btnArm.querySelector('span').textContent = '💣 Arm the Bomb!';
+      btnArm.disabled = false;
+      document.getElementById('input-min').disabled = false;
+      document.getElementById('input-sec').disabled = false;
+    }
+
+    btnArm.addEventListener('click', () => { if (!isRunning) arm(); });
+    btnDefuse.addEventListener('click', defuse);
+
+    // Quick presets
+    document.querySelectorAll('[data-sec]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const s = parseInt(btn.getAttribute('data-sec'));
+        document.getElementById('input-min').value = Math.floor(s/60);
+        document.getElementById('input-sec').value = s % 60;
+        bombDisplay.textContent = fmt(s);
+      });
+    });
+
+    // Init display
+    bombDisplay.textContent = fmt(180);
+    updateFuse();
+  })();
+  </script>
+</body>
+</html>

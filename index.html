@@ -36,13 +36,18 @@
   <meta name="twitter:image:alt" content="ClassPanel — Free Online Timers, Wheels & Productivity Tools" />
   
   <link rel="canonical" href="https://classpanel.online/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/">
+  <link rel="alternate" hreflang="es" href="https://classpanel.online/es/">
+  <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/">
+  <link rel="alternate" hreflang="de" href="https://classpanel.online/de/">
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="theme-color" content="#0C294A">
   <meta name="msapplication-TileColor" content="#0C294A">
   <meta name="msapplication-TileImage" content="/assets/icons/icon-192.png">
 
   <!-- Core Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/main.css?v=30">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
 
   <!-- Structured Data / JSON-LD for Google Rich Results -->
   <script type="application/ld+json">
@@ -128,7 +133,7 @@
     <section style="padding: 3.5rem 0 2.5rem; text-align: center; background: radial-gradient(circle at 50% 10%, var(--primary-light), transparent 70%);">
       <div class="container" style="max-width: 920px;">
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); background: var(--bg-surface); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 1.25rem; box-shadow: var(--shadow-sm);">
-          <span>✨ 17 Free Tools • No Sign-Up • Works Offline</span>
+          <span>✨ 23 Free Tools • No Sign-Up • Works Offline</span>
         </div>
 
         <h1 style="font-size: clamp(2.2rem, 5.5vw, 3.75rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1.25rem; color: var(--text-primary);">
@@ -141,7 +146,7 @@
 
         <!-- Category Filters -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;" id="category-filters">
-          <button class="category-pill active" data-category="all">✨ All 17 Tools</button>
+          <button class="category-pill active" data-category="all">✨ All 23 Tools</button>
           <button class="category-pill" data-category="timers">⏱️ Timers</button>
           <button class="category-pill" data-category="randomizers">🎯 Randomizers</button>
           <button class="category-pill" data-category="clocks">🕒 Clocks & Counters</button>
@@ -331,13 +336,79 @@
             </div>
           </a>
 
-          <!-- 17. Online Stopwatch & Split Laps (NEW) -->
+          <!-- 17. Online Stopwatch & Split Laps -->
           <a href="/tools/stopwatch/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
             <div class="tool-card-icon"><img src="/assets/icons/stopwatch.png?v=15" alt="Stopwatch Icon"></div>
             <h2 class="tool-card-title">Online Stopwatch & Laps</h2>
             <p class="tool-card-desc">Precision millisecond count-up stopwatch with lap recording, fastest/slowest lap comparison badges, keyboard shortcuts, and export.</p>
             <div class="tool-card-meta">
               <span class="tool-card-badge">Speed & Splits</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 18. Metronome (NEW) -->
+          <a href="/tools/metronome/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/metronome.png" alt="Metronome Icon"></div>
+            <h2 class="tool-card-title">Online Metronome</h2>
+            <p class="tool-card-desc">Adjustable BPM metronome (40–208) with visual beat indicator, tap tempo, time signatures (4/4, 3/4, 6/8), and volume control. No download.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">BPM & Tempo</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 19. Chess Timer (NEW) -->
+          <a href="/tools/chess-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/chess-timer.png" alt="Chess Timer Icon"></div>
+            <h2 class="tool-card-title">Chess Clock & Timer</h2>
+            <p class="tool-card-desc">Two-player chess clock with Blitz, Rapid, and Custom time controls. Tap panels to switch clocks. Fischer increment support. No download needed.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Two-Player Clock</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 20. Talking Clock (NEW) -->
+          <a href="/tools/talking-clock/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/talking-clock.png" alt="Talking Clock Icon"></div>
+            <h2 class="tool-card-title">Talking Clock</h2>
+            <p class="tool-card-desc">Clock that speaks the time aloud using browser text-to-speech. Auto-announce every 1, 5, 10, or 30 minutes. 12/24 hour format. No API cost.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Text-to-Speech</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 21. Bomb Countdown (NEW) -->
+          <a href="/tools/bomb-countdown/" class="tool-card" data-category="games" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/bomb-countdown.png" alt="Bomb Countdown Icon"></div>
+            <h2 class="tool-card-title">Bomb Countdown Timer</h2>
+            <p class="tool-card-desc">Gamified countdown with a burning fuse animation, tension-building color shifts (green→amber→red), and a dramatic BOOM explosion at zero.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Fun & Games</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 22. Custom Timer (NEW) -->
+          <a href="/tools/custom-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-coral); --card-light: var(--accent-coral-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/custom-timer.png" alt="Custom Timer Icon"></div>
+            <h2 class="tool-card-title">Make Your Own Timer</h2>
+            <p class="tool-card-desc">Build a custom countdown with your own label, theme color, end sound (bell, chime, alarm), and duration. Save your setup for next time.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Fully Custom</span>
+              <span>Launch Tool →</span>
+            </div>
+          </a>
+
+          <!-- 23. Split Timer (NEW) -->
+          <a href="/tools/split-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
+            <div class="tool-card-icon"><img src="/assets/icons/split-timer.png" alt="Split Timer Icon"></div>
+            <h2 class="tool-card-title">Split / Lap Timer</h2>
+            <p class="tool-card-desc">Stopwatch with a Lap button that records split times with delta from previous lap. Fastest/slowest badges, clipboard export, and keyboard shortcuts.</p>
+            <div class="tool-card-meta">
+              <span class="tool-card-badge">Splits & Deltas</span>
               <span>Launch Tool →</span>
             </div>
           </a>
@@ -468,22 +539,22 @@
           <ul>
             <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
             <li><a href="/tools/exam-timer/">Exam Timer</a></li>
-            <li><a href="/tools/presentation-timer/">Presentation Timer</a></li>
-            <li><a href="/tools/sensory-timer/">Sensory Timer</a></li>
-            <li><a href="/tools/race-timers/">Race Timers</a></li>
-            <li><a href="/tools/holiday-timers/">Holiday Timers</a></li>
+            <li><a href="/tools/chess-timer/">Chess Clock</a></li>
+            <li><a href="/tools/bomb-countdown/">Bomb Countdown</a></li>
+            <li><a href="/tools/custom-timer/">Custom Timer</a></li>
+            <li><a href="/tools/split-timer/">Split Timer</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Classroom Tools</h4>
+          <h4>Clocks & Tools</h4>
           <ul>
-            <li><a href="/tools/random-name-picker/">Random Name Picker</a></li>
-            <li><a href="/tools/group-generator/">Group Generator</a></li>
-            <li><a href="/tools/clocks/">Classroom Clocks</a></li>
-            <li><a href="/tools/random-number-generator/">Number Generator</a></li>
-            <li><a href="/tools/chance-games/">Dice & Chance</a></li>
+            <li><a href="/tools/metronome/">Metronome</a></li>
+            <li><a href="/tools/talking-clock/">Talking Clock</a></li>
+            <li><a href="/tools/clocks/">Online Clocks</a></li>
+            <li><a href="/tools/stopwatch/">Stopwatch</a></li>
             <li><a href="/tools/tally-counter/">Tally Counter</a></li>
+            <li><a href="/tools/random-name-picker/">Name Picker</a></li>
           </ul>
         </div>
 
@@ -511,6 +582,11 @@
   </footer>
 
   <!-- Scripts -->
+  <script defer src="/assets/i18n/en.js"></script>
+  <script defer src="/assets/i18n/es.js"></script>
+  <script defer src="/assets/i18n/fr.js"></script>
+  <script defer src="/assets/i18n/de.js"></script>
+  <script defer src="/assets/js/i18n.js"></script>
   <script defer src="/assets/js/audio.js?v=18"></script>
   <script defer src="/assets/js/storage.js"></script>
   <script defer src="/assets/js/fullscreen.js?v=21"></script>

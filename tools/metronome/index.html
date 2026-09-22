@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Online Metronome — Free BPM Metronome with Visual Beat & Tap Tempo</title>
+  <meta name="description" content="Free online metronome with adjustable BPM (40–208), visual beat indicator, tap tempo, time signatures (4/4, 3/4, 6/8), and volume control. No download needed.">
+  <link rel="canonical" href="https://classpanel.online/tools/metronome/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/metronome/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/metronome/">
+  <link rel="alternate" hreflang="es" href="https://classpanel.online/es/tools/metronome/">
+  <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/tools/metronome/">
+  <link rel="alternate" hreflang="de" href="https://classpanel.online/de/tools/metronome/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <style>
+    .metronome-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+    }
+    .beat-indicator {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--bg-surface-subtle);
+      border: 3px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      transition: background 0.05s ease, border-color 0.05s ease, transform 0.05s ease;
+      user-select: none;
+    }
+    .beat-indicator.beat-accent {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--text-inverse);
+      transform: scale(1.08);
+    }
+    .beat-indicator.beat-normal {
+      background: var(--accent-emerald-light);
+      border-color: var(--accent-emerald);
+      color: var(--accent-emerald);
+      transform: scale(1.04);
+    }
+    .bpm-display {
+      font-size: clamp(3.5rem, 12vw, 6rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: var(--text-primary);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      user-select: none;
+    }
+    .bpm-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .bpm-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .bpm-adj-btn {
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-color);
+      border-bottom: 3px solid var(--border-strong);
+      background: var(--bg-surface);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 2px 0 var(--border-color);
+    }
+    .bpm-adj-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 0 var(--border-strong);
+      border-color: var(--border-strong);
+    }
+    .bpm-adj-btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+    .bpm-slider-wrap {
+      width: 100%;
+      max-width: 480px;
+    }
+    .bpm-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border-color);
+      outline: none;
+      cursor: pointer;
+    }
+    .bpm-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    .time-sig-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .beat-dots {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .beat-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--border-color);
+      transition: background 0.07s ease, transform 0.07s ease;
+    }
+    .beat-dot.active-accent {
+      background: var(--primary);
+      transform: scale(1.3);
+    }
+    .beat-dot.active-normal {
+      background: var(--accent-emerald);
+      transform: scale(1.15);
+    }
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 360px;
+    }
+    .vol-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .vol-slider {
+      -webkit-appearance: none;
+      flex: 1;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--border-color);
+      outline: none;
+      cursor: pointer;
+    }
+    .vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      cursor: pointer;
+    }
+  </style>
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Online Metronome — Free BPM Metronome with Visual Beat & Tap Tempo">
+  <meta property="og:description" content="Free online metronome with adjustable BPM (40–208), visual beat indicator, tap tempo, time signatures (4/4, 3/4, 6/8), and volume control. No download needed.">
+  <meta property="og:url" content="https://classpanel.online/tools/metronome/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Online Metronome — Free BPM Metronome with Visual Beat & Tap Tempo">
+  <meta name="twitter:description" content="Free online metronome with adjustable BPM (40–208), visual beat indicator, tap tempo, time signatures (4/4, 3/4, 6/8), and volume control.">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <!-- Google AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <!-- Clarity -->
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+</head>
+<body>
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color: var(--primary);">Panel</span></span>
+        </a>
+        <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
+        <span style="font-weight: 700; color: var(--text-primary);">Metronome</span>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage">
+      <!-- Stage Bar -->
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1><img src="/assets/icons/metronome.png" alt="Metronome Icon" class="tool-title-icon"> Online Metronome</h1>
+          <p class="tool-title-subtitle">BPM 40–208 • Visual Beat • Time Signatures • Tap Tempo • Volume Control</p>
+        </div>
+      </div>
+
+      <div class="metronome-stage">
+
+        <!-- Beat Indicator -->
+        <div id="beat-indicator" class="beat-indicator" aria-live="polite" aria-label="Beat indicator">
+          <span id="beat-num">1</span>
+        </div>
+
+        <!-- Beat Dots (visual sub-beats) -->
+        <div class="beat-dots" id="beat-dots" aria-hidden="true">
+          <!-- Generated by JS -->
+        </div>
+
+        <!-- BPM Display + Controls -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+          <div class="bpm-label">BPM</div>
+          <div class="bpm-controls">
+            <button class="bpm-adj-btn" id="bpm-minus" aria-label="Decrease BPM">−</button>
+            <div class="bpm-display" id="bpm-display">120</div>
+            <button class="bpm-adj-btn" id="bpm-plus" aria-label="Increase BPM">+</button>
+          </div>
+          <div class="bpm-slider-wrap">
+            <input type="range" class="bpm-slider" id="bpm-slider" min="40" max="208" value="120" aria-label="BPM slider">
+          </div>
+        </div>
+
+        <!-- Time Signature Presets -->
+        <div style="text-align: center;">
+          <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.6rem;">Time Signature</div>
+          <div class="time-sig-row">
+            <button class="preset-chip active" data-sig="4" data-beats="4">4/4</button>
+            <button class="preset-chip" data-sig="3" data-beats="3">3/4</button>
+            <button class="preset-chip" data-sig="6" data-beats="6">6/8</button>
+          </div>
+        </div>
+
+        <!-- Volume Control -->
+        <div class="volume-row">
+          <span class="vol-label">Vol</span>
+          <input type="range" class="vol-slider" id="vol-slider" min="0" max="100" value="80" aria-label="Volume">
+          <span class="vol-label" id="vol-value">80%</span>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="timer-actions">
+          <button id="btn-start" class="btn-giant btn-giant-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Start Metronome</span>
+          </button>
+          <button id="btn-tap" class="btn-giant preset-chip" style="height: 3.8rem; font-size: 1.15rem; padding: 0 1.75rem; border-radius: var(--radius-full);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 13V4.5a1.5 1.5 0 0 1 3 0V12M8 13a3 3 0 0 0 6 0v-2h2.5A2.5 2.5 0 0 1 19 13.5V15a7 7 0 0 1-7 7 7 7 0 0 1-7-7v-2"/></svg>
+            <span>Tap Tempo</span>
+          </button>
+        </div>
+
+        <!-- Tempo Reference -->
+        <div style="text-align: center; padding: 0.75rem 1.5rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); max-width: 400px;">
+          <div id="tempo-name" style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">Allegro</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">120 BPM — Fast, lively</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SEO Content -->
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>How to Use the Online Metronome</h2>
+            <p>Set your desired BPM using the slider or +/− buttons (range: 40–208 BPM). Select a time signature preset (4/4, 3/4, or 6/8) — beat 1 is emphasized with a louder click and brighter visual flash. Use the Tap Tempo button to detect your natural tempo by tapping in rhythm. Adjust volume with the slider. The visual beat indicator pulses with every click so you can follow the rhythm silently in a quiet room.</p>
+            <ul class="seo-features-list" style="margin-top: 1rem;">
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Musicians & Students:</strong> Practice scales, chord progressions, and sight-reading at a controlled tempo.</span></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Music Teachers:</strong> Project the visual metronome on a classroom screen so all students see the beat.</span></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Dancers & Choreographers:</strong> Find the exact tempo for routines by tapping along to music.</span></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Workout Pacing:</strong> Use BPM to match running cadence or exercise intervals to music.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="seo-card">
+            <h2>Common BPM Reference Guide</h2>
+            <ul class="seo-features-list">
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Largo (40–60 BPM):</strong> Very slow, broad and expressive. Funereal marches, slow ballads.</span></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Andante (76–108 BPM):</strong> Walking pace. Comfortable, moderate speed for most practice.</span></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Allegro (120–156 BPM):</strong> Fast and lively. Standard pop music tempo range.</span></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Presto (168–200 BPM):</strong> Very fast. Advanced technique practice, EDM, drum solos.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="brand-logo"><img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon"><span>Class<span style="color: var(--primary);">Panel</span></span></a>
+          <p>Free, privacy-friendly classroom utility tools designed for interactive smartboards, projectors, and modern teachers.</p>
+        </div>
+        <div class="footer-col"><h4>Timers</h4><ul>
+          <li><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+          <li><a href="/tools/exam-timer/">Exam Timer</a></li>
+          <li><a href="/tools/chess-timer/">Chess Clock</a></li>
+          <li><a href="/tools/bomb-countdown/">Bomb Countdown</a></li>
+          <li><a href="/tools/custom-timer/">Custom Timer</a></li>
+          <li><a href="/tools/split-timer/">Split Timer</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Clocks & Tools</h4><ul>
+          <li><a href="/tools/metronome/">Metronome</a></li>
+          <li><a href="/tools/talking-clock/">Talking Clock</a></li>
+          <li><a href="/tools/clocks/">Online Clocks</a></li>
+          <li><a href="/tools/stopwatch/">Stopwatch</a></li>
+          <li><a href="/tools/tally-counter/">Tally Counter</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>About & Legal</h4><ul>
+          <li><a href="/about/">About ClassPanel</a></li>
+          <li><a href="/blog/">Teacher Blog & Guides</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/contact/">Feedback & Contact</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- i18n -->
+  <script src="/assets/i18n/en.js"></script>
+  <script src="/assets/i18n/es.js"></script>
+  <script src="/assets/i18n/fr.js"></script>
+  <script src="/assets/i18n/de.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <!-- Shared JS -->
+  <script src="/assets/js/audio.js?v=18"></script>
+  <script src="/assets/js/fullscreen.js?v=21"></script>
+  <script src="/assets/js/common.js?v=31"></script>
+
+  <script>
+  (function () {
+    'use strict';
+    const MIN_BPM = 40, MAX_BPM = 208;
+    let bpm = 120;
+    let isRunning = false;
+    let timerId = null;
+    let currentBeat = 0;
+    let beatsPerBar = 4;
+    let volume = 0.8;
+    let audioCtx = null;
+    let tapTimes = [];
+
+    const bpmDisplay = document.getElementById('bpm-display');
+    const bpmSlider = document.getElementById('bpm-slider');
+    const beatIndicator = document.getElementById('beat-indicator');
+    const beatNum = document.getElementById('beat-num');
+    const beatDotsEl = document.getElementById('beat-dots');
+    const btnStart = document.getElementById('btn-start');
+    const btnTap = document.getElementById('btn-tap');
+    const volSlider = document.getElementById('vol-slider');
+    const volValue = document.getElementById('vol-value');
+
+    const TEMPO_MARKS = [
+      { max: 60, name: 'Largo', desc: 'Very slow, expressive' },
+      { max: 66, name: 'Larghetto', desc: 'Rather slow' },
+      { max: 76, name: 'Adagio', desc: 'Slow and stately' },
+      { max: 108, name: 'Andante', desc: 'Walking pace' },
+      { max: 120, name: 'Moderato', desc: 'Moderate speed' },
+      { max: 156, name: 'Allegro', desc: 'Fast, lively' },
+      { max: 176, name: 'Vivace', desc: 'Lively and fast' },
+      { max: 200, name: 'Presto', desc: 'Very fast' },
+      { max: 999, name: 'Prestissimo', desc: 'Extremely fast' },
+    ];
+
+    function getTempoName(b) {
+      return TEMPO_MARKS.find(m => b <= m.max) || TEMPO_MARKS[TEMPO_MARKS.length - 1];
+    }
+
+    function updateTempoLabel() {
+      const t = getTempoName(bpm);
+      const el = document.getElementById('tempo-name');
+      const desc = el.nextElementSibling;
+      if (el) el.textContent = t.name;
+      if (desc) desc.textContent = `${bpm} BPM — ${t.desc}`;
+    }
+
+    function setBPM(val) {
+      bpm = Math.min(MAX_BPM, Math.max(MIN_BPM, val));
+      bpmDisplay.textContent = bpm;
+      bpmSlider.value = bpm;
+      updateTempoLabel();
+      if (isRunning) restartTicker();
+    }
+
+    function buildDots() {
+      beatDotsEl.innerHTML = '';
+      for (let i = 0; i < beatsPerBar; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'beat-dot';
+        dot.id = `dot-${i}`;
+        beatDotsEl.appendChild(dot);
+      }
+    }
+
+    function flashBeat(isAccent) {
+      beatIndicator.classList.remove('beat-accent', 'beat-normal');
+      void beatIndicator.offsetWidth; // force reflow
+      beatIndicator.classList.add(isAccent ? 'beat-accent' : 'beat-normal');
+      setTimeout(() => {
+        beatIndicator.classList.remove('beat-accent', 'beat-normal');
+      }, 120);
+
+      // Dots
+      document.querySelectorAll('.beat-dot').forEach((d, i) => {
+        d.classList.remove('active-accent', 'active-normal');
+        if (i === currentBeat) {
+          d.classList.add(isAccent ? 'active-accent' : 'active-normal');
+          setTimeout(() => d.classList.remove('active-accent', 'active-normal'), 120);
+        }
+      });
+    }
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+
+    function playClick(accent) {
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = accent ? 1200 : 800;
+        osc.type = 'square';
+        gain.gain.setValueAtTime(volume * (accent ? 0.5 : 0.3), ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.06);
+      } catch(e) {}
+    }
+
+    function tick() {
+      const isAccent = currentBeat === 0;
+      beatNum.textContent = currentBeat + 1;
+      flashBeat(isAccent);
+      playClick(isAccent);
+      currentBeat = (currentBeat + 1) % beatsPerBar;
+    }
+
+    function startTicker() {
+      if (timerId) clearInterval(timerId);
+      const interval = Math.round(60000 / bpm);
+      tick(); // immediate first tick
+      timerId = setInterval(tick, interval);
+    }
+
+    function restartTicker() {
+      if (timerId) clearInterval(timerId);
+      if (isRunning) startTicker();
+    }
+
+    function start() {
+      isRunning = true;
+      currentBeat = 0;
+      btnStart.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg><span>Stop</span>`;
+      btnStart.classList.replace('btn-giant-primary', 'btn-giant-secondary');
+      startTicker();
+    }
+
+    function stop() {
+      isRunning = false;
+      if (timerId) clearInterval(timerId);
+      timerId = null;
+      beatIndicator.classList.remove('beat-accent', 'beat-normal');
+      document.querySelectorAll('.beat-dot').forEach(d => d.classList.remove('active-accent', 'active-normal'));
+      btnStart.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Start Metronome</span>`;
+      btnStart.classList.replace('btn-giant-secondary', 'btn-giant-primary');
+    }
+
+    btnStart.addEventListener('click', () => { if (isRunning) stop(); else start(); });
+
+    document.getElementById('bpm-minus').addEventListener('click', () => setBPM(bpm - 1));
+    document.getElementById('bpm-plus').addEventListener('click', () => setBPM(bpm + 1));
+
+    // Long-press support for +/- buttons
+    let holdTimer;
+    ['bpm-minus', 'bpm-plus'].forEach(id => {
+      const btn = document.getElementById(id);
+      const dir = id === 'bpm-plus' ? 1 : -1;
+      btn.addEventListener('mousedown', () => { holdTimer = setInterval(() => setBPM(bpm + dir), 80); });
+      btn.addEventListener('touchstart', (e) => { e.preventDefault(); holdTimer = setInterval(() => setBPM(bpm + dir), 80); }, { passive: false });
+      ['mouseup', 'mouseleave', 'touchend'].forEach(ev => btn.addEventListener(ev, () => clearInterval(holdTimer)));
+    });
+
+    bpmSlider.addEventListener('input', () => setBPM(parseInt(bpmSlider.value)));
+
+    // Time signature
+    document.querySelectorAll('[data-beats]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-beats]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        beatsPerBar = parseInt(btn.getAttribute('data-beats'));
+        currentBeat = 0;
+        buildDots();
+        if (isRunning) restartTicker();
+      });
+    });
+
+    // Volume
+    volSlider.addEventListener('input', () => {
+      volume = parseInt(volSlider.value) / 100;
+      volValue.textContent = volSlider.value + '%';
+    });
+
+    // Tap Tempo
+    btnTap.addEventListener('click', () => {
+      const now = Date.now();
+      tapTimes = tapTimes.filter(t => now - t < 3000);
+      tapTimes.push(now);
+      if (tapTimes.length >= 2) {
+        const gaps = tapTimes.slice(1).map((t, i) => t - tapTimes[i]);
+        const avgGap = gaps.reduce((a, b) => a + b, 0) / gaps.length;
+        setBPM(Math.round(60000 / avgGap));
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input, textarea, select')) return;
+      if (e.code === 'Space') { e.preventDefault(); if (isRunning) stop(); else start(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setBPM(bpm + 1); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); setBPM(bpm - 1); }
+      else if (e.key === 't' || e.key === 'T') btnTap.click();
+    });
+
+    // Init
+    buildDots();
+    updateTempoLabel();
+  })();
+  </script>
+</body>
+</html>

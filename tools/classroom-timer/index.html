@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
   <link rel="shortcut icon" href="/favicon.ico">
-  <title>Online Timer & Pomodoro Focus Timer — Free Study & Classroom Countdown</title>
+  <title>Online Timer & Pomodoro Focus Timer � Free Study & Classroom Countdown</title>
   <meta name="description" content="Free online classroom timer with giant digits, Pomodoro mode, relaxing background audio, and fullscreen projector mode for studying and lessons.">
   <link rel="canonical" href="https://classpanel.online/tools/classroom-timer/">
   <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/classroom-timer/">
@@ -102,7 +102,7 @@
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
-  <meta property="og:title" content="Online Timer & Pomodoro Focus Timer — Free Study & Classroom Countdown">
+  <meta property="og:title" content="Online Timer & Pomodoro Focus Timer � Free Study & Classroom Countdown">
   <meta property="og:description" content="Free online classroom timer with giant digits, Pomodoro mode, relaxing background audio, and fullscreen projector mode for studying and lessons.">
   <meta property="og:url" content="https://classpanel.online/tools/classroom-timer/">
   <meta property="og:image" content="https://classpanel.online/og-image.png" />
@@ -110,15 +110,15 @@
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="ClassPanel.online — Free Online Timers & Productivity Tools">
+  <meta property="og:image:alt" content="ClassPanel.online � Free Online Timers & Productivity Tools">
 
   <!-- Twitter / X Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://classpanel.online/tools/classroom-timer/">
-  <meta name="twitter:title" content="Online Timer & Pomodoro Focus Timer — Free Study & Classroom Countdown">
+  <meta name="twitter:title" content="Online Timer & Pomodoro Focus Timer � Free Study & Classroom Countdown">
   <meta name="twitter:description" content="Free online classroom timer with giant digits, Pomodoro mode, relaxing background audio, and fullscreen projector mode for studying and lessons.">
   <meta name="twitter:image" content="https://classpanel.online/og-image.png" />
-  <meta name="twitter:image:alt" content="ClassPanel.online — Free Online Timers & Productivity Tools">
+  <meta name="twitter:image:alt" content="ClassPanel.online � Free Online Timers & Productivity Tools">
   <!-- Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-1563010132282807">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807"
@@ -185,13 +185,13 @@
       <div class="tool-header-bar">
         <div class="tool-title-group">
           <h1><img src="/assets/icons/classroom-timer.png" alt="Classroom Timer Icon" class="tool-title-icon"> Classroom Timer</h1>
-          <p class="tool-title-subtitle" id="timer-mode-subtitle">Countdown Mode • Designed for Projectors, Smartboards & Study Sprints</p>
+          <p class="tool-title-subtitle" id="timer-mode-subtitle">Countdown Mode � Designed for Projectors, Smartboards & Study Sprints</p>
         </div>
 
         <div class="tool-control-bar">
           <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
             <button id="btn-mode-countdown" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">Countdown</button>
-            <button id="btn-mode-pomodoro" class="preset-chip" style="background: transparent; border: none;">🍅 Focus (Pomodoro)</button>
+            <button id="btn-mode-pomodoro" class="preset-chip" style="background: transparent; border: none;">?? Focus (Pomodoro)</button>
             <button id="btn-mode-stopwatch" class="preset-chip" style="background: transparent; border: none;">Stopwatch</button>
           </div>
         </div>
@@ -278,14 +278,14 @@
         <button class="preset-chip" data-seconds="900">15 min</button>
         <button class="preset-chip" data-seconds="1800">30 min</button>
         <button class="preset-chip" data-seconds="3600">1 hr</button>
-        <button class="preset-chip" id="btn-custom-time" title="Click to enter custom countdown time">⏱️ Custom</button>
+        <button class="preset-chip" id="btn-custom-time" title="Click to enter custom countdown time">?? Custom</button>
       </div>
 
       <!-- Pomodoro Session Banner -->
       <div id="pomodoro-banner" style="display: none; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 1.25rem; font-weight: 800; font-size: 1rem; padding: 0.4rem 1.2rem; border-radius: var(--radius-full); background: var(--bg-surface-subtle); border: 1px solid var(--border-color); color: var(--text-primary);">
-        <span id="pomodoro-phase-icon">🍅</span>
+        <span id="pomodoro-phase-icon">??</span>
         <span id="pomodoro-phase-text">Focus Period (25:00)</span>
-        <span style="color: var(--border-strong);">•</span>
+        <span style="color: var(--border-strong);">�</span>
         <span id="pomodoro-cycle-text" style="color: var(--text-muted); font-size: 0.85rem;">Cycle 1 of 4</span>
       </div>
 
@@ -294,18 +294,18 @@
         <!-- 1. Background Music Loop -->
         <div class="audio-panel-group">
           <label for="select-ambient-track" class="audio-group-label">
-            <span>🎵 Background Music:</span>
+            <span>?? Background Music:</span>
           </label>
           <div class="audio-input-cluster">
             <select id="select-ambient-track" class="select-audio-track" title="Background Music Loop while timer runs">
-              <option value="none">🔇 None (Silent)</option>
-              <option value="calm" selected>🌸 Calm Meditation</option>
-              <option value="rain">🌧️ 10Hz Alpha Beats + Rain</option>
-              <option value="5d">✨ 5D Spiritual Journey</option>
-              <option value="meditation">🧘 Zen Meditation Waves</option>
+              <option value="none">?? None (Silent)</option>
+              <option value="calm" selected>?? Calm Meditation</option>
+              <option value="rain">??? 10Hz Alpha Beats + Rain</option>
+              <option value="5d">? 5D Spiritual Journey</option>
+              <option value="meditation">?? Zen Meditation Waves</option>
             </select>
             <button type="button" id="btn-preview-music" class="audio-preview-btn" title="Preview / Test Music">
-              <span>▶ Preview</span>
+              <span>? Preview</span>
             </button>
           </div>
         </div>
@@ -315,14 +315,14 @@
         <!-- 2. End Alarm (Digital Alarm Clock) -->
         <div class="audio-panel-group">
           <span class="audio-group-label">
-            <span>⏰ End Alarm:</span>
+            <span>? End Alarm:</span>
           </span>
           <div class="audio-input-cluster">
             <button type="button" id="btn-toggle-alarm-mode" class="preset-chip active" style="font-size: 0.8rem; padding: 0.35rem 0.8rem; font-weight: 700;" title="Toggle Alarm Ending Style: Continuous Loop vs Short Ting">
-              🔁 Loop Alarm (Default)
+              ?? Loop Alarm (Default)
             </button>
             <button type="button" id="btn-test-alarm" class="audio-preview-btn" title="Test Digital Alarm Sound">
-              <span>🔊 Test Alarm</span>
+              <span>?? Test Alarm</span>
             </button>
           </div>
         </div>
@@ -330,18 +330,31 @@
 
       <!-- Headphone Tip for Audio & Binaural Beats -->
       <div class="audio-headphone-tip">
-        <span>🎧 <em>Tip:</em> Use headphones for the best immersive binaural beat & focus experience</span>
+        <span>?? <em>Tip:</em> Use headphones for the best immersive binaural beat & focus experience</span>
       </div>
 
       <!-- Pulsing Alarm Ringing Alert Banner -->
       <div id="alarm-banner" style="display: none; align-items: center; justify-content: center; gap: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--accent-rose), #dc2626); color: #fff; border-radius: var(--radius-full); font-weight: 800; font-size: 1.05rem; margin: 1.25rem auto 0; max-width: 540px; box-shadow: 0 0 25px rgba(220, 38, 38, 0.6); cursor: pointer; animation: pulse 1s infinite alternate;">
-        <span>⏰ TIME'S UP! Alarm Ringing...</span>
+        <span>? TIME'S UP! Alarm Ringing...</span>
         <button type="button" id="btn-stop-alarm" style="background: #fff; color: #dc2626; border: none; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); font-weight: 900; font-size: 0.9rem; cursor: pointer;">
-          🛑 Stop Alarm (Space)
+          ?? Stop Alarm (Space)
         </button>
       </div>
 
     </div>
+
+    <!-- Theme Gallery Section -->
+    <section style="margin: 2rem auto; max-width: 1080px; width: 100%; box-sizing: border-box;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+        <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin: 0;">&#127912; Choose a Timer Theme</h2>
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Each theme has its own page with unique animations</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+        <a href="/tools/classroom-timer/happy-panda/" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #86efac; border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''"><span style="font-size: 2.4rem;">&#128060;</span><span style="font-weight: 800; font-size: 0.95rem; color: #065f46;">Happy Panda</span><span style="font-size: 0.8rem; color: #059669;">Bouncing mascot timer</span></a>
+        <a href="/tools/classroom-timer/rocket-launch/" style="background: linear-gradient(135deg, #0f0a2e, #050218); border: 2px solid #1e1b4b; border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''"><span style="font-size: 2.4rem;">&#128640;</span><span style="font-weight: 800; font-size: 0.95rem; color: #e0d9ff;">Rocket Launch</span><span style="font-size: 0.8rem; color: #c4b5fd;">Countdown to blastoff</span></a>
+        <a href="/tools/classroom-timer/bubble-pop/" style="background: linear-gradient(135deg, #ecfeff, #cffafe); border: 2px solid #67e8f9; border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''"><span style="font-size: 2.4rem;">&#129655;</span><span style="font-weight: 800; font-size: 0.95rem; color: #0e7490;">Bubble Pop</span><span style="font-size: 0.8rem; color: #0891b2;">Floating bubbles pop</span></a>
+      </div>
+    </section>
 
     <!-- SEO Educational Guide Section -->
     <section class="seo-content-section">
@@ -411,11 +424,11 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-bottom" style="border-top: none; padding-top: 0;">
-        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div>� 2026 ClassPanel.online � Free Classroom Tools for Teachers</div>
         <div style="display: flex; gap: 1.25rem;">
           <a href="/">All Tools</a>
           <a href="/blog/">Blog</a>
-          <a href="/privacy/">Privacy Policy</a>
+          <a href="/credits/">Credits</a>`r`n          <a href="/privacy/">Privacy Policy</a>
           <a href="/contact/">Feedback</a>
         </div>
       </div>
@@ -485,11 +498,11 @@
         }
         pomodoroBanner.style.display = 'inline-flex';
         if (pomodoroPhase === 'work') {
-          pomodoroPhaseIcon.textContent = '🍅';
+          pomodoroPhaseIcon.textContent = '??';
           pomodoroPhaseText.textContent = 'Focus Session (25:00)';
           pomodoroBanner.style.borderColor = 'var(--primary)';
         } else {
-          pomodoroPhaseIcon.textContent = '☕';
+          pomodoroPhaseIcon.textContent = '?';
           pomodoroPhaseText.textContent = pomodoroCycle === 4 ? 'Long Rest Break (15:00)' : 'Short Rest Break (05:00)';
           pomodoroBanner.style.borderColor = 'var(--accent-emerald)';
         }
@@ -626,10 +639,10 @@
       function updateAlarmModeUI() {
         if (!btnToggleAlarmMode) return;
         if (alarmLoopMode === 'ting') {
-          btnToggleAlarmMode.textContent = '🔔 Short Ting (2-3s)';
+          btnToggleAlarmMode.textContent = '?? Short Ting (2-3s)';
           btnToggleAlarmMode.classList.remove('active');
         } else {
-          btnToggleAlarmMode.textContent = '🔁 Loop Alarm (Default)';
+          btnToggleAlarmMode.textContent = '?? Loop Alarm (Default)';
           btnToggleAlarmMode.classList.add('active');
         }
       }
@@ -659,10 +672,10 @@
           const isPlaying = window.SoundFX && window.SoundFX.previewMusic ? window.SoundFX.previewMusic(selectAmbient.value, 0.6) : false;
           if (isPlaying) {
             btnPreviewMusic.classList.add('is-playing');
-            btnPreviewMusic.innerHTML = '<span>⏹ Stop</span>';
+            btnPreviewMusic.innerHTML = '<span>? Stop</span>';
           } else {
             btnPreviewMusic.classList.remove('is-playing');
-            btnPreviewMusic.innerHTML = '<span>▶ Preview</span>';
+            btnPreviewMusic.innerHTML = '<span>? Preview</span>';
           }
         });
       }
@@ -677,11 +690,11 @@
           if (window.SoundFX && window.SoundFX.playCompletionAlarm) {
             window.SoundFX.playCompletionAlarm(alarmLoopMode);
             btnTestAlarm.classList.add('is-playing');
-            btnTestAlarm.innerHTML = '<span>🛑 Stop</span>';
+            btnTestAlarm.innerHTML = '<span>?? Stop</span>';
             if (alarmLoopMode === 'ting') {
               setTimeout(() => {
                 btnTestAlarm.classList.remove('is-playing');
-                btnTestAlarm.innerHTML = '<span>🔊 Test Alarm</span>';
+                btnTestAlarm.innerHTML = '<span>?? Test Alarm</span>';
               }, 2600);
             }
           }
@@ -693,7 +706,7 @@
         selectAmbient.addEventListener('change', () => {
           if (btnPreviewMusic) {
             btnPreviewMusic.classList.remove('is-playing');
-            btnPreviewMusic.innerHTML = '<span>▶ Preview</span>';
+            btnPreviewMusic.innerHTML = '<span>? Preview</span>';
           }
           if (isRunning) {
             if (selectAmbient.value !== 'none' && window.SoundFX && window.SoundFX.startMusic) {
@@ -716,7 +729,7 @@
         if (alarmBanner) alarmBanner.style.display = 'none';
         if (btnTestAlarm) {
           btnTestAlarm.classList.remove('is-playing');
-          btnTestAlarm.innerHTML = '<span>🔊 Test Alarm</span>';
+          btnTestAlarm.innerHTML = '<span>?? Test Alarm</span>';
         }
       }
 
@@ -726,7 +739,7 @@
       window.addEventListener('classpanel-alarm-stopped', () => {
         if (btnTestAlarm) {
           btnTestAlarm.classList.remove('is-playing');
-          btnTestAlarm.innerHTML = '<span>🔊 Test Alarm</span>';
+          btnTestAlarm.innerHTML = '<span>?? Test Alarm</span>';
         }
         if (alarmBanner) alarmBanner.style.display = 'none';
       });
@@ -751,7 +764,7 @@
         dismissAlarm();
         if (btnPreviewMusic) {
           btnPreviewMusic.classList.remove('is-playing');
-          btnPreviewMusic.innerHTML = '<span>▶ Preview</span>';
+          btnPreviewMusic.innerHTML = '<span>? Preview</span>';
         }
         isRunning = true;
         btnStart.classList.add('is-running');
@@ -864,7 +877,7 @@
             updatePomodoroUI();
             updateDisplay();
             if (window.ClassPanel) {
-              window.ClassPanel.showToast(isLong ? "🌟 Great work! Enjoy your 15-min long break." : "☕ Work session complete! Take a 5-minute break.");
+              window.ClassPanel.showToast(isLong ? "?? Great work! Enjoy your 15-min long break." : "? Work session complete! Take a 5-minute break.");
             }
           } else {
             pomodoroPhase = 'work';
@@ -875,12 +888,12 @@
             updatePomodoroUI();
             updateDisplay();
             if (window.ClassPanel) {
-              window.ClassPanel.showToast("🍅 Break over! Ready for Focus Session #" + pomodoroCycle);
+              window.ClassPanel.showToast("?? Break over! Ready for Focus Session #" + pomodoroCycle);
             }
           }
         } else {
           if (window.ClassPanel) {
-            window.ClassPanel.showToast("⏰ Time's up!");
+            window.ClassPanel.showToast("? Time's up!");
           }
         }
       }
@@ -948,7 +961,7 @@
         btnPomodoro.style.color = 'inherit';
         btnStopwatch.style.background = 'transparent';
         btnStopwatch.style.color = 'inherit';
-        modeSubtitle.textContent = 'Countdown Mode • Designed for Projectors, Smartboards & Study Sprints';
+        modeSubtitle.textContent = 'Countdown Mode � Designed for Projectors, Smartboards & Study Sprints';
         progressTrack.style.display = 'block';
         presetContainer.style.display = 'flex';
         timeEditHint.style.display = 'inline-flex';
@@ -968,7 +981,7 @@
         btnCountdown.style.color = 'inherit';
         btnStopwatch.style.background = 'transparent';
         btnStopwatch.style.color = 'inherit';
-        modeSubtitle.textContent = 'Pomodoro Study Mode • 25m Focus / 5m Rest Cycles';
+        modeSubtitle.textContent = 'Pomodoro Study Mode � 25m Focus / 5m Rest Cycles';
         progressTrack.style.display = 'block';
         presetContainer.style.display = 'none';
         timeEditHint.style.display = 'inline-flex';
@@ -994,7 +1007,7 @@
         btnCountdown.style.color = 'inherit';
         btnPomodoro.style.background = 'transparent';
         btnPomodoro.style.color = 'inherit';
-        modeSubtitle.textContent = 'Stopwatch Mode • Track elapsed time';
+        modeSubtitle.textContent = 'Stopwatch Mode � Track elapsed time';
         progressTrack.style.display = 'none';
         presetContainer.style.display = 'none';
         timeEditHint.style.display = 'none';

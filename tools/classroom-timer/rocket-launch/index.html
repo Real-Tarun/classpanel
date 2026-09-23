@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Rocket Launch Timer — Animated Countdown to Blastoff for Classrooms</title>
+  <meta name="description" content="Watch a rocket build up and blast off as the classroom timer hits zero! Free animated rocket launch countdown timer for teachers and students — perfect for science lessons.">
+  <link rel="canonical" href="https://classpanel.online/tools/classroom-timer/rocket-launch/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/classroom-timer/rocket-launch/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/classroom-timer/rocket-launch/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Rocket Launch Timer — Animated Countdown to Blastoff for Classrooms">
+  <meta property="og:description" content="Watch a rocket build up and blast off as the classroom timer hits zero! Free animated rocket launch countdown timer for teachers and students.">
+  <meta property="og:url" content="https://classpanel.online/tools/classroom-timer/rocket-launch/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rocket Launch Timer — Animated Countdown to Blastoff for Classrooms">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+  <style>
+    .rocket-stage {
+      background: radial-gradient(ellipse at 50% 100%, #0f0a2e 0%, #050218 60%, #000 100%);
+      border: 2px solid #1e1b4b;
+      border-radius: var(--radius-xl);
+      padding: 2rem 1.5rem 3rem;
+      margin: 1.25rem auto;
+      max-width: 680px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 300px;
+    }
+    /* Stars */
+    .rocket-stage::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, #fff 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 35% 50%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 15%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 70%, #fff 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 85% 30%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 80%, #ccc 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 60%, #ccc 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 90%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 8% 45%, #ccc 0%, transparent 100%);
+      pointer-events:none; z-index:0;
+    }
+    /* Ground / launch pad */
+    .rocket-stage::after {
+      content:'';
+      position:absolute;
+      bottom:0; left:0; right:0;
+      height:48px;
+      background: linear-gradient(180deg, transparent 0%, #1e3a5f 40%, #0f2337 100%);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      z-index: 0;
+    }
+    .rocket-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+    .rocket-emoji {
+      font-size: clamp(3rem, 12vw, 6rem);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+      transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
+      display: block;
+    }
+    .rocket-emoji.idle { animation: rocketIdle 2.5s ease-in-out infinite; }
+    .rocket-emoji.fueling { animation: rocketFuel 1s ease-in-out infinite alternate; }
+    .rocket-emoji.launched { animation: rocketLaunch 0.8s ease-out forwards; }
+    @keyframes rocketIdle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
+    }
+    @keyframes rocketFuel {
+      0% { transform: translateX(-2px) scale(1); filter: drop-shadow(0 0 8px #fb923c); }
+      100% { transform: translateX(2px) scale(1.04); filter: drop-shadow(0 0 16px #f97316); }
+    }
+    @keyframes rocketLaunch {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      30% { transform: translateY(-20px) scale(1.15); opacity: 1; }
+      100% { transform: translateY(-300px) scale(0.5); opacity: 0; }
+    }
+    .rocket-fuel-indicator {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      justify-content: center;
+      margin: 0.75rem 0;
+      z-index: 2;
+      position: relative;
+    }
+    .fuel-cell {
+      width: 18px;
+      height: 26px;
+      border: 2px solid rgba(251,146,60,0.4);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .fuel-cell.lit {
+      background: linear-gradient(180deg, #fb923c, #f97316);
+      border-color: #fb923c;
+      box-shadow: 0 0 8px #fb923c;
+    }
+    .countdown-display {
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #a5b4fc;
+      text-shadow: 0 0 30px rgba(165,180,252,0.4);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      user-select: none;
+      display: block;
+      position: relative;
+      z-index: 2;
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+      margin-bottom: 0.5rem;
+    }
+    .countdown-display.warning { color: #fbbf24; text-shadow: 0 0 30px rgba(251,191,36,0.4); }
+    .countdown-display.danger { color: #f87171; text-shadow: 0 0 30px rgba(248,113,113,0.5); animation: ctDanger 0.5s ease-in-out infinite alternate; }
+    @keyframes ctDanger { 0%{opacity:1} 100%{opacity:0.65} }
+    .launch-status {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #c7d2fe;
+      position: relative;
+      z-index: 2;
+      min-height: 1.4em;
+    }
+    .progress-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; margin: 0.75rem 0; position: relative; z-index: 2; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg,#6366f1,#818cf8); border-radius: 999px; transition: width 1s linear, background 0.5s ease; }
+    .progress-fill.warning { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+    .progress-fill.danger { background: linear-gradient(90deg,#ef4444,#f87171); }
+    .theme-gallery-section{margin:2.5rem auto;max-width:1080px;}
+    .theme-gallery-section h2{font-size:1.2rem;font-weight:800;margin-bottom:1rem;color:var(--text-primary);}
+    .theme-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
+    .theme-gallery-card{background:var(--bg-surface);border:2px solid var(--border-color);border-radius:var(--radius-xl);padding:1.25rem 1rem;text-align:center;transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
+    .theme-gallery-card:hover{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);transform:translateY(-2px);}
+    .theme-gallery-card.active-theme{border-color:var(--primary);background:var(--primary-light);}
+    .theme-card-emoji{font-size:2.2rem;}.theme-card-name{font-weight:800;font-size:0.95rem;color:var(--text-primary);}.theme-card-desc{font-size:0.8rem;color:var(--text-muted);}
+    .theme-card-badge{font-size:0.7rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:0.15rem 0.5rem;border-radius:var(--radius-full);}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color:var(--primary);">Panel</span></span>
+        </a>
+        <span style="color:var(--border-strong);font-size:1.25rem;">/</span>
+        <a href="/tools/classroom-timer/" style="font-weight:600;color:var(--text-secondary);text-decoration:none;">Classroom Timer</a>
+        <span style="color:var(--border-strong);font-size:1.25rem;">/</span>
+        <span style="font-weight:700;color:var(--text-primary);">Rocket Launch</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="timer-stage">
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🚀 Rocket Launch Classroom Timer</h1>
+          <p class="tool-title-subtitle">Fuel cells fill as time passes — blast off at zero!</p>
+        </div>
+        <div class="tool-control-bar">
+          <a href="/tools/classroom-timer/" class="preset-chip" style="text-decoration:none;">← All Timer Themes</a>
+        </div>
+      </div>
+
+      <!-- Rocket Stage -->
+      <div class="rocket-stage">
+        <div class="rocket-wrap">
+          <span class="rocket-emoji idle" id="rocket-emoji">🚀</span>
+          <div class="rocket-fuel-indicator" id="fuel-cells">
+            <!-- 8 fuel cells generated by JS -->
+          </div>
+          <span class="countdown-display" id="timer-display" title="Click to edit time">00:05:00</span>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-fill" style="width:100%;"></div>
+          </div>
+          <div class="launch-status" id="launch-status">🚀 Ready on the launch pad. Press Start to begin fueling!</div>
+        </div>
+      </div>
+
+      <!-- Alarm Banner -->
+      <div id="alarm-banner" style="display:none;align-items:center;justify-content:center;gap:1rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:var(--radius-full);font-weight:800;font-size:1.05rem;margin:1.25rem auto 0;max-width:540px;box-shadow:0 0 25px rgba(124,58,237,0.5);cursor:pointer;">
+        <span>🚀 BLASTOFF! Time's Up!</span>
+        <button id="btn-stop-alarm" style="background:#fff;color:#7c3aed;border:none;padding:0.35rem 0.9rem;border-radius:var(--radius-full);font-weight:900;font-size:0.9rem;cursor:pointer;">Dismiss</button>
+      </div>
+
+      <!-- Actions -->
+      <div class="timer-actions">
+        <button id="btn-start" class="btn-giant btn-giant-primary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start</span>
+        </button>
+        <button id="btn-reset" class="btn-giant btn-giant-secondary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>Reset</span>
+        </button>
+      </div>
+
+      <!-- Presets -->
+      <div class="presets-group" style="margin-top:1.5rem;">
+        <span style="font-size:0.85rem;font-weight:700;color:var(--text-muted);margin-right:0.25rem;">Presets:</span>
+        <button class="preset-chip" data-seconds="60">1 min</button>
+        <button class="preset-chip active" data-seconds="300">5 min</button>
+        <button class="preset-chip" data-seconds="600">10 min</button>
+        <button class="preset-chip" data-seconds="900">15 min</button>
+        <button class="preset-chip" data-seconds="1800">30 min</button>
+        <button class="preset-chip" data-seconds="3600">1 hr</button>
+      </div>
+    </div>
+
+    <section class="theme-gallery-section">
+      <h2>🎨 More Classroom Timer Themes</h2>
+      <div class="theme-gallery-grid">
+        <a href="/tools/classroom-timer/happy-panda/" class="theme-gallery-card"><span class="theme-card-emoji">🐼</span><span class="theme-card-name">Happy Panda</span><span class="theme-card-desc">Bouncing mascot timer</span></a>
+        <div class="theme-gallery-card active-theme"><span class="theme-card-emoji">🚀</span><span class="theme-card-name">Rocket Launch</span><span class="theme-card-desc">Countdown to blastoff</span><span class="theme-card-badge">Current Theme</span></div>
+        <a href="/tools/classroom-timer/bubble-pop/" class="theme-gallery-card"><span class="theme-card-emoji">🫧</span><span class="theme-card-name">Bubble Pop</span><span class="theme-card-desc">Floating bubbles pop</span></a>
+        <a href="/tools/classroom-timer/" class="theme-gallery-card"><span class="theme-card-emoji">⏱️</span><span class="theme-card-name">Classic Timer</span><span class="theme-card-desc">Standard countdown</span></a>
+      </div>
+    </section>
+
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div><div class="seo-card">
+          <h2>Rocket Launch Timer — Countdown to Blastoff!</h2>
+          <p>The Rocket Launch Timer builds tension with visual fuel cells that light up as time passes — and then rockets off to space at zero! Perfect for science classes, space-themed units, or any time you want to make a countdown feel epic.</p>
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.25rem 0 0.5rem;color:var(--text-primary);">Great for All Subjects</h3>
+          <p>The suspense of the rocket loading fuel cells keeps students aware of time without anxiety. Use it for timed writing, maths drills, presentations, or reading sprints.</p>
+        </div></div>
+        <div><div class="seo-card">
+          <h2>Related Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom Timer (Classic)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/space-race/">Space Race Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam Timer</a></li>
+          </ul>
+        </div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;padding-top:0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display:flex;gap:1.25rem;"><a href="/">All Tools</a><a href="/blog/">Blog</a><a href="/credits/">Credits</a><a href="/privacy/">Privacy Policy</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/i18n/en.js"></script><script src="/assets/js/i18n.js"></script>
+  <script defer src="/assets/js/audio.js?v=19"></script>
+  <script defer src="/assets/js/storage.js?v=19"></script>
+  <script defer src="/assets/js/fullscreen.js?v=21"></script>
+  <script defer src="/assets/js/confetti.js"></script>
+  <script defer src="/assets/js/common.js?v=31"></script>
+  <script>
+  (function(){
+    const FUEL_CELLS = 8;
+    let initial=300, remaining=300, isRunning=false, interval=null;
+    const display=document.getElementById('timer-display');
+    const rocket=document.getElementById('rocket-emoji');
+    const status=document.getElementById('launch-status');
+    const fill=document.getElementById('progress-fill');
+    const fuelCont=document.getElementById('fuel-cells');
+    const alarmBanner=document.getElementById('alarm-banner');
+    const btnStart=document.getElementById('btn-start');
+    const btnReset=document.getElementById('btn-reset');
+    const btnStopAlarm=document.getElementById('btn-stop-alarm');
+
+    // Build fuel cells
+    for(let i=0;i<FUEL_CELLS;i++){const c=document.createElement('div');c.className='fuel-cell';c.id='fuel-'+i;fuelCont.appendChild(c);}
+
+    function fmt(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
+
+    function updateFuelCells(ratio) {
+      const lit = Math.round((1 - ratio) * FUEL_CELLS);
+      for(let i=0;i<FUEL_CELLS;i++){
+        const c=document.getElementById('fuel-'+i);
+        if(c) c.classList.toggle('lit', i < lit);
+      }
+    }
+
+    function updateDisplay(){
+      display.textContent=fmt(remaining);
+      const ratio=initial>0?remaining/initial:0;
+      fill.style.width=Math.max(0,Math.min(100,ratio*100))+'%';
+      fill.classList.remove('warning','danger');
+      display.classList.remove('warning','danger');
+      updateFuelCells(ratio);
+      if(ratio<=0.15){ fill.classList.add('danger'); display.classList.add('danger'); rocket.className='rocket-emoji fueling'; status.textContent='🔥 FINAL COUNTDOWN! Engines at maximum power!'; }
+      else if(ratio<=0.35){ fill.classList.add('warning'); display.classList.add('warning'); rocket.className='rocket-emoji fueling'; status.textContent='⚡ Fueling intensifies... Almost ready for launch!'; }
+      else if(isRunning){ rocket.className='rocket-emoji idle'; status.textContent='⛽ Loading fuel cells... '+Math.round((1-ratio)*100)+'% fueled'; }
+    }
+
+    function tick(){if(remaining<=0){finish();return;}remaining--;updateDisplay();}
+
+    function start(){
+      if(isRunning)return;
+      if(remaining<=0)reset();
+      isRunning=true;
+      rocket.className='rocket-emoji idle';
+      btnStart.querySelector('span').textContent='Pause';
+      btnStart.classList.add('is-running');
+      if(window.SoundFX)window.SoundFX.playClick();
+      status.textContent='🚀 Engines igniting... Countdown started!';
+      interval=setInterval(tick,1000);
+    }
+
+    function pause(){
+      isRunning=false; clearInterval(interval); interval=null;
+      rocket.className='rocket-emoji idle';
+      btnStart.querySelector('span').textContent='Resume';
+      btnStart.classList.remove('is-running');
+      if(window.SoundFX)window.SoundFX.playClick();
+      status.textContent='⏸️ Launch paused — resume when ready.';
+    }
+
+    function reset(){
+      isRunning=false; clearInterval(interval); interval=null;
+      remaining=initial; updateDisplay();
+      rocket.className='rocket-emoji idle';
+      btnStart.querySelector('span').textContent='Start';
+      btnStart.classList.remove('is-running');
+      if(alarmBanner)alarmBanner.style.display='none';
+      status.textContent='🚀 Ready on the launch pad. Press Start to begin fueling!';
+    }
+
+    function finish(){
+      isRunning=false; clearInterval(interval); interval=null;
+      remaining=0; display.textContent=fmt(0); fill.style.width='0%';
+      for(let i=0;i<FUEL_CELLS;i++){const c=document.getElementById('fuel-'+i);if(c)c.classList.add('lit');}
+      rocket.className='rocket-emoji launched';
+      btnStart.querySelector('span').textContent='Start';
+      btnStart.classList.remove('is-running');
+      status.textContent='🎉 BLASTOFF! Rocket has launched!';
+      if(window.SoundFX)window.SoundFX.playFanfare();
+      if(window.Confetti)window.Confetti.fire({count:150,colors:['#6366f1','#818cf8','#fb923c','#fbbf24']});
+      if(alarmBanner)alarmBanner.style.display='flex';
+      // Reset rocket position after animation
+      setTimeout(()=>{rocket.className='rocket-emoji idle'; rocket.style.opacity='1';},1200);
+    }
+
+    btnStart.addEventListener('click',()=>{if(isRunning)pause();else start();});
+    btnReset.addEventListener('click',reset);
+    if(btnStopAlarm)btnStopAlarm.addEventListener('click',()=>{if(alarmBanner)alarmBanner.style.display='none';reset();});
+    display.addEventListener('click',()=>{
+      if(isRunning)return;
+      const v=prompt('Enter time (MM:SS or seconds):', fmt(remaining));
+      if(!v)return;
+      let s=0;
+      if(v.includes(':')){ const p=v.trim().split(':').map(Number); if(p.length===3) s=p[0]*3600+p[1]*60+p[2]; else if(p.length===2) s=p[0]*60+p[1]; }
+      else s=parseInt(v,10);
+      if(!isNaN(s)&&s>0&&s<=99*3600){initial=s;remaining=s;updateDisplay();}
+    });
+    document.querySelectorAll('.presets-group .preset-chip[data-seconds]').forEach(c=>{
+      c.addEventListener('click',()=>{initial=parseInt(c.getAttribute('data-seconds'),10);remaining=initial;document.querySelectorAll('.presets-group .preset-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');reset();});
+    });
+    window.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.isContentEditable)return;if(e.code==='Space'){e.preventDefault();if(isRunning)pause();else start();}if(e.code==='KeyR')reset();});
+    reset();
+  })();
+  </script>
+</body>
+</html>

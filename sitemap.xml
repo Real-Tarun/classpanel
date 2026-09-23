@@ -138,4 +138,16 @@
   <url><loc>https://classpanel.online/about/</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://classpanel.online/privacy/</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://classpanel.online/contact/</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://classpanel.online/credits/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+
+  <!-- 10. Race Timer Theme Sub-Pages -->
+  <url><loc>https://classpanel.online/tools/race-timers/space-race/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://classpanel.online/tools/race-timers/ocean-race/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://classpanel.online/tools/race-timers/jungle-race/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://classpanel.online/tools/race-timers/dragon-race/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+
+  <!-- 11. Classroom Timer Theme Sub-Pages -->
+  <url><loc>https://classpanel.online/tools/classroom-timer/happy-panda/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://classpanel.online/tools/classroom-timer/rocket-launch/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://classpanel.online/tools/classroom-timer/bubble-pop/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 </urlset>

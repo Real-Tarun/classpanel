@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>Ocean Race Timer — Free Animated Underwater Countdown for Kids</title>
+  <meta name="description" content="Dive into an exciting underwater countdown! Fish, dolphins, and submarines race across the ocean floor as the timer counts down. Free animated ocean race timer for classrooms.">
+  <link rel="canonical" href="https://classpanel.online/tools/race-timers/ocean-race/">
+  <link rel="alternate" hreflang="x-default" href="https://classpanel.online/tools/race-timers/ocean-race/">
+  <link rel="alternate" hreflang="en" href="https://classpanel.online/tools/race-timers/ocean-race/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/main.css?v=31">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ClassPanel">
+  <meta property="og:title" content="Ocean Race Timer — Free Animated Underwater Countdown for Kids">
+  <meta property="og:description" content="Dive into an exciting underwater countdown! Fish, dolphins, and submarines race across the ocean floor as the timer counts down.">
+  <meta property="og:url" content="https://classpanel.online/tools/race-timers/ocean-race/">
+  <meta property="og:image" content="https://classpanel.online/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ocean Race Timer — Free Animated Underwater Countdown for Kids">
+  <meta name="twitter:image" content="https://classpanel.online/og-image.png">
+  <meta name="google-adsense-account" content="ca-pub-1563010132282807">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807" crossorigin="anonymous"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+  <style>
+    .theme-stage {
+      background: linear-gradient(180deg, #0c4a6e 0%, #075985 30%, #0369a1 60%, #0ea5e9 100%);
+      border-radius: var(--radius-xl);
+      border: 2px solid #0284c7;
+      padding: 1.5rem 1rem;
+      margin: 1.25rem auto;
+      max-width: 1080px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(14,165,233,0.2);
+    }
+    /* Bubbles background */
+    .theme-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle 4px at 8% 70%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(circle 3px at 20% 40%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(circle 5px at 35% 85%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(circle 3px at 55% 25%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(circle 4px at 70% 65%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(circle 3px at 85% 45%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(circle 4px at 92% 80%, rgba(255,255,255,0.08) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .race-lane {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      height: 72px;
+      border-bottom: 1px dashed rgba(186,230,253,0.2);
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.25rem;
+      padding-left: 60px;
+      padding-right: 52px;
+      z-index: 1;
+    }
+    .race-lane:last-child { border-bottom: none; }
+    .lane-badge {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.9rem;
+      color: #fff;
+      z-index: 2;
+    }
+    .finish-line {
+      position: absolute;
+      right: 36px;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: repeating-linear-gradient(0deg,#111,#111 8px,#f0f0f0 8px,#f0f0f0 16px);
+      border-radius: 3px;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .finish-flag { position: absolute; right: 30px; top: -14px; font-size: 1.4rem; z-index: 3; }
+    .start-line { position: absolute; left: 54px; top: 0; bottom: 0; width: 3px; background: rgba(255,255,255,0.2); z-index: 1; }
+    .racer-box {
+      position: absolute;
+      left: 58px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      will-change: transform;
+      transition: transform 0.05s linear;
+      z-index: 4;
+      user-select: none;
+    }
+    .racer-icon {
+      font-size: 2rem;
+      display: inline-block;
+      filter: drop-shadow(0 0 6px rgba(186,230,253,0.6));
+    }
+    .racer-box.is-running .racer-icon { animation: swim 0.4s ease-in-out infinite alternate; }
+    .racer-box.is-turbo .racer-icon { animation: swimFast 0.2s ease-in-out infinite alternate; filter: drop-shadow(0 0 14px #bae6fd); }
+    @keyframes swim {
+      0% { transform: translateY(-4px) rotate(-6deg); }
+      100% { transform: translateY(4px) rotate(6deg); }
+    }
+    @keyframes swimFast {
+      0% { transform: translateY(-6px) scale(1.15) rotate(-10deg); }
+      100% { transform: translateY(4px) scale(1.15) rotate(10deg); }
+    }
+    .racer-label {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(186,230,253,0.4);
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #e0f2fe;
+      white-space: nowrap;
+    }
+    .theme-display {
+      text-align: center;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #38bdf8;
+      text-shadow: 0 0 30px rgba(56,189,248,0.5);
+      letter-spacing: 0.05em;
+      margin: 0.5rem 0 0.25rem;
+    }
+    .theme-commentary {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #7dd3fc;
+      margin-bottom: 0.75rem;
+      min-height: 1.4em;
+    }
+    .theme-podium {
+      display: none;
+      background: rgba(5,30,60,0.95);
+      border: 2px solid #0284c7;
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      margin: 1rem auto;
+      max-width: 640px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(2,132,199,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .podium-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.75rem; margin-top: 1rem; }
+    .podium-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(56,189,248,0.3); border-radius: var(--radius-lg); padding: 0.85rem 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+    .podium-item.winner { border-color: #f59e0b; background: rgba(245,158,11,0.1); transform: scale(1.05); }
+    .theme-gallery-section { margin: 2.5rem auto; max-width: 1080px; }
+    .theme-gallery-section h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); }
+    .theme-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+    .theme-gallery-card { background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
+    .theme-gallery-card:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); transform: translateY(-2px); }
+    .theme-gallery-card.active-theme { border-color: var(--primary); background: var(--primary-light); }
+    .theme-card-emoji { font-size: 2.2rem; }
+    .theme-card-name { font-weight: 800; font-size: 0.95rem; color: var(--text-primary); }
+    .theme-card-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .theme-card-badge { font-size: 0.7rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <a href="/" class="brand-logo" title="Back to ClassPanel Home">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <span>Class<span style="color:var(--primary);">Panel</span></span>
+        </a>
+        <span style="color:var(--border-strong);font-size:1.25rem;">/</span>
+        <a href="/tools/race-timers/" style="font-weight:600;color:var(--text-secondary);text-decoration:none;">Race Timers</a>
+        <span style="color:var(--border-strong);font-size:1.25rem;">/</span>
+        <span style="font-weight:700;color:var(--text-primary);">Ocean Race</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-projector" data-action="toggle-projector" title="Fullscreen Projector Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <span>Projector Mode</span>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-sound" title="Toggle Audio">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <button class="action-btn action-btn-icon" data-action="toggle-theme" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tool-stage-wrapper">
+    <div class="tool-stage" id="race-stage">
+      <div class="tool-header-bar">
+        <div class="tool-title-group">
+          <h1>🌊 Ocean Race Timer</h1>
+          <p class="tool-title-subtitle">Sea creatures dive deep to claim victory — who'll reach the finish current first?</p>
+        </div>
+        <div class="tool-control-bar">
+          <a href="/tools/race-timers/" class="preset-chip" style="text-decoration:none;">← All Race Themes</a>
+        </div>
+      </div>
+
+      <div class="theme-display" id="race-display" style="cursor:pointer;" title="Click to edit duration">01:00</div>
+      <div class="theme-commentary" id="race-commentary">🌊 Dive in! Press Start Race to begin the ocean race.</div>
+
+      <div class="theme-stage" id="race-track">
+        <div class="start-line"></div>
+        <div class="finish-line"></div>
+        <div class="finish-flag">🏁</div>
+        <div class="race-lane" data-lane="0">
+          <div class="lane-badge" style="background:#0284c7;">1</div>
+          <div class="racer-box" id="racer-0">
+            <span class="racer-icon" id="racer-icon-0">🐬</span>
+            <span class="racer-label" id="racer-label-0" contenteditable="true">Dolphin</span>
+          </div>
+        </div>
+        <div class="race-lane" data-lane="1">
+          <div class="lane-badge" style="background:#0891b2;">2</div>
+          <div class="racer-box" id="racer-1">
+            <span class="racer-icon" id="racer-icon-1">🐠</span>
+            <span class="racer-label" id="racer-label-1" contenteditable="true">Clownfish</span>
+          </div>
+        </div>
+        <div class="race-lane" data-lane="2">
+          <div class="lane-badge" style="background:#0e7490;">3</div>
+          <div class="racer-box" id="racer-2">
+            <span class="racer-icon" id="racer-icon-2">🦈</span>
+            <span class="racer-label" id="racer-label-2" contenteditable="true">Shark</span>
+          </div>
+        </div>
+        <div class="race-lane" data-lane="3">
+          <div class="lane-badge" style="background:#155e75;">4</div>
+          <div class="racer-box" id="racer-3">
+            <span class="racer-icon" id="racer-icon-3">🐙</span>
+            <span class="racer-label" id="racer-label-3" contenteditable="true">Octopus</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="theme-podium" id="podium">
+        <div style="font-size:2.5rem;">🎉</div>
+        <h2 style="font-size:1.4rem;font-weight:800;color:#e0f2fe;margin:0.5rem 0 0.25rem;" id="podium-title">Winner!</h2>
+        <p style="color:#7dd3fc;font-size:0.9rem;margin-bottom:0.75rem;">Final Finish Order</p>
+        <div class="podium-grid" id="podium-grid"></div>
+        <button id="btn-race-again" class="btn-giant btn-giant-primary" style="margin-top:1.25rem;height:3rem;font-size:1rem;padding:0 1.5rem;">Race Again 🌊</button>
+      </div>
+
+      <div class="timer-actions">
+        <button id="btn-start" class="btn-giant btn-giant-primary" style="background:linear-gradient(135deg,#0284c7,#0e7490);color:#fff;">
+          <span>Start Race</span>
+        </button>
+        <button id="btn-reset" class="btn-giant btn-giant-secondary"><span>Reset</span></button>
+        <div class="presets-group" style="margin:0;">
+          <button class="preset-chip" data-time="30">30s Sprint</button>
+          <button class="preset-chip active" data-time="60">1 Min</button>
+          <button class="preset-chip" data-time="120">2 Min</button>
+          <button class="preset-chip" data-time="180">3 Min</button>
+          <button class="preset-chip" data-time="300">5 Min</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="theme-gallery-section">
+      <h2>🎨 More Race Timer Themes</h2>
+      <div class="theme-gallery-grid">
+        <a href="/tools/race-timers/space-race/" class="theme-gallery-card">
+          <span class="theme-card-emoji">🚀</span>
+          <span class="theme-card-name">Space Race</span>
+          <span class="theme-card-desc">Astronauts & rockets</span>
+        </a>
+        <div class="theme-gallery-card active-theme">
+          <span class="theme-card-emoji">🌊</span>
+          <span class="theme-card-name">Ocean Race</span>
+          <span class="theme-card-desc">Fish & submarines</span>
+          <span class="theme-card-badge">Current Theme</span>
+        </div>
+        <a href="/tools/race-timers/jungle-race/" class="theme-gallery-card">
+          <span class="theme-card-emoji">🌿</span>
+          <span class="theme-card-name">Jungle Race</span>
+          <span class="theme-card-desc">Wild animals sprint</span>
+        </a>
+        <a href="/tools/race-timers/dragon-race/" class="theme-gallery-card">
+          <span class="theme-card-emoji">🐉</span>
+          <span class="theme-card-name">Dragon Race</span>
+          <span class="theme-card-desc">Fantasy dragon riders</span>
+        </a>
+        <a href="/tools/race-timers/" class="theme-gallery-card">
+          <span class="theme-card-emoji">🐾</span>
+          <span class="theme-card-name">Classic Race</span>
+          <span class="theme-card-desc">Animals & F1 lights</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="seo-content-section">
+      <div class="seo-content-grid">
+        <div>
+          <div class="seo-card">
+            <h2>Ocean Race Timer — An Underwater Countdown Adventure</h2>
+            <p>Dolphins, clownfish, sharks, and octopuses race through the deep blue as your class counts down. The Ocean Race Timer is perfect for classroom transitions, reading sprints, or any timed activity that needs a little underwater magic.</p>
+            <h3 style="font-size:1.1rem;font-weight:700;margin:1.25rem 0 0.5rem;color:var(--text-primary);">Perfect for Science Classes</h3>
+            <p>Use the ocean theme during marine biology lessons or ocean exploration units to tie the timer into your curriculum theme. Students will love cheering for their favourite sea creature!</p>
+          </div>
+        </div>
+        <div>
+          <div class="seo-card">
+            <h2>Related Tools</h2>
+            <ul class="seo-features-list">
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers (All Themes)</a></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom Timer</a></li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/sensory-timer/">Sensory Timer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;padding-top:0;">
+        <div>© 2026 ClassPanel.online • Free Classroom Tools for Teachers</div>
+        <div style="display:flex;gap:1.25rem;">
+          <a href="/">All Tools</a>
+          <a href="/blog/">Blog</a>
+          <a href="/credits/">Credits</a>
+          <a href="/privacy/">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/i18n/en.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script defer src="/assets/js/audio.js?v=19"></script>
+  <script defer src="/assets/js/storage.js?v=19"></script>
+  <script defer src="/assets/js/fullscreen.js?v=21"></script>
+  <script defer src="/assets/js/confetti.js"></script>
+  <script defer src="/assets/js/common.js?v=31"></script>
+  <script>
+  (function() {
+    const RACERS = [
+      { icon: '🐬', name: 'Dolphin',   seed: 12 },
+      { icon: '🐠', name: 'Clownfish', seed: 34 },
+      { icon: '🦈', name: 'Shark',     seed: 56 },
+      { icon: '🐙', name: 'Octopus',   seed: 78 }
+    ];
+    let totalDuration = 60, remaining = 60, isRunning = false;
+    let animId = null, lastTs = null, raceFinished = false;
+    let states = RACERS.map(r => ({ pos: 0, seed: r.seed + Math.random()*30, isTurbo: false }));
+    let lastLeader = -1, commentCooldown = 0;
+
+    const display = document.getElementById('race-display');
+    const commentary = document.getElementById('race-commentary');
+    const track = document.getElementById('race-track');
+    const podium = document.getElementById('podium');
+    const podiumGrid = document.getElementById('podium-grid');
+    const podiumTitle = document.getElementById('podium-title');
+    const btnStart = document.getElementById('btn-start');
+    const btnReset = document.getElementById('btn-reset');
+    const btnAgain = document.getElementById('btn-race-again');
+    const racers = RACERS.map((r, i) => ({ icon: r.icon, name: r.name, box: document.getElementById('racer-'+i), label: document.getElementById('racer-label-'+i) }));
+
+    function fmt(s) { const m=Math.floor(s/60),sec=Math.floor(s%60); return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0'); }
+    function setComm(msg) { if (commentary) commentary.textContent = msg; }
+
+    function renderPositions() {
+      const tw = track.clientWidth || 800;
+      const avail = Math.max(100, tw - 58 - 52);
+      states.forEach((st, i) => {
+        const px = Math.min(avail+30, st.pos * avail);
+        if (racers[i].box) {
+          racers[i].box.style.transform = 'translateX('+px+'px)';
+          if (isRunning) {
+            racers[i].box.classList.add('is-running');
+            if (st.isTurbo) racers[i].box.classList.add('is-turbo');
+            else racers[i].box.classList.remove('is-turbo');
+          } else racers[i].box.classList.remove('is-running','is-turbo');
+        }
+      });
+    }
+
+    function animLoop(ts) {
+      if (!isRunning) return;
+      if (!lastTs) lastTs = ts;
+      const dt = Math.min(0.1, (ts-lastTs)/1000); lastTs = ts;
+      remaining = Math.max(0, remaining - dt);
+      display.textContent = fmt(Math.ceil(remaining));
+      const prog = Math.min(1, Math.max(0, 1-(remaining/totalDuration)));
+      states.forEach((st, i) => {
+        const wave = Math.sin(prog*Math.PI*4+st.seed*0.05)*0.045 + Math.sin(prog*Math.PI*8+st.seed)*0.025;
+        st.isTurbo = wave > 0.04 && isRunning;
+        if (prog < 0.9) st.pos = Math.max(0, Math.min(0.88, prog + wave*0.7));
+        else { const sr=(prog-0.9)/0.1; st.pos=Math.min(1.06, 0.88+sr*(0.12+((st.seed%10)-4.5)*0.008)); }
+      });
+      let leader=0, maxP=-1;
+      states.forEach((st, i) => { if (st.pos > maxP) { maxP=st.pos; leader=i; } });
+      commentCooldown -= dt;
+      if (leader !== lastLeader && commentCooldown <= 0 && prog < 0.9) {
+        lastLeader=leader; commentCooldown=3;
+        const msgs=[racers[leader].icon+' '+racers[leader].name+' surges ahead!','🌊 '+racers[leader].name+' diving at top speed!', racers[leader].icon+' '+racers[leader].name+' takes the current!'];
+        setComm(msgs[Math.floor(Math.random()*msgs.length)]);
+      } else if (prog >= 0.9 && commentCooldown <= 0) { commentCooldown=999; setComm('🔥 FINAL PUSH! Who reaches the finish current first?!'); }
+      renderPositions();
+      if (remaining <= 0) { finishRace(); return; }
+      animId = requestAnimationFrame(animLoop);
+    }
+
+    function start() {
+      if (isRunning) return;
+      if (raceFinished || remaining <= 0) reset();
+      isRunning=true; raceFinished=false; lastTs=null;
+      if (podium) podium.style.display='none';
+      btnStart.innerHTML='<span>Pause</span>'; btnStart.classList.add('is-running');
+      if (window.SoundFX) window.SoundFX.playClick();
+      setComm('🌊 DIVE! The ocean race has begun!');
+      animId = requestAnimationFrame(animLoop);
+    }
+    function pause() {
+      isRunning=false; if (animId) { cancelAnimationFrame(animId); animId=null; }
+      btnStart.classList.remove('is-running'); btnStart.innerHTML='<span>Resume</span>';
+      renderPositions(); if (window.SoundFX) window.SoundFX.playClick();
+      setComm('⏸️ Race paused. Click Resume to continue.');
+    }
+    function reset() {
+      isRunning=false; raceFinished=false;
+      if (animId) { cancelAnimationFrame(animId); animId=null; }
+      lastTs=null; remaining=totalDuration; display.textContent=fmt(remaining);
+      lastLeader=-1; commentCooldown=0;
+      states=RACERS.map(r=>({pos:0,seed:r.seed+Math.random()*30,isTurbo:false}));
+      renderPositions(); btnStart.classList.remove('is-running'); btnStart.innerHTML='<span>Start Race</span>';
+      if (podium) podium.style.display='none';
+      setComm('🌊 Dive in! Press Start Race to begin the ocean race.');
+    }
+    function finishRace() {
+      isRunning=false; raceFinished=true;
+      if (animId) { cancelAnimationFrame(animId); animId=null; }
+      display.textContent=fmt(0); renderPositions();
+      btnStart.classList.remove('is-running'); btnStart.innerHTML='<span>Start Race</span>';
+      const ranking=states.map((st,i)=>({i,pos:st.pos})).sort((a,b)=>b.pos-a.pos);
+      const winner=racers[ranking[0].i];
+      setComm('🏆 '+winner.icon+' '+winner.name+' WINS THE OCEAN RACE!');
+      if (window.SoundFX) window.SoundFX.playFanfare();
+      if (window.Confetti) window.Confetti.fire({count:180});
+      if (podiumTitle) podiumTitle.textContent='🏆 '+winner.icon+' '+winner.name+' Wins!';
+      const medals=['🥇 1st','🥈 2nd','🥉 3rd','🎖️ 4th'];
+      if (podiumGrid) podiumGrid.innerHTML=ranking.map((r,rank)=>`<div class="podium-item ${rank===0?'winner':''}"><div style="font-size:2rem;">${racers[r.i].icon}</div><strong style="font-size:0.95rem;color:#e0f2fe;">${racers[r.i].name}</strong><span style="font-size:0.75rem;color:#38bdf8;">${medals[rank]}</span></div>`).join('');
+      if (podium) podium.style.display='block';
+    }
+
+    btnStart.addEventListener('click', () => { if (isRunning) pause(); else start(); });
+    btnReset.addEventListener('click', reset);
+    if (btnAgain) btnAgain.addEventListener('click', reset);
+    display.addEventListener('click', async () => {
+      if (window.ClassPanel && window.ClassPanel.prompt) {
+        const res = await window.ClassPanel.prompt({title:'Set Race Duration',label:'Enter seconds or MM:SS:',defaultValue:String(totalDuration),placeholder:'e.g. 60',confirmText:'Set'});
+        if (res!=null) { let s=0; if (String(res).includes(':')) { const p=String(res).split(':').map(Number); s=p[0]*60+p[1]; } else s=parseInt(res,10); if (!isNaN(s)&&s>=5&&s<=3600) { totalDuration=s; reset(); } }
+      }
+    });
+    document.querySelectorAll('.presets-group .preset-chip[data-time]').forEach(c => {
+      c.addEventListener('click', () => { totalDuration=parseInt(c.getAttribute('data-time'),10); document.querySelectorAll('.presets-group .preset-chip').forEach(x=>x.classList.remove('active')); c.classList.add('active'); reset(); });
+    });
+    racers.forEach((r,i) => {
+      r.label.addEventListener('blur',()=>{ const v=r.label.textContent.trim(); if (v) RACERS[i].name=v; else r.label.textContent=RACERS[i].name; });
+      r.label.addEventListener('keydown',e=>{ if (e.key==='Enter') { e.preventDefault(); r.label.blur(); } });
+    });
+    window.addEventListener('keydown',e=>{ if (e.target.tagName==='INPUT'||e.target.isContentEditable) return; if (e.code==='Space') { e.preventDefault(); if (isRunning) pause(); else start(); } if (e.code==='KeyR') reset(); });
+    window.addEventListener('resize', renderPositions);
+    reset();
+  })();
+  </script>
+</body>
+</html>

@@ -172,6 +172,7 @@
 <body>
   <!-- Boom overlay -->
   <div class="boom-overlay" id="boom-overlay" role="dialog" aria-modal="true" aria-label="Explosion!" onclick="document.getElementById('boom-overlay').classList.remove('is-boom'); document.getElementById('btn-arm').textContent='Arm the Bomb!';">
+    <img src="/assets/icons/bomb-countdown.png" alt="3D Bomb Model Icon" style="width: 140px; height: 140px; border-radius: 50%; box-shadow: 0 0 60px rgba(239,68,68,0.8); animation: boomBounce 0.4s ease-out;">
     <div class="boom-emoji">💥</div>
     <div class="boom-text">BOOM!</div>
     <div style="color: #fff; font-size: 1.1rem; font-weight: 600; margin-top: 0.5rem;">Click anywhere to reset</div>
@@ -404,9 +405,66 @@
       } catch(e) {}
     }
 
+    function playExplosionSound() {
+      // 1. Audio file playback
+      try {
+        const audio = new Audio('/assets/audio/explosion.ogg');
+        audio.volume = 1.0;
+        const p = audio.play();
+        if (p !== undefined) p.catch(() => {});
+      } catch (e) {}
+
+      // 2. Cinematic Web Audio deep sub-bass shockwave + noise rumble layer
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const now = ctx.currentTime;
+
+        // Sub-bass frequency drop (160Hz -> 32Hz)
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(160, now);
+        subOsc.frequency.exponentialRampToValueAtTime(32, now + 1.2);
+        subGain.gain.setValueAtTime(0.9, now);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+        subOsc.start(now);
+        subOsc.stop(now + 1.65);
+
+        // White noise through lowpass filter sweep (explosive rumble)
+        const bufferSize = ctx.sampleRate * 2;
+        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+        const whiteNoise = ctx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1400, now);
+        filter.frequency.exponentialRampToValueAtTime(55, now + 1.8);
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.85, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 1.9);
+
+        whiteNoise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+
+        whiteNoise.start(now);
+        whiteNoise.stop(now + 2.0);
+      } catch (e) {}
+    }
+
     function explode() {
       boomOverlay.classList.add('is-boom');
       fuseSpark.style.display = 'none';
+      playExplosionSound();
     }
 
     function arm() {

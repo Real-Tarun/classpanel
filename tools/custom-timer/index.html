@@ -321,6 +321,7 @@
   <script src="/assets/i18n/de.js"></script>
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/fullscreen.js?v=21"></script>
+  <script src="/assets/js/audio.js?v=31"></script>
   <script src="/assets/js/common.js?v=31"></script>
   <script>
   (function() {
@@ -396,26 +397,56 @@
 
     function playEndSound(type) {
       if (type === 'none') return;
+      if (type === 'alarm') {
+        if (window.SoundFX && window.SoundFX.playCompletionAlarm) {
+          window.SoundFX.playCompletionAlarm('loop');
+          return;
+        }
+        try {
+          const alarmAud = new Audio('/assets/audio/digital-alarm.mp3');
+          alarmAud.volume = 0.9;
+          alarmAud.loop = true;
+          alarmAud.play().catch(() => {});
+          window._activeCustomTimerAlarm = alarmAud;
+          return;
+        } catch(e) {}
+      } else if (type === 'bell') {
+        if (window.SoundFX && window.SoundFX.playSchoolBell) {
+          window.SoundFX.playSchoolBell();
+          return;
+        }
+      } else if (type === 'chime') {
+        if (window.SoundFX && window.SoundFX.playGentleChime) {
+          window.SoundFX.playGentleChime();
+          return;
+        }
+      } else if (type === 'horn') {
+        if (window.SoundFX && window.SoundFX.playFanfare) {
+          window.SoundFX.playFanfare();
+          return;
+        }
+      }
+
       try {
         const ctx = getAudioCtx();
         if (ctx.state === 'suspended') ctx.resume();
         const notes = {
           bell: [880, 660, 440],
           chime: [523, 659, 784, 1047],
-          alarm: [440, 440, 440, 440, 440],
+          alarm: [440, 880, 440, 880, 440, 880],
           horn: [110, 88]
         };
-        const freqs = notes[type] || notes.bell;
+        const freqs = notes[type] || notes.alarm;
         freqs.forEach((f, i) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.connect(gain); gain.connect(ctx.destination);
           osc.frequency.value = f;
           osc.type = type === 'alarm' ? 'square' : 'sine';
-          const t = ctx.currentTime + i * (type === 'alarm' ? 0.25 : 0.3);
+          const t = ctx.currentTime + i * 0.25;
           gain.gain.setValueAtTime(0.4, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-          osc.start(t); osc.stop(t + 0.4);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+          osc.start(t); osc.stop(t + 0.35);
         });
       } catch(e) {}
     }
@@ -461,6 +492,16 @@
       overlay.classList.remove('is-active');
       endMessage.style.display = 'none';
       runDisplay.style.display = 'block';
+      if (window.SoundFX && window.SoundFX.stopAlarm) {
+        window.SoundFX.stopAlarm();
+      }
+      if (window._activeCustomTimerAlarm) {
+        try {
+          window._activeCustomTimerAlarm.pause();
+          window._activeCustomTimerAlarm.currentTime = 0;
+        } catch(e) {}
+        window._activeCustomTimerAlarm = null;
+      }
     }
 
     function pauseTimer() {

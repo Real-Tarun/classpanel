@@ -1086,41 +1086,57 @@
       function parseAndSetDuration(input) {
         if (!input) return;
         let secs = 0;
-        const str = String(input).trim();
-        if (str.includes(':')) {
+        const str = String(input).trim().toLowerCase();
+        const mMatch = str.match(/(\d+)\s*(?:m|min|minute)/);
+        const sMatch = str.match(/(\d+)\s*(?:s|sec|second)/);
+        if (mMatch || sMatch) {
+          if (mMatch) secs += parseInt(mMatch[1], 10) * 60;
+          if (sMatch) secs += parseInt(sMatch[1], 10);
+        } else if (str.includes(':')) {
           const parts = str.split(':').map(p => parseInt(p.trim(), 10) || 0);
           if (parts.length === 2) {
             secs = parts[0] * 60 + parts[1];
           }
         } else {
-          secs = parseInt(str, 10);
+          const n = parseInt(str, 10);
+          if (!isNaN(n)) {
+            secs = (n <= 10) ? n * 60 : n;
+          }
         }
 
         if (!isNaN(secs) && secs >= 5 && secs <= 3600) {
           totalDuration = secs;
           setActiveRacePreset(totalDuration, true);
           reset();
-          if (window.ClassPanel) window.ClassPanel.showToast(`Race duration set to ${formatTime(secs)}!`);
+          if (window.ClassPanel && window.ClassPanel.showToast) {
+            window.ClassPanel.showToast(`Race duration set to ${formatTime(secs)}!`);
+          }
         } else {
-          if (window.ClassPanel) window.ClassPanel.showToast('Please enter a valid duration between 5s and 60m.');
+          if (window.ClassPanel && window.ClassPanel.showToast) {
+            window.ClassPanel.showToast('Please enter a duration like "45s", "2m", "01:30" or 5 to 3600 seconds.');
+          }
         }
       }
 
       async function openCustomDurationModal() {
+        if (isRunning) pause();
+        const curM = Math.floor(totalDuration / 60);
+        const curS = totalDuration % 60;
+        const defVal = curM > 0 ? (curS > 0 ? `${curM}m ${curS}s` : `${curM}m`) : `${curS}s`;
+        let res = null;
         if (window.ClassPanel && window.ClassPanel.prompt) {
-          const res = await window.ClassPanel.prompt({
+          res = await window.ClassPanel.prompt({
             title: 'Set Custom Race Time',
-            label: 'Enter duration in seconds (e.g. 45, 90) or MM:SS (e.g. 01:30):',
-            defaultValue: String(totalDuration),
-            placeholder: 'e.g. 45 or 01:30',
+            label: 'Enter duration (e.g. "45s", "2m", "1m 30s", "90", or MM:SS):',
+            defaultValue: defVal,
+            placeholder: 'e.g. 2m or 45s',
             confirmText: 'Set Race Time'
           });
-          if (res !== null && res !== undefined) {
-            parseAndSetDuration(res);
-          }
         } else {
-          const val = prompt('Enter race duration in seconds (e.g. 45, 90, 120):', totalDuration);
-          if (val) parseAndSetDuration(val);
+          res = window.prompt('Enter race duration (e.g. 2m, 45s, 90, or 01:30):', defVal);
+        }
+        if (res !== null && res !== undefined) {
+          parseAndSetDuration(res);
         }
       }
 

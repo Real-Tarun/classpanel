@@ -296,10 +296,48 @@
       disp2.textContent = fmt(time2);
     }
 
+    function updateStartButton() {
+      if (gameOver) {
+        btnStart.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span>Play Again</span>`;
+        btnStart.disabled = false;
+        btnStart.style.opacity = '1';
+        return;
+      }
+      if (!isRunning) {
+        btnStart.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Start Game</span>`;
+        btnStart.disabled = false;
+        btnStart.style.opacity = '1';
+        btnStart.removeAttribute('title');
+        return;
+      }
+      if (isPaused) {
+        btnStart.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Resume (Space)</span>`;
+        btnStart.disabled = false;
+        btnStart.style.opacity = '1';
+        return;
+      }
+      // Running - clicking this central button switches clocks!
+      const nextP = activePlayer === 1 ? 'Player 2' : 'Player 1';
+      const curP = activePlayer === 1 ? 'Player 1' : 'Player 2';
+      btnStart.innerHTML = `
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/>
+          <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <span>End Move → ${nextP} (Space)</span>
+      `;
+      btnStart.disabled = false;
+      btnStart.style.opacity = '1';
+      btnStart.setAttribute('title', `Click to end ${curP}'s turn and switch to ${nextP} (or tap Space)`);
+    }
+
     function setActivePlayer(p) {
       activePlayer = p;
       panel1.classList.toggle('is-active', p === 1);
       panel2.classList.toggle('is-active', p === 2);
+      updateStartButton();
     }
 
     function applyPreset(totalSecs, inc) {
@@ -317,9 +355,8 @@
       isRunning = true;
       isPaused = false;
       if (activePlayer === null) setActivePlayer(1);
-      btnStart.disabled = true;
-      btnStart.style.opacity = '0.5';
       btnPause.disabled = false;
+      updateStartButton();
       timerId = setInterval(tick, 1000);
     }
 
@@ -354,6 +391,7 @@
       } else {
         setActivePlayer(activePlayer);
       }
+      updateStartButton();
     }
 
     function endGame(loser) {
@@ -363,6 +401,7 @@
       const winner = loser === 1 ? 2 : 1;
       document.getElementById(`panel-${loser}`).classList.add('is-lost');
       document.getElementById(`panel-${loser}`).classList.remove('is-active');
+      updateStartButton();
       if (window.ClassPanel) window.ClassPanel.showToast(`Player ${winner} wins on time!`);
     }
 
@@ -377,10 +416,9 @@
       updateDisplays();
       panel1.classList.remove('is-active', 'is-lost');
       panel2.classList.remove('is-active', 'is-lost');
-      btnStart.disabled = false;
-      btnStart.style.opacity = '1';
       btnPause.disabled = true;
       btnPause.querySelector('span').textContent = 'Pause';
+      updateStartButton();
     }
 
     // Preset buttons
@@ -417,14 +455,31 @@
     panel1.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') { e.preventDefault(); panel1.click(); }});
     panel2.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') { e.preventDefault(); panel2.click(); }});
 
-    btnStart.addEventListener('click', startGame);
+    function handleStartOrSwitch() {
+      if (gameOver) {
+        resetGame(true);
+        startGame();
+        return;
+      }
+      if (!isRunning) {
+        startGame();
+        return;
+      }
+      if (isPaused) {
+        pauseGame();
+        return;
+      }
+      switchPlayer();
+    }
+
+    btnStart.addEventListener('click', handleStartOrSwitch);
     btnPause.addEventListener('click', pauseGame);
     btnReset.addEventListener('click', () => resetGame(true));
 
-    // Spacebar to switch
+    // Spacebar to start or switch clocks
     document.addEventListener('keydown', (e) => {
       if (e.target.matches('input,textarea,select')) return;
-      if (e.code === 'Space') { e.preventDefault(); switchPlayer(); }
+      if (e.code === 'Space') { e.preventDefault(); handleStartOrSwitch(); }
     });
 
     updateDisplays();

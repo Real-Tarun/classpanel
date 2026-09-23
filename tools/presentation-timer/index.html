@@ -169,7 +169,9 @@
               <option value="180,240,300" selected>4-5 Min Presentation (Green 3m, Yellow 4m, Red 5m)</option>
               <option value="60,90,120">2 Min Lightning Talk (Green 1m, Yellow 1.5m, Red 2m)</option>
               <option value="300,420,600">7-10 Min Lecture (Green 5m, Yellow 7m, Red 10m)</option>
+              <option value="custom" id="opt-custom-preset">Custom Pacing...</option>
             </select>
+            <button class="preset-chip" id="btn-custom-pacing" title="Set custom green, yellow, and red pacing" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">⏱️ Custom Pacing</button>
           </div>
         </div>
       </div>
@@ -296,11 +298,47 @@
       const selectPreset = document.getElementById('select-speech-preset');
 
       function parsePreset() {
+        if (selectPreset.value === 'custom') return;
         const parts = selectPreset.value.split(',').map(n => parseInt(n, 10));
         greenSec = parts[0];
         yellowSec = parts[1];
         redSec = parts[2];
       }
+
+      async function promptCustomPacing() {
+        if (isRunning) pause();
+        const curG = (greenSec / 60).toFixed(1).replace('.0','');
+        const curY = (yellowSec / 60).toFixed(1).replace('.0','');
+        const curR = (redSec / 60).toFixed(1).replace('.0','');
+        let val;
+        if (window.ClassPanel && window.ClassPanel.prompt) {
+          val = await window.ClassPanel.prompt({
+            title: 'Custom Speech Pacing (Minutes)',
+            message: 'Enter Green (qualify), Yellow (warning), and Red (stop) minutes separated by commas:',
+            defaultValue: `${curG}, ${curY}, ${curR}`,
+            placeholder: 'e.g. 2, 3, 5'
+          });
+        } else {
+          val = window.prompt('Enter Green, Yellow, Red minutes separated by commas (e.g. 2, 3, 5):', `${curG}, ${curY}, ${curR}`);
+        }
+        if (!val) return;
+        const nums = val.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n) && n > 0);
+        if (nums.length >= 3) {
+          greenSec = Math.round(nums[0] * 60);
+          yellowSec = Math.round(nums[1] * 60);
+          redSec = Math.round(nums[2] * 60);
+          const opt = document.getElementById('opt-custom-preset');
+          if (opt) {
+            opt.textContent = `Custom (${nums[0]}m / ${nums[1]}m / ${nums[2]}m)`;
+            opt.value = `${greenSec},${yellowSec},${redSec}`;
+          }
+          selectPreset.value = opt ? opt.value : 'custom';
+          reset();
+        }
+      }
+
+      const btnCustomPacing = document.getElementById('btn-custom-pacing');
+      if (btnCustomPacing) btnCustomPacing.addEventListener('click', promptCustomPacing);
 
       function formatTime(s) {
         const m = Math.floor(s / 60);
@@ -379,8 +417,12 @@
       btnReset.addEventListener('click', reset);
 
       selectPreset.addEventListener('change', () => {
-        parsePreset();
-        reset();
+        if (selectPreset.value === 'custom') {
+          promptCustomPacing();
+        } else {
+          parsePreset();
+          reset();
+        }
       });
 
       parsePreset();

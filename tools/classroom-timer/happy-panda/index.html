@@ -165,7 +165,42 @@
 
       <!-- Panda Stage -->
       <div class="panda-stage" id="panda-stage">
-        <span class="panda-mascot idle" id="panda-emoji">🐼</span>
+        <div class="panda-mascot-container idle" id="panda-mascot-wrap">
+          <svg class="panda-svg" id="panda-svg" viewBox="0 0 160 160" width="135" height="135" aria-label="Animated Panda Mascot">
+            <!-- Ears -->
+            <circle cx="36" cy="40" r="22" fill="#1e293b"/>
+            <circle cx="36" cy="40" r="13" fill="#475569"/>
+            <circle cx="124" cy="40" r="22" fill="#1e293b"/>
+            <circle cx="124" cy="40" r="13" fill="#475569"/>
+            <!-- Head -->
+            <ellipse cx="80" cy="85" rx="58" ry="52" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"/>
+            <!-- Cheeks -->
+            <ellipse cx="42" cy="94" rx="10" ry="6" fill="#fecdd3" opacity="0.8"/>
+            <ellipse cx="118" cy="94" rx="10" ry="6" fill="#fecdd3" opacity="0.8"/>
+            <!-- Eye Patches -->
+            <ellipse cx="54" cy="77" rx="17" ry="20" fill="#1e293b" transform="rotate(-15 54 77)"/>
+            <ellipse cx="106" cy="77" rx="17" ry="20" fill="#1e293b" transform="rotate(15 106 77)"/>
+            <!-- Eyes Group -->
+            <g id="panda-eyes">
+              <ellipse cx="56" cy="76" rx="6.5" ry="7.5" fill="#ffffff"/>
+              <circle cx="56" cy="76" r="4.5" fill="#0f172a"/>
+              <circle cx="54.5" cy="74" r="1.8" fill="#ffffff"/>
+              <ellipse cx="104" cy="76" rx="6.5" ry="7.5" fill="#ffffff"/>
+              <circle cx="104" cy="76" r="4.5" fill="#0f172a"/>
+              <circle cx="102.5" cy="74" r="1.8" fill="#ffffff"/>
+            </g>
+            <!-- Nose & Mouth -->
+            <polygon points="80,90 73,83 87,83" fill="#1e293b"/>
+            <path id="panda-mouth" d="M74,94 Q80,99 86,94" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Bamboo stem in paws -->
+            <path d="M26,132 Q50,116 80,129" stroke="#10b981" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="38" cy="119" rx="8" ry="3.5" fill="#34d399" transform="rotate(-30 38 119)"/>
+            <ellipse cx="53" cy="118" rx="8" ry="3.5" fill="#10b981" transform="rotate(25 53 118)"/>
+            <!-- Paws -->
+            <ellipse cx="38" cy="129" rx="12" ry="9" fill="#1e293b"/>
+            <ellipse cx="122" cy="129" rx="12" ry="9" fill="#1e293b"/>
+          </svg>
+        </div>
         <div class="panda-speech" id="panda-speech">Ready to go! Press Start 🎋</div>
         <span class="timer-display-panda" id="timer-display" title="Click to edit time">00:05:00</span>
         <div class="progress-bar-wrap">
@@ -194,6 +229,7 @@
         <button class="preset-chip" data-seconds="900">15 min</button>
         <button class="preset-chip" data-seconds="1800">30 min</button>
         <button class="preset-chip" data-seconds="3600">1 hr</button>
+        <button class="preset-chip" id="btn-custom-time" title="Click to enter custom duration">⏱️ Custom Time</button>
       </div>
 
       <!-- Alarm Banner -->
@@ -270,7 +306,9 @@
   (function(){
     let initial = 300, remaining = 300, isRunning = false, interval = null;
     const display = document.getElementById('timer-display');
-    const panda = document.getElementById('panda-emoji');
+    const pandaWrap = document.getElementById('panda-mascot-wrap');
+    const pandaEyes = document.getElementById('panda-eyes');
+    const pandaMouth = document.getElementById('panda-mouth');
     const speech = document.getElementById('panda-speech');
     const fill = document.getElementById('progress-fill');
     const alarmBanner = document.getElementById('alarm-banner');
@@ -291,9 +329,39 @@
     function setPandaState(state) {
       const st = PANDA_STATES[state];
       if (!st) return;
-      panda.className = 'panda-mascot ' + st.cls;
-      panda.textContent = st.emoji;
+      if (pandaWrap) pandaWrap.className = 'panda-mascot-container ' + st.cls;
       speech.textContent = st.speeches[Math.floor(Math.random() * st.speeches.length)];
+      
+      // Update SVG facial expression
+      if (pandaEyes && pandaMouth) {
+        if (state === 'done') {
+          // Happy celebration curved eyes
+          pandaEyes.innerHTML = `
+            <path d="M48,77 Q56,70 64,77" stroke="#ffffff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M96,77 Q104,70 112,77" stroke="#ffffff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          `;
+          pandaMouth.setAttribute('d', 'M72,93 Q80,103 88,93');
+        } else if (state === 'danger') {
+          pandaEyes.innerHTML = `
+            <circle cx="56" cy="76" r="6" fill="#ffffff"/>
+            <circle cx="56" cy="76" r="3" fill="#0f172a"/>
+            <circle cx="104" cy="76" r="6" fill="#ffffff"/>
+            <circle cx="104" cy="76" r="3" fill="#0f172a"/>
+          `;
+          pandaMouth.setAttribute('d', 'M74,97 Q80,92 86,97');
+        } else {
+          // Standard / focus eyes
+          pandaEyes.innerHTML = `
+            <ellipse cx="56" cy="76" rx="6.5" ry="7.5" fill="#ffffff"/>
+            <circle cx="56" cy="76" r="4.5" fill="#0f172a"/>
+            <circle cx="54.5" cy="74" r="1.8" fill="#ffffff"/>
+            <ellipse cx="104" cy="76" rx="6.5" ry="7.5" fill="#ffffff"/>
+            <circle cx="104" cy="76" r="4.5" fill="#0f172a"/>
+            <circle cx="102.5" cy="74" r="1.8" fill="#ffffff"/>
+          `;
+          pandaMouth.setAttribute('d', 'M74,94 Q80,99 86,94');
+        }
+      }
     }
 
     function updateDisplay() {
@@ -311,7 +379,7 @@
         if (isRunning) setPandaState('warning');
       } else if (isRunning) {
         // Only set running if we haven't already
-        if (!panda.classList.contains('running')) setPandaState('running');
+        if (pandaWrap && !pandaWrap.classList.contains('running')) setPandaState('running');
       }
     }
 

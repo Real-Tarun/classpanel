@@ -341,7 +341,21 @@
   // --- 6. Quick Tools Search / Command Palette ---
   const TOOLS_LIST = [
     { title: 'Classroom & Study Timer', url: '/tools/classroom-timer/', icon: '⏱️', desc: 'Giant countdown, stopwatch, ambient music & Pomodoro focus timer' },
+    { title: 'Happy Panda Timer', url: '/tools/classroom-timer/happy-panda/', icon: '🐼', desc: 'Friendly panda mascot timer that cheers and reacts to countdown' },
+    { title: 'Rocket Launch Timer', url: '/tools/classroom-timer/rocket-launch/', icon: '🚀', desc: 'Space rocket countdown timer with fueling stages and launch liftoff' },
+    { title: 'Bubble Pop Timer', url: '/tools/classroom-timer/bubble-pop/', icon: '🫧', desc: 'Floating bubble spheres that pop as the countdown timer progresses' },
     { title: 'Standalone Stopwatch', url: '/tools/stopwatch/', icon: '⏱️', desc: 'Precision millisecond stopwatch with split lap times & rankings' },
+    { title: 'Split / Lap Timer', url: '/tools/split-timer/', icon: '⏱️', desc: 'Stopwatch with lap split times, deltas, and fastest/slowest lap badges' },
+    { title: 'Online Metronome', url: '/tools/metronome/', icon: '🎵', desc: 'Adjustable BPM metronome with visual beat indicator, tap tempo & time signatures' },
+    { title: 'Chess Clock & Timer', url: '/tools/chess-timer/', icon: '♟️', desc: 'Two-player chess clock with Blitz, Rapid, Fischer increment & custom controls' },
+    { title: 'Bomb Countdown Timer', url: '/tools/bomb-countdown/', icon: '💣', desc: 'Tension-building countdown with burning fuse and dramatic BOOM explosion' },
+    { title: 'Make Your Own Timer', url: '/tools/custom-timer/', icon: '🛠️', desc: 'Build a personalized countdown with custom colors, labels, and end sounds' },
+    { title: 'Talking Clock', url: '/tools/talking-clock/', icon: '🗣️', desc: 'Clock that speaks the time aloud using speech synthesis' },
+    { title: 'Race Timers & F1 Start Lights', url: '/tools/race-timers/', icon: '🏁', desc: 'Formula 1 start reaction test & animated sprints' },
+    { title: 'Space Race Timer', url: '/tools/race-timers/space-race/', icon: '🚀', desc: 'Sci-fi starfield astronaut and rocket sprint countdown' },
+    { title: 'Ocean Race Timer', url: '/tools/race-timers/ocean-race/', icon: '🌊', desc: 'Underwater marine life and submarine sprint countdown' },
+    { title: 'Jungle Race Timer', url: '/tools/race-timers/jungle-race/', icon: '🌿', desc: 'Wild safari animals sprint countdown across jungle tracks' },
+    { title: 'Dragon Race Timer', url: '/tools/race-timers/dragon-race/', icon: '🐉', desc: 'Mythical elemental dragons racing across a fiery fantasy sky' },
     { title: 'Rock Paper Scissors', url: '/tools/rock-paper-scissors/', icon: '✂️', desc: 'Play rock paper scissors vs computer with best-of series & score tracker' },
     { title: 'Coin Flip (Heads or Tails)', url: '/tools/coin-flip/', icon: '🪙', desc: '3D metallic coin toss, multi-coin flips & probability breakdown' },
     { title: 'Dice Roller (d4–d100)', url: '/tools/dice-roller/', icon: '🎲', desc: 'Roll multiple dice with customizable sides, sums, and roll history' },
@@ -354,7 +368,6 @@
     { title: 'Random Number Generator', url: '/tools/random-number-generator/', icon: '🔢', desc: 'True RNG picker, custom ranges, lottery draws & no-duplicate sets' },
     { title: 'Multi-Team Tally Counter', url: '/tools/tally-counter/', icon: '📊', desc: 'Scoreboard, workout reps, event attendance & multi-team clicker counter' },
     { title: 'Presentation & Speech Timer', url: '/tools/presentation-timer/', icon: '🚦', desc: 'Traffic light green/yellow/red talk, pitch & debate pacing timer' },
-    { title: 'Race Timers & F1 Start Lights', url: '/tools/race-timers/', icon: '🏁', desc: 'Formula 1 start reaction test & animated sprints' },
     { title: 'Countdown to Any Date', url: '/tools/holiday-timers/', icon: '🎉', desc: 'Live countdown timer for deadlines, events, birthdays & holidays' },
     { title: 'Dice & Chance Games', url: '/tools/chance-games/', icon: '🎰', desc: 'All-in-one suite with 3D dice, coin flips, and decision games' }
   ];

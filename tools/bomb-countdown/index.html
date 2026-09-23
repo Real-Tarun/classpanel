@@ -232,12 +232,24 @@
           </div>
         </div>
 
+        <!-- Duration Inputs & Custom Time -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+          <div style="display: inline-flex; align-items: center; gap: 0.35rem; background: var(--bg-surface); padding: 0.35rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+            <label for="input-min" style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Min:</label>
+            <input type="number" id="input-min" min="0" max="60" value="3" style="width: 56px; text-align: center; font-weight: 800; font-size: 0.95rem; padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-surface-subtle); color: var(--text-primary);">
+            <label for="input-sec" style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-left: 0.35rem;">Sec:</label>
+            <input type="number" id="input-sec" min="0" max="59" value="0" style="width: 56px; text-align: center; font-weight: 800; font-size: 0.95rem; padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-surface-subtle); color: var(--text-primary);">
+            <button class="preset-chip" id="btn-apply-time" style="padding: 0.3rem 0.75rem; font-size: 0.85rem; font-weight: 700; background: var(--primary-light); color: var(--primary); border-color: var(--primary);">Set</button>
+          </div>
+          <button class="preset-chip" id="btn-custom-bomb" title="Set custom time">⏱️ Custom Time</button>
+        </div>
+
         <!-- Quick presets -->
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
           <button class="preset-chip" data-sec="30">30s</button>
           <button class="preset-chip" data-sec="60">1 min</button>
           <button class="preset-chip" data-sec="120">2 min</button>
-          <button class="preset-chip" data-sec="180">3 min</button>
+          <button class="preset-chip active" data-sec="180">3 min</button>
           <button class="preset-chip" data-sec="300">5 min</button>
           <button class="preset-chip" data-sec="600">10 min</button>
         </div>
@@ -444,22 +456,100 @@
       document.getElementById('input-sec').disabled = false;
     }
 
+    function setDuration(totalSecs, fromPreset = false) {
+      if (isRunning) return;
+      totalSeconds = Math.max(5, Math.min(3600, totalSecs));
+      remaining = totalSeconds;
+      const m = Math.floor(totalSeconds / 60);
+      const s = totalSeconds % 60;
+      const minEl = document.getElementById('input-min');
+      const secEl = document.getElementById('input-sec');
+      if (minEl) minEl.value = m;
+      if (secEl) secEl.value = s;
+      bombDisplay.textContent = fmt(remaining);
+      updateFuse();
+      updateColors();
+      
+      document.querySelectorAll('[data-sec], #btn-custom-bomb').forEach(b => b.classList.remove('active'));
+      if (fromPreset) {
+        const matching = document.querySelector(`[data-sec="${totalSeconds}"]`);
+        if (matching) matching.classList.add('active');
+        else {
+          const btnCust = document.getElementById('btn-custom-bomb');
+          if (btnCust) btnCust.classList.add('active');
+        }
+      } else {
+        const btnCust = document.getElementById('btn-custom-bomb');
+        if (btnCust) btnCust.classList.add('active');
+      }
+    }
+
+    const btnApply = document.getElementById('btn-apply-time');
+    if (btnApply) {
+      btnApply.addEventListener('click', () => {
+        const mins = parseInt(document.getElementById('input-min').value) || 0;
+        const secs = parseInt(document.getElementById('input-sec').value) || 0;
+        setDuration(mins * 60 + secs, false);
+      });
+    }
+
+    async function promptCustomBombTime() {
+      if (isRunning) return;
+      const curM = Math.floor(totalSeconds / 60);
+      const curS = totalSeconds % 60;
+      const defVal = curM > 0 ? (curS > 0 ? `${curM}m ${curS}s` : `${curM}m`) : `${curS}s`;
+      let val;
+      if (window.ClassPanel && window.ClassPanel.prompt) {
+        val = await window.ClassPanel.prompt({
+          title: 'Custom Bomb Countdown',
+          message: 'Enter countdown time (e.g. "45s", "2m", "5m 30s", or seconds):',
+          defaultValue: defVal,
+          placeholder: 'e.g. 2m 30s'
+        });
+      } else {
+        val = window.prompt('Enter countdown time (e.g. 2m 30s or 90):', defVal);
+      }
+      if (!val) return;
+      val = val.trim().toLowerCase();
+      let total = 0;
+      const mMatch = val.match(/(\d+)\s*(?:m|min|minute)/);
+      const sMatch = val.match(/(\d+)\s*(?:s|sec|second)/);
+      if (mMatch || sMatch) {
+        if (mMatch) total += parseInt(mMatch[1], 10) * 60;
+        if (sMatch) total += parseInt(sMatch[1], 10);
+      } else if (val.includes(':')) {
+        const parts = val.split(':');
+        total = (parseInt(parts[0], 10) || 0) * 60 + (parseInt(parts[1], 10) || 0);
+      } else {
+        const n = parseInt(val, 10);
+        if (!isNaN(n)) total = n > 60 ? n : n * 60;
+      }
+      if (total > 0) {
+        setDuration(total, false);
+      }
+    }
+
+    const btnCustomBomb = document.getElementById('btn-custom-bomb');
+    if (btnCustomBomb) btnCustomBomb.addEventListener('click', promptCustomBombTime);
+    if (bombDisplay) {
+      bombDisplay.style.cursor = 'pointer';
+      bombDisplay.setAttribute('title', 'Click to set custom countdown time');
+      bombDisplay.addEventListener('click', promptCustomBombTime);
+    }
+
     btnArm.addEventListener('click', () => { if (!isRunning) arm(); });
     btnDefuse.addEventListener('click', defuse);
 
     // Quick presets
     document.querySelectorAll('[data-sec]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const s = parseInt(btn.getAttribute('data-sec'));
-        document.getElementById('input-min').value = Math.floor(s/60);
-        document.getElementById('input-sec').value = s % 60;
-        bombDisplay.textContent = fmt(s);
+        const s = parseInt(btn.getAttribute('data-sec'), 10);
+        setDuration(s, true);
       });
     });
 
     // Init display
-    bombDisplay.textContent = fmt(180);
-    updateFuse();
+    setDuration(180, true);
   })();
   </script>
 </body>

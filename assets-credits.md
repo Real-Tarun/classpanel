@@ -46,6 +46,15 @@ It is the source of truth for the public `/credits` page.
 
 ---
 
+## Tool Icons & Cards
+
+| Asset | Source | Source URL | License | Attribution Required |
+|---|---|---|---|---|
+| Homepage Tool Cards & Header Icons | Flaticon (Freepik & various authors) | https://www.flaticon.com/ | Flaticon License with attribution | Yes (Attributed on /credits) |
+| UI Control Icons (Play, Pause, Mute, Theme) | Original SVG / Lucide | — | MIT / CC0 | No |
+
+---
+
 ## Fonts
 
 | Font | Source | License | Attribution Required |

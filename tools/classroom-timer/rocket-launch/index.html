@@ -76,11 +76,19 @@
       line-height: 1;
       margin-bottom: 0.25rem;
       transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .rocket-emoji.idle { animation: rocketIdle 2.5s ease-in-out infinite; }
     .rocket-emoji.fueling { animation: rocketFuel 1s ease-in-out infinite alternate; }
+    .rocket-emoji.fueling #rocket-flame { opacity: 1 !important; animation: flameFlicker 0.2s ease-in-out infinite alternate; }
+    @keyframes flameFlicker {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #f97316); }
+    }
     .rocket-emoji.launched { animation: rocketLaunch 0.8s ease-out forwards; }
+    .rocket-emoji.launched #rocket-flame { opacity: 1 !important; transform: scaleY(1.4); }
     @keyframes rocketIdle {
       0%, 100% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-4px) rotate(2deg); }
@@ -199,7 +207,7 @@
       <!-- Rocket Stage -->
       <div class="rocket-stage">
         <div class="rocket-wrap">
-          <div class="rocket-vector-container idle" id="rocket-mascot-wrap">
+          <div class="rocket-emoji idle" id="rocket-emoji">
             <svg class="rocket-svg" id="rocket-svg" viewBox="0 0 100 160" width="100" height="150" aria-label="Space Rocket Illustration">
               <defs>
                 <linearGradient id="rocketBodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -411,22 +419,80 @@
       setTimeout(()=>{rocket.className='rocket-emoji idle'; rocket.style.opacity='1';},1200);
     }
 
-    btnStart.addEventListener('click',()=>{if(isRunning)pause();else start();});
-    btnReset.addEventListener('click',reset);
-    if(btnStopAlarm)btnStopAlarm.addEventListener('click',()=>{if(alarmBanner)alarmBanner.style.display='none';reset();});
-    display.addEventListener('click',()=>{
-      if(isRunning)return;
-      const v=prompt('Enter time (MM:SS or seconds):', fmt(remaining));
-      if(!v)return;
-      let s=0;
-      if(v.includes(':')){ const p=v.trim().split(':').map(Number); if(p.length===3) s=p[0]*3600+p[1]*60+p[2]; else if(p.length===2) s=p[0]*60+p[1]; }
-      else s=parseInt(v,10);
-      if(!isNaN(s)&&s>0&&s<=99*3600){initial=s;remaining=s;updateDisplay();}
+    const btnCustomTime = document.getElementById('btn-custom-time');
+
+    function parseDuration(val) {
+      if (!val) return null;
+      let s = 0;
+      const str = String(val).trim().toLowerCase();
+      const mMatch = str.match(/(\d+)\s*(?:m|min)/);
+      const sMatch = str.match(/(\d+)\s*(?:s|sec)/);
+      if (mMatch || sMatch) {
+        if (mMatch) s += parseInt(mMatch[1], 10) * 60;
+        if (sMatch) s += parseInt(sMatch[1], 10);
+      } else if (str.includes(':')) {
+        const parts = str.split(':').map(Number);
+        if (parts.length === 3) s = (parts[0] || 0) * 3600 + (parts[1] || 0) * 60 + (parts[2] || 0);
+        else if (parts.length === 2) s = (parts[0] || 0) * 60 + (parts[1] || 0);
+      } else {
+        s = parseInt(str, 10);
+      }
+      return (!isNaN(s) && s > 0 && s <= 99 * 3600) ? s : null;
+    }
+
+    function applyCustomDuration(val) {
+      const s = parseDuration(val);
+      if (s !== null) {
+        initial = s;
+        remaining = s;
+        document.querySelectorAll('.presets-group .preset-chip').forEach(x => x.classList.remove('active'));
+        if (btnCustomTime) btnCustomTime.classList.add('active');
+        updateDisplay();
+        reset();
+        if (window.ClassPanel && window.ClassPanel.showToast) {
+          window.ClassPanel.showToast(`Rocket timer set to ${fmt(s)}!`);
+        }
+      }
+    }
+
+    async function openCustomTime() {
+      if (isRunning) pause();
+      const cur = fmt(remaining);
+      if (window.ClassPanel && window.ClassPanel.prompt) {
+        const val = await window.ClassPanel.prompt({
+          title: '⏱️ Custom Rocket Timer',
+          label: 'Enter duration (e.g. "2:30", "90s", "10 min", or seconds):',
+          defaultValue: cur,
+          placeholder: 'e.g. 05:00 or 90s',
+          confirmText: 'Set Countdown'
+        });
+        if (val !== null && val !== undefined) applyCustomDuration(val);
+      } else {
+        const val = window.prompt('Enter countdown time (e.g. 2:30, 90s, or seconds):', cur);
+        if (val) applyCustomDuration(val);
+      }
+    }
+
+    btnStart.addEventListener('click', () => { if (isRunning) pause(); else start(); });
+    btnReset.addEventListener('click', reset);
+    if (btnStopAlarm) btnStopAlarm.addEventListener('click', () => { if (alarmBanner) alarmBanner.style.display = 'none'; reset(); });
+    if (btnCustomTime) btnCustomTime.addEventListener('click', openCustomTime);
+    display.addEventListener('click', openCustomTime);
+
+    document.querySelectorAll('.presets-group .preset-chip[data-seconds]').forEach(c => {
+      c.addEventListener('click', () => {
+        initial = parseInt(c.getAttribute('data-seconds'), 10);
+        remaining = initial;
+        document.querySelectorAll('.presets-group .preset-chip').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        reset();
+      });
     });
-    document.querySelectorAll('.presets-group .preset-chip[data-seconds]').forEach(c=>{
-      c.addEventListener('click',()=>{initial=parseInt(c.getAttribute('data-seconds'),10);remaining=initial;document.querySelectorAll('.presets-group .preset-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');reset();});
+    window.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.isContentEditable) return;
+      if (e.code === 'Space') { e.preventDefault(); if (isRunning) pause(); else start(); }
+      if (e.code === 'KeyR') reset();
     });
-    window.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.isContentEditable)return;if(e.code==='Space'){e.preventDefault();if(isRunning)pause();else start();}if(e.code==='KeyR')reset();});
     reset();
   })();
   </script>

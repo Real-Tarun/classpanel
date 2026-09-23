@@ -237,52 +237,59 @@
     function reset(){isRunning=false;raceFinished=false;if(animId){cancelAnimationFrame(animId);animId=null;}lastTs=null;remaining=totalDuration;display.textContent=fmt(remaining);lastLeader=-1;commentCooldown=0;states=RACERS.map(r=>({pos:0,seed:r.seed+Math.random()*30,isTurbo:false}));renderPositions();btnStart.classList.remove('is-running');btnStart.innerHTML='<span>Start Race</span>';if(podium)podium.style.display='none';setComm('🐉 Dragons assembled! Press Start Race to begin the epic race.');}
     function finishRace(){isRunning=false;raceFinished=true;if(animId){cancelAnimationFrame(animId);animId=null;}display.textContent=fmt(0);renderPositions();btnStart.classList.remove('is-running');btnStart.innerHTML='<span>Start Race</span>';const ranking=states.map((st,i)=>({i,pos:st.pos})).sort((a,b)=>b.pos-a.pos);const winner=racers[ranking[0].i];setComm('🏆 '+winner.icon+' '+winner.name+' WINS THE DRAGON RACE!');if(window.SoundFX)window.SoundFX.playFanfare();if(window.Confetti)window.Confetti.fire({count:200,colors:['#dc2626','#f59e0b','#7c3aed','#0369a1']});if(podiumTitle)podiumTitle.textContent='🏆 '+winner.icon+' '+winner.name+' Claims Glory!';const medals=['🥇 1st','🥈 2nd','🥉 3rd','🎖️ 4th'];if(podiumGrid)podiumGrid.innerHTML=ranking.map((r,rank)=>`<div class="podium-item ${rank===0?'winner':''}"><div style="font-size:2rem;">${racers[r.i].icon}</div><strong style="font-size:0.95rem;color:#fed7aa;">${racers[r.i].name}</strong><span style="font-size:0.75rem;color:#fb923c;">${medals[rank]}</span></div>`).join('');if(podium)podium.style.display='block';}
     
+    function parseRaceDuration(val) {
+      if (!val) return null;
+      let s = 0;
+      const str = String(val).trim().toLowerCase();
+      const mMatch = str.match(/(\d+)\s*(?:m|min)/);
+      const sMatch = str.match(/(\d+)\s*(?:s|sec)/);
+      if (mMatch || sMatch) {
+        if (mMatch) s += parseInt(mMatch[1], 10) * 60;
+        if (sMatch) s += parseInt(sMatch[1], 10);
+      } else if (str.includes(':')) {
+        const p = str.split(':').map(Number);
+        s = (p[0] || 0) * 60 + (p[1] || 0);
+      } else {
+        s = parseInt(str, 10);
+      }
+      return (!isNaN(s) && s >= 5 && s <= 3600) ? s : null;
+    }
+
     async function promptCustomRaceTime() {
       if (isRunning) pause();
+      let res = null;
       if (window.ClassPanel && window.ClassPanel.prompt) {
-        const res = await window.ClassPanel.prompt({
+        res = await window.ClassPanel.prompt({
           title: 'Set Race Duration',
           label: 'Enter duration (e.g. "45s", "1m 30s", "90", or MM:SS):',
           defaultValue: String(totalDuration),
           placeholder: 'e.g. 90 or 01:30',
           confirmText: 'Set Time'
         });
-        if (res != null) {
-          let s = 0;
-          const str = String(res).trim().toLowerCase();
-          const mMatch = str.match(/(\d+)\s*(?:m|min)/);
-          const sMatch = str.match(/(\d+)\s*(?:s|sec)/);
-          if (mMatch || sMatch) {
-            if (mMatch) s += parseInt(mMatch[1], 10) * 60;
-            if (sMatch) s += parseInt(sMatch[1], 10);
-          } else if (str.includes(':')) {
-            const p = str.split(':').map(Number);
-            s = (p[0] || 0) * 60 + (p[1] || 0);
-          } else {
-            s = parseInt(str, 10);
-          }
-          if (!isNaN(s) && s >= 5 && s <= 3600) {
-            totalDuration = s;
-            document.querySelectorAll('.presets-group .preset-chip').forEach(x => x.classList.remove('active'));
-            const btnCust = document.getElementById('btn-custom-race');
-            if (btnCust) btnCust.classList.add('active');
-            reset();
-          }
-        }
       } else {
-        const res = window.prompt('Enter race duration (seconds or 1m 30s):', String(totalDuration));
-        if (res) {
-          const s = parseInt(res, 10);
-          if (!isNaN(s) && s >= 5 && s <= 3600) { totalDuration = s; reset(); }
+        res = window.prompt('Enter race duration (e.g. 45s, 1m 30s, or seconds):', String(totalDuration));
+      }
+      if (res != null) {
+        const s = parseRaceDuration(res);
+        if (s !== null) {
+          totalDuration = s;
+          document.querySelectorAll('.presets-group .preset-chip').forEach(x => x.classList.remove('active'));
+          const btnCust = document.getElementById('btn-custom-race');
+          if (btnCust) btnCust.classList.add('active');
+          reset();
+          if (window.ClassPanel && window.ClassPanel.showToast) {
+            window.ClassPanel.showToast(`Dragon race countdown set to ${s} seconds!`);
+          }
         }
       }
     }
     const btnCustomRace = document.getElementById('btn-custom-race');
     if (btnCustomRace) btnCustomRace.addEventListener('click', promptCustomRaceTime);
     
-    btnStart.addEventListener('click',()=>{if(isRunning)pause();else start();});
-    btnReset.addEventListener('click',reset);
-    if(btnAgain)btnAgain.addEventListener('click',reset);
+    btnStart.addEventListener('click', () => { if (isRunning) pause(); else start(); });
+    btnReset.addEventListener('click', reset);
+    if (btnAgain) btnAgain.addEventListener('click', reset);
+    display.addEventListener('click', promptCustomRaceTime);
     document.querySelectorAll('.presets-group .preset-chip[data-time]').forEach(c=>{c.addEventListener('click',()=>{totalDuration=parseInt(c.getAttribute('data-time'),10);document.querySelectorAll('.presets-group .preset-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');reset();});});
     racers.forEach((r,i)=>{r.label.addEventListener('blur',()=>{const v=r.label.textContent.trim();if(v)RACERS[i].name=v;else r.label.textContent=RACERS[i].name;});r.label.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();r.label.blur();}});});
     window.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.isContentEditable)return;if(e.code==='Space'){e.preventDefault();if(isRunning)pause();else start();}if(e.code==='KeyR')reset();});

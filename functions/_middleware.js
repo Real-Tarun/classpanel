@@ -20,6 +20,21 @@ export async function onRequest(context) {
     );
   }
 
+  // Handle Google AdSense ads.txt directly with HTTP 200 (fastest response, clean single headers)
+  if (url.pathname === '/ads.txt') {
+    return new Response(
+      'google.com, pub-1563010132282807, DIRECT, f08c47fec0942fa0\n',
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'public, max-age=0, must-revalidate',
+          'Access-Control-Allow-Origin': '*'
+        }
+      }
+    );
+  }
+
   // Serve clean robots.txt directly to prevent Cloudflare AI-block & Content-Signal injection
   if (url.pathname === '/robots.txt') {
     const robotsTxt = `# ==============================================================================
@@ -46,6 +61,13 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
+
+# Google AdSense Crawlers
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Google-adstxt
+Allow: /
 
 # Googlebot & Google Search Console Inspection Tools
 User-agent: Googlebot

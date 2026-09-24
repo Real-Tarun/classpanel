@@ -23,6 +23,13 @@ Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
 
+# Google AdSense Crawlers
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Google-adstxt
+Allow: /
+
 # Googlebot & Google Search Console Inspection Tools
 User-agent: Googlebot
 Allow: /

@@ -8,10 +8,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://classpanel.online';
   const lastModified = new Date('2026-09-17');
 
-  // Interactive online tools (17 tools)
+  // Interactive online tools (all 23 tools)
   const tools = [
-    '/tools/race-timers/',
     '/tools/classroom-timer/',
+    '/tools/race-timers/',
     '/tools/holiday-timers/',
     '/tools/random-name-picker/',
     '/tools/random-number-generator/',
@@ -27,6 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/dice-roller/',
     '/tools/color-picker/',
     '/tools/stopwatch/',
+    '/tools/metronome/',
+    '/tools/chess-timer/',
+    '/tools/talking-clock/',
+    '/tools/bomb-countdown/',
+    '/tools/custom-timer/',
+    '/tools/split-timer/',
   ];
 
   // Blog guide articles

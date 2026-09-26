@@ -134,69 +134,72 @@
       </div>
     </header>
 
-    <article class="article-content">
+        <article class="article-content">
       <p>
-        Every educator knows the immediate tension that fills a room when prizes, special duties, or speaking turns are up for grabs. Even with the best intentions, physical popsicle sticks, paper slips pulled from a hat, or a simple point-and-call can trigger accusations of teacher bias: <em>"You always pick them first!"</em> or <em>"You looked at the stick before pulling it!"</em>
+        Every experienced educator knows the fraught scenario: a teacher poses an engaging discussion question, scans the room, and selects a student to answer — only for half the class to immediately groan, <em>"You always call on Sarah! That's not fair!"</em> Even when a teacher makes every effort to distribute cold calls objectively, human cognitive biases, line-of-sight preferences, and subtle behavioral conditioning inevitably influence who gets selected.
       </p>
       <p>
-        Eliminating this perceived favoritism is critical not just for harmony, but for building classroom psychological safety. When students trust that opportunities and responsibilities are distributed with 100% mathematical fairness, resistance melts away and engagement surges.
+        Student perceptions of fairness deeply influence classroom engagement, psychological safety, and participation culture. If students believe calling systems are rigged or favored, disengagement follows swiftly. Establishing a transparent, randomized, and visually engaging method for student draws transforms turn-taking from a source of interpersonal suspicion into an exciting classroom ritual.
       </p>
 
-      <h2>The Pitfalls of Physical Selection Methods</h2>
+      <h2>Why Traditional Popsicle Sticks and Hat Draws Fall Short</h2>
       <p>
-        Traditional classroom raffle techniques carry subtle systemic biases that students notice quickly:
+        For decades, writing student names on wooden popsicle sticks in a coffee can has been the gold standard of equitable classroom participation. While well-intentioned, physical sticks come with significant drawbacks:
       </p>
       <ul>
-        <li><strong>Tactile Clues:</strong> Popsicle sticks get smudged, bent, or dog-eared over time. A teacher might unconsciously avoid a frayed stick or gravitate toward a clean one.</li>
-        <li><strong>Paper Clumping:</strong> Folded slips in a jar don't randomize effectively unless shaken vigorously. Slips near the bottom often remain unpicked for entire academic terms.</li>
-        <li><strong>Confirmation Bias:</strong> If a high-achieving student gets chosen twice in a row by chance, peers immediately assume deliberate favoritism rather than statistical variance.</li>
+        <li><strong>Wear, Tear & Manipulation:</strong> Frequent use frays the wood, students recognize distinct pen markings, and sticks can be covertly pocketed or pushed to the bottom.</li>
+        <li><strong>Accidental Teacher Filtering:</strong> Subconsciously, a teacher's fingers may hesitate over a stick when knowing a particular student struggles with anxiety or public speaking, unintentionally biasing the draw.</li>
+        <li><strong>Lack of Front-of-Room Visibility:</strong> When pulling a stick from a can, students seated ten desks away cannot see the name before it is announced, leaving room for skepticism.</li>
       </ul>
 
       <!-- CTA Tool Card -->
       <div class="article-tool-cta">
         <div class="article-tool-cta-text">
-          <h4>Try ClassPanel's Free Name Picker</h4>
-          <p>Spin a giant colorful wheel directly on your smartboard. Zero logins, custom rosters, and sound effects.</p>
+          <h4>Spin ClassPanel's Wheel of Names</h4>
+          <p>Exciting full-screen spin animations, custom student rosters, confetti celebration, and instant "Remove on Pick" equity.</p>
         </div>
-        <a href="/tools/random-name-picker/" class="btn-giant btn-giant-primary" style="padding: 0.75rem 1.25rem; font-size: 0.95rem; text-decoration: none;">Launch Wheel Picker</a>
+        <a href="/tools/random-name-picker/" class="btn-giant btn-giant-primary" style="padding: 0.75rem 1.25rem; font-size: 0.95rem; text-decoration: none;">Launch Wheel of Names</a>
       </div>
 
-      <h2>3 Rules for Legitimate Classroom Randomization</h2>
+      <h2>How Digital Randomizers Guarantee Pure Fairness</h2>
 
-      <h3>1. Make the Mechanism 100% Visible on the Big Screen</h3>
+      <h3>1. Algorithmic Pseudo-Random Number Generation (PRNG)</h3>
       <p>
-        Transparency creates trust. When you project a digital spinning wheel on your interactive whiteboard or projector, every student witnesses the identical physics and probability distribution in real time. Using the <a href="/tools/random-name-picker/">ClassPanel Random Name Picker</a>, students see their names represented on equal slices of the wheel, watch the decelerating needle, and hear the tick of each segment passing.
+        Digital spinners rely on cryptographic pseudo-random number generators (such as the browser's native <code>crypto.getRandomValues()</code> API). Each name sector on the spinning wheel has a mathematically equal probability of being selected. The physics-based decelerating spin animation provides genuine suspense, allowing the entire classroom to watch the needle click from sector to sector until it comes to a natural, verifiable stop.
       </p>
 
-      <h3>2. Clarify "Replacement vs. Non-Replacement" Rules Before Drawing</h3>
+      <h3>2. The "Remove Name Upon Selection" Guarantee</h3>
       <p>
-        Before you spin or draw, establish clear ground rules:
+        The most vital feature for classroom equity is the optional "Remove Name" toggle. When enabled, every selected student is safely eliminated from the active pool for the remainder of that instructional block. Students know with certainty that no peer will be picked twice before everyone has had their turn, ensuring 100% participation equity and keeping all students attentive.
+      </p>
+
+      <h3>3. Multi-Purpose Classroom Applications</h3>
+      <p>
+        A digital name picker is not limited to cold calling. Creative educators deploy random name wheels across numerous daily classroom routines:
       </p>
       <ul>
-        <li><strong>Non-Replacement (Elimination Mode):</strong> Once a student's name is picked, it is temporarily removed from the pool. This is best for classroom jobs, presentations, and single-prize raffles where everyone deserves an equal opportunity.</li>
-        <li><strong>With Replacement:</strong> The winner stays in the pool. This is appropriate for ticket-based incentive systems where students earned multiple entries through good behavior or completed reading logs.</li>
+        <li><strong>Classroom Job Allocation:</strong> Line leader, paper passer, pet monitor, and tech captain assignments can be drawn live on Monday mornings with zero complaints of teacher favoritism.</li>
+        <li><strong>Behavioral Raffles & Ticket Drawings:</strong> Reward tickets earned for kindness, effort, or homework completion can be drawn with digital confetti animations celebrating the winner.</li>
+        <li><strong>Debate Turn Order:</strong> Determine which team presents opening arguments, rebuttals, or closing statements in Socratic seminars.</li>
+        <li><strong>Book Choice & Project Order:</strong> Fairly determine the order in which students select novel study titles or schedule their final project presentations.</li>
       </ul>
-      <p>
-        Announcing the rule in advance prevents complaints when a student asks, <em>"Can I win twice?"</em>
-      </p>
 
-      <h3>3. Incorporate Probability Games for Multi-Ticket Systems</h3>
+      <h2>Protecting Student Privacy (COPPA & LocalStorage)</h2>
       <p>
-        If your school uses positive behavior tokens or classroom bucks, students often accumulate varying ticket counts. Instead of manually writing 30 slips for one student and 2 for another, you can assign numeric ranges and use digital dice or coin flips to build suspense. For quick tie-breakers between two finalists, launch the interactive coin toss in our <a href="/tools/chance-games/">Dice & Chance Games</a> tool for an instant, dramatic resolution.
+        A major concern when using online teacher tools is student data privacy. Entering a class list of first and last names into an unverified web platform can inadvertently violate federal student privacy regulations (such as COPPA and FERPA).
       </p>
-
       <div class="article-callout">
         <div class="article-callout-title">
-          <span>💡</span> Pro Teacher Tip: The "Volunteer First" Protocol
+          <span>🔒</span> Complete Local Browser Sandbox Security
         </div>
-        <p style="margin: 0; font-size: 0.95rem;">
-          Always give enthusiastic volunteers the first opportunity before resorting to the random draw. Frame the wheel picker as the fair arbiter for remaining roles, not a punishment for quiet students.
+        <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+          ClassPanel never sends student rosters to remote servers or third-party databases. All pasted student names are stored strictly inside your local computer's browser storage (<code>localStorage</code>). When you close the tab or switch computers, your roster data remains completely private and untouched by tracking algorithms.
         </p>
       </div>
 
-      <h2>Summary: Building a Culture of Trust</h2>
+      <h2>Conclusion: Building a Culture of Trust</h2>
       <p>
-        Fairness isn't just about avoiding complaints; it's a foundational teaching moment in probability and equity. By replacing opaque manual jars with transparent, smartboard-projected tools like ClassPanel's <a href="/tools/random-name-picker/">Random Name Picker</a>, you eliminate tension, spark authentic classroom excitement, and guarantee that every student feels valued equally.
+        When students trust that every call is impartial, the psychological resistance to speaking up dissolves. Project ClassPanel's <a href="/tools/random-name-picker/">Random Name Picker</a> on your smartboard, let your class watch the vibrant colors spin, and celebrate every student's voice in an atmosphere of transparent fairness.
       </p>
     </article>
   </main>

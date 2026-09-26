@@ -47,80 +47,8 @@
   <url><loc>https://classpanel.online/fr/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://classpanel.online/de/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
-  <!-- 5. Spanish Tool Pages (Priority 0.6) -->
-  <url><loc>https://classpanel.online/es/tools/classroom-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/race-timers/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/holiday-timers/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/random-name-picker/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/random-number-generator/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/sensory-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/clocks/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/exam-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/chance-games/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/group-generator/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/presentation-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/tally-counter/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/rock-paper-scissors/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/coin-flip/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/dice-roller/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/color-picker/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/stopwatch/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/metronome/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/chess-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/talking-clock/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/bomb-countdown/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/custom-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/es/tools/split-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
-  <!-- 6. French Tool Pages (Priority 0.6) -->
-  <url><loc>https://classpanel.online/fr/tools/classroom-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/race-timers/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/holiday-timers/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/random-name-picker/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/random-number-generator/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/sensory-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/clocks/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/exam-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/chance-games/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/group-generator/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/presentation-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/tally-counter/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/rock-paper-scissors/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/coin-flip/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/dice-roller/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/color-picker/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/stopwatch/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/metronome/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/chess-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/talking-clock/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/bomb-countdown/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/custom-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/fr/tools/split-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
-  <!-- 7. German Tool Pages (Priority 0.6) -->
-  <url><loc>https://classpanel.online/de/tools/classroom-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/race-timers/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/holiday-timers/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/random-name-picker/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/random-number-generator/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/sensory-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/clocks/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/exam-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/chance-games/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/group-generator/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/presentation-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/tally-counter/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/rock-paper-scissors/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/coin-flip/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/dice-roller/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/color-picker/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/stopwatch/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/metronome/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/chess-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/talking-clock/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/bomb-countdown/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/custom-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://classpanel.online/de/tools/split-timer/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- 8. Blog Hub & Articles -->
   <url><loc>https://classpanel.online/blog/</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>

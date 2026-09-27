@@ -227,12 +227,16 @@ class AdminApp {
         const dateStr = item.created_at ? new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
         const senderName = this.escapeHtml(item.name || 'Anonymous Teacher');
         const senderEmail = item.email ? `<a href="mailto:${encodeURIComponent(item.email)}" style="color:var(--text3);text-decoration:none;font-size:.74rem;">${this.escapeHtml(item.email)}</a>` : '<span style="color:var(--text3);font-size:.74rem;">No email</span>';
+        const ipBadge = item.ip
+          ? `<div style="margin-top:.25rem;"><span style="display:inline-flex;align-items:center;gap:.25rem;font-family:monospace;font-size:.68rem;padding:2px 6px;border-radius:4px;background:rgba(99,102,241,0.12);color:var(--purple);border:1px solid rgba(99,102,241,0.2);" title="${this.escapeHtml(item.user_agent || '')}">🌐 ${this.escapeHtml(item.ip)}${item.country ? ` (${this.escapeHtml(item.country)})` : ''}</span></div>`
+          : '';
 
         return `
           <tr>
             <td style="white-space:nowrap;">
               <div style="font-weight:700;color:var(--text);">${senderName}</div>
               <div>${senderEmail}</div>
+              ${ipBadge}
             </td>
             <td>${catBadge}</td>
             <td>
@@ -244,7 +248,8 @@ class AdminApp {
             <td style="text-align:right;white-space:nowrap;">
               <div class="tbl-actions">
                 ${item.status === 'unread' ? `<button class="btn btn-secondary btn-sm" onclick="adminApp.updateFeedbackStatus(${item.id}, 'read')">Read</button>` : ''}
-                ${item.status !== 'resolved' ? `<button class="btn btn-secondary btn-sm" style="color:var(--green);border-color:rgba(16,185,129,.3);" onclick="adminApp.updateFeedbackStatus(${item.id}, 'resolved')">Resolve</button>` : ''}
+                ${item.status !== 'resolved' && item.status !== 'blocked' ? `<button class="btn btn-secondary btn-sm" style="color:var(--green);border-color:rgba(16,185,129,.3);" onclick="adminApp.updateFeedbackStatus(${item.id}, 'resolved')">Resolve</button>` : ''}
+                ${item.status === 'blocked' ? `<span style="font-size:.75rem;color:var(--red);font-weight:700;padding:2px 6px;">🚫 Blocked</span>` : `<button class="btn btn-danger btn-sm" style="background:rgba(239,68,68,0.12);color:var(--red);border-color:rgba(239,68,68,0.3);" title="Block this spammer's device and IP from site" onclick="adminApp.blockVisitor(${item.id}, '${this.escapeHtml(item.ip || '')}')">🚫 Block</button>`}
                 <button class="btn btn-danger btn-sm" onclick="adminApp.deleteFeedback(${item.id})">Delete</button>
               </div>
             </td>
@@ -282,6 +287,118 @@ class AdminApp {
       }
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  async blockVisitor(id, ip) {
+    const msg = ip 
+      ? `Are you sure you want to BLOCK this user?\n\nTarget IP: ${ip}\n\nTheir IP and device will be blocked from accessing ClassPanel (403 Forbidden) and dropped from sending contact messages.`
+      : `Are you sure you want to block this user?\n\nTheir device and IP will be restricted from ClassPanel.`;
+    
+    if (!confirm(msg)) return;
+
+    try {
+      const res = await this.apiFetch(`/api/admin/feedback?action=block&id=${id}`, {
+        method: 'POST'
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        this.showToast(data.message || 'Spammer blocked permanently!', 'success');
+        this.loadFeedback();
+      } else {
+        this.showToast(data.error || 'Failed to block user', 'error');
+      }
+    } catch (err) {
+      this.showToast('Error: ' + err.message, 'error');
+    }
+  }
+
+  async loadBlockedVisitors() {
+    const tbody = document.getElementById('blk-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty">Loading blocked list...</div></td></tr>';
+
+    try {
+      const res = await this.apiFetch('/api/admin/feedback?view=blocks');
+      const data = await res.json();
+      const list = data.blocked || [];
+
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><span class="empty-icon">🛡️</span>No blocked visitors. Spammers blocked from messages will appear here.</div></td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        const dateStr = item.blocked_at ? new Date(item.blocked_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+        const ipDisplay = item.ip ? `<code style="font-family:monospace;font-weight:700;color:var(--text);">${this.escapeHtml(item.ip)}</code>` : '<span style="color:var(--text3);font-size:.78rem;">(Device token only)</span>';
+        const deviceDisplay = item.device_id ? `<span style="font-family:monospace;font-size:.72rem;color:var(--text3);">${this.escapeHtml(item.device_id.slice(0, 16))}...</span>` : '—';
+
+        return `
+          <tr>
+            <td>${ipDisplay}</td>
+            <td>${deviceDisplay}</td>
+            <td><span style="font-size:.82rem;color:var(--text2);">${this.escapeHtml(item.reason || 'Spam in Contact Box')}</span></td>
+            <td style="white-space:nowrap;font-size:.78rem;color:var(--text3);">${dateStr}</td>
+            <td style="text-align:right;white-space:nowrap;">
+              <button class="btn btn-secondary btn-sm" style="color:var(--green);border-color:rgba(16,185,129,.3);" onclick="adminApp.unblockVisitor(${item.id})">
+                ✓ Unblock
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      tbody.innerHTML = `<tr><td colspan="5"><div class="empty" style="color:var(--red);">Failed to load blocked list: ${err.message}</div></td></tr>`;
+    }
+  }
+
+  async unblockVisitor(blockId) {
+    if (!confirm('Unblock this IP/device? They will be allowed to access the site and contact form again.')) return;
+    try {
+      const res = await this.apiFetch(`/api/admin/feedback?action=unblock&block_id=${blockId}`, {
+        method: 'POST'
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        this.showToast('Visitor unblocked.', 'info');
+        this.loadBlockedVisitors();
+      } else {
+        this.showToast(data.error || 'Failed to unblock', 'error');
+      }
+    } catch (err) {
+      this.showToast('Error: ' + err.message, 'error');
+    }
+  }
+
+  async manualBlockIp() {
+    const input = document.getElementById('manual-block-ip');
+    const reasonInput = document.getElementById('manual-block-reason');
+    const ip = (input?.value || '').trim();
+    const reason = (reasonInput?.value || '').trim() || 'Manual IP Block';
+
+    if (!ip) {
+      this.showToast('Please enter an IP address.', 'error');
+      return;
+    }
+
+    try {
+      const res = await this.apiFetch('/api/admin/feedback?action=block', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip, reason })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        this.showToast(`IP ${ip} blocked permanently!`, 'success');
+        if (input) input.value = '';
+        if (reasonInput) reasonInput.value = '';
+        this.loadBlockedVisitors();
+      } else {
+        this.showToast(data.error || 'Failed to block IP', 'error');
+      }
+    } catch (err) {
+      this.showToast('Error: ' + err.message, 'error');
     }
   }
 
@@ -734,7 +851,8 @@ class AdminApp {
     const map = {
       unread: '<span class="badge ba">Unread</span>',
       read: '<span class="badge bp">Read</span>',
-      resolved: '<span class="badge bg">Resolved</span>'
+      resolved: '<span class="badge bg">Resolved</span>',
+      blocked: '<span class="badge br" style="background:rgba(239,68,68,0.18);color:#ef4444;font-weight:700;">Blocked</span>'
     };
     return map[status] || `<span class="badge bw">${this.escapeHtml(status || '')}</span>`;
   }

@@ -44,12 +44,30 @@ CREATE TABLE IF NOT EXISTS feedback (
   category TEXT NOT NULL DEFAULT 'general', -- 'bug', 'new-tool', 'improvement', 'compliment', 'other'
   message TEXT NOT NULL,
   page_url TEXT,
-  status TEXT NOT NULL DEFAULT 'unread', -- 'unread', 'read', 'resolved'
+  status TEXT NOT NULL DEFAULT 'unread', -- 'unread', 'read', 'resolved', 'blocked'
+  ip TEXT,
+  country TEXT,
+  device_id TEXT,
+  user_agent TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_feedback_status ON feedback(status);
 CREATE INDEX IF NOT EXISTS idx_feedback_created ON feedback(created_at);
+CREATE INDEX IF NOT EXISTS idx_feedback_ip ON feedback(ip);
+
+-- 3b. Blocked Visitors & Spammers
+CREATE TABLE IF NOT EXISTS blocked_visitors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ip TEXT UNIQUE,
+  device_id TEXT,
+  reason TEXT DEFAULT 'Spam in Contact Box',
+  feedback_id INTEGER,
+  blocked_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_blocked_ip ON blocked_visitors(ip);
+CREATE INDEX IF NOT EXISTS idx_blocked_device ON blocked_visitors(device_id);
 
 -- 4. Site Settings & Key-Value Storage
 CREATE TABLE IF NOT EXISTS site_settings (

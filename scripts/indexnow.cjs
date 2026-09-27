@@ -12,7 +12,10 @@ const path = require('path');
 const INDEXNOW_KEY = '0dd71d677b154e2cb4db14927a5a4f4d';
 const INDEXNOW_HOST = 'classpanel.online';
 const INDEXNOW_KEY_LOCATION = 'https://classpanel.online/0dd71d677b154e2cb4db14927a5a4f4d.txt';
-const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow';
+const INDEXNOW_ENDPOINTS = [
+  'https://api.indexnow.org/indexnow',
+  'https://yandex.com/indexnow'
+];
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const SITEMAP_PATH = path.join(ROOT_DIR, 'sitemap.xml');
@@ -144,7 +147,7 @@ function saveHistory(history, submittedUrls) {
 }
 
 /**
- * Performs HTTP POST to IndexNow API
+ * Performs HTTP POST to IndexNow APIs (IndexNow.org + Yandex)
  */
 async function submitToIndexNow(urls) {
   if (urls.length === 0) {
@@ -159,44 +162,40 @@ async function submitToIndexNow(urls) {
     urlList: urls
   };
 
-  console.log(`📡 Submitting ${urls.length} URL(s) to IndexNow (${INDEXNOW_ENDPOINT})...`);
+  let allSuccess = true;
 
-  try {
-    const res = await fetch(INDEXNOW_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      body: JSON.stringify(payload)
-    });
+  for (const endpoint of INDEXNOW_ENDPOINTS) {
+    console.log(`📡 Submitting ${urls.length} URL(s) to ${endpoint}...`);
 
-    const text = await res.text().catch(() => '');
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      });
 
-    if (res.status === 200 || res.status === 202) {
-      console.log(`✅ IndexNow Submission Successful (HTTP ${res.status}):`);
-      console.log(`   Submitted ${urls.length} URL(s) under host: ${INDEXNOW_HOST}`);
-      urls.forEach(u => console.log(`   - ${u}`));
-      return { success: true, status: res.status, count: urls.length };
-    } else if (res.status === 400) {
-      console.error(`❌ IndexNow Error (HTTP 400 - Invalid format):`, text);
-      return { success: false, status: 400, message: text };
-    } else if (res.status === 403) {
-      console.error(`❌ IndexNow Error (HTTP 403 - Key not valid or keyLocation unreachable):`, text);
-      return { success: false, status: 403, message: text };
-    } else if (res.status === 422) {
-      console.error(`❌ IndexNow Error (HTTP 422 - Invalid URLs or key mismatch):`, text);
-      return { success: false, status: 422, message: text };
-    } else if (res.status === 429) {
-      console.warn(`⚠️  IndexNow Rate Limited (HTTP 429): Please wait before submitting again.`);
-      return { success: false, status: 429, message: text };
-    } else {
-      console.warn(`⚠️  IndexNow Response (HTTP ${res.status}):`, text);
-      return { success: res.ok, status: res.status, message: text };
+      const text = await res.text().catch(() => '');
+
+      if (res.status === 200 || res.status === 202) {
+        console.log(`✅ Submission to ${endpoint} Successful (HTTP ${res.status})`);
+      } else {
+        console.warn(`⚠️  Response from ${endpoint} (HTTP ${res.status}):`, text);
+        allSuccess = false;
+      }
+    } catch (err) {
+      console.error(`❌ Network error while connecting to ${endpoint}:`, err.message);
+      allSuccess = false;
     }
-  } catch (err) {
-    console.error(`❌ Network error while connecting to IndexNow:`, err.message);
-    return { success: false, error: err.message };
   }
+
+  if (allSuccess) {
+    console.log(`   Submitted ${urls.length} URL(s) under host: ${INDEXNOW_HOST}`);
+    urls.forEach(u => console.log(`   - ${u}`));
+  }
+
+  return { success: allSuccess, count: urls.length };
 }
 
 async function main() {

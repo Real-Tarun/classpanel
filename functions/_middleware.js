@@ -178,7 +178,7 @@ User-agent: img2dataset
 Allow: /
 
 # Canonical Sitemap & Host
-Host: https://classpanel.online
+Host: classpanel.online
 Sitemap: https://classpanel.online/sitemap.xml
 `;
     return new Response(robotsTxt, {
@@ -222,10 +222,70 @@ Sitemap: https://classpanel.online/sitemap.xml
     return Response.redirect(url.toString(), 301);
   }
 
-  // 6. Normalize /admin to /admin/
-  if (url.pathname === '/admin') {
-    url.pathname = '/admin/';
-    return Response.redirect(url.toString(), 301);
+  // 7. Edge Enforcement: Block restricted IPs and devices
+  const clientIp = context.request.headers.get('cf-connecting-ip');
+  const acceptHeader = context.request.headers.get('accept') || '';
+  const cookieHeader = context.request.headers.get('cookie') || '';
+  const didMatch = cookieHeader.match(/cp_did=([a-zA-Z0-9_\-]+)/);
+  const deviceId = didMatch ? didMatch[1] : null;
+
+  if (
+    context.env?.DB &&
+    (clientIp || deviceId) &&
+    !url.pathname.startsWith('/admin') &&
+    !url.pathname.startsWith('/api/admin') &&
+    (acceptHeader.includes('text/html') || url.pathname.startsWith('/api/'))
+  ) {
+    try {
+      let isBlocked = null;
+      if (clientIp && deviceId) {
+        isBlocked = await context.env.DB.prepare(
+          'SELECT id FROM blocked_visitors WHERE ip = ? OR (device_id IS NOT NULL AND device_id = ?) LIMIT 1'
+        ).bind(clientIp, deviceId).first();
+      } else if (clientIp) {
+        isBlocked = await context.env.DB.prepare(
+          'SELECT id FROM blocked_visitors WHERE ip = ? LIMIT 1'
+        ).bind(clientIp).first();
+      } else if (deviceId) {
+        isBlocked = await context.env.DB.prepare(
+          'SELECT id FROM blocked_visitors WHERE device_id = ? LIMIT 1'
+        ).bind(deviceId).first();
+      }
+
+      if (isBlocked) {
+        return new Response(
+          `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>403 Forbidden - Access Restricted</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #070d1e; color: #e2e8f0; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; padding: 1.5rem; box-sizing: border-box; text-align: center; }
+    .box { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 2.5rem 2rem; max-width: 480px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+    h1 { color: #ef4444; font-size: 2rem; margin: 0 0 1rem; font-weight: 800; }
+    p { color: #94a3b8; line-height: 1.6; margin: 0; font-size: 1.05rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>🚫 403 Forbidden</h1>
+    <p>Your access to ClassPanel has been permanently restricted due to abuse, spamming, or violation of site policies.</p>
+  </div>
+</body>
+</html>`,
+          {
+            status: 403,
+            headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              'Cache-Control': 'no-store'
+            }
+          }
+        );
+      }
+    } catch (_) {
+      // Fail-open
+    }
   }
 
   return context.next();

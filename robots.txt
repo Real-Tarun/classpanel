@@ -64,9 +64,29 @@ Allow: /
 # Yandex Search
 User-agent: YandexBot
 Allow: /
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /cdn-cgi/
+Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
 
 User-agent: Yandex
 Allow: /
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /cdn-cgi/
+Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
 
 # Apple Search & Siri Suggestions
 User-agent: Applebot
@@ -148,5 +168,5 @@ User-agent: img2dataset
 Allow: /
 
 # Canonical Sitemap & Host
-Host: https://classpanel.online
+Host: classpanel.online
 Sitemap: https://classpanel.online/sitemap.xml

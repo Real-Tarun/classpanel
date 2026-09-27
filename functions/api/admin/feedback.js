@@ -118,6 +118,32 @@ export async function onRequest(context) {
         }
       }
 
+      // ── Blocked Spammers / Devices View ─────────────────────────────────
+      if (view === 'blocks') {
+        if (db) {
+          try {
+            await db.prepare(`
+              CREATE TABLE IF NOT EXISTS blocked_visitors (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ip TEXT UNIQUE,
+                device_id TEXT,
+                reason TEXT DEFAULT 'Spam in Contact Box',
+                feedback_id INTEGER,
+                blocked_at TEXT NOT NULL DEFAULT (datetime('now'))
+              )
+            `).run().catch(() => {});
+
+            const { results } = await db.prepare(
+              'SELECT * FROM blocked_visitors ORDER BY blocked_at DESC LIMIT 100'
+            ).all();
+            return jsonResponse({ blocked: results || [], source: 'd1' });
+          } catch (err) {
+            return jsonResponse({ error: 'Failed to fetch blocked visitors', message: err.message }, 500);
+          }
+        }
+        return jsonResponse({ blocked: [], source: 'fallback' });
+      }
+
       if (db) {
         await db.prepare(`
           CREATE TABLE IF NOT EXISTS feedback (
@@ -149,6 +175,97 @@ export async function onRequest(context) {
         list = list.filter(f => f.status === statusFilter);
       }
       return jsonResponse({ feedback: list, source: 'fallback' });
+    }
+
+    // --- POST /api/admin/feedback?action=block|unblock ---
+    if (request.method === 'POST') {
+      const action = url.searchParams.get('action');
+
+      if (action === 'block') {
+        const id = url.searchParams.get('id');
+        let manualIp = null;
+        let manualReason = 'Spam in Contact Box';
+        try {
+          const body = await request.json();
+          manualIp = body?.ip;
+          if (body?.reason) manualReason = body.reason;
+        } catch (_) {}
+
+        if (!id && !manualIp) {
+          return jsonResponse({ error: 'Feedback ID or IP is required.' }, 400);
+        }
+
+        if (db) {
+          await db.prepare(`
+            CREATE TABLE IF NOT EXISTS blocked_visitors (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              ip TEXT UNIQUE,
+              device_id TEXT,
+              reason TEXT DEFAULT 'Spam from Contact Box',
+              feedback_id INTEGER,
+              blocked_at TEXT NOT NULL DEFAULT (datetime('now'))
+            )
+          `).run().catch(() => {});
+
+          let targetIp = manualIp;
+          let targetDevice = null;
+
+          if (id) {
+            const row = await db.prepare('SELECT ip, device_id FROM feedback WHERE id = ?').bind(id).first().catch(() => null);
+            if (row) {
+              targetIp = targetIp || row.ip;
+              targetDevice = row.device_id;
+            }
+          }
+
+          if (!targetIp && !targetDevice) {
+            return jsonResponse({
+              error: 'No IP or Device recorded for this past message (it was submitted before tracking was enabled). You can manually enter their IP in the Blocked tab.'
+            }, 400);
+          }
+
+          if (targetIp) {
+            await db.prepare(`
+              INSERT INTO blocked_visitors (ip, device_id, reason, feedback_id, blocked_at)
+              VALUES (?, ?, ?, ?, datetime('now'))
+              ON CONFLICT(ip) DO UPDATE SET device_id = COALESCE(excluded.device_id, device_id), blocked_at = datetime('now')
+            `).bind(targetIp, targetDevice || null, manualReason, id || null).run();
+          } else if (targetDevice) {
+            await db.prepare(`
+              INSERT INTO blocked_visitors (ip, device_id, reason, feedback_id, blocked_at)
+              VALUES (NULL, ?, ?, ?, datetime('now'))
+            `).bind(targetDevice, manualReason, id || null).run();
+          }
+
+          if (id) {
+            await db.prepare("UPDATE feedback SET status = 'blocked' WHERE id = ?").bind(id).run().catch(() => {});
+          }
+
+          return jsonResponse({
+            success: true,
+            message: `User blocked successfully! (IP: ${targetIp || 'N/A'}, Device: ${targetDevice || 'N/A'})`
+          });
+        }
+
+        return jsonResponse({ success: true, message: 'User blocked (in-memory mode).' });
+      }
+
+      if (action === 'unblock') {
+        const blockId = url.searchParams.get('block_id');
+        const ip = url.searchParams.get('ip');
+
+        if (db) {
+          if (blockId) {
+            await db.prepare('DELETE FROM blocked_visitors WHERE id = ?').bind(blockId).run();
+          } else if (ip) {
+            await db.prepare('DELETE FROM blocked_visitors WHERE ip = ?').bind(ip).run();
+          }
+          return jsonResponse({ success: true, message: 'Visitor unblocked successfully.' });
+        }
+        return jsonResponse({ success: true, message: 'Visitor unblocked (in-memory mode).' });
+      }
+
+      return jsonResponse({ error: `Invalid action: ${action}` }, 400);
     }
 
     // --- PATCH /api/admin/feedback?id=... ---

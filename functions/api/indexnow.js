@@ -8,7 +8,10 @@
 const INDEXNOW_KEY = '0dd71d677b154e2cb4db14927a5a4f4d';
 const INDEXNOW_HOST = 'classpanel.online';
 const INDEXNOW_KEY_LOCATION = 'https://classpanel.online/0dd71d677b154e2cb4db14927a5a4f4d.txt';
-const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow';
+const INDEXNOW_ENDPOINTS = [
+  'https://api.indexnow.org/indexnow',
+  'https://yandex.com/indexnow'
+];
 
 /**
  * Normalizes and validates URLs to ensure:
@@ -79,7 +82,7 @@ function normalizeUrl(rawUrl) {
 }
 
 /**
- * Executes the IndexNow POST request to the official API.
+ * Executes the IndexNow POST request to the official APIs (IndexNow.org + Yandex).
  */
 async function submitToIndexNow(urls) {
   const uniqueUrls = Array.from(new Set(urls.filter(Boolean)));
@@ -94,32 +97,44 @@ async function submitToIndexNow(urls) {
     urlList: uniqueUrls
   };
 
-  try {
-    const response = await fetch(INDEXNOW_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      body: JSON.stringify(payload)
-    });
+  const results = [];
 
-    const responseText = await response.text().catch(() => '');
+  for (const endpoint of INDEXNOW_ENDPOINTS) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      });
 
-    return {
-      status: response.status,
-      ok: response.ok || response.status === 200 || response.status === 202,
-      count: uniqueUrls.length,
-      urls: uniqueUrls,
-      responseMessage: responseText || `HTTP ${response.status}`
-    };
-  } catch (error) {
-    console.error('IndexNow serverless submission error:', error);
-    return {
-      status: 502,
-      ok: false,
-      error: error.message || 'Failed to connect to IndexNow API'
-    };
+      const responseText = await response.text().catch(() => '');
+
+      results.push({
+        endpoint,
+        status: response.status,
+        ok: response.ok || response.status === 200 || response.status === 202,
+        response: responseText || `HTTP ${response.status}`
+      });
+    } catch (error) {
+      results.push({
+        endpoint,
+        status: 502,
+        ok: false,
+        error: error.message || 'Connection failed'
+      });
+    }
   }
+
+  const overallOk = results.some(r => r.ok);
+
+  return {
+    ok: overallOk,
+    count: uniqueUrls.length,
+    urls: uniqueUrls,
+    endpoints: results
+  };
 }
 
 export async function onRequestPost(context) {

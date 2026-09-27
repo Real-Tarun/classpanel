@@ -306,12 +306,13 @@
         <div style="display:flex;gap:.5rem;">
           <button class="btn btn-secondary btn-sm" id="btn-view-msg" onclick="switchView('messages')">📬 Messages</button>
           <button class="btn btn-secondary btn-sm" id="btn-view-rat" onclick="switchView('ratings')" style="opacity:.5;">👍 Ratings</button>
+          <button class="btn btn-secondary btn-sm" id="btn-view-blk" onclick="switchView('blocks')" style="opacity:.5;color:var(--red);">🚫 Blocked Visitors</button>
         </div>
       </div>
       <!-- Messages -->
       <div id="view-messages">
         <div class="card" style="padding:0;overflow:hidden;">
-          <table class="tbl"><thead><tr><th>From</th><th>Category</th><th>Message</th><th>Date</th><th>Status</th><th style="text-align:right;">Actions</th></tr></thead>
+          <table class="tbl"><thead><tr><th>From &amp; IP</th><th>Category</th><th>Message</th><th>Date</th><th>Status</th><th style="text-align:right;">Actions</th></tr></thead>
           <tbody id="fb-tbody"><tr><td colspan="6"><div class="empty">Loading...</div></td></tr></tbody></table>
         </div>
       </div>
@@ -324,6 +325,31 @@
         </div>
         <div class="card"><div class="card-title">Per-Tool Sentiment</div><div id="rat-bars"><div class="empty"><span class="empty-icon">📊</span>No ratings yet.</div></div></div>
         <div class="card"><div class="card-title">💬 Recent User Comments</div><div id="rat-comments"><div class="empty"><span class="empty-icon">💬</span>No comments yet.</div></div></div>
+      </div>
+
+      <!-- Blocked Visitors & Spammers -->
+      <div id="view-blocks" style="display:none;">
+        <div class="card" style="margin-bottom:1.25rem;">
+          <div class="card-title">🚫 Manual IP / Device Blacklist</div>
+          <p class="card-sub">Blocked IPs and devices receive a <strong>403 Forbidden</strong> on ClassPanel and their contact messages are dropped automatically.</p>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:flex-end;">
+            <div style="flex:1;min-width:200px;">
+              <label class="form-label">Visitor IP Address</label>
+              <input type="text" id="manual-block-ip" class="form-input" placeholder="e.g. 103.21.244.5">
+            </div>
+            <div style="flex:1;min-width:200px;">
+              <label class="form-label">Reason / Notes</label>
+              <input type="text" id="manual-block-reason" class="form-input" placeholder="e.g. Repeated contact spammer">
+            </div>
+            <button class="btn btn-danger" onclick="adminApp&&adminApp.manualBlockIp()">
+              🚫 Block IP Now
+            </button>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table class="tbl"><thead><tr><th>IP Address</th><th>Device ID</th><th>Reason</th><th>Blocked Date</th><th style="text-align:right;">Actions</th></tr></thead>
+          <tbody id="blk-tbody"><tr><td colspan="5"><div class="empty">Loading blocked list...</div></td></tr></tbody></table>
+        </div>
       </div>
     </div>
 
@@ -474,14 +500,30 @@ function adminLogout(){
 }
 
 function switchView(v){
-  const isM=v==='messages';
-  document.getElementById('view-messages').style.display=isM?'block':'none';
-  document.getElementById('view-ratings').style.display=isM?'none':'block';
-  document.getElementById('btn-view-msg').style.opacity=isM?'1':'0.5';
-  document.getElementById('btn-view-rat').style.opacity=isM?'0.5':'1';
-  if(window.adminApp){
-    if(isM) adminApp.loadFeedback();
-    else adminApp.loadRatings();
+  const isM = v === 'messages';
+  const isR = v === 'ratings';
+  const isB = v === 'blocks';
+
+  const viewMsg = document.getElementById('view-messages');
+  const viewRat = document.getElementById('view-ratings');
+  const viewBlk = document.getElementById('view-blocks');
+
+  if (viewMsg) viewMsg.style.display = isM ? 'block' : 'none';
+  if (viewRat) viewRat.style.display = isR ? 'block' : 'none';
+  if (viewBlk) viewBlk.style.display = isB ? 'block' : 'none';
+
+  const btnMsg = document.getElementById('btn-view-msg');
+  const btnRat = document.getElementById('btn-view-rat');
+  const btnBlk = document.getElementById('btn-view-blk');
+
+  if (btnMsg) btnMsg.style.opacity = isM ? '1' : '0.5';
+  if (btnRat) btnRat.style.opacity = isR ? '1' : '0.5';
+  if (btnBlk) btnBlk.style.opacity = isB ? '1' : '0.5';
+
+  if (window.adminApp) {
+    if (isM) adminApp.loadFeedback();
+    else if (isR) adminApp.loadRatings();
+    else if (isB) adminApp.loadBlockedVisitors();
   }
 }
 

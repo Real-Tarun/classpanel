@@ -139,6 +139,9 @@
       <div class="seo-card" style="border-bottom: 3.5px solid var(--border-strong);">
         <!-- Feedback Form -->
         <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)">
+          <!-- Anti-spam Honeypot (Invisible to humans, caught by bots) -->
+          <input type="text" name="_gotcha" id="contact-gotcha" style="display:none !important; position:absolute; left:-9999px;" tabindex="-1" autocomplete="off">
+
           <div style="margin-bottom: 1.25rem;">
             <label for="contact-name" style="display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.9rem;">Your Name / Grade Level:</label>
             <input type="text" id="contact-name" class="input-text" placeholder="e.g. Ms. Sarah (4th Grade Teacher)" required>
@@ -254,6 +257,16 @@
       });
     }
 
+    function getOrCreateDeviceId() {
+      let did = localStorage.getItem("cp_did");
+      if (!did) {
+        did = "cp_" + Math.random().toString(36).substring(2, 11) + "_" + Date.now().toString(36);
+        localStorage.setItem("cp_did", did);
+      }
+      document.cookie = "cp_did=" + did + "; path=/; max-age=31536000; SameSite=Lax";
+      return did;
+    }
+
     async function handleFeedbackSubmit(e) {
       e.preventDefault();
       const submitBtn = document.getElementById("btn-submit-feedback");
@@ -261,6 +274,8 @@
       const email = document.getElementById("contact-email").value.trim();
       const cat = document.getElementById("contact-cat").value;
       const msg = document.getElementById("contact-msg").value.trim();
+      const gotcha = document.getElementById("contact-gotcha") ? document.getElementById("contact-gotcha").value : "";
+      const deviceId = getOrCreateDeviceId();
 
       if (!msg) return;
 
@@ -276,7 +291,9 @@
             email: email || '',
             category: cat,
             message: msg,
-            page_url: '/contact/'
+            page_url: '/contact/',
+            device_id: deviceId,
+            _gotcha: gotcha
           })
         });
 

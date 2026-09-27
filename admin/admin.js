@@ -229,7 +229,7 @@ class AdminApp {
         const senderEmail = item.email ? `<a href="mailto:${encodeURIComponent(item.email)}" style="color:var(--text3);text-decoration:none;font-size:.74rem;">${this.escapeHtml(item.email)}</a>` : '<span style="color:var(--text3);font-size:.74rem;">No email</span>';
         const ipBadge = item.ip
           ? `<div style="margin-top:.25rem;"><span style="display:inline-flex;align-items:center;gap:.25rem;font-family:monospace;font-size:.68rem;padding:2px 6px;border-radius:4px;background:rgba(99,102,241,0.12);color:var(--purple);border:1px solid rgba(99,102,241,0.2);" title="${this.escapeHtml(item.user_agent || '')}">🌐 ${this.escapeHtml(item.ip)}${item.country ? ` (${this.escapeHtml(item.country)})` : ''}</span></div>`
-          : '';
+          : `<div style="margin-top:.25rem;"><span style="display:inline-flex;align-items:center;gap:.2rem;font-size:.68rem;color:var(--text3);background:rgba(255,255,255,0.04);padding:2px 6px;border-radius:4px;" title="Sent before IP tracking was deployed">⏱️ Pre-tracking (Sep 24)</span></div>`;
 
         return `
           <tr>
@@ -249,7 +249,7 @@ class AdminApp {
               <div class="tbl-actions">
                 ${item.status === 'unread' ? `<button class="btn btn-secondary btn-sm" onclick="adminApp.updateFeedbackStatus(${item.id}, 'read')">Read</button>` : ''}
                 ${item.status !== 'resolved' && item.status !== 'blocked' ? `<button class="btn btn-secondary btn-sm" style="color:var(--green);border-color:rgba(16,185,129,.3);" onclick="adminApp.updateFeedbackStatus(${item.id}, 'resolved')">Resolve</button>` : ''}
-                ${item.status === 'blocked' ? `<span style="font-size:.75rem;color:var(--red);font-weight:700;padding:2px 6px;">🚫 Blocked</span>` : `<button class="btn btn-danger btn-sm" style="background:rgba(239,68,68,0.12);color:var(--red);border-color:rgba(239,68,68,0.3);" title="Block this spammer's device and IP from site" onclick="adminApp.blockVisitor(${item.id}, '${this.escapeHtml(item.ip || '')}')">🚫 Block</button>`}
+                ${item.status === 'blocked' ? `<span style="font-size:.75rem;color:var(--red);font-weight:700;padding:2px 6px;">🚫 Blocked</span>` : `<button class="btn btn-danger btn-sm" style="background:rgba(239,68,68,0.12);color:var(--red);border-color:rgba(239,68,68,0.3);" title="Block this spammer's email, device and IP from site" onclick="adminApp.blockVisitor(${item.id}, '${this.escapeHtml(item.ip || '')}', '${this.escapeHtml(item.email || '')}')">🚫 Block</button>`}
                 <button class="btn btn-danger btn-sm" onclick="adminApp.deleteFeedback(${item.id})">Delete</button>
               </div>
             </td>
@@ -290,10 +290,9 @@ class AdminApp {
     }
   }
 
-  async blockVisitor(id, ip) {
-    const msg = ip 
-      ? `Are you sure you want to BLOCK this user?\n\nTarget IP: ${ip}\n\nTheir IP and device will be blocked from accessing ClassPanel (403 Forbidden) and dropped from sending contact messages.`
-      : `Are you sure you want to block this user?\n\nTheir device and IP will be restricted from ClassPanel.`;
+  async blockVisitor(id, ip, email) {
+    const target = ip ? `IP: ${ip}` : email ? `Email: ${email}` : 'this sender';
+    const msg = `Are you sure you want to BLOCK this spammer?\n\nTarget: ${target}\n\nTheir email and device will be blocked from sending messages, and access to ClassPanel will be restricted.`;
     
     if (!confirm(msg)) return;
 

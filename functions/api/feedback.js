@@ -27,6 +27,19 @@ export async function onRequestPost(context) {
       });
     }
 
+    // 1b. Anti-Spam Keyword Filter (Instant drop for malicious wallet drainers/scam bots)
+    const lowerFullText = `${name} ${email} ${message}`.toLowerCase();
+    const scamTriggers = ['wallet drainer', 'drainer', 'screenconnect', 'phishing', 'clean ip rdp', 'rdps', 'helpsupportcare', 'kind01heart', 't.me/'];
+    if (scamTriggers.some(kw => lowerFullText.includes(kw))) {
+      return new Response(JSON.stringify({
+        success: true,
+        message: 'Feedback received! Thank you for helping improve ClassPanel.'
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+      });
+    }
+
     if (!message) {
       return new Response(JSON.stringify({ error: 'Message cannot be empty.' }), {
         status: 400,
@@ -37,6 +50,7 @@ export async function onRequestPost(context) {
     const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip') || '';
     const country = request.headers.get('cf-ipcountry') || '';
     const userAgent = (request.headers.get('user-agent') || '').slice(0, 250);
+    const normalizedEmail = email ? email.toLowerCase().trim() : '';
 
     if (env.DB) {
       // 2. Ensure blocked_visitors table exists
@@ -45,30 +59,26 @@ export async function onRequestPost(context) {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           ip TEXT UNIQUE,
           device_id TEXT,
+          email TEXT,
           reason TEXT DEFAULT 'Spam from Contact Box',
           feedback_id INTEGER,
           blocked_at TEXT NOT NULL DEFAULT (datetime('now'))
         )
       `).run().catch(() => {});
+      await env.DB.prepare(`ALTER TABLE blocked_visitors ADD COLUMN email TEXT`).run().catch(() => {});
       await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_blocked_ip ON blocked_visitors(ip)`).run().catch(() => {});
       await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_blocked_device ON blocked_visitors(device_id)`).run().catch(() => {});
+      await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_blocked_email ON blocked_visitors(email)`).run().catch(() => {});
 
-      // 3. Check if IP or device_id is currently blocked
-      if (ip || deviceId) {
-        let isBlocked = null;
-        if (ip && deviceId) {
-          isBlocked = await env.DB.prepare(
-            'SELECT id FROM blocked_visitors WHERE ip = ? OR (device_id IS NOT NULL AND device_id = ?) LIMIT 1'
-          ).bind(ip, deviceId).first().catch(() => null);
-        } else if (ip) {
-          isBlocked = await env.DB.prepare(
-            'SELECT id FROM blocked_visitors WHERE ip = ? LIMIT 1'
-          ).bind(ip).first().catch(() => null);
-        } else if (deviceId) {
-          isBlocked = await env.DB.prepare(
-            'SELECT id FROM blocked_visitors WHERE device_id = ? LIMIT 1'
-          ).bind(deviceId).first().catch(() => null);
-        }
+      // 3. Check if IP, device_id, or Email is currently blocked
+      if (ip || deviceId || normalizedEmail) {
+        const isBlocked = await env.DB.prepare(`
+          SELECT id FROM blocked_visitors 
+          WHERE (ip IS NOT NULL AND ip != '' AND ip = ?)
+             OR (device_id IS NOT NULL AND device_id != '' AND device_id = ?)
+             OR (email IS NOT NULL AND email != '' AND lower(email) = ?)
+          LIMIT 1
+        `).bind(ip, deviceId, normalizedEmail).first().catch(() => null);
 
         if (isBlocked) {
           // Silent Shadowban: Return success so the spammer thinks it sent, but drop message completely

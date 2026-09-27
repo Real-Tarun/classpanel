@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS blocked_visitors (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   ip TEXT UNIQUE,
   device_id TEXT,
+  email TEXT,
   reason TEXT DEFAULT 'Spam in Contact Box',
   feedback_id INTEGER,
   blocked_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -68,6 +69,7 @@ CREATE TABLE IF NOT EXISTS blocked_visitors (
 
 CREATE INDEX IF NOT EXISTS idx_blocked_ip ON blocked_visitors(ip);
 CREATE INDEX IF NOT EXISTS idx_blocked_device ON blocked_visitors(device_id);
+CREATE INDEX IF NOT EXISTS idx_blocked_email ON blocked_visitors(email);
 
 -- 4. Site Settings & Key-Value Storage
 CREATE TABLE IF NOT EXISTS site_settings (

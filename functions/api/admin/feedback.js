@@ -209,31 +209,43 @@ export async function onRequest(context) {
 
           let targetIp = manualIp;
           let targetDevice = null;
+          let targetEmail = null;
 
           if (id) {
-            const row = await db.prepare('SELECT ip, device_id FROM feedback WHERE id = ?').bind(id).first().catch(() => null);
+            const row = await db.prepare('SELECT ip, device_id, email FROM feedback WHERE id = ?').bind(id).first().catch(() => null);
             if (row) {
               targetIp = targetIp || row.ip;
               targetDevice = row.device_id;
+              targetEmail = row.email;
             }
           }
 
-          if (!targetIp && !targetDevice) {
+          if (!targetIp && !targetDevice && !targetEmail) {
             return jsonResponse({
-              error: 'No IP or Device recorded for this past message (it was submitted before tracking was enabled). You can manually enter their IP in the Blocked tab.'
+              error: 'No IP, Device, or Email recorded for this message. You can manually enter an IP in the Blocked tab.'
             }, 400);
           }
 
+          await db.prepare(`ALTER TABLE blocked_visitors ADD COLUMN email TEXT`).run().catch(() => {});
+
           if (targetIp) {
             await db.prepare(`
-              INSERT INTO blocked_visitors (ip, device_id, reason, feedback_id, blocked_at)
-              VALUES (?, ?, ?, ?, datetime('now'))
-              ON CONFLICT(ip) DO UPDATE SET device_id = COALESCE(excluded.device_id, device_id), blocked_at = datetime('now')
-            `).bind(targetIp, targetDevice || null, manualReason, id || null).run();
+              INSERT INTO blocked_visitors (ip, device_id, email, reason, feedback_id, blocked_at)
+              VALUES (?, ?, ?, ?, ?, datetime('now'))
+              ON CONFLICT(ip) DO UPDATE SET 
+                device_id = COALESCE(excluded.device_id, device_id),
+                email = COALESCE(excluded.email, email),
+                blocked_at = datetime('now')
+            `).bind(targetIp, targetDevice || null, targetEmail || null, manualReason, id || null).run();
+          } else if (targetEmail) {
+            await db.prepare(`
+              INSERT INTO blocked_visitors (ip, device_id, email, reason, feedback_id, blocked_at)
+              VALUES (NULL, ?, ?, ?, ?, datetime('now'))
+            `).bind(targetDevice || null, targetEmail, manualReason, id || null).run();
           } else if (targetDevice) {
             await db.prepare(`
-              INSERT INTO blocked_visitors (ip, device_id, reason, feedback_id, blocked_at)
-              VALUES (NULL, ?, ?, ?, datetime('now'))
+              INSERT INTO blocked_visitors (ip, device_id, email, reason, feedback_id, blocked_at)
+              VALUES (NULL, ?, NULL, ?, ?, datetime('now'))
             `).bind(targetDevice, manualReason, id || null).run();
           }
 
@@ -241,9 +253,10 @@ export async function onRequest(context) {
             await db.prepare("UPDATE feedback SET status = 'blocked' WHERE id = ?").bind(id).run().catch(() => {});
           }
 
+          const identifier = targetIp ? `IP: ${targetIp}` : targetEmail ? `Email: ${targetEmail}` : 'Device Token';
           return jsonResponse({
             success: true,
-            message: `User blocked successfully! (IP: ${targetIp || 'N/A'}, Device: ${targetDevice || 'N/A'})`
+            message: `User blocked successfully! (${identifier})`
           });
         }
 

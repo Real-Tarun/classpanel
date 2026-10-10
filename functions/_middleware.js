@@ -61,6 +61,9 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
+Disallow: /es/tools/
+Disallow: /fr/tools/
+Disallow: /de/tools/
 
 # Google AdSense Crawlers
 User-agent: Mediapartners-Google
@@ -72,6 +75,19 @@ Allow: /
 # Googlebot & Google Search Console Inspection Tools
 User-agent: Googlebot
 Allow: /
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /cdn-cgi/
+Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /es/tools/
+Disallow: /fr/tools/
+Disallow: /de/tools/
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -82,11 +98,33 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 Allow: /favicon.ico
+Allow: /favicon*
 Allow: /assets/
+
+# Googlebot Favicon Crawler (Search SERP Logos)
+User-agent: Googlebot-Favicon
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon*
+Allow: /assets/
+Allow: /assets/icons/
 
 # Microsoft Bing
 User-agent: Bingbot
 Allow: /
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /cdn-cgi/
+Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /es/tools/
+Disallow: /fr/tools/
+Disallow: /de/tools/
 
 User-agent: msnbot
 Allow: /
@@ -94,9 +132,35 @@ Allow: /
 # Yandex Search
 User-agent: YandexBot
 Allow: /
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /cdn-cgi/
+Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /es/tools/
+Disallow: /fr/tools/
+Disallow: /de/tools/
 
 User-agent: Yandex
 Allow: /
+Disallow: /functions/
+Disallow: /_redirects
+Disallow: /_headers
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.git/
+Disallow: /cdn-cgi/
+Disallow: /404.html
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /es/tools/
+Disallow: /fr/tools/
+Disallow: /de/tools/
 
 # Apple Search & Siri Suggestions
 User-agent: Applebot

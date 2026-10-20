@@ -12,6 +12,9 @@ Allow: /about/
 Allow: /privacy/
 Allow: /contact/
 Allow: /assets/
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /.well-known/
 Disallow: /functions/
 Disallow: /_redirects
 Disallow: /_headers
@@ -201,6 +204,20 @@ Allow: /
 
 User-agent: img2dataset
 Allow: /
+
+# Site Audit & SEO Crawlers (Paced crawl to prevent edge rate-limiting)
+User-agent: SemrushBot
+User-agent: SemrushBot-SA
+User-agent: SemrushBot-BA
+User-agent: SemrushBot-SI
+User-agent: SemrushBot-SBM
+Allow: /
+Crawl-delay: 1
+
+User-agent: AhrefsBot
+User-agent: AhrefsSiteAudit
+Allow: /
+Crawl-delay: 1
 
 # Canonical Sitemap & Host
 Host: classpanel.online

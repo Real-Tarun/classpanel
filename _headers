@@ -29,6 +29,17 @@
 /llms.txt
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+/.well-known/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
 
 /0dd71d677b154e2cb4db14927a5a4f4d.txt
   Content-Type: text/plain; charset=utf-8

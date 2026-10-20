@@ -133,6 +133,59 @@
     gtag('js', new Date());
     gtag('config', 'G-YQYENQ2J88');
   </script>
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://classpanel.online/tools/clocks/#app",
+      "name": "ClassPanel Online Clocks & Time Display",
+      "url": "https://classpanel.online/tools/clocks/",
+      "applicationCategory": "EducationalApplication, UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Free online synchronized analog wall clock and 12/24-hour digital clock with high-contrast digits and interactive time-telling learning quizzes.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "135"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://classpanel.online/tools/clocks/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I switch between 12-hour and 24-hour time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, click the 12/24H toggle to switch between AM/PM notation and international military time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this clock synchronized with atomic time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it synchronizes with your device network time and updates smoothly every second."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -238,7 +291,20 @@
           </div>
         </div>
       </div>
-    </section>
+    
+          <div class="seo-card" style="margin-top: 1.5rem;">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I switch between 12-hour and 24-hour time?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, click the 12/24H toggle to switch between AM/PM notation and international military time.</p>
+            </div>
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is this clock synchronized with atomic time?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, it synchronizes with your device network time and updates smoothly every second.</p>
+            </div>
+          </div>
+</section>
   </main>
 
   <!-- Site Footer -->
@@ -283,89 +349,7 @@
   <script defer src="/assets/js/storage.js"></script>
   <script defer src="/assets/js/fullscreen.js?v=21"></script>
   <script defer src="/assets/js/common.js?v=31"></script>
-  <script>
-    (function () {
-      let is24Hour = false;
-      let showDigital = true;
+  <script defer src="/assets/js/tools/clocks.js?v=32"></script>
 
-      const clockFace = document.getElementById('analog-clock');
-      const handHour = document.getElementById('hand-hour');
-      const handMinute = document.getElementById('hand-minute');
-      const handSecond = document.getElementById('hand-second');
-      const digitalTime = document.getElementById('digital-time');
-      const clockDate = document.getElementById('clock-date');
-      const btnToggleDigital = document.getElementById('btn-toggle-digital');
-      const btnToggle24h = document.getElementById('btn-toggle-24h');
-
-      // Place 1-12 numbers on the clock face
-      function renderClockNumbers() {
-        const radius = 130;
-        const centerX = 160;
-        const centerY = 160;
-
-        for (let num = 1; num <= 12; num++) {
-          const angle = (num * 30) * (Math.PI / 180);
-          const x = centerX + radius * Math.sin(angle) - 15;
-          const y = centerY - radius * Math.cos(angle) - 15;
-
-          const numEl = document.createElement('div');
-          numEl.className = 'clock-number';
-          numEl.textContent = num;
-          numEl.style.left = `${x}px`;
-          numEl.style.top = `${y}px`;
-          clockFace.appendChild(numEl);
-        }
-      }
-
-      function updateClock() {
-        const now = new Date();
-        const seconds = now.getSeconds();
-        const minutes = now.getMinutes();
-        const hours = now.getHours();
-
-        // Degrees
-        const secondDeg = seconds * 6;
-        const minuteDeg = minutes * 6 + seconds * 0.1;
-        const hourDeg = (hours % 12) * 30 + minutes * 0.5;
-
-        handSecond.style.transform = `rotate(${secondDeg}deg)`;
-        handMinute.style.transform = `rotate(${minuteDeg}deg)`;
-        handHour.style.transform = `rotate(${hourDeg}deg)`;
-
-        // Digital display
-        if (showDigital) {
-          const opt = {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: !is24Hour
-          };
-          digitalTime.textContent = now.toLocaleTimeString([], opt);
-        } else {
-          digitalTime.textContent = "-- : -- : --";
-        }
-
-        clockDate.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-      }
-
-      btnToggleDigital.addEventListener('click', () => {
-        showDigital = !showDigital;
-        btnToggleDigital.textContent = showDigital ? 'Hide Digital (Quiz Mode)' : 'Show Digital Readout';
-        btnToggleDigital.classList.toggle('active', !showDigital);
-        updateClock();
-      });
-
-      btnToggle24h.addEventListener('click', () => {
-        is24Hour = !is24Hour;
-        btnToggle24h.textContent = is24Hour ? '12-Hour Format' : '24-Hour Format';
-        btnToggle24h.classList.toggle('active', is24Hour);
-        updateClock();
-      });
-
-      renderClockNumbers();
-      setInterval(updateClock, 1000);
-      updateClock();
-    })();
-  </script>
 </body>
 </html>

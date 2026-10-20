@@ -1,0 +1,141 @@
+# ClassPanel.online — Comprehensive System & Architectural Context for LLMs
+
+> ClassPanel (https://classpanel.online/) is a free, privacy-first web platform offering 23 interactive productivity tools, educational countdown timers, group generators, and decision utilities.
+
+## Core Architectural Guarantees
+- **Privacy & Compliance**: 100% FERPA and COPPA compliant. No cookies for student tracking, no account creation, no server-side roster storage. All student names, lists, and timer settings reside solely in HTML5 LocalStorage inside the user's browser.
+- **Offline Reliability (PWA)**: Runs anywhere without internet. The Service Worker caches HTML, CSS, JavaScript, and Web Audio synthesizers for uninterrupted classroom operation even during school Wi-Fi blackouts.
+- **Display Optimization**: High-contrast, clean typography legible across large smartboards, ViewSonic panels, Promethean boards, and lecture hall projectors.
+- **Accessibility & Shortcuts**: Full keyboard navigation (`Space` to Start/Pause, `R` to Reset, `F` for Fullscreen Projector mode).
+
+---
+
+## Complete Tools Directory & Technical Specifications
+
+### 1. Classroom & Study Timer
+- **URL**: https://classpanel.online/tools/classroom-timer/
+- **Description**: Giant digital countdown timer and Pomodoro focus timer with visual color progress rings (green -> amber -> red) and optional calming background soundscapes (Zen waves, rain, alpha frequency).
+- **Primary Use**: Classroom transition pacing, timed reading, Pomodoro 25/5 focus blocks, science lab countdowns.
+
+### 2. Wheel of Names & Random Picker
+- **URL**: https://classpanel.online/tools/random-name-picker/
+- **Description**: Canvas-rendered customizable spinning wheel. Supports pasting student rosters, confetti celebration on selection, sound effects, and an optional "Eliminate Selected" toggle to avoid repeated picks.
+- **Primary Use**: Cold calling, student presentations, raffle drawings, chore delegation.
+
+### 3. Random Group Generator & Team Maker
+- **URL**: https://classpanel.online/tools/group-generator/
+- **Description**: Algorithmic team formation tool. Allows teachers to paste a roster and either specify "Number of Groups" or "Members per Group". Supports drag-and-drop manual adjustments.
+- **Primary Use**: Science lab groups, debate teams, classroom pods, cooperative learning.
+
+### 4. Official Exam & Test Timer
+- **URL**: https://classpanel.online/tools/exam-timer/
+- **Description**: Formal examination dashboard displaying synchronized wall clock time, exam countdown, reading time phase, silent warning checkpoints (15m, 5m, 1m), and whiteboard test instructions.
+- **Primary Use**: SAT, ACT, AP, GCSE, IB, university midterms, and mock tests.
+
+### 5. Meditation & Sensory Calming Timer
+- **URL**: https://classpanel.online/tools/sensory-timer/
+- **Description**: Guided visual breathwork pacer featuring Box Breathing (4-4-4-4), 4-7-8 Relaxing Breath, and Coherence Breathing, accompanied by gentle 528Hz Solfeggio acoustic chimes.
+- **Primary Use**: Classroom emotional regulation, post-recess transitions, ADHD focus resets, mindfulness.
+
+### 6. Online Clocks & Time Display
+- **URL**: https://classpanel.online/tools/clocks/
+- **Description**: Fullscreen synchronized analog clock and 12/24-hour digital clock. Includes interactive time-telling quiz modules for elementary education.
+- **Primary Use**: Teaching analog time, classroom wall clock replacement, study room display.
+
+### 7. Random Number Generator (RNG)
+- **URL**: https://classpanel.online/tools/random-number-generator/
+- **Description**: Cryptographically secure random integer and decimal generator with customizable minimum/maximum ranges, batch generation, and duplicate exclusion.
+- **Primary Use**: Math probability lessons, contest drawings, secret number games.
+
+### 8. Chance Games & Mystery Hub
+- **URL**: https://classpanel.online/tools/chance-games/
+- **Description**: Interactive gamified selection tools including 3D Mystery Treasure Chests, Lucky Spin Wheels, and a Cosmic Magic 8-Ball oracle.
+- **Primary Use**: Classroom reward days, icebreakers, gamified quiz questions.
+
+### 9. Multi-Team Tally Counter
+- **URL**: https://classpanel.online/tools/tally-counter/
+- **Description**: Multi-column clicker counter with custom team labels, color coding, step increments (+1, +5, -1), and total summation.
+- **Primary Use**: Classroom behavior points, field day games, attendance counts, science experiments.
+
+### 10. Presentation & Speech Timer (Toastmasters-Style)
+- **URL**: https://classpanel.online/tools/presentation-timer/
+- **Description**: Traffic light speech pacer automatically shifting from Green (minimum time met) to Amber (warning) and Red (maximum time elapsed).
+- **Primary Use**: Student speeches, debate clubs, Toastmasters meetings, conference presentations.
+
+### 11. Animated Race Timers & F1 Start Lights
+- **URL**: https://classpanel.online/tools/race-timers/
+- **Description**: 5-red-light Formula 1 reaction timer reflex test and multi-lane animated sprite sprint races (Space Race, Ocean Race, Jungle Race, Dragon Race).
+- **Primary Use**: Reflex training, science physics demonstrations, high-energy brain breaks.
+
+### 12. Countdown to Any Date & Event
+- **URL**: https://classpanel.online/tools/holiday-timers/
+- **Description**: Precision day, hour, minute, second countdown ticker for future dates, holidays, exams, end of school year, or OBS streaming overlays.
+- **Primary Use**: School semester countdown, holiday celebrations, event tickers.
+
+### 13. Rock Paper Scissors Online
+- **URL**: https://classpanel.online/tools/rock-paper-scissors/
+- **Description**: Fast decision game against adaptive computer AI with Best-of-3/5/7 match modes and streak tracking.
+- **Primary Use**: Quick tiebreakers, fair dispute resolution, game theory lessons.
+
+### 14. 3D Flip a Coin Simulator
+- **URL**: https://classpanel.online/tools/coin-flip/
+- **Description**: Physics-based 3D metallic coin toss with realistic acoustic clinks and simultaneous multi-coin tossing (1 to 10 coins) with statistical heads/tails breakdown.
+- **Primary Use**: Probability demonstrations, coin tosses, fair binary decisions.
+
+### 15. Polyhedral 3D Dice Roller
+- **URL**: https://classpanel.online/tools/dice-roller/
+- **Description**: Full RPG polyhedral set (d4, d6, d8, d10, d12, d20, d100) with physics roll animations, instant summation, and modifier arithmetic.
+- **Primary Use**: Tabletop games, D&D, probability lessons, math games.
+
+### 16. Color Picker & Palette Studio
+- **URL**: https://classpanel.online/tools/color-picker/
+- **Description**: Visual HEX, RGB, HSL, and CMYK color converter with WCAG 2.1 contrast ratio verification and curated harmonious palettes.
+- **Primary Use**: Art classrooms, web design courses, accessible document creation.
+
+### 17. Millisecond Online Stopwatch
+- **URL**: https://classpanel.online/tools/stopwatch/
+- **Description**: High-precision stopwatch measuring tenths and hundredths of seconds with split lap recording and instant fastest/slowest lap comparison.
+- **Primary Use**: Physical education, science lab time trials, track and field sprints.
+
+### 18. Online Metronome
+- **URL**: https://classpanel.online/tools/metronome/
+- **Description**: Studio-grade visual and acoustic tempo metronome (20-300 BPM) with time signature accents, subdivision clicks, and Tap Tempo.
+- **Primary Use**: Band and choir practice, music theory, rhythmic pacing.
+
+### 19. Chess Clock & Game Timer
+- **URL**: https://classpanel.online/tools/chess-timer/
+- **Description**: Dual-sided digital chess clock supporting standard tournament formats (Blitz, Rapid, Bullet, Classical) and Fischer delay/increment time controls.
+- **Primary Use**: Chess clubs, board game tournaments, Scrabble matches.
+
+### 20. Talking Clock & Interval Announcer
+- **URL**: https://classpanel.online/tools/talking-clock/
+- **Description**: Natural voice speech-synthesized audio announcer speaking current time, remaining time intervals, and classroom cues.
+- **Primary Use**: Visually impaired accessibility, audio-first study spaces, hands-free work.
+
+### 21. Bomb Countdown Timer
+- **URL**: https://classpanel.online/tools/bomb-countdown/
+- **Description**: Animated burning fuse countdown culminating in a safe sound effect and cartoon explosion animation.
+- **Primary Use**: Lightning review rounds, spelling bees, high-engagement classroom challenges.
+
+### 22. Custom Timer Maker
+- **URL**: https://classpanel.online/tools/custom-timer/
+- **Description**: Personalized countdown timer builder with custom title labels, custom sound alarms, themes, and shareable encoded URLs.
+- **Primary Use**: Custom teacher routines, workout pacing, specific study tasks.
+
+### 23. Precision Split Lap Timer
+- **URL**: https://classpanel.online/tools/split-timer/
+- **Description**: Multi-participant split timer recording individual split benchmarks for fitness assessment and race heats.
+- **Primary Use**: Athletics coaching, swim meets, circuit training.
+
+---
+
+## Teacher Resources & Educational Blog
+- Best Free Online Study Timers: https://classpanel.online/blog/best-free-online-timer-for-studying-pomodoro/
+- Meditation & Sensory Calming in Schools: https://classpanel.online/blog/how-to-use-meditation-timer-for-mindfulness/
+- Fair Classroom Raffle & Name Selection: https://classpanel.online/blog/how-to-run-fair-classroom-raffle-name-draw/
+- 10 Proven Classroom Timer Tricks: https://classpanel.online/blog/10-classroom-timer-tricks-to-keep-students-on-task/
+- Balanced Group Splitting Guide: https://classpanel.online/blog/how-to-split-class-into-balanced-groups-fairly/
+- Exam Management & Timed Test Best Practices: https://classpanel.online/blog/best-practices-for-running-timed-exams/
+- Calming Transitions with Sensory Timers: https://classpanel.online/blog/calming-classroom-transitions-sensory-timers/
+- 5 Essential Digital Teacher Tools: https://classpanel.online/blog/5-free-digital-tools-every-teacher-should-bookmark/
+- Game Theory of Rock Paper Scissors: https://classpanel.online/blog/rock-paper-scissors-rules-strategy-play-online/

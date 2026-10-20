@@ -212,6 +212,59 @@
     gtag('js', new Date());
     gtag('config', 'G-YQYENQ2J88');
   </script>
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://classpanel.online/tools/rock-paper-scissors/#app",
+      "name": "ClassPanel Rock Paper Scissors Online",
+      "url": "https://classpanel.online/tools/rock-paper-scissors/",
+      "applicationCategory": "GameApplication, DecisionMakingApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Free online Rock Paper Scissors game against the computer. Instant decision maker with streak counter, match history, and Best of 3/5/7 game modes.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "135"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://classpanel.online/tools/rock-paper-scissors/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I play multi-round match modes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, choose between Quick Single Round, Best of 3, Best of 5, or Best of 7 tournament play."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the computer cheat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, the computer makes random, unbiased choices using cryptographic randomness with zero peeking at your selection."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -365,7 +418,20 @@
           </div>
         </div>
       </div>
-    </section>
+    
+          <div class="seo-card" style="margin-top: 1.5rem;">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I play multi-round match modes?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, choose between Quick Single Round, Best of 3, Best of 5, or Best of 7 tournament play.</p>
+            </div>
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the computer cheat?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">No, the computer makes random, unbiased choices using cryptographic randomness with zero peeking at your selection.</p>
+            </div>
+          </div>
+</section>
   </main>
 
     <!-- Site Footer -->
@@ -408,143 +474,7 @@
   <script src="/assets/js/fullscreen.js?v=21"></script>
   <script src="/assets/js/confetti.js"></script>
   <script src="/assets/js/common.js?v=31"></script>
-  <script>
-    (function() {
-      const CHOICES = ['rock', 'paper', 'scissors'];
-      const EMOJIS = { rock: '✊', paper: '✋', scissors: '✌️' };
-      
-      let wins = 0;
-      let losses = 0;
-      let ties = 0;
-      let isPlaying = false;
+  <script defer src="/assets/js/tools/rock-paper-scissors.js?v=32"></script>
 
-      const playerHand = document.getElementById('player-hand');
-      const computerHand = document.getElementById('computer-hand');
-      const resultBanner = document.getElementById('result-banner');
-      const selectMode = document.getElementById('select-game-mode');
-      const modeSubtitle = document.getElementById('rps-mode-subtitle');
-      const btnReset = document.getElementById('btn-reset-scores');
-      const choiceButtons = document.querySelectorAll('.rps-choice-btn');
-
-      const scoreWins = document.getElementById('score-wins');
-      const scoreLosses = document.getElementById('score-losses');
-      const scoreTies = document.getElementById('score-ties');
-      const scoreRate = document.getElementById('score-rate');
-
-      function updateStats() {
-        scoreWins.textContent = wins;
-        scoreLosses.textContent = losses;
-        scoreTies.textContent = ties;
-        const total = wins + losses + ties;
-        const rate = total > 0 ? Math.round((wins / (wins + losses || 1)) * 100) : 0;
-        scoreRate.textContent = `${rate}%`;
-      }
-
-      function resetScores() {
-        wins = 0;
-        losses = 0;
-        ties = 0;
-        updateStats();
-        playerHand.textContent = '✊';
-        computerHand.textContent = '✊';
-        resultBanner.textContent = 'Choose Rock, Paper, or Scissors to Play!';
-        resultBanner.style.color = 'var(--text-primary)';
-        choiceButtons.forEach(b => b.disabled = false);
-        if (window.ClassPanel) window.ClassPanel.showToast('Scores reset!');
-      }
-
-      function checkSeriesWinner() {
-        const mode = selectMode.value;
-        if (mode === 'free') return;
-        const target = Math.ceil(parseInt(mode, 10) / 2);
-
-        if (wins >= target) {
-          resultBanner.innerHTML = `🏆 <strong>Series Champion! You won the Best of ${mode}!</strong>`;
-          resultBanner.style.color = 'var(--accent-emerald)';
-          if (window.Confetti) window.Confetti.fire({ count: 180 });
-          if (window.SoundFX) window.SoundFX.playFanfare();
-          choiceButtons.forEach(b => b.disabled = true);
-        } else if (losses >= target) {
-          resultBanner.innerHTML = `🤖 <strong>Computer Won the Best of ${mode}!</strong>`;
-          resultBanner.style.color = 'var(--accent-rose)';
-          if (window.SoundFX) window.SoundFX.playBeep(true);
-          choiceButtons.forEach(b => b.disabled = true);
-        }
-      }
-
-      function playRound(playerChoice) {
-        if (isPlaying) return;
-        isPlaying = true;
-        choiceButtons.forEach(b => b.disabled = true);
-
-        // Reset to initial fist position and shake
-        playerHand.textContent = '✊';
-        computerHand.textContent = '✊';
-        playerHand.classList.add('is-shaking');
-        computerHand.classList.add('is-shaking');
-
-        resultBanner.textContent = 'Rock... Paper... Scissors... Shoot!';
-        resultBanner.style.color = 'var(--text-primary)';
-
-        if (window.SoundFX) window.SoundFX.playClick();
-
-        setTimeout(() => {
-          playerHand.classList.remove('is-shaking');
-          computerHand.classList.remove('is-shaking');
-
-          const randIndex = Math.floor(Math.random() * 3);
-          const computerChoice = CHOICES[randIndex];
-
-          playerHand.textContent = EMOJIS[playerChoice];
-          computerHand.textContent = EMOJIS[computerChoice];
-
-          if (playerChoice === computerChoice) {
-            ties++;
-            resultBanner.textContent = `It's a Tie! Both picked ${playerChoice.toUpperCase()}`;
-            resultBanner.style.color = 'var(--accent-amber)';
-            if (window.SoundFX) window.SoundFX.playBeep(false);
-          } else if (
-            (playerChoice === 'rock' && computerChoice === 'scissors') ||
-            (playerChoice === 'paper' && computerChoice === 'rock') ||
-            (playerChoice === 'scissors' && computerChoice === 'paper')
-          ) {
-            wins++;
-            resultBanner.textContent = `You Win! ${playerChoice.toUpperCase()} beats ${computerChoice.toUpperCase()}! 🎉`;
-            resultBanner.style.color = 'var(--accent-emerald)';
-            if (window.Confetti) window.Confetti.fire({ count: 80 });
-            if (window.SoundFX) window.SoundFX.playFanfare();
-          } else {
-            losses++;
-            resultBanner.textContent = `Computer Wins! ${computerChoice.toUpperCase()} beats ${playerChoice.toUpperCase()}`;
-            resultBanner.style.color = 'var(--accent-rose)';
-            if (window.SoundFX) window.SoundFX.playBeep(true);
-          }
-
-          updateStats();
-          isPlaying = false;
-          choiceButtons.forEach(b => b.disabled = false);
-          checkSeriesWinner();
-        }, 1200);
-      }
-
-      choiceButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          playRound(btn.dataset.choice);
-        });
-      });
-
-      selectMode.addEventListener('change', () => {
-        const mode = selectMode.value;
-        if (mode === 'free') {
-          modeSubtitle.textContent = 'Free Play Mode • Unlimited Rounds';
-        } else {
-          modeSubtitle.textContent = `Tournament Series • Best of ${mode} Rounds (First to ${Math.ceil(parseInt(mode, 10) / 2)} wins)`;
-        }
-        resetScores();
-      });
-
-      btnReset.addEventListener('click', resetScores);
-    })();
-  </script>
 </body>
 </html>

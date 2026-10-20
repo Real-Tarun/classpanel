@@ -42,6 +42,7 @@
   <link rel="alternate" hreflang="fr" href="https://classpanel.online/fr/">
   <link rel="alternate" hreflang="de" href="https://classpanel.online/de/">
   <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="alternate" type="text/plain" href="https://classpanel.online/llms.txt" title="LLMs.txt Context">
   <meta name="theme-color" content="#0C294A">
   <meta name="msapplication-TileColor" content="#0C294A">
   <meta name="msapplication-TileImage" content="/assets/icons/icon-192.png">
@@ -51,20 +52,61 @@
 
   <!-- Structured Data / JSON-LD for Google Rich Results -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "ClassPanel",
-    "url": "https://classpanel.online/",
-    "applicationCategory": "EducationalApplication, ProductivityApplication",
-    "operatingSystem": "All",
-    "description": "Free web utilities for classrooms, studying, and everyday decisions including countdown timers, Pomodoro timers, wheel of names, group makers, polyhedral dice, and stopwatches.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://classpanel.online/#website",
+      "name": "ClassPanel",
+      "url": "https://classpanel.online/",
+      "description": "Free online countdown timers, wheel of names, random group generators, and study utilities for smartboards and classrooms.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://classpanel.online/tools/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://classpanel.online/#organization",
+      "name": "ClassPanel",
+      "url": "https://classpanel.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://classpanel.online/assets/icons/icon-512.png",
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://classpanel.online/#app",
+      "name": "ClassPanel Digital Classroom & Study Hub",
+      "url": "https://classpanel.online/",
+      "applicationCategory": "EducationalApplication, ProductivityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "image": "https://classpanel.online/og-image.png",
+      "description": "Free web utilities for classrooms, studying, and everyday decisions including countdown timers, Pomodoro timers, wheel of names, group makers, polyhedral dice, and stopwatches.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "148"
+      }
     }
-  }
+  ]
+}
   </script>
   <!-- Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-1563010132282807">

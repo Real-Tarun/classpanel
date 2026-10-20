@@ -28,3 +28,12 @@ Website: https://classpanel.online
 - [Polyhedral Dice Roller](https://classpanel.online/tools/dice-roller/): RPG polyhedral dice (d4, d6, d8, d10, d12, d20, d100) with physics roll and running sum.
 - [Color Picker & Palette Converter](https://classpanel.online/tools/color-picker/): HEX, RGB, HSL, CMYK code generator with WCAG contrast checker and curated palettes.
 - [Online Stopwatch & Split Laps](https://classpanel.online/tools/stopwatch/): Millisecond stopwatch with split lap tracking and fastest/slowest lap analysis.
+- [Online Metronome](https://classpanel.online/tools/metronome/): Visual and acoustic tempo metronome (20-300 BPM) with time signature accents and tap tempo.
+- [Chess Clock & Timer](https://classpanel.online/tools/chess-timer/): Dual game clock with Blitz, Rapid, Bullet, and Fischer increment time controls.
+- [Talking Clock](https://classpanel.online/tools/talking-clock/): Speech-synthesized voice announcements for current time, study intervals, and accessibility.
+- [Bomb Countdown Timer](https://classpanel.online/tools/bomb-countdown/): Dramatic burning fuse animation with explosion sound effect for classroom quizzes and lightning rounds.
+- [Custom Timer Maker](https://classpanel.online/tools/custom-timer/): Build personalized timers with custom labels, sound alarms, color schemes, and shareable URLs.
+- [Split Lap Timer](https://classpanel.online/tools/split-timer/): Multi-athlete precision split timer for track, cross-country, and fitness assessments.
+
+## Optional Full Context
+- Detailed Documentation: https://classpanel.online/llms-full.txt

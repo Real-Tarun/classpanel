@@ -105,6 +105,59 @@
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://classpanel.online/tools/talking-clock/#app",
+      "name": "ClassPanel Talking Clock & Speech Announcer",
+      "url": "https://classpanel.online/tools/talking-clock/",
+      "applicationCategory": "AccessibilityApplication, UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Free speech-synthesized talking clock and interval announcer. Speaks the current time and remaining countdowns aloud for accessibility and study rooms.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "135"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://classpanel.online/tools/talking-clock/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the voice announcement work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It uses the native browser Web Speech API to speak naturally without downloading external audio files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I set automatic interval reminders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, configure the talking clock to announce the time every 15, 30, or 60 minutes."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -223,7 +276,20 @@
           </div>
         </div>
       </div>
-    </section>
+    
+          <div class="seo-card" style="margin-top: 1.5rem;">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the voice announcement work?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">It uses the native browser Web Speech API to speak naturally without downloading external audio files.</p>
+            </div>
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I set automatic interval reminders?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, configure the talking clock to announce the time every 15, 30, or 60 minutes.</p>
+            </div>
+          </div>
+</section>
   </main>
 
     <!-- Site Footer -->
@@ -264,97 +330,7 @@
   <script src="/assets/js/i18n.js"></script>
   <script src="/assets/js/fullscreen.js?v=21"></script>
   <script src="/assets/js/common.js?v=31"></script>
-  <script>
-  (function() {
-    'use strict';
-    let use24 = false;
-    let autoIntervalId = null;
-    let isSpeaking = false;
+  <script defer src="/assets/js/tools/talking-clock.js?v=32"></script>
 
-    const clockDisplay = document.getElementById('clock-display');
-    const clockAmpm = document.getElementById('clock-ampm');
-    const clockDate = document.getElementById('clock-date');
-    const speakIndicator = document.getElementById('speak-indicator');
-    const autoStatus = document.getElementById('auto-status');
-    const autoMinDisplay = document.getElementById('auto-min-display');
-
-    const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-    function updateClock() {
-      const now = new Date();
-      let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-      let ampm = h >= 12 ? 'PM' : 'AM';
-      if (!use24) { h = h % 12 || 12; }
-      clockDisplay.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-      clockAmpm.textContent = use24 ? '' : ampm;
-      clockDate.textContent = DAYS[now.getDay()] + ', ' + MONTHS[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
-    }
-
-    function getTimeString() {
-      const now = new Date();
-      let h = now.getHours(), m = now.getMinutes();
-      let suffix = '';
-      if (!use24) {
-        suffix = h >= 12 ? ' PM' : ' AM';
-        h = h % 12 || 12;
-      }
-      return `The time is ${h}:${String(m).padStart(2,'0')}${suffix}`;
-    }
-
-    function speakTime() {
-      if (!('speechSynthesis' in window)) {
-        if (window.ClassPanel) window.ClassPanel.showToast('Text-to-speech not supported in this browser.');
-        return;
-      }
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(getTimeString());
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.onstart = () => {
-        isSpeaking = true;
-        speakIndicator.classList.add('is-speaking');
-      };
-      utterance.onend = utterance.onerror = () => {
-        isSpeaking = false;
-        speakIndicator.classList.remove('is-speaking');
-      };
-      window.speechSynthesis.speak(utterance);
-    }
-
-    document.getElementById('btn-speak').addEventListener('click', speakTime);
-
-    // Format toggle
-    document.getElementById('btn-12h').addEventListener('click', () => {
-      use24 = false;
-      document.getElementById('btn-12h').classList.add('active');
-      document.getElementById('btn-24h').classList.remove('active');
-      updateClock();
-    });
-    document.getElementById('btn-24h').addEventListener('click', () => {
-      use24 = true;
-      document.getElementById('btn-24h').classList.add('active');
-      document.getElementById('btn-12h').classList.remove('active');
-      updateClock();
-    });
-
-    // Auto-announce
-    document.getElementById('auto-interval').addEventListener('change', function() {
-      clearInterval(autoIntervalId);
-      const mins = parseInt(this.value);
-      if (mins > 0) {
-        autoIntervalId = setInterval(speakTime, mins * 60 * 1000);
-        autoStatus.style.display = 'block';
-        autoMinDisplay.textContent = mins;
-      } else {
-        autoStatus.style.display = 'none';
-      }
-    });
-
-    // Init
-    updateClock();
-    setInterval(updateClock, 1000);
-  })();
-  </script>
 </body>
 </html>

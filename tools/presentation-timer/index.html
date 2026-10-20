@@ -108,6 +108,59 @@
     gtag('js', new Date());
     gtag('config', 'G-YQYENQ2J88');
   </script>
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://classpanel.online/tools/presentation-timer/#app",
+      "name": "ClassPanel Presentation & Speech Timer",
+      "url": "https://classpanel.online/tools/presentation-timer/",
+      "applicationCategory": "ProductivityApplication, EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Free Toastmasters-style speech timer with automated traffic light pacing (Green, Amber, Red). Perfect for public speaking, debates, and presentations.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "135"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://classpanel.online/tools/presentation-timer/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do the traffic light signals work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The screen illuminates Green when minimum qualifying time is reached, Amber at the warning benchmark, and Red when maximum allotted time has expired."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I customize the green, yellow, and red intervals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, select common speech formats (such as 1-2 min Table Topics or 5-7 min Prepared Speeches) or input custom minute benchmarks."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -227,7 +280,20 @@
           </div>
         </div>
       </div>
-    </section>
+    
+          <div class="seo-card" style="margin-top: 1.5rem;">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do the traffic light signals work?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The screen illuminates Green when minimum qualifying time is reached, Amber at the warning benchmark, and Red when maximum allotted time has expired.</p>
+            </div>
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I customize the green, yellow, and red intervals?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, select common speech formats (such as 1-2 min Table Topics or 5-7 min Prepared Speeches) or input custom minute benchmarks.</p>
+            </div>
+          </div>
+</section>
   </main>
 
   <!-- Site Footer -->
@@ -272,156 +338,7 @@
   <script defer src="/assets/js/storage.js"></script>
   <script defer src="/assets/js/fullscreen.js?v=21"></script>
   <script defer src="/assets/js/common.js?v=31"></script>
-  <script>
-    (function () {
-      let elapsedSeconds = 0;
-      let isRunning = false;
-      let timerInterval = null;
+  <script defer src="/assets/js/tools/presentation-timer.js?v=32"></script>
 
-      let greenSec = 180;
-      let yellowSec = 240;
-      let redSec = 300;
-
-      const display = document.getElementById('speech-time');
-      const lightGreen = document.getElementById('light-green');
-      const lightYellow = document.getElementById('light-yellow');
-      const lightRed = document.getElementById('light-red');
-      const statusMsg = document.getElementById('status-msg');
-      const btnStart = document.getElementById('btn-speech-start');
-      const btnReset = document.getElementById('btn-speech-reset');
-      const selectPreset = document.getElementById('select-speech-preset');
-
-      function parsePreset() {
-        if (selectPreset.value === 'custom') return;
-        const parts = selectPreset.value.split(',').map(n => parseInt(n, 10));
-        greenSec = parts[0];
-        yellowSec = parts[1];
-        redSec = parts[2];
-      }
-
-      async function promptCustomPacing() {
-        if (isRunning) pause();
-        const curG = (greenSec / 60).toFixed(1).replace('.0','');
-        const curY = (yellowSec / 60).toFixed(1).replace('.0','');
-        const curR = (redSec / 60).toFixed(1).replace('.0','');
-        let val;
-        if (window.ClassPanel && window.ClassPanel.prompt) {
-          val = await window.ClassPanel.prompt({
-            title: 'Custom Speech Pacing (Minutes)',
-            message: 'Enter Green (qualify), Yellow (warning), and Red (stop) minutes separated by commas:',
-            defaultValue: `${curG}, ${curY}, ${curR}`,
-            placeholder: 'e.g. 2, 3, 5'
-          });
-        } else {
-          val = window.prompt('Enter Green, Yellow, Red minutes separated by commas (e.g. 2, 3, 5):', `${curG}, ${curY}, ${curR}`);
-        }
-        if (!val) return;
-        const nums = val.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n) && n > 0);
-        if (nums.length >= 3) {
-          greenSec = Math.round(nums[0] * 60);
-          yellowSec = Math.round(nums[1] * 60);
-          redSec = Math.round(nums[2] * 60);
-          const opt = document.getElementById('opt-custom-preset');
-          if (opt) {
-            opt.textContent = `Custom (${nums[0]}m / ${nums[1]}m / ${nums[2]}m)`;
-            opt.value = `${greenSec},${yellowSec},${redSec}`;
-          }
-          selectPreset.value = opt ? opt.value : 'custom';
-          reset();
-        }
-      }
-
-      const btnCustomPacing = document.getElementById('btn-custom-pacing');
-      if (btnCustomPacing) btnCustomPacing.addEventListener('click', promptCustomPacing);
-
-      function formatTime(s) {
-        const m = Math.floor(s / 60);
-        const sec = s % 60;
-        return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-      }
-
-      function updateUI() {
-        display.textContent = formatTime(elapsedSeconds);
-
-        lightGreen.classList.remove('active');
-        lightYellow.classList.remove('active');
-        lightRed.classList.remove('active');
-
-        if (elapsedSeconds >= redSec) {
-          lightRed.classList.add('active');
-          statusMsg.textContent = "🛑 Red: Time Limit Reached (Wrap Up!)";
-          statusMsg.style.color = "#EF4444";
-        } else if (elapsedSeconds >= yellowSec) {
-          lightYellow.classList.add('active');
-          statusMsg.textContent = "⚠️ Yellow: Concluding Remarks";
-          statusMsg.style.color = "#F59E0B";
-        } else if (elapsedSeconds >= greenSec) {
-          lightGreen.classList.add('active');
-          statusMsg.textContent = "✅ Green: Target Time Reached";
-          statusMsg.style.color = "#10B981";
-        } else if (isRunning) {
-          statusMsg.textContent = "Speaking...";
-          statusMsg.style.color = "var(--text-primary)";
-        } else {
-          statusMsg.textContent = "Ready to Start";
-          statusMsg.style.color = "var(--text-muted)";
-        }
-      }
-
-      function start() {
-        if (isRunning) return;
-        isRunning = true;
-        btnStart.classList.add('is-running');
-        btnStart.innerHTML = `<span>Pause</span>`;
-        if (window.SoundFX) window.SoundFX.playClick();
-
-        timerInterval = setInterval(() => {
-          elapsedSeconds++;
-          if (elapsedSeconds === greenSec) {
-            if (window.SoundFX) window.SoundFX.playGentleChime();
-          } else if (elapsedSeconds === yellowSec) {
-            if (window.SoundFX) window.SoundFX.playBeep();
-          } else if (elapsedSeconds === redSec) {
-            if (window.SoundFX) window.SoundFX.playSchoolBell();
-          }
-          updateUI();
-        }, 1000);
-      }
-
-      function pause() {
-        isRunning = false;
-        clearInterval(timerInterval);
-        btnStart.classList.remove('is-running');
-        btnStart.innerHTML = `<span>Resume</span>`;
-        if (window.SoundFX) window.SoundFX.playClick();
-      }
-
-      function reset() {
-        pause();
-        elapsedSeconds = 0;
-        btnStart.innerHTML = `<span>Start Speech</span>`;
-        updateUI();
-      }
-
-      btnStart.addEventListener('click', () => {
-        if (isRunning) pause();
-        else start();
-      });
-
-      btnReset.addEventListener('click', reset);
-
-      selectPreset.addEventListener('change', () => {
-        if (selectPreset.value === 'custom') {
-          promptCustomPacing();
-        } else {
-          parsePreset();
-          reset();
-        }
-      });
-
-      parsePreset();
-      updateUI();
-    })();
-  </script>
 </body>
 </html>

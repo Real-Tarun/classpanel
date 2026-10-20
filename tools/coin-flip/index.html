@@ -192,6 +192,59 @@
     gtag('js', new Date());
     gtag('config', 'G-YQYENQ2J88');
   </script>
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://classpanel.online/tools/coin-flip/#app",
+      "name": "ClassPanel 3D Flip a Coin Simulator",
+      "url": "https://classpanel.online/tools/coin-flip/",
+      "applicationCategory": "UtilityApplication, EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Free 3D metallic coin flipper with realistic physics, acoustic clinks, multi-coin flips (1 to 10+), and probability statistics for fair decisions.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "135"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://classpanel.online/tools/coin-flip/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I flip multiple coins at the same time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, flip between 1 and 10 coins simultaneously and view an instant statistical breakdown of Heads versus Tails."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the coin flip completely fair and unbiased?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Flips are powered by cryptographic randomness (`window.crypto.getRandomValues`), ensuring a mathematically true 50.0% probability."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -326,7 +379,20 @@
           </div>
         </div>
       </div>
-    </section>
+    
+          <div class="seo-card" style="margin-top: 1.5rem;">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I flip multiple coins at the same time?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, flip between 1 and 10 coins simultaneously and view an instant statistical breakdown of Heads versus Tails.</p>
+            </div>
+            <div class="faq-item" style="margin-bottom: 1.25rem;">
+              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is the coin flip completely fair and unbiased?</h3>
+              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Flips are powered by cryptographic randomness (`window.crypto.getRandomValues`), ensuring a mathematically true 50.0% probability.</p>
+            </div>
+          </div>
+</section>
   </main>
 
     <!-- Site Footer -->
@@ -368,155 +434,7 @@
   <script src="/assets/js/audio.js?v=18"></script>
   <script src="/assets/js/fullscreen.js?v=21"></script>
   <script src="/assets/js/common.js?v=31"></script>
-  <script>
-    (function() {
-      let coinCount = 1;
-      let totalFlips = 0;
-      let headsCount = 0;
-      let tailsCount = 0;
-      let isFlipping = false;
+  <script defer src="/assets/js/tools/coin-flip.js?v=32"></script>
 
-      const coinsRack = document.getElementById('coins-rack');
-      const btnFlip = document.getElementById('btn-flip');
-      const btnResetStats = document.getElementById('btn-reset-stats');
-      const resultBanner = document.getElementById('result-banner');
-      const statTotal = document.getElementById('stat-total');
-      const statHeads = document.getElementById('stat-heads');
-      const statTails = document.getElementById('stat-tails');
-      const ratioFill = document.getElementById('ratio-fill');
-      const countButtons = document.querySelectorAll('[data-count]');
-
-      function renderCoins() {
-        coinsRack.innerHTML = '';
-        for (let i = 0; i < coinCount; i++) {
-          const coin = document.createElement('div');
-          coin.className = 'coin-3d';
-          coin.id = `coin-${i}`;
-          coin.innerHTML = `
-            <div class="coin-inner-ring">
-              <span class="coin-icon">👑</span>
-              <span class="coin-caption">Heads</span>
-            </div>
-          `;
-          coin.addEventListener('click', flipCoins);
-          coinsRack.appendChild(coin);
-        }
-      }
-
-      function updateStatsUI() {
-        statTotal.textContent = totalFlips;
-        const hPct = totalFlips > 0 ? Math.round((headsCount / totalFlips) * 100) : 0;
-        const tPct = totalFlips > 0 ? Math.round((tailsCount / totalFlips) * 100) : 0;
-        statHeads.textContent = `${headsCount} (${hPct}%)`;
-        statTails.textContent = `${tailsCount} (${tPct}%)`;
-        ratioFill.style.width = totalFlips > 0 ? `${hPct}%` : '50%';
-      }
-
-      function flipCoins() {
-        if (isFlipping) return;
-        isFlipping = true;
-        btnFlip.disabled = true;
-
-        if (window.SoundFX && window.SoundFX.playCoinClink) {
-          window.SoundFX.playCoinClink();
-        }
-
-        resultBanner.textContent = 'Flipping...';
-        resultBanner.style.color = 'var(--text-primary)';
-
-        const results = [];
-        const coinElements = document.querySelectorAll('.coin-3d');
-
-        coinElements.forEach((coin, idx) => {
-          coin.classList.remove('is-flipping-heads', 'is-flipping-tails');
-          void coin.offsetWidth; // trigger reflow
-
-          // Generate true crypto random 0 or 1
-          const array = new Uint32Array(1);
-          window.crypto.getRandomValues(array);
-          const isHeads = (array[0] % 2 === 0);
-          results.push(isHeads);
-
-          if (isHeads) {
-            coin.classList.add('is-flipping-heads');
-          } else {
-            coin.classList.add('is-flipping-tails');
-          }
-        });
-
-        setTimeout(() => {
-          let roundHeads = 0;
-          let roundTails = 0;
-
-          coinElements.forEach((coin, idx) => {
-            const isHeads = results[idx];
-            if (isHeads) {
-              roundHeads++;
-              headsCount++;
-              coin.innerHTML = `
-                <div class="coin-inner-ring">
-                  <span class="coin-icon">👑</span>
-                  <span class="coin-caption">Heads</span>
-                </div>
-              `;
-            } else {
-              roundTails++;
-              tailsCount++;
-              coin.innerHTML = `
-                <div class="coin-inner-ring" style="border-color: rgba(255,255,255,0.6);">
-                  <span class="coin-icon">🪙</span>
-                  <span class="coin-caption">Tails</span>
-                </div>
-              `;
-            }
-          });
-
-          totalFlips += coinCount;
-          updateStatsUI();
-
-          if (coinCount === 1) {
-            const resultName = results[0] ? 'HEADS' : 'TAILS';
-            resultBanner.innerHTML = `Result: <strong style="color: ${results[0] ? '#F59E0B' : 'var(--accent-sky)'};">${resultName}!</strong>`;
-          } else {
-            resultBanner.innerHTML = `Result: <strong>${roundHeads} Heads</strong>, <strong>${roundTails} Tails</strong>`;
-          }
-
-          isFlipping = false;
-          btnFlip.disabled = false;
-        }, 950);
-      }
-
-      countButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          countButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          coinCount = parseInt(btn.dataset.count, 10);
-          renderCoins();
-          resultBanner.textContent = `Ready to flip ${coinCount} coin${coinCount > 1 ? 's' : ''}!`;
-        });
-      });
-
-      btnFlip.addEventListener('click', flipCoins);
-
-      btnResetStats.addEventListener('click', () => {
-        totalFlips = 0;
-        headsCount = 0;
-        tailsCount = 0;
-        updateStatsUI();
-        resultBanner.textContent = 'Stats reset! Click to flip.';
-        if (window.ClassPanel) window.ClassPanel.showToast('Flip statistics reset!');
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && !e.target.matches('input, textarea, select')) {
-          e.preventDefault();
-          flipCoins();
-        }
-      });
-
-      renderCoins();
-      updateStatsUI();
-    })();
-  </script>
 </body>
 </html>

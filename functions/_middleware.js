@@ -20,6 +20,58 @@ export async function onRequest(context) {
     );
   }
 
+  // Handle llms.txt and .well-known/llms.txt directly with HTTP 200
+  if (url.pathname === '/llms.txt' || url.pathname === '/.well-known/llms.txt') {
+    const llmsContent = `# ClassPanel.online
+> Free, instant, full-screen digital tools & countdown timers engineered for smartboards, classroom lessons, Pomodoro study blocks, and everyday decisions. No sign-up, zero tracking, works 100% offline.
+
+Website: https://classpanel.online
+
+## Core Features
+- **Zero Sign-Up**: No account creation, passwords, or paywalls.
+- **Offline PWA**: Fully functional offline via Service Worker.
+- **Privacy First**: Zero personal student data collection (FERPA/COPPA compliant). All rosters are stored locally in the user's browser.
+- **Smartboard & Projector Optimized**: Giant high-contrast typography and keyboard shortcuts.
+
+## Interactive Tools Directory
+
+- [Classroom & Study Timer](https://classpanel.online/tools/classroom-timer/): Giant countdown timer, Pomodoro intervals (25/5), and ambient focus audio (Calm, 10Hz Alpha Rain, 5D Journey, Zen Waves).
+- [Wheel of Names & Picker](https://classpanel.online/tools/random-name-picker/): Spinning decision wheel for student rosters, raffle giveaways, and random selection with eliminate-on-pick.
+- [Random Group Generator](https://classpanel.online/tools/group-generator/): Instant team creation and pod pairing with drag-and-drop roster management.
+- [Official Exam Timer](https://classpanel.online/tools/exam-timer/): Standardized testing board with synchronized real-time wall clock and silent milestone warnings.
+- [Sensory & Meditation Timer](https://classpanel.online/tools/sensory-timer/): Guided box breathing (4-4-4-4, 4-7-8, coherence), soothing visual animations, and 528Hz calming chimes.
+- [Online Clocks & Display](https://classpanel.online/tools/clocks/): Fullscreen analog clock, 12/24-hour digital display, and classroom time quiz.
+- [Random Number Generator](https://classpanel.online/tools/random-number-generator/): Min/max random number selector with history and duplicate exclusion.
+- [Chance Games & Mystery Hub](https://classpanel.online/tools/chance-games/): Mystery treasure chest unlocks, lucky spin wheels, and cosmic Magic 8-Ball oracle.
+- [Multi-Team Tally Counter](https://classpanel.online/tools/tally-counter/): Multi-track clicker for classroom points, sports scores, inventory, and attendance.
+- [Toastmasters & Speech Timer](https://classpanel.online/tools/presentation-timer/): Automated traffic-light speech pacer (Green, Amber, Red) for debates and public speaking.
+- [Race Timers & F1 Start Lights](https://classpanel.online/tools/race-timers/): Animated sprint countdowns and Formula 1 start gantry reaction reflex test.
+- [Countdown to Any Date](https://classpanel.online/tools/holiday-timers/): Live day/hour/minute countdown ticker for holidays, exams, deadlines, and OBS live streaming.
+- [Rock Paper Scissors](https://classpanel.online/tools/rock-paper-scissors/): Interactive play against computer with Best of 3/5/7 match modes and streak tracker.
+- [Flip a Coin Simulator](https://classpanel.online/tools/coin-flip/): 3D metallic coin flipper with multi-coin flips (1 to 5+) and probability statistics.
+- [Polyhedral Dice Roller](https://classpanel.online/tools/dice-roller/): RPG polyhedral dice (d4, d6, d8, d10, d12, d20, d100) with physics roll and running sum.
+- [Color Picker & Palette Converter](https://classpanel.online/tools/color-picker/): HEX, RGB, HSL, CMYK code generator with WCAG contrast checker and curated palettes.
+- [Online Stopwatch & Split Laps](https://classpanel.online/tools/stopwatch/): Millisecond stopwatch with split lap tracking and fastest/slowest lap analysis.
+- [Online Metronome](https://classpanel.online/tools/metronome/): Visual and acoustic tempo metronome (20-300 BPM) with time signature accents and tap tempo.
+- [Chess Clock & Timer](https://classpanel.online/tools/chess-timer/): Dual game clock with Blitz, Rapid, Bullet, and Fischer increment time controls.
+- [Talking Clock](https://classpanel.online/tools/talking-clock/): Speech-synthesized voice announcements for current time, study intervals, and accessibility.
+- [Bomb Countdown Timer](https://classpanel.online/tools/bomb-countdown/): Dramatic burning fuse animation with explosion sound effect for classroom quizzes and lightning rounds.
+- [Custom Timer Maker](https://classpanel.online/tools/custom-timer/): Build personalized timers with custom labels, sound alarms, color schemes, and shareable URLs.
+- [Split Lap Timer](https://classpanel.online/tools/split-timer/): Multi-athlete precision split timer for track, cross-country, and fitness assessments.
+
+## Optional Full Context
+- Detailed Documentation: https://classpanel.online/llms-full.txt
+`;
+    return new Response(llmsContent, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+
   // Handle Google AdSense ads.txt directly with HTTP 200 (fastest response, clean single headers)
   if (url.pathname === '/ads.txt') {
     return new Response(
@@ -51,6 +103,9 @@ Allow: /about/
 Allow: /privacy/
 Allow: /contact/
 Allow: /assets/
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /.well-known/
 Disallow: /functions/
 Disallow: /_redirects
 Disallow: /_headers
@@ -240,6 +295,20 @@ Allow: /
 
 User-agent: img2dataset
 Allow: /
+
+# Site Audit & SEO Crawlers (Paced crawl to prevent edge rate-limiting)
+User-agent: SemrushBot
+User-agent: SemrushBot-SA
+User-agent: SemrushBot-BA
+User-agent: SemrushBot-SI
+User-agent: SemrushBot-SBM
+Allow: /
+Crawl-delay: 1
+
+User-agent: AhrefsBot
+User-agent: AhrefsSiteAudit
+Allow: /
+Crawl-delay: 1
 
 # Canonical Sitemap & Host
 Host: classpanel.online

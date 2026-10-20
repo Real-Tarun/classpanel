@@ -1,0 +1,211 @@
+.race-track-container {
+      width: 100%;
+      max-width: 1080px;
+      box-sizing: border-box;
+      background: var(--bg-surface-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem 1rem;
+      margin: 1.25rem auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+    .race-commentary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.45rem 1.25rem;
+      margin: 0.75rem auto 1rem;
+      width: 100%;
+      max-width: 580px;
+      box-sizing: border-box;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .race-lane {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      height: 68px;
+      border-bottom: 2px dashed var(--border-strong);
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      padding-left: 56px;
+      padding-right: 48px;
+    }
+    .race-lane:last-child {
+      border-bottom: none;
+    }
+    .lane-badge {
+      position: absolute;
+      left: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: #FFF;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      user-select: none;
+      z-index: 2;
+    }
+    .start-line {
+      position: absolute;
+      left: 50px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--border-strong);
+      border-radius: 2px;
+      z-index: 1;
+    }
+    .finish-line {
+      position: absolute;
+      right: 32px;
+      top: 0;
+      bottom: 0;
+      width: 16px;
+      background: repeating-linear-gradient(
+        0deg,
+        #111827,
+        #111827 8px,
+        #F9FAFB 8px,
+        #F9FAFB 16px
+      );
+      border-radius: 4px;
+      opacity: 0.9;
+      box-shadow: 0 0 6px rgba(0,0,0,0.25);
+      z-index: 2;
+    }
+    .finish-flag {
+      position: absolute;
+      right: 28px;
+      top: -12px;
+      font-size: 1.35rem;
+      z-index: 3;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+    .race-avatar-box {
+      position: absolute;
+      left: 54px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      user-select: none;
+      z-index: 4;
+      will-change: transform;
+      transition: transform 0.05s linear;
+    }
+    .race-avatar-icon {
+      font-size: 2.25rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+      display: inline-block;
+      transition: transform 0.15s ease;
+    }
+    .race-avatar-box.is-running .race-avatar-icon {
+      animation: avatarSprint 0.35s ease-in-out infinite alternate;
+    }
+    .race-avatar-box.is-turbo .race-avatar-icon {
+      animation: avatarTurbo 0.18s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 10px #F59E0B) drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+    @keyframes avatarSprint {
+      0% { transform: translateY(-3px) rotate(-4deg); }
+      100% { transform: translateY(2px) rotate(4deg); }
+    }
+    @keyframes avatarTurbo {
+      0% { transform: translateY(-5px) scale(1.15) rotate(-6deg); }
+      100% { transform: translateY(2px) scale(1.15) rotate(6deg); }
+    }
+    .race-avatar-label {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+    .race-avatar-label:hover {
+      border-color: var(--primary);
+    }
+    .podium-overlay,
+    .podium-card {
+      display: none;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      margin: 1.25rem auto;
+      max-width: 680px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: fadeIn 0.3s ease-out;
+    }
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .podium-rank-item {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .podium-rank-item.winner {
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.08);
+      transform: scale(1.04);
+    }
+    /* Projector / Fullscreen Mode enhancements for Race Timers */
+    #race-stage.is-fullscreen {
+      justify-content: flex-start !important;
+      padding-top: 1.5rem !important;
+      padding-bottom: 5rem !important;
+      overflow-y: auto !important;
+    }
+    #race-stage.is-fullscreen .tool-header-bar,
+    #race-stage.is-fullscreen .timer-big-display,
+    #race-stage.is-fullscreen .race-commentary-bar,
+    #race-stage.is-fullscreen .race-track-container,
+    #race-stage.is-fullscreen #f1-gantry-container,
+    #race-stage.is-fullscreen .timer-actions {
+      width: 100% !important;
+      max-width: 1100px !important;
+      box-sizing: border-box !important;
+    }
+    #race-stage.is-fullscreen .race-lane {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #race-stage.is-fullscreen .podium-overlay,
+    #race-stage.is-fullscreen .podium-card {
+      width: 100% !important;
+      max-width: 720px !important;
+      box-sizing: border-box !important;
+    }

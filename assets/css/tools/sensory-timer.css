@@ -1,0 +1,52 @@
+.sensory-viewport {
+      width: 100%;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 1.5rem 0;
+      background: radial-gradient(circle, var(--bg-surface-subtle) 0%, var(--bg-primary) 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    /* Breathing Circle Mode */
+    .breathing-circle-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .breathing-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #38BDF8, #818CF8);
+      box-shadow: 0 0 50px rgba(56, 189, 248, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: transform 4s ease-in-out, background 4s ease-in-out;
+    }
+    .breathing-instruction {
+      margin-top: 1.5rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    /* Liquid Canvas */
+    #liquid-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }

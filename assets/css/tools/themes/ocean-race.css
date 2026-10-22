@@ -1,0 +1,150 @@
+.theme-stage {
+      background: linear-gradient(180deg, #0c4a6e 0%, #075985 30%, #0369a1 60%, #0ea5e9 100%);
+      border-radius: var(--radius-xl);
+      border: 2px solid #0284c7;
+      padding: 1.5rem 1rem;
+      margin: 1.25rem auto;
+      max-width: 1080px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(14,165,233,0.2);
+    }
+    /* Bubbles background */
+    .theme-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle 4px at 8% 70%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(circle 3px at 20% 40%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(circle 5px at 35% 85%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(circle 3px at 55% 25%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(circle 4px at 70% 65%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(circle 3px at 85% 45%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(circle 4px at 92% 80%, rgba(255,255,255,0.08) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .race-lane {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      height: 72px;
+      border-bottom: 1px dashed rgba(186,230,253,0.2);
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.25rem;
+      padding-left: 60px;
+      padding-right: 52px;
+      z-index: 1;
+    }
+    .race-lane:last-child { border-bottom: none; }
+    .lane-badge {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.9rem;
+      color: #fff;
+      z-index: 2;
+    }
+    .finish-line {
+      position: absolute;
+      right: 36px;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: repeating-linear-gradient(0deg,#111,#111 8px,#f0f0f0 8px,#f0f0f0 16px);
+      border-radius: 3px;
+      opacity: 0.85;
+      z-index: 2;
+    }
+    .finish-flag { position: absolute; right: 30px; top: -14px; font-size: 1.4rem; z-index: 3; }
+    .start-line { position: absolute; left: 54px; top: 0; bottom: 0; width: 3px; background: rgba(255,255,255,0.2); z-index: 1; }
+    .racer-box {
+      position: absolute;
+      left: 58px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      will-change: transform;
+      transition: transform 0.05s linear;
+      z-index: 4;
+      user-select: none;
+    }
+    .racer-icon {
+      font-size: 2rem;
+      display: inline-block;
+      filter: drop-shadow(0 0 6px rgba(186,230,253,0.6));
+    }
+    .racer-box.is-running .racer-icon { animation: swim 0.4s ease-in-out infinite alternate; }
+    .racer-box.is-turbo .racer-icon { animation: swimFast 0.2s ease-in-out infinite alternate; filter: drop-shadow(0 0 14px #bae6fd); }
+    @keyframes swim {
+      0% { transform: translateY(-4px) rotate(-6deg); }
+      100% { transform: translateY(4px) rotate(6deg); }
+    }
+    @keyframes swimFast {
+      0% { transform: translateY(-6px) scale(1.15) rotate(-10deg); }
+      100% { transform: translateY(4px) scale(1.15) rotate(10deg); }
+    }
+    .racer-label {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(186,230,253,0.4);
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #e0f2fe;
+      white-space: nowrap;
+    }
+    .theme-display {
+      text-align: center;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #38bdf8;
+      text-shadow: 0 0 30px rgba(56,189,248,0.5);
+      letter-spacing: 0.05em;
+      margin: 0.5rem 0 0.25rem;
+    }
+    .theme-commentary {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #7dd3fc;
+      margin-bottom: 0.75rem;
+      min-height: 1.4em;
+    }
+    .theme-podium {
+      display: none;
+      background: rgba(5,30,60,0.95);
+      border: 2px solid #0284c7;
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      margin: 1rem auto;
+      max-width: 640px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(2,132,199,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .podium-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.75rem; margin-top: 1rem; }
+    .podium-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(56,189,248,0.3); border-radius: var(--radius-lg); padding: 0.85rem 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+    .podium-item.winner { border-color: #f59e0b; background: rgba(245,158,11,0.1); transform: scale(1.05); }
+    .theme-gallery-section { margin: 2.5rem auto; max-width: 1080px; }
+    .theme-gallery-section h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); }
+    .theme-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+    .theme-gallery-card { background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
+    .theme-gallery-card:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); transform: translateY(-2px); }
+    .theme-gallery-card.active-theme { border-color: var(--primary); background: var(--primary-light); }
+    .theme-card-emoji { font-size: 2.2rem; }
+    .theme-card-name { font-weight: 800; font-size: 0.95rem; color: var(--text-primary); }
+    .theme-card-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .theme-card-badge { font-size: 0.7rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); }

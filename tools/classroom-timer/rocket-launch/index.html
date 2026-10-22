@@ -30,139 +30,7 @@
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
-  <style>
-    .rocket-stage {
-      background: radial-gradient(ellipse at 50% 100%, #0f0a2e 0%, #050218 60%, #000 100%);
-      border: 2px solid #1e1b4b;
-      border-radius: var(--radius-xl);
-      padding: 2rem 1.5rem 3rem;
-      margin: 1.25rem auto;
-      max-width: 680px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      min-height: 300px;
-    }
-    /* Stars */
-    .rocket-stage::before {
-      content:'';
-      position:absolute;
-      inset:0;
-      background-image:
-        radial-gradient(1px 1px at 15% 20%, #fff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 35% 50%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 15%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 70% 70%, #fff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 85% 30%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 25% 80%, #ccc 0%, transparent 100%),
-        radial-gradient(1px 1px at 90% 60%, #ccc 0%, transparent 100%),
-        radial-gradient(1px 1px at 45% 90%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 8% 45%, #ccc 0%, transparent 100%);
-      pointer-events:none; z-index:0;
-    }
-    /* Ground / launch pad */
-    .rocket-stage::after {
-      content:'';
-      position:absolute;
-      bottom:0; left:0; right:0;
-      height:48px;
-      background: linear-gradient(180deg, transparent 0%, #1e3a5f 40%, #0f2337 100%);
-      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-      z-index: 0;
-    }
-    .rocket-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
-    .rocket-emoji {
-      font-size: clamp(3rem, 12vw, 6rem);
-      line-height: 1;
-      margin-bottom: 0.25rem;
-      transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .rocket-emoji.idle { animation: rocketIdle 2.5s ease-in-out infinite; }
-    .rocket-emoji.fueling { animation: rocketFuel 1s ease-in-out infinite alternate; }
-    .rocket-emoji.fueling #rocket-flame { opacity: 1 !important; animation: flameFlicker 0.2s ease-in-out infinite alternate; }
-    @keyframes flameFlicker {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #f97316); }
-    }
-    .rocket-emoji.launched { animation: rocketLaunch 0.8s ease-out forwards; }
-    .rocket-emoji.launched #rocket-flame { opacity: 1 !important; transform: scaleY(1.4); }
-    @keyframes rocketIdle {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-4px) rotate(2deg); }
-    }
-    @keyframes rocketFuel {
-      0% { transform: translateX(-2px) scale(1); filter: drop-shadow(0 0 8px #fb923c); }
-      100% { transform: translateX(2px) scale(1.04); filter: drop-shadow(0 0 16px #f97316); }
-    }
-    @keyframes rocketLaunch {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      30% { transform: translateY(-20px) scale(1.15); opacity: 1; }
-      100% { transform: translateY(-300px) scale(0.5); opacity: 0; }
-    }
-    .rocket-fuel-indicator {
-      display: flex;
-      gap: 0.4rem;
-      align-items: center;
-      justify-content: center;
-      margin: 0.75rem 0;
-      z-index: 2;
-      position: relative;
-    }
-    .fuel-cell {
-      width: 18px;
-      height: 26px;
-      border: 2px solid rgba(251,146,60,0.4);
-      border-radius: 4px;
-      background: rgba(255,255,255,0.05);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-    .fuel-cell.lit {
-      background: linear-gradient(180deg, #fb923c, #f97316);
-      border-color: #fb923c;
-      box-shadow: 0 0 8px #fb923c;
-    }
-    .countdown-display {
-      font-size: clamp(3.5rem, 12vw, 7rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: #a5b4fc;
-      text-shadow: 0 0 30px rgba(165,180,252,0.4);
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      user-select: none;
-      display: block;
-      position: relative;
-      z-index: 2;
-      transition: color 0.5s ease, text-shadow 0.5s ease;
-      margin-bottom: 0.5rem;
-    }
-    .countdown-display.warning { color: #fbbf24; text-shadow: 0 0 30px rgba(251,191,36,0.4); }
-    .countdown-display.danger { color: #f87171; text-shadow: 0 0 30px rgba(248,113,113,0.5); animation: ctDanger 0.5s ease-in-out infinite alternate; }
-    @keyframes ctDanger { 0%{opacity:1} 100%{opacity:0.65} }
-    .launch-status {
-      font-size: 1rem;
-      font-weight: 800;
-      color: #c7d2fe;
-      position: relative;
-      z-index: 2;
-      min-height: 1.4em;
-    }
-    .progress-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; margin: 0.75rem 0; position: relative; z-index: 2; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg,#6366f1,#818cf8); border-radius: 999px; transition: width 1s linear, background 0.5s ease; }
-    .progress-fill.warning { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
-    .progress-fill.danger { background: linear-gradient(90deg,#ef4444,#f87171); }
-    .theme-gallery-section{margin:2.5rem auto;max-width:1080px;}
-    .theme-gallery-section h2{font-size:1.2rem;font-weight:800;margin-bottom:1rem;color:var(--text-primary);}
-    .theme-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
-    .theme-gallery-card{background:var(--bg-surface);border:2px solid var(--border-color);border-radius:var(--radius-xl);padding:1.25rem 1rem;text-align:center;transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
-    .theme-gallery-card:hover{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);transform:translateY(-2px);}
-    .theme-gallery-card.active-theme{border-color:var(--primary);background:var(--primary-light);}
-    .theme-card-emoji{font-size:2.2rem;}.theme-card-name{font-weight:800;font-size:0.95rem;color:var(--text-primary);}.theme-card-desc{font-size:0.8rem;color:var(--text-muted);}
-    .theme-card-badge{font-size:0.7rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:0.15rem 0.5rem;border-radius:var(--radius-full);}
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/themes/rocket-launch.css?v=1">
 </head>
 <body>
   <header class="site-header">
@@ -300,33 +168,83 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Rocket Launch Space Timer</h2>
-            <p>Select your countdown target using the space preset buttons (1 min, 5 min, 10 min, 15 min, 30 min, 1 hr) or enter a custom duration for your lesson. Click the launch button to initiate the countdown sequence. The space rocket stands primed on the launchpad with glowing engines and animated particle exhaust as remaining time ticks down.</p>
-            <p>During the final ten seconds, an automated space-agency countdown initiates as the launchpad gantries retract. At zero, rocket boosters ignite with dramatic visual flair, blasting the spacecraft into the cosmos with celebratory animations and acoustic chimes. Click Reset to return the rocket to the launchpad for your next sprint.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use the Rocket Launch Timer in STEM Classrooms?</h2>
-            <p>The excitement of space exploration captivates students across all grade levels. Using a rocket launch countdown turns science lab experiments, math speed drills, and independent reading intervals into thrilling aerospace missions that keep everyone focused on finishing before blastoff.</p>
-            <p>Designed with deep cosmic contrast for projector screens and interactive displays, it requires no login, contains zero popups, and preserves student attention on academic learning while running entirely offline via browser caching.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>About the Rocket Launch Classroom Countdown Timer</h2>
+        <p>
+          ClassPanel's Rocket Launch Countdown Timer brings outer-space adventure into elementary and middle school classrooms. Modeled after Cape Canaveral mission control launches, this timer features a towering Saturn-style spacecraft on its launchpad, complete with realistic gantry countdown timers, ignition smoke effects, and a thrilling blast-off animation when the timer hits zero.
+        </p>
+        <p>
+          Features and classroom controls:
+        </p>
+        <ul>
+          <li><strong>Animated Orbital Liftoff:</strong> The rocket ignites its booster engines in the final 5 seconds, ascending off the screen in a blaze of particle flames and celebratory sound.</li>
+          <li><strong>Mission Control Audio:</strong> Optional synthesized mission control radio beeps and polite launch chimes keep students captivated.</li>
+          <li><strong>STEM Integration:</strong> Perfect for engineering design challenges, science experiment timeboxing, and astronomy lesson pacing.</li>
+          <li><strong>Offline PWA Ready:</strong> Runs seamlessly on offline Chromebooks, interactive displays, and classroom projection screens.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>STEM Classroom Motivation & Gamified Pacing</h2>
+          <p>
+            Framing academic tasks as time-critical space missions engages reluctant learners:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Mission Urgency:</strong> Pacing lab steps to match rocket launch windows teaches real-world aerospace time-management principles.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Clean-Up Blast-Off:</strong> Challenge student teams to stow laboratory gear and wipe tables clean before the rocket reaches orbital altitude.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classic Classroom Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/happy-panda/">Happy Panda Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/space-race/">Space Race Sprint Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/bomb-countdown/">Bomb Countdown Timer</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>Related STEM & Classroom Timers</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/space-race/">Space Race Multi-Rocket Reaction Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/bomb-countdown/">Bomb Countdown Gamified Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Standard Full-Screen Classroom Timer</a></li>
+          </ul>
         </div>
       </div>
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>STEM Pacing Protocol: Gamifying Science & Engineering Labs</h2>
+        <p>
+          Pacing hands-on STEM challenges—such as marshmallow-and-toothpick towers, solar rover assembly, or coding sprints—requires balancing open-ended creative exploration with disciplined project deadlines. The Rocket Launch countdown timer leverages aerospace mission motifs to transform academic tasks into high-stakes NASA orbital launches.
+        </p>
+        <p>
+          Classroom application frameworks for elementary and middle school educators:
+        </p>
+        <ol>
+          <li><strong>Phase-Based Engineering Sprints:</strong> Divide a 45-minute lab into distinct countdown stages: 10 minutes for blueprint sketching, 20 minutes for prototyping, and 15 minutes for testing and reporting. Projecting the launch gantry during the prototyping window keeps collaborative teams focused on milestone delivery.</li>
+          <li><strong>Mission Control Protocol:</strong> Assign student roles: "Flight Director" (team spokesperson), "Payload Specialist" (materials manager), and "Mission Specialist" (recorder). Announce that all materials must pass safety inspection before the rocket clears the launchpad.</li>
+          <li><strong>Thrilling Blast-Off Climax:</strong> The final 10 seconds feature intense ignition anticipation and booster smoke particles. When the rocket ascends into the stratosphere, celebrate team completion with an immediate switch to reflective journaling.</li>
+          <li><strong>PWA Reliability in Low-Bandwidth Schools:</strong> Because rural and portable classrooms often experience erratic Wi-Fi, the rocket animation runs entirely on local canvas rendering without streaming external video or asset files.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Rocket Launch Timer</h2>
+        <div class="faq-item">
+          <h3>How does this timer encourage reluctant learners during timed assessments?</h3>
+          <p>By framing a timed math fluency drill or vocabulary sprint as an orbital mission, students view the clock as an exciting video game challenge rather than an anxiety-provoking evaluation tool.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can the rocket launch sound effects be muted while keeping the visuals active?</h3>
+          <p>Yes, teachers have complete control over audio. You can mute sound effects entirely for silent testing sessions while leaving the dramatic full-screen rocket animation running on your projector screen.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the timer track or store student information?</h3>
+          <p>Never. ClassPanel complies fully with COPPA and FERPA standards. All timer settings and states are stored client-side in your local browser cache with zero server telemetry.</p>
+        </div>
+      </div>
+
     </section>
   </main>
 
@@ -354,10 +272,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

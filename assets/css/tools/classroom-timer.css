@@ -1,0 +1,77 @@
+.timer-big-display {
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+      display: inline-block;
+      border-radius: var(--radius-lg);
+      padding: 0.2rem 0.8rem;
+    }
+    .timer-big-display:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+      background: var(--bg-surface-subtle);
+    }
+    .timer-big-display:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 4px;
+    }
+    .time-digit-input {
+      width: clamp(65px, 15vw, 135px);
+      font-size: clamp(2.4rem, 8vw, 6rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      text-align: center;
+      background: var(--bg-surface);
+      border: 3px solid var(--primary);
+      border-radius: var(--radius-lg);
+      color: var(--text-primary);
+      padding: 0.25rem 0;
+      outline: none;
+      box-shadow: var(--shadow-md);
+      -moz-appearance: textfield;
+    }
+    .time-digit-input::-webkit-outer-spin-button,
+    .time-digit-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .time-digit-input:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+    .time-digit-colon {
+      font-size: clamp(2.2rem, 7vw, 5.5rem);
+      font-weight: 900;
+      color: var(--border-strong);
+      line-height: 1;
+      user-select: none;
+    }
+    .time-digit-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      user-select: none;
+    }
+    .time-edit-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      cursor: pointer;
+      transition: color 0.15s, opacity 0.15s;
+    }
+    .timer-display-container:hover .time-edit-hint {
+      color: var(--primary);
+    }
+    .preset-chip.active {
+      background: var(--primary) !important;
+      color: #FFF !important;
+      border-color: var(--primary) !important;
+      font-weight: 800;
+    }

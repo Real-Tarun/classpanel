@@ -41,180 +41,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
 
-  <style>
-    /* ── Space Race Theme ────────────────────────────────── */
-    .theme-stage {
-      background: radial-gradient(ellipse at 50% 30%, #1a1040 0%, #0a0520 60%, #000 100%);
-      border-radius: var(--radius-xl);
-      border: 2px solid #312e6e;
-      padding: 1.5rem 1rem;
-      margin: 1.25rem auto;
-      max-width: 1080px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 60px rgba(100,70,255,0.15);
-    }
-    /* Stars background */
-    .theme-stage::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(1px 1px at 10% 20%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 30% 60%, #fff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 50% 10%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 70% 40%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 85% 70%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 15% 80%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 55%, #fff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 90% 15%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 25% 35%, #ccc 0%, transparent 100%),
-        radial-gradient(1px 1px at 75% 85%, #ccc 0%, transparent 100%),
-        radial-gradient(1px 1px at 40% 90%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 60% 5%, #fff 0%, transparent 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .race-lane {
-      position: relative;
-      width: 100%;
-      box-sizing: border-box;
-      height: 72px;
-      border-bottom: 1px dashed rgba(100,80,255,0.3);
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.25rem;
-      padding-left: 60px;
-      padding-right: 52px;
-      z-index: 1;
-    }
-    .race-lane:last-child { border-bottom: none; }
-    .lane-badge {
-      position: absolute;
-      left: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 0.9rem;
-      color: #fff;
-      z-index: 2;
-      box-shadow: 0 0 12px currentColor;
-    }
-    .finish-line {
-      position: absolute;
-      right: 36px;
-      top: 0;
-      bottom: 0;
-      width: 14px;
-      background: repeating-linear-gradient(0deg, #111, #111 8px, #f0f0f0 8px, #f0f0f0 16px);
-      border-radius: 3px;
-      opacity: 0.85;
-      z-index: 2;
-    }
-    .finish-flag {
-      position: absolute;
-      right: 30px;
-      top: -14px;
-      font-size: 1.4rem;
-      z-index: 3;
-    }
-    .start-line {
-      position: absolute;
-      left: 54px;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: rgba(255,255,255,0.15);
-      z-index: 1;
-    }
-    .racer-box {
-      position: absolute;
-      left: 58px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      will-change: transform;
-      transition: transform 0.05s linear;
-      z-index: 4;
-      user-select: none;
-    }
-    .racer-icon {
-      font-size: 2rem;
-      display: inline-block;
-      filter: drop-shadow(0 0 8px rgba(150,120,255,0.7));
-    }
-    .racer-box.is-running .racer-icon { animation: spaceFloat 0.5s ease-in-out infinite alternate; }
-    .racer-box.is-turbo .racer-icon { animation: spaceTurbo 0.25s ease-in-out infinite alternate; filter: drop-shadow(0 0 16px #a78bfa); }
-    @keyframes spaceFloat {
-      0% { transform: translateY(-3px) rotate(-5deg); }
-      100% { transform: translateY(3px) rotate(5deg); }
-    }
-    @keyframes spaceTurbo {
-      0% { transform: translateY(-5px) scale(1.2) rotate(-8deg); }
-      100% { transform: translateY(3px) scale(1.2) rotate(8deg); }
-    }
-    .racer-label {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(150,120,255,0.4);
-      padding: 0.15rem 0.55rem;
-      border-radius: var(--radius-full);
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: #e0d9ff;
-      white-space: nowrap;
-      backdrop-filter: blur(4px);
-    }
-    .theme-display {
-      text-align: center;
-      font-size: clamp(3rem, 10vw, 5.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: #a78bfa;
-      text-shadow: 0 0 30px rgba(167,139,250,0.5);
-      letter-spacing: 0.05em;
-      margin: 0.5rem 0 0.25rem;
-    }
-    .theme-commentary {
-      text-align: center;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #c4b5fd;
-      margin-bottom: 0.75rem;
-      min-height: 1.4em;
-    }
-    .theme-podium {
-      display: none;
-      background: rgba(20,15,60,0.95);
-      border: 2px solid #7c3aed;
-      border-radius: var(--radius-xl);
-      padding: 1.5rem;
-      margin: 1rem auto;
-      max-width: 640px;
-      text-align: center;
-      box-shadow: 0 0 40px rgba(124,58,237,0.3);
-      animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .podium-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.75rem; margin-top: 1rem; }
-    .podium-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(167,139,250,0.3); border-radius: var(--radius-lg); padding: 0.85rem 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
-    .podium-item.winner { border-color: #f59e0b; background: rgba(245,158,11,0.1); transform: scale(1.05); }
-    .theme-gallery-section { margin: 2.5rem auto; max-width: 1080px; }
-    .theme-gallery-section h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); }
-    .theme-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
-    .theme-gallery-card { background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
-    .theme-gallery-card:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); transform: translateY(-2px); }
-    .theme-gallery-card.active-theme { border-color: var(--primary); background: var(--primary-light); }
-    .theme-card-emoji { font-size: 2.2rem; }
-    .theme-card-name { font-weight: 800; font-size: 0.95rem; color: var(--text-primary); }
-    .theme-card-desc { font-size: 0.8rem; color: var(--text-muted); }
-    .theme-card-badge { font-size: 0.7rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/themes/space-race.css?v=1">
 </head>
 <body>
 
@@ -363,41 +190,83 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Space Race Sprint Timer</h2>
-            <p>Select your sprint duration (from 30 seconds up to 10 minutes) using the quick presets or custom time controls, and pick your cosmic spacecraft racers. Click "Start Race" to watch rockets dash through asteroid fields and glowing nebulae as the digital countdown ticks away on screen.</p>
-            <p>The racers' forward velocities adjust dynamically to match the remaining time, crossing the orbital finish line precisely when the countdown reaches zero with victory chimes and celebration banners. Teachers can use the fullscreen button to project the race across the entire classroom wall.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use the Space Race Timer for Sprint Transitions?</h2>
-            <p>Turning a two-minute table cleanup, vocabulary review, or notebook packing sprint into an intergalactic space race sparks cooperative student teamwork, replacing repetitive teacher nagging with self-motivated group focus and healthy excitement.</p>
-            <p>High-contrast neon graphics stand out clearly in sunlit classrooms, while the ad-free, offline PWA architecture ensures rock-solid performance on any school smartboard without subscription paywalls or tracking cookies.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>About the Space Race Multi-Rocket Classroom Race Timer</h2>
+        <p>
+          ClassPanel's Space Race Timer is a high-energy, animated multi-lane racing countdown clock designed for classroom team challenges, STEM relays, clean-up dashes, and collaborative review games. Watch colorful rockets blast through an asteroid field toward a planetary finish line, turning group work into an exciting cosmic voyage.
+        </p>
+        <p>
+          Features and controls:
+        </p>
+        <ul>
+          <li><strong>Multi-Lane Team Racing:</strong> Assign table pods or student groups to 2, 3, or 4 colorful rocket lanes.</li>
+          <li><strong>Cosmic Particle Effects:</strong> Animated rocket exhaust thrusters, twinkling stars, and dynamic particle trails.</li>
+          <li><strong>Customizable Durations:</strong> Set quick 30-second sprints, 2-minute clean-up dashes, or 10-minute group problem-solving blocks.</li>
+          <li><strong>Full-Screen Projection:</strong> Giant 4K smartboard view allows all classroom teams to track race progress clearly.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Classroom Gamification: Interdependence & Team Cohesion</h2>
+          <p>
+            Gamified multi-lane timers transform individual seatwork into collective team focus:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Positive Group Accountability:</strong> Team pods encourage each other to complete math problem sets before their rocket reaches orbit.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Visual Urgency:</strong> The continuous motion of the rockets prevents student off-task daydreaming.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Space Race Classroom Guide & Rules</h2>
-            <p>The Space Race Timer turns ordinary classroom cleanups, quick math facts, spelling bee warmups, and transition periods into high-excitement cosmic rocket challenges. Students pick their favorite spacecraft (Nova, Rocket, UFO, or Starship) or compete in 4 classroom table teams.</p>
-            <p><strong>Step-by-step instructions:</strong> Tap the big timer digits to change the duration (presets from 30 seconds to 10 minutes). Double-click racer labels to rename them with your actual classroom reading pods or student names. Click "Start Race" to begin the countdown with animated thrusters and celebratory space chimes.</p>
-          </div>
-
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">All Race Timers & F1 Lights</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/ocean-race/">Ocean Race Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/rocket-launch/">Rocket Launch Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/bomb-countdown/">Bomb Countdown Timer</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>Related Race & Countdown Timers</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/ocean-race/">Deep Ocean Submarine Race Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/dragon-race/">Medieval Dragon Race Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers & F1 Reaction Suite</a></li>
+          </ul>
         </div>
       </div>
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Gamified Classroom Management: Multi-Rocket Team Challenges</h2>
+        <p>
+          Classroom group work often suffers from uneven student participation, where one motivated learner does all the writing while others disengage. Space Race solves this dynamic by introducing gamified inter-team pacing, where up to four colored rocket teams (Red, Blue, Green, Yellow) represent classroom table pods or study squads.
+        </p>
+        <p>
+          Proven educational applications for primary and secondary grade levels:
+        </p>
+        <ol>
+          <li><strong>Table-by-Table Clean Up Rallies:</strong> Assign each row or table group a rocket color. As tables inspect their work areas, push their chairs in, and stack notebooks neatly, the teacher awards rocket advances. The first team to dock at the space station earns classroom tickets or line-leader privileges.</li>
+          <li><strong>Cooperative Math Review Races:</strong> Present four tiered math problem sets on the smartboard. As groups solve problems cooperatively and have their answers verified, their rockets boost ahead through the asteroid field. This encourages peer tutoring and mathematical discourse within pods.</li>
+          <li><strong>Timed Rotation Stations:</strong> In blended learning environments, use the Space Race timer to signal station rotations between teacher-led small groups, independent computer practice, and peer collaboration stations.</li>
+          <li><strong>Distraction-Free Visuals:</strong> No distracting external advertisements or third-party tracking scripts interfere with your classroom projector screen.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Space Race Timer</h2>
+        <div class="faq-item">
+          <h3>How many rocket teams can compete simultaneously?</h3>
+          <p>The tool supports flexible configurations from 2 up to 4 distinct colored rocket ships, allowing teachers to match their specific classroom table layouts.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can race durations be customized for short sprints vs. long projects?</h3>
+          <p>Yes, duration can be adjusted from rapid 30-second fluency sprints up to 60-minute in-depth team project workshops with simple minute/second controls.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the race outcome rely on random luck or fixed timers?</h3>
+          <p>The standard timer mode operates as a synchronized countdown where all rockets progress toward the finish line simultaneously, culminating in an exhilarating celebratory finish line explosion.</p>
+        </div>
+      </div>
+
     </section>
   </main>
 
@@ -425,10 +294,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

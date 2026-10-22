@@ -15,106 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/dice-roller/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .dice-tray {
-      background: var(--bg-surface-subtle);
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 2.5rem 1.5rem;
-      min-height: 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 1.5rem 0;
-      box-shadow: var(--shadow-md);
-      position: relative;
-    }
-    .dice-rack {
-      display: flex;
-      gap: clamp(0.75rem, 2vw, 1.5rem);
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      margin: 1rem 0;
-    }
-    .die-face {
-      width: clamp(80px, 16vw, 105px);
-      height: clamp(80px, 16vw, 105px);
-      background: #FFFFFF;
-      border-radius: 18px;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.8);
-      border: 3px solid #CBD5E1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      user-select: none;
-      transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .die-pip-grid {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      padding: 10px;
-    }
-    .die-pip {
-      width: 13px;
-      height: 13px;
-      background: #0F172A;
-      border-radius: 50%;
-      margin: auto;
-    }
-    .die-poly-num {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: #1E293B;
-    }
-    .die-poly-tag {
-      position: absolute;
-      bottom: 4px;
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: #64748B;
-      text-transform: uppercase;
-    }
-    @keyframes diceRoll {
-      0% { transform: translateY(0) rotate(0deg) scale(1); }
-      30% { transform: translateY(-35px) rotate(180deg) scale(1.15); }
-      70% { transform: translateY(15px) rotate(320deg) scale(0.95); }
-      100% { transform: translateY(0) rotate(360deg) scale(1); }
-    }
-    .is-rolling {
-      animation: diceRoll 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
-    .dice-total-display {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      font-weight: 900;
-      text-align: center;
-      margin-top: 0.5rem;
-      color: var(--text-primary);
-    }
-    .dice-history-drawer {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 1.5rem;
-      max-width: 700px;
-    }
-    .history-chip {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-full);
-      padding: 0.35rem 0.85rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/dice-roller.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -184,28 +85,61 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/dice-roller/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What types of dice can I roll?",
+          "name": "What polyhedral dice types are supported?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Roll standard 6-sided dice or any polyhedral RPG die: d4, d8, d10, d12, d20, and d100 percentile dice."
+            "text": "ClassPanel supports all standard polyhedral dice: D4 (tetrahedron), D6 (cube), D8 (octahedron), D10 (pentagonal trapezohedron), D12 (dodecahedron), D20 (icosahedron), and D100 (percentile percentile dice)."
           }
         },
         {
           "@type": "Question",
-          "name": "Does it calculate the running total automatically?",
+          "name": "Can I roll multiple dice simultaneously with modifiers?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, total sum, individual dice rolls, and roll history are calculated and displayed in real time."
+            "text": "Yes. Select anywhere from 1 to 10 dice of any combination, add positive or negative constant modifiers (e.g., 2d6 + 3 or 1d20 + 5), and review both individual die faces and cumulative sums on the live output board."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does multi-dice rolling illustrate the Central Limit Theorem?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rolling a single D6 produces a flat, uniform probability distribution (16.67% per face). Rolling 2D6 or 3D6 shifts the outcome distribution toward a bell curve (normal distribution), with middle values (like 7 on 2D6) being statistically much more frequent than extreme values (2 or 12)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are the dice rolls mathematically random?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, every roll draws entropy from the browser's cryptographic Web Cryptography API (crypto.getRandomValues), providing mathematically fair, uniformly distributed outcomes without mechanical weight bias."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can tabletop RPG players and board gamers use this tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. It is fully optimized for Dungeons & Dragons (D&D 5e), Pathfinder, Warhammer, Yahtzee, and custom classroom board games with instant advantage/disadvantage rolls and modifier math."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this dice roller work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, ClassPanel functions as an offline PWA. All 3D physics animations, dice face rendering, and sound effects execute locally on your laptop, tablet, or smartboard without an internet connection."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -315,47 +249,153 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Polyhedral Dice Roller</h2>
-            <p>Select your desired die type from the polyhedral tray: standard six-sided dice (d6), or tabletop gaming dice including d4, d8, d10, d12, d20, and d100 percentile dice. Choose how many dice to roll at once (from 1 up to 10 dice), and add an optional mathematical modifier (+ or -) if playing RPG encounters or practicing arithmetic.</p>
-            <p>Click "Roll Dice" or hit the spacebar to watch the dice tumble across the canvas with realistic physics and rolling sound effects. The tool highlights individual die results, calculates the grand total automatically, and logs each roll in a historical roll feed for classroom verification.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Choose ClassPanel's Online Dice Roller?</h2>
-            <p>From teaching probability distributions and early elementary arithmetic to running Dungeons & Dragons tabletop campaigns and board games, dice rolling is a vital interactive utility. ClassPanel eliminates the chaos of lost dice rolling off desks while delivering authentic cryptographic randomness.</p>
-            <p>The interface is designed for high-visibility projection on interactive smartboards. Teachers can project multi-dice rolls during math centers without distracting banner ads or third-party tracking scripts, ensuring a clean, distraction-free instructional environment.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Online Dice Roller: Polyhedral Selection, Multi-Dice & Modifiers</h2>
+        <p>
+          ClassPanel's Online Dice Roller is a full-featured digital dice simulator and probability engine designed for math educators, tabletop roleplaying gamers (TTRPG), board game enthusiasts, and classroom teachers. Whether you need standard six-sided dice (D6) for math facts or complex polyhedral combinations for D&D adventures, our digital rolling arena delivers instant results with animated 3D tumble physics, acoustic rolling sounds, and a comprehensive roll history ledger.
+        </p>
+        <p>
+          Configuring your roll is fast and intuitive:
+        </p>
+        <ul>
+          <li><strong>Polyhedral Dice Tray:</strong> Choose from complete polyhedral sets: <strong>D4</strong> (tetrahedral), <strong>D6</strong> (six-sided cubic), <strong>D8</strong> (octahedral), <strong>D10</strong> (tens), <strong>D12</strong> (dodecahedral), <strong>D20</strong> (twenty-sided), and <strong>D100</strong> (percentile).</li>
+          <li><strong>Quantity Selectors:</strong> Tap to roll 1 to 10 dice simultaneously, or mix different die types in a single roll.</li>
+          <li><strong>Modifier Calculations:</strong> Add positive or negative modifiers (such as <code>+2</code> or <code>-1</code>) to simulate ability checks, proficiency bonuses, or math equations. The simulator displays both the raw face values and the modified total sum.</li>
+          <li><strong>Keyboard Hotkeys & Projector Mode:</strong> Press <strong>Spacebar</strong> or <strong>Enter</strong> to instantly re-roll. Toggle Projector Mode to scale dice faces up to 1080p/4K proportions on your classroom smartboard.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Probability Theory: Uniform Discrete vs. Gaussian Normal Distributions</h2>
+          <p>
+            Dice rolling is the premier historical vehicle for teaching probability theory, discrete random variables, and the <strong>Central Limit Theorem</strong>. The statistical behavior of dice depends fundamentally on the number of dice rolled:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Single Die (Uniform Distribution):</strong> When rolling 1D6, each of the 6 outcomes has an identical theoretical probability of <code>1/6 ≈ 16.67%</code>. The probability mass function forms a flat rectangle.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Two Dice (Triangular Distribution):</strong> When rolling 2D6, there are 36 permutations. The sum of 7 has 6 combinations (1+6, 2+5, 3+4, 4+3, 5+2, 6+1), yielding a <code>6/36 = 16.67%</code> chance, whereas a sum of 2 (snake eyes) has only <code>1/36 ≈ 2.78%</code>. The distribution forms a pyramid.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Three or More Dice (Central Limit Theorem):</strong> As dice count increases (3D6, 4D6), the sum distribution converges toward a smooth bell-shaped Gaussian curve, visually demonstrating the bedrock theorem of statistical analysis.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/coin-flip/">Flip a Coin Simulator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chance-games/">Chance Games Hub</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Online Tally Counter</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Classroom Advantages Over Physical Dice</h2>
+          <p>
+            Physical dice in classrooms frequently create chaotic distractions: they bounce off desks, roll across floors, disrupt quiet study halls, and create noise that stresses sound-sensitive students. ClassPanel provides pedagogical clarity:
+          </p>
+          <ul>
+            <li><strong>Equal Classroom Visibility:</strong> Projecting dice on a front screen allows all 30 students to see every rolled value and sum simultaneously, preventing peer disputes or obscured results.</li>
+            <li><strong>Zero Lost Pieces:</strong> Never waste classroom instruction time searching for missing polyhedral dice sets before beginning a math unit or game-based learning lesson.</li>
+            <li><strong>Sound Synthesis & Mute:</strong> Choose between pleasant acoustic rolling sounds or total silence, keeping study blocks calm and focused.</li>
+            <li><strong>Audit Log History:</strong> The live roll history panel records the last 20 rolls, allowing teachers to verify student data during group math lab rotations.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Creative Classroom Lesson Plans Using the Digital Dice Roller</h2>
+        <p>
+          Bring active, gamified learning into your math and humanities classes with these ready-to-run lesson plans:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. 2D6 Probability Distribution Histogram (Grades 6–9)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Students predict the most likely sum when rolling two six-sided dice. Working in pairs, they roll 2D6 100 times, tallying frequencies from 2 through 12 in a bar graph. They observe the triangular distribution centered at 7, discovering sample space combinations empirically.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. D20 Creative Writing Narrative Prompts (Grades 4–12)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Create a numbered 1–20 chart of story elements: settings (1–5), character flaws (6–10), conflicts (11–15), and plot twists (16–20). Roll a D20 four times to determine story constraints for a 15-minute creative writing flash sprint.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Mental Math Speed Sprints (Grades 2–6)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Roll 3D6 or 2D10 on the smartboard. Students race to calculate the product, sum, or create an equation reaching a target number using order of operations (PEMDAS/BODMAS). First student to stand with a valid equation earns classroom team points.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Tabletop RPG & History Simulations (Grades 7–12)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Simulate historical decisions (such as medieval diplomacy, exploration voyages, or tactical trade negotiations) where outcome probabilities are governed by D20 skill checks with modifiers based on historical resource management.
+            </p>
           </div>
         </div>
       </div>
-    
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What types of dice can I roll?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Roll standard 6-sided dice or any polyhedral RPG die: d4, d8, d10, d12, d20, and d100 percentile dice.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does it calculate the running total automatically?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, total sum, individual dice rolls, and roll history are calculated and displayed in real time.</p>
-            </div>
-          </div>
-</section>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Technical Architecture & Cryptographic Uniformity</h2>
+          <p>
+            Unlike physical plastic dice, which can possess microscopic air pockets or uneven weight distribution favoring specific faces, ClassPanel's digital dice engine uses hardware-level cryptographic random number generation (<code>crypto.getRandomValues</code>).
+          </p>
+          <p>
+            Every face from 1 to N has an exactly equal mathematical probability of appearing on every roll, with zero statistical skew or mechanical memory between consecutive rolls.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Classroom & Randomizer Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/coin-flip/">Coin Flip Simulator (Heads or Tails Probability)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator (Min/Max Custom Ranges)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Wheel of Names & Student Picker</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/rock-paper-scissors/">Rock Paper Scissors Simulator (Best of 3/5/7)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/group-generator/">Random Group Generator for Cooperative Teams</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Online Dice Roller</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What polyhedral dice types are supported?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">ClassPanel supports all standard polyhedral dice: D4 (tetrahedron), D6 (cube), D8 (octahedron), D10 (pentagonal trapezohedron), D12 (dodecahedron), D20 (icosahedron), and D100 (percentile percentile dice).</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I roll multiple dice simultaneously with modifiers?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Select anywhere from 1 to 10 dice of any combination, add positive or negative constant modifiers (e.g., 2d6 + 3 or 1d20 + 5), and review both individual die faces and cumulative sums on the live output board.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does multi-dice rolling illustrate the Central Limit Theorem?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Rolling a single D6 produces a flat, uniform probability distribution (16.67% per face). Rolling 2D6 or 3D6 shifts the outcome distribution toward a bell curve (normal distribution), with middle values (like 7 on 2D6) being statistically much more frequent than extreme values (2 or 12).</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Are the dice rolls mathematically random?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, every roll draws entropy from the browser's cryptographic Web Cryptography API (crypto.getRandomValues), providing mathematically fair, uniformly distributed outcomes without mechanical weight bias.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can tabletop RPG players and board gamers use this tool?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Absolutely. It is fully optimized for Dungeons & Dragons (D&D 5e), Pathfinder, Warhammer, Yahtzee, and custom classroom board games with instant advantage/disadvantage rolls and modifier math.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does this dice roller work offline?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, ClassPanel functions as an offline PWA. All 3D physics animations, dice face rendering, and sound effects execute locally on your laptop, tablet, or smartboard without an internet connection.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
     <!-- Site Footer -->
@@ -382,10 +422,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

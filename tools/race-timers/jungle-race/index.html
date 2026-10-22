@@ -30,63 +30,7 @@
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
-  <style>
-    .theme-stage {
-      background: linear-gradient(180deg, #14532d 0%, #166534 25%, #15803d 60%, #22c55e22 100%);
-      border-radius: var(--radius-xl);
-      border: 2px solid #16a34a;
-      padding: 1.5rem 1rem;
-      margin: 1.25rem auto;
-      max-width: 1080px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 50px rgba(34,197,94,0.15);
-    }
-    /* Foliage dots */
-    .theme-stage::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(circle 6px at 5% 90%, rgba(34,197,94,0.2) 0%, transparent 100%),
-        radial-gradient(circle 8px at 15% 10%, rgba(34,197,94,0.15) 0%, transparent 100%),
-        radial-gradient(circle 5px at 40% 95%, rgba(34,197,94,0.18) 0%, transparent 100%),
-        radial-gradient(circle 7px at 60% 5%, rgba(74,222,128,0.12) 0%, transparent 100%),
-        radial-gradient(circle 6px at 80% 88%, rgba(34,197,94,0.15) 0%, transparent 100%),
-        radial-gradient(circle 5px at 95% 15%, rgba(74,222,128,0.1) 0%, transparent 100%);
-      pointer-events: none; z-index: 0;
-    }
-    .race-lane { position:relative; width:100%; box-sizing:border-box; height:72px; border-bottom:1px dashed rgba(74,222,128,0.2); display:flex; align-items:center; margin-bottom:0.25rem; padding-left:60px; padding-right:52px; z-index:1; }
-    .race-lane:last-child { border-bottom:none; }
-    .lane-badge { position:absolute; left:8px; top:50%; transform:translateY(-50%); width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.9rem; color:#fff; z-index:2; }
-    .finish-line { position:absolute; right:36px; top:0; bottom:0; width:14px; background:repeating-linear-gradient(0deg,#111,#111 8px,#f0f0f0 8px,#f0f0f0 16px); border-radius:3px; opacity:0.85; z-index:2; }
-    .finish-flag { position:absolute; right:30px; top:-14px; font-size:1.4rem; z-index:3; }
-    .start-line { position:absolute; left:54px; top:0; bottom:0; width:3px; background:rgba(255,255,255,0.15); z-index:1; }
-    .racer-box { position:absolute; left:58px; display:inline-flex; align-items:center; gap:0.4rem; will-change:transform; transition:transform 0.05s linear; z-index:4; user-select:none; }
-    .racer-icon { font-size:2rem; display:inline-block; filter:drop-shadow(0 0 6px rgba(74,222,128,0.6)); }
-    .racer-box.is-running .racer-icon { animation:jungleRun 0.35s ease-in-out infinite alternate; }
-    .racer-box.is-turbo .racer-icon { animation:jungleSprint 0.18s ease-in-out infinite alternate; filter:drop-shadow(0 0 14px #4ade80); }
-    @keyframes jungleRun { 0% { transform:translateY(-3px) rotate(-5deg); } 100% { transform:translateY(3px) rotate(5deg); } }
-    @keyframes jungleSprint { 0% { transform:translateY(-5px) scale(1.15) rotate(-8deg); } 100% { transform:translateY(3px) scale(1.15) rotate(8deg); } }
-    .racer-label { background:rgba(255,255,255,0.1); border:1px solid rgba(74,222,128,0.4); padding:0.15rem 0.55rem; border-radius:var(--radius-full); font-size:0.78rem; font-weight:800; color:#dcfce7; white-space:nowrap; }
-    .theme-display { text-align:center; font-size:clamp(3rem,10vw,5.5rem); font-weight:900; font-family:ui-monospace,monospace; color:#4ade80; text-shadow:0 0 30px rgba(74,222,128,0.5); letter-spacing:0.05em; margin:0.5rem 0 0.25rem; }
-    .theme-commentary { text-align:center; font-size:0.95rem; font-weight:700; color:#86efac; margin-bottom:0.75rem; min-height:1.4em; }
-    .theme-podium { display:none; background:rgba(5,25,10,0.95); border:2px solid #16a34a; border-radius:var(--radius-xl); padding:1.5rem; margin:1rem auto; max-width:640px; text-align:center; box-shadow:0 0 40px rgba(22,163,74,0.3); animation:fadeIn 0.3s ease; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    .podium-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:0.75rem; margin-top:1rem; }
-    .podium-item { background:rgba(255,255,255,0.05); border:1px solid rgba(74,222,128,0.3); border-radius:var(--radius-lg); padding:0.85rem 0.5rem; display:flex; flex-direction:column; align-items:center; gap:0.35rem; }
-    .podium-item.winner { border-color:#f59e0b; background:rgba(245,158,11,0.1); transform:scale(1.05); }
-    .theme-gallery-section { margin:2.5rem auto; max-width:1080px; }
-    .theme-gallery-section h2 { font-size:1.2rem; font-weight:800; margin-bottom:1rem; color:var(--text-primary); }
-    .theme-gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; }
-    .theme-gallery-card { background:var(--bg-surface); border:2px solid var(--border-color); border-radius:var(--radius-xl); padding:1.25rem 1rem; text-align:center; transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:0.5rem; cursor:pointer; }
-    .theme-gallery-card:hover { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); transform:translateY(-2px); }
-    .theme-gallery-card.active-theme { border-color:var(--primary); background:var(--primary-light); }
-    .theme-card-emoji { font-size:2.2rem; }
-    .theme-card-name { font-weight:800; font-size:0.95rem; color:var(--text-primary); }
-    .theme-card-desc { font-size:0.8rem; color:var(--text-muted); }
-    .theme-card-badge { font-size:0.7rem; font-weight:700; color:var(--primary); background:var(--primary-light); padding:0.15rem 0.5rem; border-radius:var(--radius-full); }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/themes/jungle-race.css?v=1">
 </head>
 <body>
   <header class="site-header">
@@ -189,33 +133,72 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Jungle Race Safari Timer</h2>
-            <p>Configure your countdown time and choose your safari animal competitors: swift cheetahs, energetic lions, galloping zebras, and playful gazelles. Click "Start" to watch the animated animal racers dash through the savanna backdrop toward the finish line as the countdown clock ticks down.</p>
-            <p>The racers maintain realistic running animations synchronized to the remaining clock duration, crossing the wooden banner finish line right as time expires to celebratory musical fanfares and winner announcements. Tap the Fullscreen button for an immersive front-of-room experience that keeps every student attentive throughout the sprint.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Incorporate the Jungle Race Timer into Lessons?</h2>
-            <p>Animal safari themes resonate universally with young learners. Gamifying five-minute math sprints, spelling reviews, and desk clean-up blocks with safari racers keeps students fully engaged, attentive, and eager to complete their work before the racers cross the line.</p>
-            <p>Engineered specifically for classroom smartboards, it provides full-screen distraction-free timing without commercial popups, tracking scripts, or internet connectivity requirements, respecting student data privacy under COPPA and FERPA guidelines.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>About the Jungle Safari Classroom Race Timer</h2>
+        <p>
+          ClassPanel's Jungle Safari Race Timer delivers wild adventure to elementary and middle school classrooms. Animated safari jeeps race through lush tropical rainforests, leaping across river gorges and dodging wildlife obstacles as countdown time drains away.
+        </p>
+        <p>
+          Features and classroom controls:
+        </p>
+        <ul>
+          <li><strong>Multi-Lane Safari Racing:</strong> 2 to 4 animated safari vehicles with distinct colors representing student table groups.</li>
+          <li><strong>Energetic Animal Sound Effects:</strong> Optional acoustic jungle percussion and celebratory finish sounds.</li>
+          <li><strong>Geography & Ecology Thematics:</strong> Great companion for rainforest biome units, science stations, and clean-up races.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Active Learning & Classroom Camaraderie</h2>
+          <p>
+            Friendly team competition builds positive classroom interdependence and keeps students energized during afternoon study slumps.
+          </p>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">All Race Timers & F1 Lights</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/dragon-race/">Dragon Race Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/happy-panda/">Happy Panda Mascot Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chance-games/">Chance Games Hub</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>Related Race Timers</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/dragon-race/">Medieval Dragon Race Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/space-race/">Space Race Rocket Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers & F1 Reaction Suite</a></li>
+          </ul>
         </div>
       </div>
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Safari Classroom Management: Animal Movement & Energy Regulation</h2>
+        <p>
+          Classroom energy levels fluctuate dramatically across the school day—from mid-morning slumps to post-recess hyperactivity. Jungle Race leverages vibrant safari animals (cheetah, lion, zebra, monkey) sprinting through lush rainforest canopy to align classroom pacing with natural biological energy cycles.
+        </p>
+        <p>
+          Practical instructional applications for educators:
+        </p>
+        <ol>
+          <li><strong>Post-Recess Regrouping:</strong> When students return energized from the playground, a 3-minute Jungle Race transition challenge channels that physical energy into rapid desk readiness: water bottles stored, coats hung up, and math journals open before the cheetah crosses the vine finish line.</li>
+          <li><strong>Active Brain Breaks & Kinesthetic Learning:</strong> When students lose focus during sedentary lectures, initiate a 60-second jungle sprint. Assign students to jump, stretch, or do gentle desk aerobics matching their table animal mascot until the race concludes.</li>
+          <li><strong>Gamified Writing Sprints:</strong> During quick-write composition sessions, challenge young authors to write continuously until the safari animals reach the watering hole. This technique builds writing stamina and silences the inner self-editor.</li>
+          <li><strong>Interactive Whiteboard Compatibility:</strong> Designed with prominent start, reset, and full-screen buttons, Jungle Race is effortless to control from touch-enabled Promethean and SMART Boards across the room.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Jungle Race Timer</h2>
+        <div class="faq-item">
+          <h3>Can Jungle Race be customized for individual student IEP timing goals?</h3>
+          <p>Yes, teachers can configure customized countdown durations for individual accommodation intervals, such as 5-minute task chunks for students with ADHD.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What happens when the race reaches the finish line?</h3>
+          <p>The winning animal triggers a cheerful celebratory animation accompanied by an uplifting harmonic chime that signals the completion of the work period.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does Jungle Race require school IT installation or administrative permissions?</h3>
+          <p>No software installation, browser extensions, or administrative permissions are needed. It runs directly inside any modern web browser on ChromeOS, Windows, macOS, or iOS.</p>
+        </div>
+      </div>
+
     </section>
   </main>
 
@@ -243,10 +226,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

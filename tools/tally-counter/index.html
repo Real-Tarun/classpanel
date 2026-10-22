@@ -15,95 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/tally-counter/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .counter-teams-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-    .team-counter-card {
-      background: var(--bg-surface-subtle);
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 1.75rem 1.25rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.15s, border-color 0.15s;
-    }
-    .team-counter-card:hover {
-      border-color: var(--primary);
-    }
-    .team-counter-name {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-      outline: none;
-      border-bottom: 1px dashed transparent;
-      padding: 0.2rem 0.5rem;
-    }
-    .team-counter-name:focus {
-      border-bottom-color: var(--primary);
-      background: var(--bg-surface);
-      border-radius: var(--radius-sm);
-    }
-    .team-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      margin-bottom: 0.25rem;
-    }
-    .btn-delete-team {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 0.3rem;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.15s, background 0.15s, transform 0.1s;
-    }
-    .btn-delete-team:hover {
-      color: var(--accent-rose);
-      background: rgba(239, 68, 68, 0.12);
-      transform: scale(1.1);
-    }
-    .team-counter-val {
-      font-size: clamp(3.5rem, 8vw, 5.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: var(--text-primary);
-      line-height: 1;
-      margin: 1rem 0;
-      user-select: none;
-    }
-    .counter-btn-row {
-      display: flex;
-      gap: 0.6rem;
-      width: 100%;
-      justify-content: center;
-    }
-    .btn-step {
-      flex: 1;
-      height: 3.5rem;
-      border-radius: var(--radius-md);
-      font-size: 1.5rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.1s;
-    }
-    .btn-step:active {
-      transform: scale(0.95);
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/tally-counter.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -173,28 +85,62 @@
         "ratingCount": "135"
       }
     },
-    {
+            {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/tally-counter/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How many separate counters can I track at once?",
+          "name": "Can I track multiple independent counters simultaneously?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "You can create up to 8 independent colored tally columns, each with custom team names and individual step values (+1, +5, +10, -1)."
+            "text": "Yes. Add unlimited named counters (e.g., Attendance, Points, Lab Specimens) with custom step values, custom target limits, and individual color themes."
           }
         },
         {
           "@type": "Question",
-          "name": "Are counter scores preserved if I close the tab?",
+          "name": "What keyboard hotkeys are supported for fast counting?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, all tally scores and labels are auto-saved to your browser local storage so your data is never lost."
+            "text": "Press '+' or Spacebar to increment, '-' to decrement, and 'R' to reset the active counter without touching your mouse."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are tally counts saved between browser reloads?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, all counts and custom labels are saved automatically in your browser's local storage under our Zero-Account architecture."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export count data for spreadsheets?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. One-click clipboard copy allows instant pasting into Google Sheets or Microsoft Excel with timestamps and counter names."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the counter work on mobile phones and tablets?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, large touch buttons make it easy to use as a handheld event clicker on phones or mounted on a clipboard during field trips."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I count down instead of counting up?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Set initial starting numbers and use decrement mode to track remaining seats, inventory depletion, or admission capacity."
           }
         }
       ]
     }
+  ]
+  ]
   ]
 }
   </script>
@@ -263,47 +209,158 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Online Tally Counter</h2>
-            <p>Click the large "+1" button or press the spacebar / up-arrow on your keyboard to increment the count by one. To decrement, click "-1" or press the down-arrow. You can customize the step value (e.g. count by 2s, 5s, or 10s) and set custom starting values. To track multiple categories simultaneously, click "Add Counter" to create separate color-coded tracks for different teams, inventory rows, or classroom behaviors.</p>
-            <p>Assign custom labels to each counter (such as "Red Team vs. Blue Team", "Laps Completed", or "Event Attendees"). The tool provides optional acoustic click feedback so you can count without looking at the screen. Use the "Reset" button to clear an individual counter or reset all tracks at once.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Multi-Track Clicker Counter?</h2>
-            <p>Whether monitoring room attendance at school assemblies, tracking exercise repetitions in physical education, counting laboratory sample occurrences, or tallying classroom house points, mechanical hand tally clickers are easily misplaced. ClassPanel provides a massive, multi-track digital clicker counter that never runs out of batteries.</p>
-            <p>All active counter tallies and custom labels are saved automatically to your device's local storage. If you accidentally close your browser tab or restart your tablet, your running counts are instantly restored upon re-opening, completely free of charge and tracking-free.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Online Digital Tally Counter: Multi-Counters, Keyboard Hotkeys & Export</h2>
+        <p>
+          ClassPanel's Online Digital Tally Counter is a versatile click-counting utility engineered for classroom attendance, scientific field sampling, event door attendance, fitness repetitions, inventory audits, and positive behavior reinforcement (PBIS). Featuring responsive increment/decrement buttons, sound clicks, keyboard hotkeys, and multi-counter capability, our tool replaces mechanical hand clickers with a digital tally ledger.
+        </p>
+        <p>
+          Features and controls:
+        </p>
+        <ul>
+          <li><strong>Multi-Counter Dashboard:</strong> Create and track multiple distinct counters simultaneously—perfect for tracking team points, lab species observations, or library visitors.</li>
+          <li><strong>Keyboard Hotkeys:</strong> Press <strong>Spacebar</strong> or <strong>+</strong> to add, <strong>-</strong> to subtract, and <strong>R</strong> to reset counts without needing your mouse.</li>
+          <li><strong>Custom Step Intervals:</strong> Count by 1s, 5s, 10s, or custom step values to quickly log grouped items or bundled lab materials.</li>
+          <li><strong>Persistent Browser Storage:</strong> Your counts remain intact if you accidentally close your browser tab or switch to another window.</li>
+          <li><strong>Visual & Acoustic Feedback:</strong> Crisp mechanical click audio provides tactile confirmation of every registered count, with mute options for silent libraries.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Pedagogical & Field Science Applications</h2>
+          <p>
+            From elementary counting fundamentals to biological field research:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Ecology Field Sampling:</strong> Students count plant species frequency along quadrant transects during outdoor science labs without lugging heavy equipment.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Classroom Behavior Points:</strong> Track positive participation points for table teams throughout instructional periods with transparent smartboard displays.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Traffic & Pedestrian Surveys:</strong> Record vehicle and pedestrian flow counts for civics, environmental science, and urban geography projects.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Speech Disfluency Tracking:</strong> Speech pathology students tally filler words ('um', 'uh', 'like') during public speaking practice sessions.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Online Stopwatch & Laps</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/group-generator/">Random Group Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/clocks/">Fullscreen Wall Clock</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>4 Classroom Lesson Plans Using the Digital Tally Counter</h2>
+          <p>
+            Engage your students with hands-on counting and data collection activities:
+          </p>
+          <ul>
+            <li><strong>1. Elementary Probability Tallying:</strong> Pair students to tally coin tosses or dice rolls, graphing cumulative frequencies on paper.</li>
+            <li><strong>2. Library & Hallway Traffic Audits:</strong> Station student teams at campus entryways to tally pedestrian traffic patterns during class changeovers.</li>
+            <li><strong>3. Physical Education Rep Sprints:</strong> Gym students count partner push-ups, jump ropes, or shuttle run laps during fitness assessment units.</li>
+            <li><strong>4. Animal Behavior Ethograms:</strong> Science students watch live wildlife webcams (e.g., bird nests, marine aquariums), tallying specific animal behaviors per 10-minute observation window.</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Statistical Sampling & Behavioral Frequency Measurement (ABA Therapy)</h2>
+        <p>
+          In applied behavior analysis (ABA) and scientific sampling, event frequency recording provides objective behavioral data:
+        </p>
+        <ul>
+          <li><strong>Event Frequency Recording:</strong> Tallying specific target behaviors (e.g., student hand-raising, on-task comments) per 30-minute observation window.</li>
+          <li><strong>Ecological Quadrant Sampling:</strong> Counting biological organism density across random field sampling quadrats.</li>
+          <li><strong>Multi-Factor Tracking:</strong> Using independent colored counters to compare competing variables simultaneously on a single screen.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Tally Counter</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I track multiple independent counters simultaneously?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Add unlimited named counters (e.g., Attendance, Points, Lab Specimens) with custom step values, custom target limits, and individual color themes.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What keyboard hotkeys are supported for fast counting?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Press '+' or Spacebar to increment, '-' to decrement, and 'R' to reset the active counter without touching your mouse.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Are tally counts saved between browser reloads?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, all counts and custom labels are saved automatically in your browser's local storage under our Zero-Account architecture.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I export count data for spreadsheets?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. One-click clipboard copy allows instant pasting into Google Sheets or Microsoft Excel with timestamps and counter names.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the counter work on mobile phones and tablets?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, large touch buttons make it easy to use as a handheld event clicker on phones or mounted on a clipboard during field trips.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I count down instead of counting up?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Set initial starting numbers and use decrement mode to track remaining seats, inventory depletion, or admission capacity.</p>
         </div>
       </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How many separate counters can I track at once?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">You can create up to 8 independent colored tally columns, each with custom team names and individual step values (+1, +5, +10, -1).</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Are counter scores preserved if I close the tab?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, all tally scores and labels are auto-saved to your browser local storage so your data is never lost.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Data Collection, Frequency Distribution & Classroom Behavioral Tracking</h2>
+        <p>
+          The tally counter is a versatile tool across STEM curricula and classroom management routines. From introducing kindergarteners to the concept of counting in clusters to recording statistical sample counts in high school biology labs, digital tallying simplifies quantitative measurement.
+        </p>
+        <p>
+          Practical applications across educational settings:
+        </p>
+        <ol>
+          <li><strong>Classroom Behavioral & Participation Tracking:</strong> In positive behavioral interventions and supports (PBIS) frameworks, use tally counters to track collective positive actions—such as kind compliments shared, hands raised before speaking, or books completed. Reaching milestone counts unlocks whole-class rewards.</li>
+          <li><strong>Introductory Statistics & Probability:</strong> Conduct probability experiments such as coin tosses, dice rolls, or spinner spins. Assign student groups to tally frequency counts across 100 trials, then graph the resulting frequency distributions.</li>
+          <li><strong>Field Trip Attendance & Bus Roll Calls:</strong> Keep quick, reliable headcounts during hallway transitions, assembly lines, and field trip boarding. The prominent high-contrast numbers prevent accidental counting errors.</li>
+          <li><strong>Multi-Channel Counter Flexibility:</strong> Track multiple categories simultaneously (e.g., tallying hot lunches vs. cold lunches, or sorting recyclable materials in an environmental science audit).</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Digital Tally Counter</h2>
+        <div class="faq-item">
+          <h3>Does the counter remember the current count if I refresh the page?</h3>
+          <p>Yes. All count values, custom titles, and step increments are persisted continuously in your browser's local storage, preventing accidental data loss.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I count down as well as count up?</h3>
+          <p>Yes, both increment (+) and decrement (-) buttons are provided, with customizable step increments (counting by 1s, 5s, 10s, or any chosen integer).</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can the tally counter be controlled via keyboard?</h3>
+          <p>Yes. Press the Spacebar or Up Arrow to increment, Down Arrow to decrement, and 'R' to reset, allowing hands-free operation while observing experiments.</p>
+        </div>
+      </div>
+
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Ecology Field Studies: Biodiversity & Habitat Auditing</h2>
+        <p>
+          Take learning outside the classroom with digital tallying:
+        </p>
+        <ul>
+          <li><strong>Schoolyard Bird Count:</strong> Assign student pairs to observe local bird species for 20 minutes. Use separate tally counters to track sparrows, robins, pigeons, and crows.</li>
+          <li><strong>Tree & Foliage Density:</strong> Quantify the distribution of deciduous vs. coniferous trees on school grounds to study campus ecosystem biodiversity.</li>
+          <li><strong>Traffic & Transportation Audit:</strong> Count passing bicycles, pedestrians, buses, and passenger cars during morning drop-off for an environmental science carbon footprint project.</li>
+        </ul>
+      </div>
+
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -331,10 +388,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

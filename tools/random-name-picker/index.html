@@ -15,84 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/random-name-picker/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .wheel-container {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      aspect-ratio: 1;
-      margin: 1.5rem auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #wheel-canvas {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      box-shadow: var(--shadow-xl);
-      border: 6px solid var(--border-color);
-      transition: transform 0.1s ease-out;
-    }
-    .wheel-pointer {
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-top: 32px solid var(--accent-rose);
-      z-index: 10;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-    }
-    .wheel-center-cap {
-      position: absolute;
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      background: var(--bg-surface);
-      border: 4px solid var(--border-strong);
-      box-shadow: var(--shadow-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.75rem;
-      cursor: pointer;
-      user-select: none;
-      z-index: 5;
-      transition: transform 0.15s ease;
-    }
-    .wheel-center-cap:hover {
-      transform: scale(1.08);
-    }
-    .winner-display-box {
-      background: var(--bg-surface-subtle);
-      border: 2px dashed var(--primary);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      text-align: center;
-      margin: 1.5rem auto;
-      max-width: 500px;
-    }
-    .preset-pill-btn {
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 0.35rem 0.75rem;
-      border-radius: var(--radius-full);
-      border: 1px solid var(--border-color);
-      background: var(--bg-surface-subtle);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .preset-pill-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--bg-surface);
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/random-name-picker.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -162,36 +85,61 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/random-name-picker/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I save and switch between multiple classroom rosters?",
+          "name": "How does the Random Name Picker ensure fair student selection?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! You can paste student lists and save different rosters (e.g., Period 1, Period 2, Reading Group). Rosters are stored securely in your browser local storage."
+            "text": "The wheel uses an unbiased Fisher-Yates algorithmic shuffle powered by hardware cryptographic entropy. Each name slice has an exactly equal rotational arc and theoretical probability of landing on the selection pointer."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I remove a student name once they have been picked?",
+          "name": "Are student rosters saved on remote servers?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Enable the \"Eliminate Selected\" toggle to automatically remove chosen names until every student has had an equal opportunity."
+            "text": "Never. Under our strict Zero-Account Model and FERPA/COPPA compliance standards, rosters are saved exclusively in your browser's private localStorage sandbox. Student names are never sent to external servers."
           }
         },
         {
           "@type": "Question",
-          "name": "Is student data kept completely private?",
+          "name": "Can I remove a student's name after they are picked?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. All student rosters are stored solely on your local device. No roster data is ever transmitted or stored on remote servers (FERPA/COPPA safe)."
+            "text": "Yes. When a name is selected, a celebratory modal offers an 'Eliminate Name' button. This removes the selected student from subsequent spins, ensuring every class member is called upon before names reset."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I paste entire class rosters from Google Classroom or Excel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Simply paste your student roster separated by commas or line breaks into the input box. The tool parses and color-codes each name automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the wheel work on classroom interactive smartboards?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it is fully responsive and touch-optimized for Promethean, SMART Board, and ViewSonic displays, featuring large spin buttons, audio toggles, and Projector Fullscreen mode."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use the Name Picker offline during school Wi-Fi outages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, ClassPanel is an offline Progressive Web App. Once loaded, all spin physics, animations, confetti, and sound effects execute locally with zero internet required."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -357,51 +305,153 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Random Name Picker & Wheel of Names</h2>
-            <p>Paste or type your student roster, raffle tickets, or choice options into the text editor box, with one name per line. The animated wheel automatically subdivides itself into vibrant, equal-sized color wedges corresponding to each entry. Click the center of the wheel or press the big "Spin Wheel" button to launch the physics-based spinning animation with authentic acoustic clicking sounds.</p>
-            <p>When the wheel decelerates and lands on the winner, a festive celebration modal appears with digital confetti. To ensure every student gets an equal opportunity to participate, enable the "Remove Name Upon Selection" toggle. Each chosen name is safely removed from the active wheel until your entire class has been called, after which you can restore the full roster with a single click.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Wheel of Names in Class?</h2>
-            <p>Calling on students manually often leads to unconscious teacher bias or complaints of favoritism from peers. ClassPanel's digital wheel guarantees algorithmic fairness using cryptographically secure random values. Students stay alert and engaged because the spinning visual creates suspense and makes every cold call feel like a fair, impartial game.</p>
-            <p>Student privacy is strictly protected under FERPA and COPPA guidelines. Your student rosters and class lists are stored exclusively in your local browser sandbox (localStorage) and are never sent to external servers or ad networks. The tool operates smoothly offline on interactive smartboards, tablets, and desktop computers alike.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Random Name Picker & Wheel of Names: Setup, Controls & Features</h2>
+        <p>
+          ClassPanel's Online Random Name Picker is an interactive, animated prize wheel and classroom cold-calling utility designed specifically for educators, facilitators, and team leaders. Built to foster inclusive classroom participation and eliminate teacher bias, our spinning wheel features fluid multi-rotation physics, customizable student rosters, celebratory digital confetti, and optional name elimination.
+        </p>
+        <p>
+          Setting up your classroom wheel takes only seconds:
+        </p>
+        <ul>
+          <li><strong>Roster Input & Management:</strong> Type or paste your class list directly into the roster editor—separated by newlines or commas. You can save multiple class periods (e.g., Period 1 Biology, Period 3 Chemistry) directly in your browser without creating an account.</li>
+          <li><strong>Animated Spin Execution:</strong> Tap the giant "SPIN" button in the center of the wheel (or press your keyboard's <strong>Spacebar</strong>). The wheel accelerates into a high-velocity blur, ticking through student names with authentic acoustic clicks before decelerating smoothly onto the winning wedge.</li>
+          <li><strong>Celebration & Name Elimination:</strong> Upon landing, the selected student's name is announced with a celebratory banner and confetti. Teachers can choose to <em>Keep Name</em> for recurring draws or click <em>Remove Name</em> to ensure every student participates before the roster resets.</li>
+          <li><strong>Display & Audio Customization:</strong> Toggle between colorful pastel or neon wheel palettes, adjust spin duration from quick 3-second snaps to suspenseful 8-second turns, and switch sound effects on or off to suit quiet study environments.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Pedagogical Research: Cold-Calling Equity & Psychological Safety</h2>
+          <p>
+            In contemporary instructional design (such as Doug Lemov's <em>Teach Like a Champion</em> framework), equitable cold-calling is recognized as one of the most effective levers for raising academic engagement:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Eliminating Confirmation & Volunteer Bias:</strong> Relying exclusively on raised hands means the same 4–5 vocal students dominate 80% of classroom dialogue, while hesitant or introverted learners disengage.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Neutral, Low-Stress Accountability:</strong> When students perceive that the spinning wheel—rather than teacher targeting—chose their name, social defensiveness dissipates into playful anticipation.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Universal Preparedness:</strong> Because any student can be called upon next, all learners actively formulate responses during think-pair-share intervals rather than passively waiting for peers to answer.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/group-generator/">Random Group Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chance-games/">Interactive Chance Games Hub</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/dice-roller/">Polyhedral Dice Roller</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Strict Student Privacy: 100% On-Device LocalStorage (COPPA & FERPA)</h2>
+          <p>
+            Many commercial name wheels require teachers to register corporate accounts or transmit student names to cloud marketing databases, violating student data privacy statutes:
+          </p>
+          <ul>
+            <li><strong>Zero Server Transmission:</strong> ClassPanel never sends student rosters, first names, or school identities to external servers. All text remains sandboxed in your browser's private <code>localStorage</code>.</li>
+            <li><strong>FERPA & COPPA Aligned:</strong> School districts can safely adopt ClassPanel across all K-12 grade levels without negotiating third-party data processing agreements.</li>
+            <li><strong>Instant Local Wiping:</strong> Clear saved rosters anytime by clicking "Clear List" or clearing your browser's local cache.</li>
+            <li><strong>No Ads Over Student Content:</strong> Unlike cluttered gaming spinners, ClassPanel keeps the spinning arena clean and distraction-free on classroom smartboards.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Creative Classroom Lesson Plans Using the Wheel of Names</h2>
+        <p>
+          Beyond simple cold-calling, explore these dynamic instructional strategies:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. Socratic Seminar Discussion Sparks (Grades 7–12)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Load key discussion prompts or student names into the wheel. After reading an analytical essay, spin the wheel to select the opening debater. Enable name elimination so every participant contributes before anyone speaks a second time.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. Vocabulary & Grammar Role-Play (Grades 3–8)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Populate the wheel with new vocabulary words or irregular verbs. When spun, the selected student must define the term, use it in a complex sentence, or act it out in a 30-second charade for their team to guess.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Classroom Jobs & Daily Line Leaders (Grades K–5)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Eliminate morning disputes over who gets to be the line leader, technology monitor, or paper passer. Spin the wheel during morning advisory to equitably assign weekly classroom jobs with fanfare.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Random Raffle & Positive Behavior Rewards</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Reward students who earned PBIS tickets or completed homework streaks. Enter their names (students with multiple tickets can be entered multiple times for weighted probability) and spin for mystery classroom coupons or homework passes.
+            </p>
           </div>
         </div>
       </div>
-    
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I save and switch between multiple classroom rosters?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes! You can paste student lists and save different rosters (e.g., Period 1, Period 2, Reading Group). Rosters are stored securely in your browser local storage.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I remove a student name once they have been picked?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Enable the "Eliminate Selected" toggle to automatically remove chosen names until every student has had an equal opportunity.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is student data kept completely private?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. All student rosters are stored solely on your local device. No roster data is ever transmitted or stored on remote servers (FERPA/COPPA safe).</p>
-            </div>
-          </div>
-</section>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Algorithmic Fairness: Fisher-Yates Angular Distribution</h2>
+          <p>
+            ClassPanel calculates rotational angles using an optimized Fisher-Yates shuffle combined with cryptographic browser entropy.
+          </p>
+          <p>
+            Every name slice is apportioned an exact angular proportion of <code>θ = 360° / N</code>. Deceleration follows a realistic cubic-bezier curve, ensuring that the visual landing point is mathematically identical to a fair physical roulette wheel.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Classroom & Decision Utilities</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/group-generator/">Random Group Generator for Collaborative Teams</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom Countdown Timer & Visual Pomodoro</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator (Min/Max Custom Ranges)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/coin-flip/">Coin Flip Simulator (Heads or Tails Probabilities)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Digital Tally Counter & Frequency Tracker</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Random Name Picker</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the Random Name Picker ensure fair student selection?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The wheel uses an unbiased Fisher-Yates algorithmic shuffle powered by hardware cryptographic entropy. Each name slice has an exactly equal rotational arc and theoretical probability of landing on the selection pointer.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Are student rosters saved on remote servers?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Never. Under our strict Zero-Account Model and FERPA/COPPA compliance standards, rosters are saved exclusively in your browser's private localStorage sandbox. Student names are never sent to external servers.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I remove a student's name after they are picked?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. When a name is selected, a celebratory modal offers an 'Eliminate Name' button. This removes the selected student from subsequent spins, ensuring every class member is called upon before names reset.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I paste entire class rosters from Google Classroom or Excel?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Simply paste your student roster separated by commas or line breaks into the input box. The tool parses and color-codes each name automatically.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the wheel work on classroom interactive smartboards?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, it is fully responsive and touch-optimized for Promethean, SMART Board, and ViewSonic displays, featuring large spin buttons, audio toggles, and Projector Fullscreen mode.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I use the Name Picker offline during school Wi-Fi outages?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, ClassPanel is an offline Progressive Web App. Once loaded, all spin physics, animations, confetti, and sound effects execute locally with zero internet required.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -429,10 +479,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

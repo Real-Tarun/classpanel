@@ -15,85 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/classroom-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .timer-big-display {
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
-      display: inline-block;
-      border-radius: var(--radius-lg);
-      padding: 0.2rem 0.8rem;
-    }
-    .timer-big-display:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-      background: var(--bg-surface-subtle);
-    }
-    .timer-big-display:focus-visible {
-      outline: 3px solid var(--primary);
-      outline-offset: 4px;
-    }
-    .time-digit-input {
-      width: clamp(65px, 15vw, 135px);
-      font-size: clamp(2.4rem, 8vw, 6rem);
-      font-weight: 900;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      text-align: center;
-      background: var(--bg-surface);
-      border: 3px solid var(--primary);
-      border-radius: var(--radius-lg);
-      color: var(--text-primary);
-      padding: 0.25rem 0;
-      outline: none;
-      box-shadow: var(--shadow-md);
-      -moz-appearance: textfield;
-    }
-    .time-digit-input::-webkit-outer-spin-button,
-    .time-digit-input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    .time-digit-input:focus {
-      border-color: var(--accent-purple);
-      box-shadow: 0 0 0 4px var(--primary-light);
-    }
-    .time-digit-colon {
-      font-size: clamp(2.2rem, 7vw, 5.5rem);
-      font-weight: 900;
-      color: var(--border-strong);
-      line-height: 1;
-      user-select: none;
-    }
-    .time-digit-label {
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-top: 0.35rem;
-      user-select: none;
-    }
-    .time-edit-hint {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-      cursor: pointer;
-      transition: color 0.15s, opacity 0.15s;
-    }
-    .timer-display-container:hover .time-edit-hint {
-      color: var(--primary);
-    }
-    .preset-chip.active {
-      background: var(--primary) !important;
-      color: #FFF !important;
-      border-color: var(--primary) !important;
-      font-weight: 800;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/classroom-timer.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -163,44 +85,61 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/classroom-timer/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I use this classroom timer offline on my smartboard?",
+          "name": "How does the Classroom Timer support student executive function and focus?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! ClassPanel is built as a Progressive Web App (PWA). Once loaded in your browser, the timer, ambient focus soundscapes, and progress ring animations function 100% offline without requiring internet access."
+            "text": "By transforming abstract time into a visual countdown bar with high-contrast digits, students with ADHD or time-blindness can visually track elapsed and remaining time. This reduces transition resistance and helps learners self-pace their work."
           }
         },
         {
           "@type": "Question",
-          "name": "Does the timer support keyboard shortcuts for smartboard clickers?",
+          "name": "What audio alerts are available, and are they sensory-friendly?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Press the Spacebar to Start or Pause the countdown, press R to Reset to your preset duration, and press F or the Projector button to toggle Fullscreen projector mode."
+            "text": "The timer features pleasant synthesized harmonic chimes, Tibetan singing bowls, marimba melodies, and traditional school bells. Rather than jarring electronic buzzers that cause anxiety, our sounds are engineered to be polite and sensory-inclusive."
           }
         },
         {
           "@type": "Question",
-          "name": "Is this timer free for public schools and COPPA/FERPA compliant?",
+          "name": "Can I use preset intervals like the 25/5 Pomodoro Technique?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Absolutely. ClassPanel is completely free with no student account registration, no passwords, no ads during countdown, and zero personal data tracking, making it fully compliant with student privacy laws."
+            "text": "Yes. Quick-set preset buttons allow instant selection of 1, 2, 5, 10, 15, 20, 25, 30, 45, and 60-minute blocks, including automated alternating focus and break intervals."
           }
         },
         {
           "@type": "Question",
-          "name": "How does Pomodoro mode work in the classroom?",
+          "name": "Does the timer stay running when switching browser tabs or windows?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Click the Pomodoro chip to run 25-minute focused work blocks followed by 5-minute restorative brain breaks. It helps students maintain high concentration during independent study and essay writing."
+            "text": "Yes. The timer calculates elapsed time using high-precision performance.now() timestamps rather than relying on browser interval ticks, preventing timer lag or freezing when minimized."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I project this timer in full-screen on a classroom smartboard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Click the 'Projector Mode' button in the top navigation bar or press the 'F' key on your keyboard to enter distraction-free, edge-to-edge full-screen display."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the classroom timer work completely offline without internet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Built as an offline Progressive Web App (PWA), all audio synthesis and visual countdown components are cached locally on your device, operating smoothly during school internet outages."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -426,56 +365,154 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Classroom & Study Timer</h2>
-            <p>Select your countdown duration by clicking any of the quick preset chips—such as one minute, five minutes, ten minutes, fifteen minutes, thirty minutes, or one hour. If you require a specific interval, click the "⏱️ Custom" chip to type exact hours, minutes, and seconds. Once your time is set, click the giant green "Start" button to launch the countdown. You can pause at any time, tap "Reset" to return to your chosen duration, or use the quick increment buttons (+1 Hr, +5 Min, +1 Min, -1 Min) to adjust time on the fly without stopping your lesson.</p>
-            <p>To maximize classroom visibility, click the Fullscreen button in the header bar or press the keyboard shortcut to expand the timer across your entire smartboard or projector screen. Under the audio control panel, choose an optional ambient focus soundtrack (such as calm meditation, rain sounds, or alpha wave beats) to mask hallway chatter during independent work. You can also select your preferred end-of-timer alarm chime, ranging from gentle marimba chimes to cheerful school bells.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Choose ClassPanel's Classroom Timer?</h2>
-            <p>Unlike generic timer websites cluttered with banner ads, slow-loading video popups, and tracker scripts that freeze classroom computers, ClassPanel was created specifically for educational smartboards. High-contrast typography and dynamic color-shifting progress rings (progressing smoothly from comfortable green to cautionary yellow and urgent red) help students intuitively perceive the passage of time without inducing anxiety or distraction.</p>
-            <p>The timer is 100% free, requires zero logins, and collects no personal data whatsoever. Thanks to its Progressive Web App architecture, your chosen presets and audio volume levels are saved securely in your browser's local storage. Even if school Wi-Fi drops out during the middle of third period, the timer continues running smoothly offline without interruption.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Online Classroom Timer: Presets, Ambient Sounds & Projector Mode</h2>
+        <p>
+          ClassPanel's Online Classroom Timer is an expansive, sensory-conscious digital countdown clock and focus management engine engineered specifically for front-of-class interactive displays, smartboards, study desks, and lecture halls. Designed to bring predictable structure to instructional periods, our timer combines massive 4K-legible numerals, animated progress rings, calming synthesized soundscapes, and rapid 1-click interval presets.
+        </p>
+        <p>
+          Customizing your classroom countdown is quick and intuitive:
+        </p>
+        <ul>
+          <li><strong>Quick-Set Presets & Custom Input:</strong> Tap any preset chip for instant 1, 2, 5, 10, 15, 20, 25, 30, 45, or 60-minute intervals, or enter custom hours, minutes, and seconds using the precision keypad.</li>
+          <li><strong>Keyboard Hotkeys:</strong> Press <strong>Spacebar</strong> to start or pause the countdown, <strong>R</strong> to reset to the original duration, and <strong>F</strong> to toggle edge-to-edge Projector Fullscreen mode without reaching for the mouse.</li>
+          <li><strong>Sensory-Friendly Finish Chimes:</strong> Select from harmonic acoustic chimes, Tibetan meditation bowls, gentle marimba arpeggios, or traditional school bells. Each sound is generated in real-time via the browser's Web Audio API, avoiding harsh frequencies that trigger anxiety in sensory-sensitive students.</li>
+          <li><strong>Ambient Focus Soundscapes:</strong> Keep classrooms settled during independent reading blocks by activating procedural ambient audio, including gentle rainfall, a binaural focus drone, or soft library white noise.</li>
+          <li><strong>Visual Elapsed Time Bar:</strong> A bold, color-shifting progress bar smoothly drains across the bottom of the screen, giving students who struggle with numerical clock reading an immediate spatial understanding of remaining time.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Pedagogical Science: Visual Pacing, Executive Function & Time-Blindness</h2>
+          <p>
+            In educational psychology, the perception of time is one of the greatest obstacles to classroom productivity and emotional regulation:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Mitigating Time-Blindness (ADHD Support):</strong> Neurodivergent learners frequently experience "time-blindness"—an inability to intuitively gauge the passage of time. A giant visual progress bar externalizes executive function, helping students pace essays, lab experiments, and math worksheets.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Lowering Transition Friction:</strong> Sudden instructional stops trigger behavioral disruptions. A visible timer provides predictable advance notice, allowing students to mentally prepare for clean-up and lesson transitions.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>The Pomodoro Focus Curve:</strong> Sprints of 25 minutes of deep focus punctuated by 5-minute recovery intervals prevent mental fatigue, sustain dopamine levels, and optimize memory consolidation.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Official Exam Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/sensory-timer/">Sensory Calming Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Random Name Picker</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/group-generator/">Class Group Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/presentation-timer/">Presentation & Speech Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Why Teachers Worldwide Choose ClassPanel Over Generic Timers</h2>
+          <p>
+            Unlike commercial video-sharing sites or cluttered web clocks that present severe classroom liability, ClassPanel was created with teacher-first design principles:
+          </p>
+          <ul>
+            <li><strong>Zero Distracting Video Ads:</strong> No unskippable video ads, flashing banners, or popups interrupt your lesson pacing or appear before impressionable students.</li>
+            <li><strong>High-Contrast Smartboard Display:</strong> Ultra-crisp typography stands out sharply even in sunlit classrooms with overhead fluorescent lighting.</li>
+            <li><strong>Zero Registration or Login Walls:</strong> Teachers never waste precious instruction minutes entering passwords or 2-factor SMS codes.</li>
+            <li><strong>Zero Student Tracking (COPPA & FERPA):</strong> All custom timer labels and volume settings are saved strictly on your local device.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Actionable Lesson Transition & Study Strategies Using the Classroom Timer</h2>
+        <p>
+          Incorporate visual timing into your daily instructional workflow with these proven routines:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. The 3-Minute Bell Ringer Entry Routine</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Start every period with a 3-minute timer on the smartboard paired with a warm-up prompt. Students learn to sit, unpack, and write immediately, transforming chaotic hallway transitions into productive academic momentum.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. 2-Minute Table Clean-Up Challenge</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Turn room tidying into a cooperative game. Set a 2-minute timer with energetic bell music. Student table pods race to put away art supplies, return textbooks to shelves, and clear floor scraps before the final chime sounds.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Think-Pair-Share Paced Intervals</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Structure complex peer collaboration: set 1 minute for silent independent thought, 2 minutes for paired elbow-partner discussion, and 3 minutes for whole-class share out. Strict time boundaries keep dialogue focused.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Pomodoro Deep Study Blocks (High School & College)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Run 25-minute undistracted writing blocks accompanied by gentle ambient rain audio. When the soft chime rings, enforce a 5-minute movement break where students stretch and rest their eyes before the next study sprint.
+            </p>
           </div>
         </div>
       </div>
-    
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I use this classroom timer offline on my smartboard?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes! ClassPanel is built as a Progressive Web App (PWA). Once loaded in your browser, the timer, ambient focus soundscapes, and progress ring animations function 100% offline without requiring internet access.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the timer support keyboard shortcuts for smartboard clickers?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Press the Spacebar to Start or Pause the countdown, press R to Reset to your preset duration, and press F or the Projector button to toggle Fullscreen projector mode.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is this timer free for public schools and COPPA/FERPA compliant?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Absolutely. ClassPanel is completely free with no student account registration, no passwords, no ads during countdown, and zero personal data tracking, making it fully compliant with student privacy laws.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does Pomodoro mode work in the classroom?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Click the Pomodoro chip to run 25-minute focused work blocks followed by 5-minute restorative brain breaks. It helps students maintain high concentration during independent study and essay writing.</p>
-            </div>
-          </div>
-</section>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Technical Architecture: Drift-Free Performance Timestamps</h2>
+          <p>
+            Standard web timers rely on <code>setInterval()</code>, which drifts significantly when browser tabs are throttled or backgrounded by the operating system.
+          </p>
+          <p>
+            ClassPanel calculates exact remaining time by measuring real-time delta offsets using <code>window.performance.now()</code>. Even if your computer temporarily sleeps or you switch between projection slides, the countdown remains accurate to the millisecond.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Classroom Timing Utilities</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam & Test Countdown Timer (Official Proctoring Mode)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/presentation-timer/">Presentation & Speech Timer (Green/Yellow/Red Traffic Lights)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/sensory-timer/">Sensory Calming Timer (Liquid Bubbles & Meditation)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/bomb-countdown/">Bomb Countdown Timer (Gamified Speed Challenges)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Online Digital Stopwatch & Split Lap Timer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Classroom Timer</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the Classroom Timer support student executive function and focus?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">By transforming abstract time into a visual countdown bar with high-contrast digits, students with ADHD or time-blindness can visually track elapsed and remaining time. This reduces transition resistance and helps learners self-pace their work.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What audio alerts are available, and are they sensory-friendly?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The timer features pleasant synthesized harmonic chimes, Tibetan singing bowls, marimba melodies, and traditional school bells. Rather than jarring electronic buzzers that cause anxiety, our sounds are engineered to be polite and sensory-inclusive.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I use preset intervals like the 25/5 Pomodoro Technique?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Quick-set preset buttons allow instant selection of 1, 2, 5, 10, 15, 20, 25, 30, 45, and 60-minute blocks, including automated alternating focus and break intervals.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the timer stay running when switching browser tabs or windows?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. The timer calculates elapsed time using high-precision performance.now() timestamps rather than relying on browser interval ticks, preventing timer lag or freezing when minimized.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do I project this timer in full-screen on a classroom smartboard?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Click the 'Projector Mode' button in the top navigation bar or press the 'F' key on your keyboard to enter distraction-free, edge-to-edge full-screen display.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the classroom timer work completely offline without internet?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Built as an offline Progressive Web App (PWA), all audio synthesis and visual countdown components are cached locally on your device, operating smoothly during school internet outages.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -503,10 +540,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

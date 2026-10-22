@@ -31,158 +31,7 @@
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
-  <style>
-    .theme-stage {
-      background: linear-gradient(180deg, #0c4a6e 0%, #075985 30%, #0369a1 60%, #0ea5e9 100%);
-      border-radius: var(--radius-xl);
-      border: 2px solid #0284c7;
-      padding: 1.5rem 1rem;
-      margin: 1.25rem auto;
-      max-width: 1080px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 50px rgba(14,165,233,0.2);
-    }
-    /* Bubbles background */
-    .theme-stage::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(circle 4px at 8% 70%, rgba(255,255,255,0.15) 0%, transparent 100%),
-        radial-gradient(circle 3px at 20% 40%, rgba(255,255,255,0.1) 0%, transparent 100%),
-        radial-gradient(circle 5px at 35% 85%, rgba(255,255,255,0.12) 0%, transparent 100%),
-        radial-gradient(circle 3px at 55% 25%, rgba(255,255,255,0.1) 0%, transparent 100%),
-        radial-gradient(circle 4px at 70% 65%, rgba(255,255,255,0.12) 0%, transparent 100%),
-        radial-gradient(circle 3px at 85% 45%, rgba(255,255,255,0.1) 0%, transparent 100%),
-        radial-gradient(circle 4px at 92% 80%, rgba(255,255,255,0.08) 0%, transparent 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .race-lane {
-      position: relative;
-      width: 100%;
-      box-sizing: border-box;
-      height: 72px;
-      border-bottom: 1px dashed rgba(186,230,253,0.2);
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.25rem;
-      padding-left: 60px;
-      padding-right: 52px;
-      z-index: 1;
-    }
-    .race-lane:last-child { border-bottom: none; }
-    .lane-badge {
-      position: absolute;
-      left: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 0.9rem;
-      color: #fff;
-      z-index: 2;
-    }
-    .finish-line {
-      position: absolute;
-      right: 36px;
-      top: 0;
-      bottom: 0;
-      width: 14px;
-      background: repeating-linear-gradient(0deg,#111,#111 8px,#f0f0f0 8px,#f0f0f0 16px);
-      border-radius: 3px;
-      opacity: 0.85;
-      z-index: 2;
-    }
-    .finish-flag { position: absolute; right: 30px; top: -14px; font-size: 1.4rem; z-index: 3; }
-    .start-line { position: absolute; left: 54px; top: 0; bottom: 0; width: 3px; background: rgba(255,255,255,0.2); z-index: 1; }
-    .racer-box {
-      position: absolute;
-      left: 58px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      will-change: transform;
-      transition: transform 0.05s linear;
-      z-index: 4;
-      user-select: none;
-    }
-    .racer-icon {
-      font-size: 2rem;
-      display: inline-block;
-      filter: drop-shadow(0 0 6px rgba(186,230,253,0.6));
-    }
-    .racer-box.is-running .racer-icon { animation: swim 0.4s ease-in-out infinite alternate; }
-    .racer-box.is-turbo .racer-icon { animation: swimFast 0.2s ease-in-out infinite alternate; filter: drop-shadow(0 0 14px #bae6fd); }
-    @keyframes swim {
-      0% { transform: translateY(-4px) rotate(-6deg); }
-      100% { transform: translateY(4px) rotate(6deg); }
-    }
-    @keyframes swimFast {
-      0% { transform: translateY(-6px) scale(1.15) rotate(-10deg); }
-      100% { transform: translateY(4px) scale(1.15) rotate(10deg); }
-    }
-    .racer-label {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(186,230,253,0.4);
-      padding: 0.15rem 0.55rem;
-      border-radius: var(--radius-full);
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: #e0f2fe;
-      white-space: nowrap;
-    }
-    .theme-display {
-      text-align: center;
-      font-size: clamp(3rem, 10vw, 5.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: #38bdf8;
-      text-shadow: 0 0 30px rgba(56,189,248,0.5);
-      letter-spacing: 0.05em;
-      margin: 0.5rem 0 0.25rem;
-    }
-    .theme-commentary {
-      text-align: center;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #7dd3fc;
-      margin-bottom: 0.75rem;
-      min-height: 1.4em;
-    }
-    .theme-podium {
-      display: none;
-      background: rgba(5,30,60,0.95);
-      border: 2px solid #0284c7;
-      border-radius: var(--radius-xl);
-      padding: 1.5rem;
-      margin: 1rem auto;
-      max-width: 640px;
-      text-align: center;
-      box-shadow: 0 0 40px rgba(2,132,199,0.3);
-      animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .podium-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.75rem; margin-top: 1rem; }
-    .podium-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(56,189,248,0.3); border-radius: var(--radius-lg); padding: 0.85rem 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
-    .podium-item.winner { border-color: #f59e0b; background: rgba(245,158,11,0.1); transform: scale(1.05); }
-    .theme-gallery-section { margin: 2.5rem auto; max-width: 1080px; }
-    .theme-gallery-section h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); }
-    .theme-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
-    .theme-gallery-card { background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
-    .theme-gallery-card:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); transform: translateY(-2px); }
-    .theme-gallery-card.active-theme { border-color: var(--primary); background: var(--primary-light); }
-    .theme-card-emoji { font-size: 2.2rem; }
-    .theme-card-name { font-weight: 800; font-size: 0.95rem; color: var(--text-primary); }
-    .theme-card-desc { font-size: 0.8rem; color: var(--text-muted); }
-    .theme-card-badge { font-size: 0.7rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/themes/ocean-race.css?v=1">
 </head>
 <body>
   <header class="site-header">
@@ -320,33 +169,73 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Ocean Race Aquatic Timer</h2>
-            <p>Choose your countdown time using the aquatic presets or custom input controls. Pick your sea creature racers—including friendly dolphins, swift sea turtles, clownfish, and playful sea otters—and click "Start" to launch the underwater swimming sprint across the colorful coral reef backdrop.</p>
-            <p>Creatures swim smoothly across the screen as gentle bubbles rise, touching the tropical finish line as the timer concludes with acoustic chime notifications and animated winner banners. Teachers can click the Fullscreen button to turn the smartboard into a dynamic aquarium display, and tap "Reset" at any time to return all racers to the starting line for the next learning round.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use the Ocean Race Timer in Your Classroom?</h2>
-            <p>Gentle aquatic visuals soothe classroom tension while maintaining clear temporal urgency, making it ideal for primary grade reading rotations, math centers, and post-lunch settling routines without triggering sensory overload or auditory stress.</p>
-            <p>ClassPanel's ocean race runs completely client-side without ads, logins, or tracking cookies, offering dependable educational utility for schools worldwide and working 100% offline once cached in your browser. Student roster data and settings remain private on your device at all times.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>About the Ocean Submarine Classroom Race Timer</h2>
+        <p>
+          ClassPanel's Ocean Race Timer takes students on an underwater voyage through vibrant coral reefs and marine trenches. Competing submarines propel through bioluminescent waters toward the sunken treasure chest finish line, providing a captivating, sensory-rich countdown clock for classroom tasks.
+        </p>
+        <p>
+          Features and classroom controls:
+        </p>
+        <ul>
+          <li><strong>Marine Submarine Exploration:</strong> Multi-lane submarine racers with animated bubble wakes and bioluminescent sea creatures.</li>
+          <li><strong>Team Challenge Support:</strong> Perfect for collaborative marine biology units, reading dashes, and station rotations.</li>
+          <li><strong>Calming Aquatic Palettes:</strong> Deep ocean blues and emerald greens maintain high smartboard contrast without overstimulating sensory-sensitive students.</li>
+          <li><strong>Offline PWA Ready:</strong> Fully cached for smooth execution during classroom internet drops.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Marine Biology Integration & Team Pacing</h2>
+          <p>
+            Engage students with deep-sea thematic learning while keeping classroom lesson transitions on schedule.
+          </p>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">All Race Timers & F1 Lights</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/jungle-race/">Jungle Race Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/bubble-pop/">Bubble Pop Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/sensory-timer/">Sensory Calming Timer</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>Related Race Timers</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/space-race/">Space Race Rocket Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/jungle-race/">Jungle Safari Race Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers & F1 Reaction Suite</a></li>
+          </ul>
         </div>
       </div>
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Marine Biology Themes & Cooperative Classroom Pacing</h2>
+        <p>
+          Ocean Race brings nautical adventure into your classroom with colorful swimming sea turtles, dolphins, clownfish, and majestic whales racing across an azure coral reef. Integrating vibrant marine visual themes into daily routines increases learner engagement, particularly for elementary students passionate about animal science and conservation.
+        </p>
+        <p>
+          Effective classroom frameworks for teachers and homeschool educators:
+        </p>
+        <ol>
+          <li><strong>Sustained Silent Reading (SSR) Deep Dives:</strong> Announce that students are going on a 15-minute "Submarine Dive." While the ocean creatures glide silently through the reef, students engage in unbroken independent reading. The tranquil underwater backdrop fosters calm, sustained concentration.</li>
+          <li><strong>Spelling Bee Coral Races:</strong> Divide the classroom into sea turtle, dolphin, and clownfish squads. Each correctly spelled vocabulary word propels the pod further across the reef. Peer cheerleading and collective accountability motivate struggling spellers.</li>
+          <li><strong>Movement & Brain Breaks:</strong> Use a 2-minute ocean sprint for physical activity transitions. Have students mimic the swimming motions of the leading sea creature until the arrival chime rings.</li>
+          <li><strong>Zero Latency Client-Side Rendering:</strong> Built entirely on lightweight HTML5 canvas, the underwater swimming physics render smoothly at 60 FPS on older classroom Chromebooks and budget tablets without draining battery life.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Ocean Race Timer</h2>
+        <div class="faq-item">
+          <h3>Is the ocean race timer suitable for quiet study periods?</h3>
+          <p>Yes. Teachers can operate the underwater timer in total silence or enable gentle aquatic sound effects, making it versatile for both silent testing and lively group challenges.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How does this visual timer assist English Language Learners (ELL)?</h3>
+          <p>Visual metaphors remove language barriers. ELL students can observe the sea creature swim progress and know exactly how much time remains without relying on complex verbal directions.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the page collect student browsing data?</h3>
+          <p>Never. ClassPanel adheres strictly to zero-data-collection policies for educational tools. No personal identifiers or student activity logs are created or stored.</p>
+        </div>
+      </div>
+
     </section>
   </main>
 
@@ -374,10 +263,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

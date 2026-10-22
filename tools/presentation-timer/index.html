@@ -15,58 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/presentation-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .traffic-lights-rack {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2.5rem;
-      margin: 2rem 0;
-      background: #1E293B;
-      padding: 1.5rem 2.5rem;
-      border-radius: var(--radius-full);
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: var(--shadow-xl);
-    }
-    .traffic-light {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #334155;
-      border: 4px solid #0F172A;
-      opacity: 0.25;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .light-green.active {
-      background: #10B981;
-      box-shadow: 0 0 45px #10B981;
-      opacity: 1;
-    }
-    .light-yellow.active {
-      background: #F59E0B;
-      box-shadow: 0 0 45px #F59E0B;
-      opacity: 1;
-    }
-    .light-red.active {
-      background: #EF4444;
-      box-shadow: 0 0 45px #EF4444;
-      opacity: 1;
-      animation: pulse-red 1s infinite alternate;
-    }
-    @keyframes pulse-red {
-      from { transform: scale(1); }
-      to { transform: scale(1.08); }
-    }
-    .presentation-status-msg {
-      font-size: 1.5rem;
-      font-weight: 800;
-      text-align: center;
-      margin-top: 1rem;
-      color: var(--text-primary);
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/presentation-timer.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -136,28 +85,45 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/presentation-timer/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How do the traffic light signals work?",
+          "name": "How does the Green/Yellow/Red traffic light system work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The screen illuminates Green when minimum qualifying time is reached, Amber at the warning benchmark, and Red when maximum allotted time has expired."
+            "text": "Following international Toastmasters standards, the screen illuminates Green when the minimum qualifying time is met, shifts to Yellow when entering the warning buffer (e.g., 2 minutes remaining), and flashes Red when the speaker's allotted time has expired."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I customize the green, yellow, and red intervals?",
+          "name": "Can I use this timer for lightning talks, Ignite, and PechaKucha presentations?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, select common speech formats (such as 1-2 min Table Topics or 5-7 min Prepared Speeches) or input custom minute benchmarks."
+            "text": "Yes. Quick presets support 3-minute thesis pitches, 5-minute lightning talks, 7-minute collegiate debates, 10-minute sprint demos, and 20-minute keynote lectures."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the timer include polite chime alerts or silent proctoring?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both options are supported. Speakers can keep the timer completely silent so as not to disrupt video recordings, or activate a polite marimba bell when time expires."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I project this timer toward the speaker as a confidence monitor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, toggle Projector Mode to scale the color traffic bar and giant numerals to fill any external monitor or stage-floor confidence screen."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -253,47 +219,159 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Presentation & Toastmasters Timer</h2>
-            <p>Select your presentation format from the standard speech presets—including 1-minute elevator pitches, 2-minute lightning talks, 5-minute project overviews, 7-minute Toastmasters speeches, or full 20-minute keynote lectures. Alternatively, enter custom warning thresholds for Green (body phase), Amber (wind-down warning), and Red (hard conclusion).</p>
-            <p>Click "Start" to launch the timer. The display remains a calm, neutral color until the Green threshold is reached, confirming the minimum qualifying speech length. When the Amber threshold arrives, the screen shifts to cautionary amber signaling the speaker to summarize. At the Red threshold, the display turns vibrant red indicating time has expired, with an optional gentle acoustic chime notifying the room.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Choose ClassPanel's Speech & Presentation Timer?</h2>
-            <p>Effective public speaking and debate skills require strict respect for time limits. Without objective visual cues, student speakers either rush through their arguments or run over allotted time, throwing conference schedules and classroom periods into chaos. ClassPanel provides the internationally recognized Toastmasters traffic light signals in high-contrast visibility.</p>
-            <p>The interface is designed for discrete stage placement. It can be positioned on a podium tablet or projected across a lecture hall without intrusive advertisements or distracting controls, allowing speakers and proctors to stay fully focused on communication delivery.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Presentation & Speech Timer: Traffic Lights, Formats & Stage Setup</h2>
+        <p>
+          ClassPanel's Online Presentation Timer is a dedicated public speaking clock and conference timing utility engineered for speech contests, student presentations, lightning talks, academic defenses, and meeting facilitators. Modeled after the internationally acclaimed Toastmasters timing protocol, our timer uses intuitive color-coded traffic lights (Green, Yellow, Red) and giant numerals to keep speakers on schedule without abrasive interruptions.
+        </p>
+        <p>
+          Configuring your presentation parameters takes seconds:
+        </p>
+        <ul>
+          <li><strong>Toastmasters Traffic Light Thresholds:</strong> Define three time milestones: Green (minimum speaking goal reached), Yellow (wrap-up warning), and Red (hard cutoff time). The interface changes color dynamically as the speech advances.</li>
+          <li><strong>Popular Speech Presets:</strong> Instant buttons for 3-Minute Thesis (3MT), 5-Minute Lightning Talks, 7-Minute Toastmasters speeches, 10-Minute Classroom Project presentations, and 20-Minute TED-style keynotes.</li>
+          <li><strong>Overtime Stopwatch Counter:</strong> When a speaker exceeds the Red cutoff, the timer shifts into count-up overtime mode with a blinking badge, indicating exactly how many seconds were exceeded for scoring deductions.</li>
+          <li><strong>Confidence Monitor Scaling:</strong> Enter Fullscreen Projector Mode and place a laptop or secondary tablet on the stage floor facing the speaker, ensuring perfect glanceable time-awareness from 20 feet away.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Public Speaking Psychology: Pacing & Cognitive Chunking</h2>
+          <p>
+            Speech anxiety often causes speakers to rush through slides or lose track of their conclusion. A glanceable traffic light timer provides vital mental scaffolding:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>The Green Light Confidence Boost:</strong> Seeing the screen shift to Green signals to the speaker that they have fulfilled basic length criteria, helping heart rates stabilize for the main body of their argument.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>The Yellow Transition Signal:</strong> Gives speakers a calm visual cue to transition toward their conclusion rather than realizing they have 10 seconds left during slide 18.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Dignified, Non-Jarring Cutoffs:</strong> A steady Red glow prompts speakers to deliver their closing sentence with dignity rather than being startled by a buzzer.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Official Exam Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">High-Precision Stopwatch</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/split-timer/">Split & Lap Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Related Speech & Timing Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom Timer & Visual Pomodoro</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam & Test Countdown Timer with Alerts</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Online Digital Stopwatch with Lap Splits</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Online Tally Counter & Frequency Tracker</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Speech & Debate Pacing Exercises</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. 3-Minute Thesis (3MT) Condensation</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Students condense complex semester research essays into concise 3-minute oral presentations with strict cutoff boundaries.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. Toastmasters Table Topics Impromptu Drills</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Draw an unexpected prompt and speak for 1 to 2 minutes. Green signals qualification (1 min); Yellow signals wrap-up (1:30 min).
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. High School Debate Cross-Examination</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Time constructive speeches and rebuttals with glanceable traffic lights to ensure equal advocacy time for both sides.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. PechaKucha 20x20 Slide Synchronization</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Train students to deliver exactly 20 seconds of commentary per slide across 20 automated image transitions.
+            </p>
           </div>
         </div>
       </div>
+  
+
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Rhetoric & Communication Pedagogy: The 18-Minute Cognitive Limit</h2>
+        <p>
+          Why do TED talks cap speeches at 18 minutes, and why do Toastmasters emphasize strict timing? Cognitive psychology reveals that sustained audience attention begins decaying sharply after 15–20 minutes of continuous listening.
+        </p>
+        <ul>
+          <li><strong>Aristotelian Pacing:</strong> Dividing speeches into Ethos (introduction 20%), Pathos/Logos (evidence 60%), and Call-to-Action (conclusion 20%) ensures rhetorical balance.</li>
+          <li><strong>Combating Public Speaking Anxiety:</strong> Glanceable traffic lights prevent speakers from checking wristwatches or fumbling with phones, maintaining steady eye contact with the audience.</li>
+          <li><strong>ELL & ESL Language Development:</strong> Pacing timers train international students to modulate speaking speed to an optimal 130–150 words per minute for clear pronunciation.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Presentation Timer</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the Green/Yellow/Red traffic light system work?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Following international Toastmasters standards, the screen illuminates Green when the minimum qualifying time is met, shifts to Yellow when entering the warning buffer (e.g., 2 minutes remaining), and flashes Red when the speaker's allotted time has expired.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I use this timer for lightning talks, Ignite, and PechaKucha presentations?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Quick presets support 3-minute thesis pitches, 5-minute lightning talks, 7-minute collegiate debates, 10-minute sprint demos, and 20-minute keynote lectures.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the timer include polite chime alerts or silent proctoring?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Both options are supported. Speakers can keep the timer completely silent so as not to disrupt video recordings, or activate a polite marimba bell when time expires.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I project this timer toward the speaker as a confidence monitor?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, toggle Projector Mode to scale the color traffic bar and giant numerals to fill any external monitor or stage-floor confidence screen.</p>
+        </div>
+      </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do the traffic light signals work?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The screen illuminates Green when minimum qualifying time is reached, Amber at the warning benchmark, and Red when maximum allotted time has expired.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I customize the green, yellow, and red intervals?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, select common speech formats (such as 1-2 min Table Topics or 5-7 min Prepared Speeches) or input custom minute benchmarks.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Public Speaking Pedagogy, Toastmasters Rules & Debate Pacing</h2>
+        <p>
+          Public speaking is consistently ranked among the most anxiety-inducing skills for students to master, yet it is one of the most critical predictors of collegiate and professional success. Learning to deliver a structured oral presentation within strict time constraints requires pacing discipline, rehearsal, and clear visual cues.
+        </p>
+        <p>
+          Instructional frameworks for speech, debate, and classroom presentations:
+        </p>
+        <ol>
+          <li><strong>The Toastmasters Color Signal Standard:</strong> Professional speech organizations rely on the Green-Yellow-Red visual indicator system: Green signals minimum qualifying time reached, Yellow indicates warning (typically 1–2 minutes remaining), and Red signals time expired. Our presentation timer displays these unambiguous color transitions prominently.</li>
+          <li><strong>Model United Nations & Parliamentary Debate Caucuses:</strong> In formal parliamentary debate, delegates are allocated exact 60-second or 90-second speaking turns. The large high-contrast display ensures both the student speaker and the presiding chair have clear consensus on remaining time.</li>
+          <li><strong>Overcoming Glossophobia Through Paced Rehearsal:</strong> Students suffering from speech anxiety often speak either too rapidly (rushing through slides in panic) or run out of time on slide two. Rehearsing with a visual color timer trains speakers to distribute their content evenly across introduction, supporting arguments, and conclusion.</li>
+          <li><strong>Dual Display Modes:</strong> Switch between full-screen audience presentation mode or minimalist presenter-facing digital cards.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Presentation Timer</h2>
+        <div class="faq-item">
+          <h3>Can I customize the green, yellow, and red warning thresholds?</h3>
+          <p>Yes. You can configure exact percentages or minute/second marks for when the yellow warning triggers and when the red completion phase begins.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the timer sound an alarm when time expires?</h3>
+          <p>You can choose between a polite harmonic chime or complete silent mode with a pulsing red visual border, perfect for formal academic grading panels.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can this timer be displayed on a secondary monitor while presenting slides?</h3>
+          <p>Yes. You can open the timer in a separate browser window and position it on a confidence monitor facing the speaker while keeping your slide deck on the main projector.</p>
+        </div>
+      </div>
+
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -321,10 +399,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

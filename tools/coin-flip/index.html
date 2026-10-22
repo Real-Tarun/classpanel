@@ -15,142 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/coin-flip/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .coin-arena {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 1.5rem 0;
-      min-height: 280px;
-      perspective: 1000px;
-    }
-    .coins-rack {
-      display: flex;
-      gap: clamp(1rem, 3vw, 2.5rem);
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 1.5rem 0;
-    }
-    .coin-3d {
-      width: clamp(120px, 25vw, 170px);
-      height: clamp(120px, 25vw, 170px);
-      border-radius: 50%;
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
-      box-shadow: 0 16px 32px rgba(217, 119, 6, 0.35), inset 0 3px 6px rgba(255,255,255,0.6);
-      border: 6px solid #FCD34D;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 900;
-      color: #FFFFFF;
-      user-select: none;
-      cursor: pointer;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .coin-3d:hover {
-      transform: scale(1.04);
-      box-shadow: 0 20px 40px rgba(217, 119, 6, 0.45);
-    }
-    .coin-inner-ring {
-      width: 82%;
-      height: 82%;
-      border-radius: 50%;
-      border: 2px dashed rgba(255,255,255,0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    .coin-icon {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      line-height: 1;
-      margin-bottom: 0.2rem;
-    }
-    .coin-caption {
-      font-size: clamp(0.85rem, 2vw, 1.1rem);
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    @keyframes flipHeads {
-      0% { transform: translateY(0) rotateX(0deg) scale(1); }
-      40% { transform: translateY(-160px) rotateX(720deg) scale(1.2); }
-      100% { transform: translateY(0) rotateX(1440deg) scale(1); }
-    }
-    @keyframes flipTails {
-      0% { transform: translateY(0) rotateX(0deg) scale(1); }
-      40% { transform: translateY(-160px) rotateX(900deg) scale(1.2); }
-      100% { transform: translateY(0) rotateX(1620deg) scale(1); }
-    }
-    .is-flipping-heads {
-      animation: flipHeads 0.95s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    }
-    .is-flipping-tails {
-      animation: flipTails 0.95s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    }
-    .flip-result-banner {
-      font-size: clamp(1.4rem, 4vw, 2.2rem);
-      font-weight: 900;
-      min-height: 3rem;
-      text-align: center;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .stats-card-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      width: 100%;
-      max-width: 620px;
-      margin: 1.5rem auto 0;
-    }
-    .stat-box {
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1rem;
-      text-align: center;
-    }
-    .stat-number {
-      font-size: clamp(1.5rem, 3.5vw, 2rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: var(--text-primary);
-    }
-    .stat-label {
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-top: 0.35rem;
-    }
-    .ratio-bar {
-      width: 100%;
-      max-width: 620px;
-      height: 12px;
-      background: var(--accent-sky);
-      border-radius: var(--radius-full);
-      overflow: hidden;
-      display: flex;
-      margin: 1rem auto 0;
-    }
-    .ratio-fill-heads {
-      height: 100%;
-      background: #F59E0B;
-      transition: width 0.3s ease;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/coin-flip.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -220,28 +85,61 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/coin-flip/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I flip multiple coins at the same time?",
+          "name": "How does the coin flip simulator ensure unbiased 50/50 fairness?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, flip between 1 and 10 coins simultaneously and view an instant statistical breakdown of Heads versus Tails."
+            "text": "The simulator uses the browser's cryptographic Web Cryptography API (crypto.getRandomValues) rather than standard pseudo-random generators. This harvests hardware-level physical entropy, guaranteeing exact 50% theoretical probability with zero statistical drift."
           }
         },
         {
           "@type": "Question",
-          "name": "Is the coin flip completely fair and unbiased?",
+          "name": "Can I flip multiple coins at once for probability experiments?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Flips are powered by cryptographic randomness (`window.crypto.getRandomValues`), ensuring a mathematically true 50.0% probability."
+            "text": "Yes. Choose to flip 1, 2, 3, or 5 coins simultaneously from the control bar. The live statistics tracker logs cumulative Heads vs Tails counts, total flips, and real-time percentage ratios."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do mathematics educators demonstrate the Law of Large Numbers with this tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In classroom probability units, teachers demonstrate that while a small sample (e.g., 10 flips) might deviate wildly (such as 80% Heads), conducting 200+ flips causes the cumulative proportion to converge steadily toward the expected 50.0% theoretical equilibrium."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the 3D coin flip animation affect the random outcome?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The mathematical outcome is generated instantaneously upon click using cryptographic randomness. The multi-axis 3D spin and sound effect serve solely as a visual reveal for student excitement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can this coin flipper be used offline without active internet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. As a Progressive Web App (PWA), ClassPanel caches all coin graphics, audio files, and JavaScript logic locally on your Chromebook or tablet, functioning smoothly without internet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is any student or teacher data tracked or stored?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Zero data is tracked or transmitted. All flip tallies and streaks are stored strictly in local temporary browser memory and are wiped when the page is reloaded or reset."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -352,47 +250,159 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the 3D Coin Flip Simulator</h2>
-            <p>To flip a coin, click the central metallic 3D coin, press the large "Flip Coin" button, or hit the spacebar on your keyboard. The coin launches into a fluid, realistic 3D gyroscopic spin accompanied by acoustic coin-flipping sound effects, landing decisively on either Heads or Tails.</p>
-            <p>Need to flip multiple coins simultaneously for probability experiments? Use the coin count selector to flip between 1 and 5 coins at once. The live statistical dashboard records cumulative flips, tallying the exact ratio and percentage of Heads versus Tails over time. Click "Reset Stats" whenever you wish to begin a fresh data collection run.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Online Coin Flipper?</h2>
-            <p>In physical classrooms, flipping real metal coins often results in coins rolling under desks, making excessive noise, or presenting safety hazards with younger children. ClassPanel provides a clean, visual 3D simulation with mathematically pure 50/50 probability powered by cryptographic random number generation.</p>
-            <p>Mathematics educators use this tool to demonstrate the Law of Large Numbers—showing students how small sample sizes deviate from 50%, while hundreds of cumulative flips converge toward exact equilibrium. The tool is ad-free, fast, and works seamlessly offline.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Online Coin Flip Simulator: Features, Controls & Multi-Coin Modes</h2>
+        <p>
+          ClassPanel's Online Coin Flip Simulator is an authentic, animated probability generator and decision-making utility engineered for modern classrooms, lecture halls, and everyday disputes. Featuring high-definition 3D rotational physics, crisp metallic acoustics, and a real-time statistical tracking dashboard, our coin flipper transforms a simple binary decision into a visual learning experience.
+        </p>
+        <p>
+          Getting started is effortless. Click or tap the central gold coin (or hit your keyboard's <strong>Spacebar</strong>) to trigger an animated high-velocity flip. The coin tumbles through realistic 3D space, landing decisively on either <strong>Heads</strong> or <strong>Tails</strong> with an accompanying synthesized metallic chime.
+        </p>
+        <p>
+          Tailor the simulation to your instructional needs with our versatile controls:
+        </p>
+        <ul>
+          <li><strong>Single & Multi-Coin Modes:</strong> Flip 1 coin for rapid binary decisions, or flip 2, 3, or 5 coins simultaneously to model binomial probability distributions and compound event outcomes.</li>
+          <li><strong>Live Statistical Scoreboard:</strong> Automatically records total flips, absolute Heads counts, absolute Tails counts, and real-time Heads/Tails percentages rounded to the tenth of a percent.</li>
+          <li><strong>Streak Counter:</strong> Displays active consecutive runs (e.g., 4 Heads in a row), helping students visualize the Gambler's Fallacy in action.</li>
+          <li><strong>Sound & Projector Controls:</strong> Mute audio for quiet independent study sessions or trigger Projector Fullscreen Mode to display giant 4K coin faces visible across a 40-seat classroom.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Mathematics of Coin Tossing: Bernoulli Trials & The Law of Large Numbers</h2>
+          <p>
+            In probability theory and mathematical statistics, a single toss of a fair coin constitutes the classic <strong>Bernoulli Trial</strong>—a discrete experiment with exactly two mutually exclusive outcomes: Success (Heads) or Failure (Tails), each with a theoretical probability of <code>p = 0.5 (50%)</code>.
+          </p>
+          <p>
+            When multiple independent tosses are executed in sequence, the cumulative outcomes follow a <strong>Binomial Distribution</strong>. ClassPanel's built-in live tally provides the ultimate digital demonstration of the fundamental <strong>Law of Large Numbers</strong>:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Sample Size Variance:</strong> In short sequences (e.g., 10 flips), random variance frequently produces 70% Heads or 80% Tails, demonstrating to students why small sample sizes cannot validate a hypothesis.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Asymptotic Convergence:</strong> As students continue flipping toward 100, 200, and 500 trials, the experimental percentage steadily converges toward the exact 50.0% expected value.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Debunking the Gambler's Fallacy:</strong> After a streak of 5 Tails, students instinctively believe Heads is "due." The simulator reinforces that each flip is mathematically independent: <code>P(Heads | 5 Tails) = 0.5</code>.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/dice-roller/">Polyhedral Dice Roller</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/rock-paper-scissors/">Rock Paper Scissors Game</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chance-games/">Chance Games Hub</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Why Classrooms & Sports Coaches Rely on ClassPanel</h2>
+          <p>
+            Physical coins are notoriously cumbersome in educational spaces: they bounce off desks, roll under bookshelves, disrupt classroom quiet, and are impossible for thirty students to inspect simultaneously. ClassPanel provides a modern, equitable alternative:
+          </p>
+          <ul>
+            <li><strong>Total Transparency:</strong> Projected onto an interactive smartboard, the 3D coin animation and definitive outcome banner remove all suspicion of sleight-of-hand or thumb-flicking bias.</li>
+            <li><strong>Conflict-Free Classroom Decisions:</strong> Determine turn order for lab presentations, assign debate sides (Affirmative vs Negative), or pick team captains without perceived favoritism.</li>
+            <li><strong>Instant Export & Reset:</strong> Clear tallies with one click between instructional periods, or use the tally board to record class-wide data sets in science notebooks.</li>
+            <li><strong>Sensory-Inclusive Interface:</strong> Toggle between light and dark themes with high-contrast metallic borders, accommodating visually impaired learners and sunlit smartboards.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Actionable Probability Lesson Plans & Classroom Activities</h2>
+        <p>
+          Incorporate the Coin Flip Simulator into your curriculum with these engaging, structured classroom activities:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. Convergence Lab (Grades 5–8 Math)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Have students record the Heads percentage after 5, 10, 25, 50, 100, and 200 flips on a line graph. Students visually chart how wild initial fluctuations gradually flatten out into a smooth horizontal line near 50%, introducing empirical probability and limits.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. Compound Probability with 3 Coins (Grades 7–10)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Switch to 3-Coin Mode. Students calculate the theoretical sample space (HHH, HHT, HTH, HTT, THH, THT, TTH, TTT) and predict the probability of getting exactly 2 Heads (3/8 or 37.5%). They then conduct 50 trials to compare theoretical versus experimental probability.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Academic Debate Coin Toss (Grades 6–12 Social Studies)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Before starting a policy debate, project the coin toss to decide which team defends the resolution and which argues against it. The winner of the toss chooses between selecting their side or choosing who delivers the opening speech.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Random Walk Simulation (Grades 9–12 Physics & Coding)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Model Brownian motion and 1D random walks. Start a marker at 0 on a number line. On Heads, step +1; on Tails, step -1. Run 30 steps to observe the final displacement and discuss statistical diffusion rates in thermodynamics and financial modelling.
+            </p>
           </div>
         </div>
       </div>
-    
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I flip multiple coins at the same time?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, flip between 1 and 10 coins simultaneously and view an instant statistical breakdown of Heads versus Tails.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is the coin flip completely fair and unbiased?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Flips are powered by cryptographic randomness (`window.crypto.getRandomValues`), ensuring a mathematically true 50.0% probability.</p>
-            </div>
-          </div>
-</section>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Technical Specifications: Cryptographic Hardware Entropy</h2>
+          <p>
+            Standard web randomizers rely on <code>Math.random()</code>, which employs pseudo-random algorithms that can develop periodic artifacts over long cycles. ClassPanel's Coin Flip Simulator generates entropy via the W3C Web Cryptography API (<code>window.crypto.getRandomValues()</code>).
+          </p>
+          <p>
+            By sampling entropy directly from underlying operating system hardware thermal and timing variance, every toss is cryptographically unbiased, non-deterministic, and immune to algorithmic manipulation.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Decision & Math Tools</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/dice-roller/">Polyhedral Dice Roller (D6, D20 & Multi-Dice Math)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/rock-paper-scissors/">Rock Paper Scissors Simulator (Game Theory & Tournaments)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator (Custom Range & Raffles)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Wheel of Names & Student Selector Wheel</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chance-games/">Chance Games Hub (Classroom Decision Suite)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Coin Flip Simulator</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the coin flip simulator ensure unbiased 50/50 fairness?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The simulator uses the browser's cryptographic Web Cryptography API (crypto.getRandomValues) rather than standard pseudo-random generators. This harvests hardware-level physical entropy, guaranteeing exact 50% theoretical probability with zero statistical drift.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I flip multiple coins at once for probability experiments?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Choose to flip 1, 2, 3, or 5 coins simultaneously from the control bar. The live statistics tracker logs cumulative Heads vs Tails counts, total flips, and real-time percentage ratios.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do mathematics educators demonstrate the Law of Large Numbers with this tool?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">In classroom probability units, teachers demonstrate that while a small sample (e.g., 10 flips) might deviate wildly (such as 80% Heads), conducting 200+ flips causes the cumulative proportion to converge steadily toward the expected 50.0% theoretical equilibrium.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the 3D coin flip animation affect the random outcome?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">No. The mathematical outcome is generated instantaneously upon click using cryptographic randomness. The multi-axis 3D spin and sound effect serve solely as a visual reveal for student excitement.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can this coin flipper be used offline without active internet?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. As a Progressive Web App (PWA), ClassPanel caches all coin graphics, audio files, and JavaScript logic locally on your Chromebook or tablet, functioning smoothly without internet.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is any student or teacher data tracked or stored?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Zero data is tracked or transmitted. All flip tallies and streaks are stored strictly in local temporary browser memory and are wiped when the page is reloaded or reset.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
     <!-- Site Footer -->
@@ -419,10 +429,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

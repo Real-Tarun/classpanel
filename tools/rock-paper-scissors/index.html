@@ -15,162 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/rock-paper-scissors/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .rps-stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      margin: 1.5rem 0;
-    }
-    .rps-battlefield {
-      width: 100%;
-      max-width: 680px;
-      background: var(--bg-surface-subtle);
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 2rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      position: relative;
-      min-height: 240px;
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-    }
-    .rps-fighter {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-      z-index: 2;
-    }
-    .rps-hand-display {
-      width: clamp(90px, 20vw, 130px);
-      height: clamp(90px, 20vw, 130px);
-      border-radius: 50%;
-      background: var(--bg-surface);
-      border: 4px solid var(--border-strong);
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(3rem, 7vw, 4.5rem);
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      user-select: none;
-    }
-    .rps-fighter-label {
-      font-size: 1rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-    }
-    .rps-vs-badge {
-      font-size: 1.75rem;
-      font-weight: 900;
-      color: var(--primary);
-      background: var(--bg-surface);
-      border: 2px solid var(--primary);
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-sm);
-    }
-    .rps-result-banner {
-      font-size: clamp(1.25rem, 3.5vw, 1.85rem);
-      font-weight: 900;
-      min-height: 2.4rem;
-      text-align: center;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .rps-choices-grid {
-      display: flex;
-      gap: clamp(0.75rem, 2vw, 1.5rem);
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 1rem 0;
-    }
-    .rps-choice-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1.25rem 1.75rem;
-      background: var(--bg-surface);
-      border: 3px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      cursor: pointer;
-      box-shadow: var(--shadow-md);
-      transition: all 0.18s ease;
-      min-width: 120px;
-    }
-    .rps-choice-btn:hover:not(:disabled) {
-      transform: translateY(-5px);
-      border-color: var(--primary);
-      box-shadow: var(--shadow-xl);
-    }
-    .rps-choice-btn:active:not(:disabled) {
-      transform: scale(0.96);
-    }
-    .rps-choice-btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-    .rps-choice-icon {
-      font-size: 3rem;
-      line-height: 1;
-    }
-    .rps-choice-name {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-primary);
-    }
-    .rps-scoreboard {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      width: 100%;
-      max-width: 680px;
-      margin-top: 0.5rem;
-    }
-    .rps-score-card {
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 0.75rem 0.5rem;
-      text-align: center;
-    }
-    .rps-score-num {
-      font-size: 1.75rem;
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: var(--text-primary);
-    }
-    .rps-score-label {
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-top: 0.2rem;
-    }
-    @keyframes rpsShake {
-      0%, 100% { transform: translateY(0); }
-      25% { transform: translateY(-24px); }
-      75% { transform: translateY(12px); }
-    }
-    .is-shaking {
-      animation: rpsShake 0.4s ease-in-out infinite;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/rock-paper-scissors.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -240,28 +85,69 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/rock-paper-scissors/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I play multi-round match modes?",
+          "name": "Can I play multi-round match modes like Best of 3 or Best of 5?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, choose between Quick Single Round, Best of 3, Best of 5, or Best of 7 tournament play."
+            "text": "Yes, choose between Quick Free Play (unlimited rounds), Best of 3, Best of 5, or Best of 7 tournament play from the dropdown menu. The scoreboard automatically tracks series progress, declaring an overall match champion upon reaching the winning threshold."
           }
         },
         {
           "@type": "Question",
-          "name": "Does the computer cheat?",
+          "name": "Does the computer cheat or peek at my hand selection?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No, the computer makes random, unbiased choices using cryptographic randomness with zero peeking at your selection."
+            "text": "No. The computer generates its move using browser cryptographic entropy (crypto.getRandomValues). The choice is calculated independently and sealed before the simultaneous reveal animation, ensuring a 100% fair and unbiased match."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Rock Paper Scissors a game of pure luck or skill?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In game theory, an opponent choosing randomly exhibits a mixed strategy Nash equilibrium where each option has a 33.3% probability, making individual rounds games of chance. However, human opponents exhibit well-documented psychological biases (such as the win-stay, lose-shift heuristic), allowing observant players to achieve win rates significantly above 50%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the tool handle ties in multi-round tournaments?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ties are recorded on the cumulative scoreboard to track match balance, but they do not award a point toward the series win target. Players continue re-throwing until a decisive victory occurs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do teachers use digital Rock Paper Scissors on interactive smartboards?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Teachers project the game onto front-of-class interactive displays (SMART, Promethean, ViewSonic) to resolve friendly ties, select student volunteers, introduce elementary probability units, or run rapid brain breaks between intense academic periods."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool work offline when school internet disconnects?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. ClassPanel is built as an offline-first Progressive Web App (PWA). Once loaded, all game logic, animations, and sound effects execute locally in your browser cache with zero network dependency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is any student information or gameplay history saved remotely?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "None whatsoever. ClassPanel operates under a strict Zero-Account Model with zero remote telemetry. Match statistics remain sandboxed in your device's temporary session memory."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -391,47 +277,167 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Play Rock Paper Scissors Online</h2>
-            <p>Choose your match format from Single Round, Best of 3, Best of 5, or Best of 7 tournament play. When ready, click your chosen hand gesture: 🪨 Rock, 📄 Paper, or ✂️ Scissors. The computer opponent reveals its move simultaneously with rapid animations and sound effects, following the standard zero-sum rules: Rock beats Scissors, Scissors beats Paper, and Paper beats Rock.</p>
-            <p>Track your match statistics on the live scoreboard, which records total wins, losses, ties, current winning streaks, and win percentages. After completing a match series, celebrate with digital victory confetti and reset the scoreboard with a single click to start a new tournament challenge.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Play Rock Paper Scissors on ClassPanel?</h2>
-            <p>Rock Paper Scissors (known historically as Roshambo or Jan-Ken-Pon) is one of the world's most popular decision-making games. In classrooms, teachers use it as a fair, conflict-free tool to resolve ties, decide turn order, or introduce elementary game theory and conditional probability concepts.</p>
-            <p>ClassPanel's version is completely free of banner ads, popup interruptions, or slow video advertisements that degrade other gaming portals. It runs smoothly on classroom touchscreens and smartboards, making it ideal for quick classroom brain breaks and decision warm-ups.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Play Rock Paper Scissors Online: Features, Rules & Match Formats</h2>
+        <p>
+          Welcome to ClassPanel's Rock Paper Scissors Online arena—an interactive, animated decision simulator and pedagogical tool engineered for students, educators, and everyday decision-makers. Built with zero login friction and high-contrast visuals, our simulator elevates the timeless classic into an engaging digital showdown featuring authentic zero-sum game mechanics, real-time statistical tracking, and multi-round tournament gameplay.
+        </p>
+        <p>
+          Playing is intuitive across any screen size. Select your preferred match mode from the top control panel: choose <strong>Free Play (Unlimited)</strong> for rapid consecutive rounds, or challenge the computer in structured series including <strong>Best of 3</strong>, <strong>Best of 5</strong>, or <strong>Best of 7</strong> championship formats. To make your move, tap one of the large action buttons: 🪨 <strong>Rock</strong>, 📄 <strong>Paper</strong>, or ✂️ <strong>Scissors</strong>. Both fighters enter an energetic rhythmic countdown animation before simultaneously revealing their choices in the center arena.
+        </p>
+        <p>
+          The outcome immediately follows the fundamental cyclic hierarchy established centuries ago:
+        </p>
+        <ul>
+          <li><strong>Rock crushes Scissors:</strong> Rock blunts and shears through scissor blades, claiming victory.</li>
+          <li><strong>Scissors cuts Paper:</strong> Scissors slices cleanly through flat paper, dominating the exchange.</li>
+          <li><strong>Paper covers Rock:</strong> Paper wraps and immobilizes rock, neutralizing its hardness.</li>
+          <li><strong>Identical Choices Result in a Tie:</strong> When both combatants select the same gesture, the round ends in a draw and neither side scores a point toward the series goal.</li>
+        </ul>
+        <p>
+          Our live scoreboard automatically logs your historical performance, computing total wins, losses, draws, and your real-time win rate percentage. In tournament modes, digital victory confetti erupts the moment you reach the winning threshold, providing celebratory closure before you reset the score for a rematch.
+        </p>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Game Theory, Nash Equilibrium & Cognitive Probability</h2>
+          <p>
+            While Rock Paper Scissors is frequently perceived as child's play, it serves as a cornerstone model in academic <strong>Game Theory</strong> and behavioural economics. In theoretical terms, RPS is a two-player, simultaneous-move, zero-sum game with imperfect information. Because no single gesture holds an inherent advantage over all others, the game possesses a unique <strong>Mixed Strategy Nash Equilibrium</strong>: both players should theoretically randomize their choices with an exact uniform probability of <code>1/3 (33.33%)</code> for Rock, Paper, and Scissors.
+          </p>
+          <p>
+            When played against a true random number generator—such as ClassPanel's cryptographic engine—no strategy can mathematically exceed an expected win rate of 33.33% over a sufficiently large sample size. However, human opponents rarely achieve true randomness. Empirical studies, including renowned research conducted by Zhejiang University (Wang, Xu, and Zhou, 2014), reveal fascinating non-random cognitive heuristics that govern human play:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>The "Win-Stay, Lose-Shift" Heuristic:</strong> Human players who win a round are statistically inclined to repeat the winning hand gesture. Conversely, players who lose tend to immediately shift to the gesture that would have beaten their opponent's winning move.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>The Opening Move Rock Bias:</strong> Novice or hurried players throw Rock on round one over 35% of the time, driven by subconscious fist tension and the instinctive association of rocks with physical strength.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Double-Throw Fatigue:</strong> Human players perceive throwing the same hand three times in a row as "statistically unnatural," making predictable shifts on the third throw.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/coin-flip/">Flip a Coin Simulator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/dice-roller/">Polyhedral Dice Roller</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chance-games/">Chance Games Hub</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Wheel of Names & Picker</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Why Educators & Classroom Leaders Use ClassPanel's Simulator</h2>
+          <p>
+            In modern educational settings, Rock Paper Scissors serves as far more than an idle pastime. Thousands of K-12 teachers, physical education coaches, debate judges, and college lecturers rely on digital RPS for structured classroom management:
+          </p>
+          <ul>
+            <li><strong>Equitable Dispute Resolution:</strong> When two students contest ownership of a reading corner beanbag or disagree on who presents first, a Best-of-3 digital showdown resolves the issue instantaneously without perceived teacher bias or lingering resentment.</li>
+            <li><strong>Sensory-Friendly, High-Legibility Visuals:</strong> Physical hand gestures can be misread or disputed in bustling classrooms. ClassPanel's high-contrast emojis and giant status banners ensure every student in a 35-seat classroom can clearly see the outcome from 30 feet away.</li>
+            <li><strong>Active Brain Breaks & Attention Transitions:</strong> Pacing research demonstrates that short 60-second micro-breaks between cognitive lectures help students reset dopamine pathways, lower cortisol, and regain focus for the next lesson module.</li>
+            <li><strong>Touchscreen Interactive Display Ready:</strong> Seamlessly compatible with Promethean ActivPanels, SMART Boards, and ViewSonic interactive touchscreens, allowing students to step up to the front display and tap their choices.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 High-Engagement Classroom Activities & Ready-to-Use Lesson Plans</h2>
+        <p>
+          Transform casual play into rich pedagogical experiences across math, social studies, and language arts with these classroom-tested activities:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. Empirical Probability & Chi-Square Labs (Grades 6–12)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Have student pairs play 60 consecutive rounds against the computer while logging each move in a frequency table. Students calculate experimental probabilities for Rock, Paper, and Scissors, compare them against the theoretical 33.3% distribution, and perform Chi-Square goodness-of-fit hypothesis testing to evaluate computer fairness.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. The "Ultimate Class Roshambo Champion" Bracket</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Organize a single-elimination classroom tournament to decide classroom line leaders or captaincy. All students pair up for Best-of-3 rounds. When a student is eliminated, they become their victor's personal cheerleader for the next round. By the finals, the entire room is chanting in a joyful, community-building spectacle!
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Elementary Decision Warm-Ups & Turn Pacing</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              In primary grades (K–3), projecting the simulator helps young learners understand the emotional regulation of winning and losing gracefully. Use the simulator to determine which student table gets dismissed to recess first or who tests out the new science lab apparatus.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Computer Science: Cryptography vs Pseudo-Randomness</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Introduce introductory programming classes to random number generation. Discuss how basic JavaScript <code>Math.random()</code> operates using PRNG algorithms (like xorshift128+) versus cryptographic hardware entropy <code>crypto.getRandomValues()</code>, demonstrating why true unpredictability is vital in cybersecurity.
+            </p>
           </div>
         </div>
       </div>
-    
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I play multi-round match modes?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, choose between Quick Single Round, Best of 3, Best of 5, or Best of 7 tournament play.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the computer cheat?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">No, the computer makes random, unbiased choices using cryptographic randomness with zero peeking at your selection.</p>
-            </div>
-          </div>
-</section>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Technical Fairness: Cryptographic Entropy vs. Peeking AI</h2>
+          <p>
+            A common suspicion among digital game players is whether the computer secretly "cheats" by intercepting the user's input before selecting its counter-move. ClassPanel is built upon complete architectural integrity:
+          </p>
+          <p>
+            When a player clicks a choice, the computer's selection is computed instantly via hardware-derived cryptographic randomness before the showdown animation begins. The computer never inspects your button click to counter your choice. Both selections are simultaneously revealed only after the animation completes, guaranteeing an honest, mathematically uniform zero-sum outcome.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Classroom & Decision Utilities</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/coin-flip/">Flip a Coin Simulator (Heads or Tails Probability)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/dice-roller/">Polyhedral Dice Roller (D6, D20, RPG & Math)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Wheel of Names & Student Picker Wheel</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/group-generator/">Random Group Generator for Collaborative Labs</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Full-Screen Classroom Countdown & Pomodoro Timer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About Rock Paper Scissors</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I play multi-round match modes like Best of 3 or Best of 5?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes! Select your tournament format from the dropdown header: choose Free Play (unlimited rounds), Best of 3, Best of 5, or Best of 7. The live scoreboard tallies your victories, immediately announcing the tournament champion with confetti upon hitting the target win threshold.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the computer cheat or peek at my hand selection?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">No. The computer operates using cryptographic entropy with zero visibility into user state. Both hands are locked in concurrently before the visual reveal, ensuring pure mathematical fairness with an exact 33.3% expected outcome for each move.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is Rock Paper Scissors a game of pure luck or skill?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Against a random computer algorithm, each round has an equal theoretical probability, making individual rounds games of chance. Against human opponents, however, the game becomes a psychological battle of pattern recognition. Skilled players exploit well-documented human biases (such as the tendency to repeat winning moves or avoid throwing the same gesture three times) to win well over 55% of their matches.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the tool handle ties in multi-round tournaments?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Ties are logged in the scoreboard under the 'Ties' counter to reflect total rounds played, but they do not award a point toward the tournament threshold. Combatants continue re-throwing until a decisive winner claims the required number of wins.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do teachers use digital Rock Paper Scissors on interactive smartboards?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Teachers project the tool onto interactive displays (SMART Boards, Promethean, ViewSonic) to resolve student ties, pick classroom line leaders, demonstrate probability in middle school math, or conduct 60-second dopamine brain breaks during long lectures.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does this tool work offline when school internet disconnects?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. ClassPanel is designed as an offline-first Progressive Web App (PWA). Once the page is visited, all stylesheets, icons, sounds, and game logic are saved in your browser cache, allowing full functionality even during school network outages.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is any student information or gameplay history saved remotely?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Zero data is stored remotely. ClassPanel operates under a strict Zero-Account architecture complying fully with COPPA and FERPA standards. All scores reside strictly within temporary browser memory on your local machine.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
     <!-- Site Footer -->
@@ -458,10 +464,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

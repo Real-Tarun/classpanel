@@ -1,0 +1,46 @@
+.split-display-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+    .split-big-display {
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      user-select: none;
+    }
+    .split-millis {
+      font-size: clamp(1.8rem, 6vw, 4.2rem);
+      color: var(--primary);
+    }
+    .laps-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 2rem auto 0;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .laps-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 0.75rem;
+    }
+    .laps-table { width: 100%; border-collapse: collapse; font-family: ui-monospace, monospace; font-size: 1rem; }
+    .laps-table th { text-align: left; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding: 0.5rem 0.75rem; }
+    .laps-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border-color); color: var(--text-primary); font-weight: 700; }
+    .laps-table tr:last-child td { border-bottom: none; }
+    .lap-fastest td { color: var(--accent-emerald) !important; }
+    .lap-slowest td { color: var(--accent-rose) !important; }
+    .lap-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+    .lap-badge-fastest { background: #DCFCE7; color: #166534; }
+    .lap-badge-slowest { background: #FEE2E2; color: #991B1B; }

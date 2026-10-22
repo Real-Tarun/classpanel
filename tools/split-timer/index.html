@@ -14,54 +14,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/split-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .split-display-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 1.5rem 0;
-    }
-    .split-big-display {
-      font-size: clamp(3.2rem, 11vw, 7.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-      line-height: 1;
-      user-select: none;
-    }
-    .split-millis {
-      font-size: clamp(1.8rem, 6vw, 4.2rem);
-      color: var(--primary);
-    }
-    .laps-container {
-      width: 100%;
-      max-width: 680px;
-      margin: 2rem auto 0;
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 1.25rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .laps-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 0.75rem;
-    }
-    .laps-table { width: 100%; border-collapse: collapse; font-family: ui-monospace, monospace; font-size: 1rem; }
-    .laps-table th { text-align: left; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding: 0.5rem 0.75rem; }
-    .laps-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border-color); color: var(--text-primary); font-weight: 700; }
-    .laps-table tr:last-child td { border-bottom: none; }
-    .lap-fastest td { color: var(--accent-emerald) !important; }
-    .lap-slowest td { color: var(--accent-rose) !important; }
-    .lap-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
-    .lap-badge-fastest { background: #DCFCE7; color: #166534; }
-    .lap-badge-slowest { background: #FEE2E2; color: #991B1B; }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/split-timer.css?v=1">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
   <meta property="og:title" content="Split / Lap Timer — Free Stopwatch with Lap Times & Split Deltas">
@@ -103,28 +56,37 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/split-timer/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How many split laps can be recorded?",
+          "name": "What is the mathematical difference between Lap Time and Cumulative Split Time?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Log unlimited split laps with real-time lap delta calculation and exportable records."
+            "text": "Lap Time measures the isolated duration of the single most recent segment (e.g., 400m lap 2 took 62 seconds). Cumulative Split Time measures total continuous elapsed time from the start line to that specific milestone (e.g., 125 seconds total for 800m)."
           }
         },
         {
           "@type": "Question",
-          "name": "What precision does the split timer offer?",
+          "name": "Can I export recorded splits into spreadsheets for data analysis?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "It provides millisecond precision powered by browser high-resolution time benchmarks."
+            "text": "Yes, click 'Export CSV' or 'Copy Data' to transfer all recorded laps, intervals, and timestamps directly into Google Sheets or Excel."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the split timer highlight the fastest and slowest segments automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The table dynamically highlights your fastest split in green and slowest split in rose red, providing immediate pacing feedback for runners and swimmers."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -219,47 +181,167 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Split / Lap Timer</h2>
-            <p>Press the prominent "Start" button or press the spacebar to initiate precision timing. As an athletic lap, science laboratory trial, reading interval, or segmented classroom activity progresses, click the "Lap (Split)" button at the conclusion of each distinct phase. The timer instantly records that segment's elapsed duration in the split log while the master clock continues running uninterrupted in the background.</p>
-            <p>Review your segment split times in the structured data table below, which automatically calculates the delta (+/-) compared to your preceding lap. The table highlights your fastest split interval with an emerald medal badge and your slowest split interval with an alert badge, allowing instant pace comparison. You can pause, resume, or reset the board at any time with dedicated action buttons.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Choose ClassPanel's Split & Lap Timer?</h2>
-            <p>Multi-stage timing—whether timing track interval sprints in physical education, measuring sequential chemical reaction rates in biology labs, or running speed-reading fluency trials—requires simultaneous master timing and intermediate interval recording without stopwatch reset delays.</p>
-            <p>ClassPanel provides millisecond accuracy powered by high-precision browser timestamps (performance.now()), preventing the timer drift common in basic web stopwatches. It operates cleanly on classroom tablets and smartboards, stores zero tracking cookies, works completely offline, and delivers instant one-click data export.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Split Lap Timer: Track Athletics, Science Labs & Data Export</h2>
+        <p>
+          ClassPanel's Online Split Timer is a professional interval timing utility engineered for athletic coaches, science lab researchers, track-and-field runners, swimming splits, and mathematics rate calculations. With split-second timestamping, automated fastest/slowest lap comparison, and instant CSV data export, our tool simplifies multi-segment performance analysis.
+        </p>
+        <p>
+          Features and controls:
+        </p>
+        <ul>
+          <li><strong>Dual Split Readout:</strong> Tracks both discrete <em>Lap Duration</em> (segment time) and <em>Overall Cumulative Time</em> simultaneously.</li>
+          <li><strong>Fastest / Slowest Highlights:</strong> Instantly detects pacing variance, highlighting personal best splits in emerald green and lag splits in coral red.</li>
+          <li><strong>Spreadsheet-Ready Export:</strong> Copy formatted tables with one click for easy graphing of pacing curves in math and physics classes.</li>
+          <li><strong>Touch & Hotkey Navigation:</strong> Hit <strong>Spacebar</strong> to start/pause and <strong>L</strong> to log splits instantly on track sidelines.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Athletic Pacing & Kinematics: Negative Splits & Energy Distribution</h2>
+          <p>
+            In exercise physiology, race pacing strategy determines endurance efficiency:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>The Negative Split Strategy:</strong> Running the second half of an endurance race faster than the first half conserves glycogen stores and lowers lactate accumulation.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Even Pacing Energy Kinetics:</strong> Minimizing speed variance prevents premature depletion of anaerobic capacity in middle-distance events.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Relay Handoff Timing:</strong> Measure discrete relay leg durations to identify transition bottlenecks and optimize team baton exchanges.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Online Stopwatch & Laps</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers & F1 Lights</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/chess-timer/">Chess Clock & Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Related Precision Timing Utilities</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Standard Digital Stopwatch with Milliseconds</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/race-timers/">Race Timers & Formula 1 Reaction Lights</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Digital Tally Counter for Laps & Reps</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/custom-timer/">Custom Interval Circuit Timer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Physical Education & Physics Split Timing Drills</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. 400m Track Split Pacing</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Track runners log 100m, 200m, 300m, and 400m splits to evaluate deceleration curves and finish sprint kicks.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. 4x100m Relay Exchange Audits</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Record discrete leg times for each of the 4 runners to identify handover efficiency and determine optimal runner order.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Physics Multi-Gate Velocity</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Log split times as a dynamics cart passes through multiple photogates along an inclined track to chart velocity changes over time.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Swimming 50m Lap Intervals</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Log individual 50m lap times across a 200m freestyle trial to train swimmers on even split pacing versus burning out early.
+            </p>
           </div>
         </div>
       </div>
+  
+
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Kinematic Rate Calculations & Differential Calculus Concepts</h2>
+        <p>
+          Split timers provide concrete physical models for average velocity vs instantaneous rate of change:
+        </p>
+        <ul>
+          <li><strong>Average Speed Calculation:</strong> <code>v_avg = Δd / Δt</code>, where students measure discrete sector times to calculate velocity variations along a track.</li>
+          <li><strong>Relay Handoff Optimization:</strong> Identifying deceleration points during 20m baton changeover exchange zones in track and field.</li>
+          <li><strong>Laboratory Error Analysis:</strong> Comparing human timer reaction latency against electronic sensor photogate splits.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Split Timer</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What is the mathematical difference between Lap Time and Cumulative Split Time?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Lap Time measures the isolated duration of the single most recent segment (e.g., 400m lap 2 took 62 seconds). Cumulative Split Time measures total continuous elapsed time from the start line to that specific milestone (e.g., 125 seconds total for 800m).</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I export recorded splits into spreadsheets for data analysis?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, click 'Export CSV' or 'Copy Data' to transfer all recorded laps, intervals, and timestamps directly into Google Sheets or Excel.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the split timer highlight the fastest and slowest segments automatically?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. The table dynamically highlights your fastest split in green and slowest split in rose red, providing immediate pacing feedback for runners and swimmers.</p>
+        </div>
+      </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How many split laps can be recorded?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Log unlimited split laps with real-time lap delta calculation and exportable records.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What precision does the split timer offer?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">It provides millisecond precision powered by browser high-resolution time benchmarks.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Interval Science & Athletic Performance Tracking in Physical Education</h2>
+        <p>
+          Accurate interval tracking is central to physical education fitness testing, science laboratory physics experiments, and track-and-field coaching. While standard consumer stopwatches only show one running number, a split timer captures intermediate milestones without halting the master timeline.
+        </p>
+        <p>
+          Key instructional and coaching applications:
+        </p>
+        <ol>
+          <li><strong>The PACER & Shuttle Run Fitness Tests:</strong> During standardized physical fitness assessments, physical education instructors must record individual student lap times across 20-meter shuttles. The split timer records each lap instantly with millisecond precision.</li>
+          <li><strong>Physics Kinematics Experiments:</strong> When rolling spheres down inclined ramps or timing pendulum oscillations, middle and high school students record split times at 1-meter intervals to calculate acceleration formulas (<code>a = 2d / t²</code>).</li>
+          <li><strong>Cumulative vs. Lap Time Comparison:</strong> The split table clearly distinguishes between total elapsed time from the start and individual segment duration, providing a practical demonstration of differential rates in mathematics.</li>
+          <li><strong>Tactile Keyboard Controls:</strong> Tap the spacebar or 'S' key to record splits instantly without looking away from the track or experiment.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Split Timer</h2>
+        <div class="faq-item">
+          <h3>What is the difference between a split time and a lap time?</h3>
+          <p>A split time measures the cumulative elapsed time from the start of the exercise to that specific marker. A lap time measures the individual duration of that single isolated interval between consecutive markers.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I export or copy recorded split times into a spreadsheet?</h3>
+          <p>Yes, with a single click you can copy all recorded splits, lap intervals, and delta comparisons directly to your clipboard for pasting into Google Sheets or Microsoft Excel.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How precise is the split timer?</h3>
+          <p>The timer measures down to 1/1000th of a second (1 millisecond) using browser high-resolution timestamps, far exceeding standard handheld coaching stopwatches.</p>
+        </div>
+      </div>
+
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Science Lab Guide: Measuring Liquid Viscosity & Flow Rates</h2>
+        <p>
+          Conduct a high-engagement fluid dynamics experiment using the Split Timer:
+        </p>
+        <ul>
+          <li><strong>Experimental Setup:</strong> Fill identical graduated cylinders with water, vegetable oil, honey, and corn syrup. Drop a small steel marble into each cylinder.</li>
+          <li><strong>Recording Intermediate Marks:</strong> Use the Split Timer to record splits as the marble passes the 25%, 50%, 75%, and bottom marks of each graduated cylinder.</li>
+          <li><strong>Data Analysis:</strong> Calculate terminal velocity and compare the viscous drag forces of each fluid. Export split data directly into spreadsheets for student lab reports.</li>
+        </ul>
+      </div>
+
+    </section>
   </main>
 
     <!-- Site Footer -->
@@ -286,10 +368,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

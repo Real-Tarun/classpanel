@@ -15,83 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/clocks/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .clock-display-area {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      flex-wrap: wrap;
-      margin: 2rem 0;
-    }
-    .analog-clock-container {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: var(--bg-surface);
-      border: 8px solid var(--border-strong);
-      box-shadow: var(--shadow-xl);
-    }
-    .digital-clock-container {
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 2rem 2.5rem;
-      text-align: center;
-    }
-    .clock-center-dot {
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--text-primary);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-    }
-    .clock-hand {
-      position: absolute;
-      bottom: 50%;
-      left: 50%;
-      transform-origin: bottom center;
-      border-radius: 6px;
-      transition: transform 0.05s cubic-bezier(0.4, 2.08, 0.55, 0.44);
-    }
-    .hand-hour {
-      width: 7px;
-      height: 80px;
-      margin-left: -3.5px;
-      background: var(--text-primary);
-      z-index: 7;
-    }
-    .hand-minute {
-      width: 5px;
-      height: 115px;
-      margin-left: -2.5px;
-      background: var(--primary);
-      z-index: 8;
-    }
-    .hand-second {
-      width: 2px;
-      height: 125px;
-      margin-left: -1px;
-      background: var(--accent-rose);
-      z-index: 9;
-    }
-    .clock-number {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      line-height: 30px;
-      font-weight: 800;
-      font-size: 1.25rem;
-      color: var(--text-primary);
-      user-select: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/clocks.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -161,28 +85,46 @@
         "ratingCount": "135"
       }
     },
-    {
+            {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/clocks/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I switch between 12-hour and 24-hour time?",
+          "name": "Can I switch between analog dial clocks and digital display clocks?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, click the 12/24H toggle to switch between AM/PM notation and international military time."
+            "text": "Yes. Switch easily between smooth-sweep analog clocks, Roman numeral dials, and clean digital clocks with 12-hour AM/PM and 24-hour military notation."
           }
         },
         {
           "@type": "Question",
-          "name": "Is this clock synchronized with atomic time?",
+          "name": "How do elementary educators use this tool to teach time-telling?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, it synchronizes with your device network time and updates smoothly every second."
+            "text": "Teachers use the synchronized dual display to demonstrate hour, minute, and second hand angles, teaching students how analog clock geometry translates directly into digital numbers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the clock display live seconds and full dates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it shows live ticking or smooth-sweep seconds, day of the week, full calendar date, and your local timezone."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the clock work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. As an offline Progressive Web App, ClassPanel reads time directly from your device's internal operating system clock with zero internet latency."
           }
         }
       ]
     }
+  ]
+  ]
   ]
 }
   </script>
@@ -264,47 +206,140 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Fullscreen Online Clock</h2>
-            <p>ClassPanel's Online Clock display offers multiple viewing modes tailored for study desks and smartboards. Toggle between a crisp 12-hour or 24-hour digital clock, or switch to the classic analog clock face featuring smooth sweeping second hands and clear roman or standard numerals. Use the theme selector to toggle between sleek dark mode, warm sepia, high-contrast monochrome, or vibrant classroom color schemes.</p>
-            <p>Click the Fullscreen icon to turn your smartboard, monitor, or tablet into a distraction-free wall clock. For primary grade educators, switch to the interactive "Time-Telling Practice & Quiz Mode," which allows teachers to drag the analog clock hands manually to quiz students on reading hour and minute angles in real time.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Aesthetic Fullscreen Clock?</h2>
-            <p>Many classrooms and computer labs lack functional wall clocks, or have clocks positioned where glare from windows makes them difficult to read. ClassPanel provides a massive, high-contrast clock display that remains perfectly visible from thirty feet away, keeping students aware of school bell schedules without checking smartphones.</p>
-            <p>The clock synchronizes with your device's local system time accurate to the millisecond. It uses zero network bandwidth once loaded, runs smoothly offline, contains no commercial advertisements, and consumes minimal battery power when left active throughout an entire school day.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use Aesthetic Online Clocks: Analog Dials, Digital Displays & Smartboard View</h2>
+        <p>
+          ClassPanel's Aesthetic Online Clocks provide high-definition, distraction-free timekeeping engineered for classroom smartboards, study desks, computer kiosks, and front offices. Designed to blend modern typography with classic horological beauty, our clock suite offers smooth-sweeping analog dials, high-contrast digital clocks, Roman numeral faces, and full calendar dates.
+        </p>
+        <p>
+          Features and display settings:
+        </p>
+        <ul>
+          <li><strong>Analog & Digital Dual Modes:</strong> Switch instantly between traditional clock faces with moving hour, minute, and second hands or ultra-clean digital LED numerals.</li>
+          <li><strong>12-Hour vs. 24-Hour Formats:</strong> Toggle between standard AM/PM format and 24-hour military time for international education.</li>
+          <li><strong>Smooth Second Sweep:</strong> Enjoy smooth continuous second-hand motion powered by 60fps CSS animations rather than jarring tick-jumps.</li>
+          <li><strong>Projector Mode:</strong> Fullscreen display turns any connected monitor or TV into an elegant, glare-free wall clock.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Elementary Pedagogy: Teaching Time-Telling & Angle Geometry</h2>
+          <p>
+            Reading analog clocks remains an essential cognitive and mathematical milestone in elementary education (Common Core Math 2.MD.7 & 3.MD.1):
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Fractions of a Circle:</strong> Analog clock faces provide intuitive visual models of fractions: quarter past (15 min / 90°), half past (30 min / 180°), and quarter to (45 min / 270°).</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Skip Counting by 5s:</strong> Connecting the 12 clock numbers to 5-minute increments reinforces foundational multiplication tables.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Elapsed Time Visualization:</strong> Watching hands rotate gives children a spatial sense of time elapsed during reading periods.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/talking-clock/">Talking Clock with Voice</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">High-Precision Stopwatch</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Official Exam Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/holiday-timers/">Countdown to Any Date</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>4 Classroom Activities for Telling Time</h2>
+          <ul>
+            <li><strong>1. Mystery Angle Match:</strong> Challenge 3rd graders to calculate the interior angle between the hour and minute hands at 3:00 (90°), 6:00 (180°), and 2:30 (105°).</li>
+            <li><strong>2. Time Zone Hop:</strong> Project digital clocks in UTC, Tokyo, London, and New York to demonstrate global longitude lines in geography class.</li>
+            <li><strong>3. 24-Hour Military Conversion:</strong> Train middle schoolers to convert flight schedules and military times into standard 12-hour notation.</li>
+            <li><strong>4. Silent Study Wall Clock:</strong> Keep a distraction-free analog clock projected during quiet independent exams to avoid student questions about remaining time.</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Horological History: From Sundials to Atomic Synchronization</h2>
+        <p>
+          Teaching the evolution of timekeeping bridges world history, astronomy, and physics:
+        </p>
+        <ul>
+          <li><strong>Astronomical Foundations:</strong> Exploring how Earth's solar rotation established the 24-hour day and 360° celestial sphere.</li>
+          <li><strong>Mechanical Clock Escapements:</strong> From Christian Huygens's 1656 pendulum clock to modern quartz crystal oscillations and NIST atomic time standards.</li>
+          <li><strong>Circadian Biology:</strong> Connecting clock time to human circadian rhythms, sleep hygiene, and peak cognitive learning windows in schools.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About Aesthetic Online Clocks</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I switch between analog dial clocks and digital display clocks?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Switch easily between smooth-sweep analog clocks, Roman numeral dials, and clean digital clocks with 12-hour AM/PM and 24-hour military notation.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do elementary educators use this tool to teach time-telling?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Teachers use the synchronized dual display to demonstrate hour, minute, and second hand angles, teaching students how analog clock geometry translates directly into digital numbers.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the clock display live seconds and full dates?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, it shows live ticking or smooth-sweep seconds, day of the week, full calendar date, and your local timezone.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the clock work offline?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. As an offline Progressive Web App, ClassPanel reads time directly from your device's internal operating system clock with zero internet latency.</p>
         </div>
       </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I switch between 12-hour and 24-hour time?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, click the 12/24H toggle to switch between AM/PM notation and international military time.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Is this clock synchronized with atomic time?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, it synchronizes with your device network time and updates smoothly every second.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Multi-Timezone Learning & Global Geography Curriculum</h2>
+        <p>
+          Integrating world time into upper elementary and middle school social studies brings geographical concepts to life. Understanding why noon in London is breakfast time in New York and bedtime in Tokyo transforms abstract latitude and longitude lines into tangible daily reality.
+        </p>
+        <p>
+          Engaging classroom applications for social studies and geography:
+        </p>
+        <ol>
+          <li><strong>Connecting Prime Meridian & UTC:</strong> Teach how Greenwich Mean Time (GMT) and Coordinated Universal Time (UTC) were established through maritime navigation history. Display clocks for Greenwich, Tokyo, Sydney, and your local school city side-by-side to visualize 24 longitudinal zones.</li>
+          <li><strong>Global Pen-Pal & Video Exchange Scheduling:</strong> When collaborating with sister schools or scheduling video conferences with scientists across continents, use the World Clocks to calculate optimal meeting windows without scheduling errors.</li>
+          <li><strong>Daylight Saving Time & Solar Noon Exploration:</strong> Compare solar noon across different longitudes within the same time zone. Demonstrate why cities on the western edge of a time zone experience later sunsets than those on the eastern border.</li>
+          <li><strong>High-Contrast Projector Display:</strong> With clean typography and zero visual clutter, our digital and analog clocks remain effortlessly legible across large lecture halls and classroom projection screens.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About World Clocks</h2>
+        <div class="faq-item">
+          <h3>How accurate are the world clock time calculations?</h3>
+          <p>All time calculations use native IANA time zone database definitions via the ECMAScript Internationalization API (<code>Intl.DateTimeFormat</code>), ensuring automated compliance with local Daylight Saving Time changes worldwide.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I customize which cities and time zones are displayed?</h3>
+          <p>Yes, teachers can easily add, remove, and reorder global cities from an extensive worldwide library, saving customized classroom dashboard layouts to local storage.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the world clock tool work during internet outages?</h3>
+          <p>Yes. As a progressive web application, the tool computes target timezone offsets using the local device clock and timezone formulas, operating seamlessly offline.</p>
+        </div>
+      </div>
+
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Classroom Activity: International Date Line & Solar Noon Comparison</h2>
+        <p>
+          Use the World Clocks for an interactive geography exercise:
+        </p>
+        <ul>
+          <li><strong>The Meridian Journey:</strong> Have student teams calculate how many hours separate London (UTC+0), New York (UTC-5), Tokyo (UTC+9), and Honolulu (UTC-10).</li>
+          <li><strong>Crossing the Date Line:</strong> Challenge students to determine why a flight leaving Tokyo on Tuesday morning lands in San Francisco on Monday afternoon. Seeing the live clocks confirms this temporal counter-intuition visually.</li>
+          <li><strong>Sunlight and Solar Noon:</strong> Correlate the world clock hours with Earth's 15-degree longitudinal rotation per hour (360 degrees / 24 hours = 15 degrees/hour), reinforcing astronomical mathematics.</li>
+        </ul>
+      </div>
+
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -332,10 +367,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

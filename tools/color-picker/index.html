@@ -15,127 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/color-picker/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .color-studio-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin: 1.5rem 0;
-      align-items: start;
-    }
-    @media (max-width: 800px) {
-      .color-studio-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .color-swatch-hero {
-      width: 100%;
-      height: 240px;
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-xl);
-      border: 4px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.15s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .color-native-input {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-    }
-    .color-swatch-label {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      z-index: 2;
-      pointer-events: none;
-    }
-    .color-swatch-hint {
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-top: 0.4rem;
-      z-index: 2;
-      pointer-events: none;
-      opacity: 0.9;
-    }
-    .code-cards-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-    }
-    .code-card {
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 0.75rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .code-card-type {
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      width: 50px;
-    }
-    .code-card-value {
-      font-size: 1.15rem;
-      font-weight: 800;
-      font-family: ui-monospace, monospace;
-      color: var(--text-primary);
-      flex: 1;
-    }
-    .palette-swatches-row {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin: 0.75rem 0;
-    }
-    .palette-swatch-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 3px solid var(--bg-surface);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .palette-swatch-btn:hover {
-      transform: scale(1.18);
-    }
-    .wcag-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1rem;
-      margin-top: 1rem;
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      justify-content: space-around;
-    }
-    .wcag-item {
-      text-align: center;
-    }
-    .wcag-badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius-full);
-      font-size: 0.75rem;
-      font-weight: 800;
-      margin-top: 0.25rem;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/color-picker.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -205,28 +85,45 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/color-picker/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Does this tool calculate WCAG contrast ratios?",
+          "name": "What color models and formats can I inspect and copy?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, it provides immediate compliance pass/fail ratings for WCAG 2.1 AA and AAA standards on light and dark backgrounds."
+            "text": "ClassPanel supports instantaneous 1-click copying for HEX, RGB, HSL, CMYK, and CSS custom property variables (--color-name)."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I copy codes in different formats?",
+          "name": "How does the built-in WCAG 2.1 Contrast Checker work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, click any code to copy in HEX, RGB, HSL, or CMYK notation with a single click."
+            "text": "The tool computes relative luminance using the official W3C WCAG 2.1 formula. It outputs exact contrast ratios (e.g., 7.4:1) and indicates compliance pass/fail marks for AA (minimum 4.5:1) and AAA (minimum 7:1) readability on both light and dark backgrounds."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do educators use this tool in art, digital media, and slide design?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Educators teach students accessible presentation design, explaining how low-contrast color combinations (like yellow on white) hinder vision-impaired peers and smartboard legibility from the back of the classroom."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool work offline without an active network connection?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The 2D visual canvas, color space conversion algorithms, and contrast mathematical calculations run completely client-side in your browser cache."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -372,47 +269,168 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Color Picker & Palette Studio</h2>
-            <p>Select any shade by clicking within the visual 2D color canvas or dragging the hue and saturation sliders. You can also paste existing color codes directly into the input fields to inspect and convert them. The studio provides instant 1-click copying for HEX, RGB, HSL, and CMYK color representations.</p>
-            <p>Explore curated designer palettes (including Material, Pastel, Dark Mode, and Classroom themes) or test foreground versus background color combinations against the built-in WCAG 2.1 Accessibility Contrast Checker. The tool indicates whether your color pairings meet AAA or AA compliance for classroom readability.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Color Picker for Education & Design?</h2>
-            <p>Digital art classes, web design courses, and slide preparation require intuitive color exploration. ClassPanel provides a streamlined, professional color studio that bridges artistic visual choice with technical digital formatting across multiple color spaces.</p>
-            <p>The built-in accessibility contrast checker teaches students and educators the importance of accessible graphic design for vision-impaired learners, ensuring all classroom presentations and worksheets maintain high legibility in an ad-free interface.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Color Picker & Palette Studio: Formats, Sliders & Contrast Audit</h2>
+        <p>
+          ClassPanel's Online Color Picker & Palette Studio is a professional digital color workspace designed for web designers, digital artists, educators, and students. Combining an interactive 2D color canvas, real-time color space conversion, and an integrated WCAG 2.1 Accessibility Contrast Checker, our studio bridges artistic visual choice with technical web standards.
+        </p>
+        <p>
+          Explore and convert color codes seamlessly:
+        </p>
+        <ul>
+          <li><strong>Interactive 2D Color Spectrum:</strong> Click and drag anywhere within the saturation-brightness canvas or adjust the spectrum hue slider to pinpoint exact shades.</li>
+          <li><strong>Universal Format Conversions:</strong> Automatically calculates and provides 1-click clipboard copying for <strong>HEX</strong> (e.g., <code>#4F46E5</code>), <strong>RGB</strong> (e.g., <code>rgb(79, 70, 229)</code>), <strong>HSL</strong> (e.g., <code>hsl(243, 75%, 59%)</code>), <strong>CMYK</strong> print values, and ready-to-paste <strong>CSS custom properties</strong>.</li>
+          <li><strong>Direct Code Input:</strong> Paste any existing HEX or RGB code into the input boxes to immediately inspect its palette coordinates, complement, and accessibility compliance.</li>
+          <li><strong>Curated Designer Palettes:</strong> Explore pre-built harmonious color schemes including Material Design, Modern Pastel, Minimal Dark Mode, and High-Contrast Classroom themes.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Accessibility Standards: WCAG 2.1 Contrast Ratios (AA & AAA)</h2>
+          <p>
+            In contemporary digital education and web design, color accessibility is not merely aesthetic—it is a legal and ethical mandate under the Americans with Disabilities Act (ADA) and W3C Web Content Accessibility Guidelines (WCAG 2.1):
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>WCAG Level AA Compliance (4.5:1 Minimum):</strong> Normal body text must achieve a minimum luminance contrast ratio of 4.5:1 against its background to ensure readability for users with moderate low vision.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>WCAG Level AAA Compliance (7.0:1 Enhanced):</strong> The highest accessibility tier requires a 7:1 contrast ratio, ensuring optimal legibility on sunlit classroom projectors and mobile displays.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Color Vision Deficiency (CVD):</strong> Real-time contrast metrics help educators avoid problematic color combinations (such as red/green or blue/yellow pairings) that hinder students with deuteranopia or protanopia.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/custom-timer/">Make Your Own Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/clocks/">Aesthetic Online Clocks</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Online Tally Counter</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/sensory-timer/">Sensory Calming Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Why Teachers & Digital Media Instructors Use ClassPanel</h2>
+          <p>
+            ClassPanel provides a distraction-free, ad-friendly creative suite that supports both artistic expression and computer science curriculum:
+          </p>
+          <ul>
+            <li><strong>Classroom Slide Legibility:</strong> Teachers test slide background and font colors before classroom presentations, ensuring students in the back row can effortlessly read lesson content.</li>
+            <li><strong>Graphic Design & Web Development Units:</strong> Students learning HTML/CSS explore how RGB additive light models differ from CMYK subtractive ink models for commercial print.</li>
+            <li><strong>Zero Paywalls or Login Walls:</strong> Students can access all color tools instantly on Chromebooks without creating user accounts.</li>
+            <li><strong>Instant Export:</strong> Easily copy color codes into Canva, Google Slides, Adobe Creative Cloud, or VS Code.</li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Web Design & Digital Media Classroom Activities</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. WCAG Accessibility Audits (Web Design Classes)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Students audit website buttons and text against WCAG 2.1 AA standards, calculating luminance contrast to ensure ADA compliance.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. RGB vs CMYK Color Space Comparison</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Graphic design students explore how screen additive light (RGB) translates to commercial subtractive ink printing (CMYK).
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Slide Presentation Readability Testing</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Test presentation slide color themes before delivering speeches to verify text remains legible from the back of the lecture hall.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Color Psychology & Mood Boards</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Art students create brand mood boards, converting hex codes into CSS variables for digital portfolio projects.
+            </p>
           </div>
         </div>
       </div>
+  
+
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Colorimetry Mathematics: W3C Relative Luminance & Contrast Algorithms</h2>
+        <p>
+          ClassPanel's contrast checker computes exact relative luminance <code>L</code> according to the official W3C WCAG 2.1 specification:
+        </p>
+        <p style="text-align: center; font-family: ui-monospace, monospace; font-size: 0.95rem; padding: 0.75rem; background: var(--bg-surface-subtle); border-radius: var(--radius-md);">
+          L = 0.2126 · R_lin + 0.7152 · G_lin + 0.0722 · B_lin
+        </p>
+        <p>
+          Contrast ratio is then evaluated as <code>(L1 + 0.05) / (L2 + 0.05)</code>, where L1 is the lighter color and L2 is the darker color. The tool verifies:
+        </p>
+        <ul>
+          <li><strong>WCAG AA (4.5:1 for body text, 3:1 for large text):</strong> Mandatory baseline for school district accessible digital materials.</li>
+          <li><strong>WCAG AAA (7.0:1 for body text, 4.5:1 for large text):</strong> Enhanced legibility standard ensuring readability on washed-out classroom projectors.</li>
+          <li><strong>Color Vision Deficiency Awareness:</strong> Demonstrates why green/red combinations fail accessible design standards for colorblind learners.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Color Picker Studio</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What color models and formats can I inspect and copy?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">ClassPanel supports instantaneous 1-click copying for HEX, RGB, HSL, CMYK, and CSS custom property variables (--color-name).</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the built-in WCAG 2.1 Contrast Checker work?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The tool computes relative luminance using the official W3C WCAG 2.1 formula. It outputs exact contrast ratios (e.g., 7.4:1) and indicates compliance pass/fail marks for AA (minimum 4.5:1) and AAA (minimum 7:1) readability on both light and dark backgrounds.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How do educators use this tool in art, digital media, and slide design?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Educators teach students accessible presentation design, explaining how low-contrast color combinations (like yellow on white) hinder vision-impaired peers and smartboard legibility from the back of the classroom.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does this tool work offline without an active network connection?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. The 2D visual canvas, color space conversion algorithms, and contrast mathematical calculations run completely client-side in your browser cache.</p>
+        </div>
+      </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does this tool calculate WCAG contrast ratios?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, it provides immediate compliance pass/fail ratings for WCAG 2.1 AA and AAA standards on light and dark backgrounds.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I copy codes in different formats?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, click any code to copy in HEX, RGB, HSL, or CMYK notation with a single click.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Color Theory, Digital Design Education & Web Accessibility (WCAG 2.1)</h2>
+        <p>
+          Color literacy is an essential component of modern visual arts, computer science, and digital media education. Understanding how colors interact, how digital screens represent light, and how to verify contrast ratios for accessibility empowers students to create inclusive, professional digital projects.
+        </p>
+        <p>
+          Educational color concepts and classroom design projects:
+        </p>
+        <ol>
+          <li><strong>Hexadecimal & RGB Color Models:</strong> In computer science and web development lessons, teach how colors are synthesized additively using Red, Green, and Blue light channels (0–255), and how those values convert into 6-digit hexadecimal strings (e.g., <code>#3b82f6</code>).</li>
+          <li><strong>Color Harmonies & Palette Construction:</strong> Explore classic color wheel relationships: Complementary (opposite on the wheel), Analogous (adjacent hues), Triadic (equidistant 120-degree points), and Monochromatic tints and shades. Students use the picker to generate harmonious palettes for school presentations and poster design.</li>
+          <li><strong>Web Content Accessibility Guidelines (WCAG 2.1 Contrast):</strong> An estimated 8% of male students and 0.5% of female students experience color vision deficiency (color blindness). Teach students to test contrast ratios between text and background colors to ensure compliance with WCAG AA (minimum 4.5:1 ratio) standards.</li>
+          <li><strong>Native Browser Eyedropper API:</strong> Sample any color directly from your desktop screen or classroom image files with pixel-perfect precision using the built-in eyedropper tool.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Color Picker</h2>
+        <div class="faq-item">
+          <h3>Which color formats does the tool support?</h3>
+          <p>The picker provides instantaneous conversions across HEX, RGB, HSL, HSV, and CMYK color spaces, with one-click copy buttons for rapid design workflow.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the eyedropper feature work on all browsers?</h3>
+          <p>The native Eyedropper API is supported in modern Chromium-based browsers (Google Chrome, Microsoft Edge, Opera). On other browsers, color selection remains fully accessible via the interactive spectrum canvas and input sliders.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Are my saved color palettes stored securely?</h3>
+          <p>Yes. Custom palettes are saved exclusively to your browser's private local storage sandbox with zero remote server tracking or cloud uploads.</p>
+        </div>
+      </div>
+
+    </section>
   </main>
 
     <!-- Site Footer -->
@@ -439,10 +457,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

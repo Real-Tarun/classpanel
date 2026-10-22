@@ -1,0 +1,50 @@
+.traffic-lights-rack {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      margin: 2rem 0;
+      background: #1E293B;
+      padding: 1.5rem 2.5rem;
+      border-radius: var(--radius-full);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: var(--shadow-xl);
+    }
+    .traffic-light {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #334155;
+      border: 4px solid #0F172A;
+      opacity: 0.25;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .light-green.active {
+      background: #10B981;
+      box-shadow: 0 0 45px #10B981;
+      opacity: 1;
+    }
+    .light-yellow.active {
+      background: #F59E0B;
+      box-shadow: 0 0 45px #F59E0B;
+      opacity: 1;
+    }
+    .light-red.active {
+      background: #EF4444;
+      box-shadow: 0 0 45px #EF4444;
+      opacity: 1;
+      animation: pulse-red 1s infinite alternate;
+    }
+    @keyframes pulse-red {
+      from { transform: scale(1); }
+      to { transform: scale(1.08); }
+    }
+    .presentation-status-msg {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--text-primary);
+    }

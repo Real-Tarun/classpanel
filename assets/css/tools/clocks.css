@@ -1,0 +1,75 @@
+.clock-display-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .analog-clock-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 8px solid var(--border-strong);
+      box-shadow: var(--shadow-xl);
+    }
+    .digital-clock-container {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 2rem 2.5rem;
+      text-align: center;
+    }
+    .clock-center-dot {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+    .clock-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      border-radius: 6px;
+      transition: transform 0.05s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+    }
+    .hand-hour {
+      width: 7px;
+      height: 80px;
+      margin-left: -3.5px;
+      background: var(--text-primary);
+      z-index: 7;
+    }
+    .hand-minute {
+      width: 5px;
+      height: 115px;
+      margin-left: -2.5px;
+      background: var(--primary);
+      z-index: 8;
+    }
+    .hand-second {
+      width: 2px;
+      height: 125px;
+      margin-left: -1px;
+      background: var(--accent-rose);
+      z-index: 9;
+    }
+    .clock-number {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      user-select: none;
+    }

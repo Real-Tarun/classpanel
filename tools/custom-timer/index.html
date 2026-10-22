@@ -14,125 +14,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/custom-timer/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .custom-timer-config {
-      width: 100%;
-      max-width: 640px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-    .config-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .config-label {
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
-    }
-    .config-input {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      border: 1px solid var(--border-color);
-      border-bottom: 2px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-size: 1rem;
-      font-weight: 600;
-      font-family: inherit;
-      transition: border-color var(--transition-fast);
-    }
-    .config-input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-    .duration-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
-    }
-    .color-swatch-row {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .color-swatch {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: transform var(--transition-fast), border-color var(--transition-fast);
-    }
-    .color-swatch.selected { border-color: var(--primary); transform: scale(1.15); }
-    .color-swatch:hover { transform: scale(1.1); }
-    .timer-run-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      transition: background 0.5s ease;
-    }
-    .timer-run-overlay.is-active { display: flex; }
-    .timer-run-label {
-      font-size: clamp(1.5rem, 5vw, 3rem);
-      font-weight: 900;
-      color: rgba(255,255,255,0.9);
-      letter-spacing: -0.02em;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    .timer-run-display {
-      font-size: clamp(4rem, 16vw, 9rem);
-      font-weight: 900;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: white;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .timer-run-controls {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .timer-run-btn {
-      padding: 0.85rem 2rem;
-      border-radius: var(--radius-full);
-      font-size: 1.05rem;
-      font-weight: 800;
-      cursor: pointer;
-      border: 2px solid rgba(255,255,255,0.4);
-      background: rgba(255,255,255,0.15);
-      color: white;
-      backdrop-filter: blur(8px);
-      transition: all var(--transition-fast);
-    }
-    .timer-run-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
-    .timer-end-message {
-      display: none;
-      font-size: clamp(2rem, 8vw, 4.5rem);
-      font-weight: 900;
-      color: white;
-      text-align: center;
-      animation: endPop 0.4s ease;
-    }
-    @keyframes endPop {
-      0% { transform: scale(0.7); opacity: 0; }
-      60% { transform: scale(1.1); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/custom-timer.css?v=1">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
   <meta property="og:title" content="Custom Timer — Make Your Own Countdown Timer with Label, Colors & Sounds">
@@ -174,28 +56,37 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/custom-timer/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I share my custom timer with others?",
+          "name": "Can I chain multiple intervals like HIIT, Tabata, or station rotations?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, your custom title, duration, color palette, and alarm chime are encoded into the URL for easy bookmarking and sharing."
+            "text": "Yes. Add sequential work and rest phases (e.g., 40 seconds work, 20 seconds rest, repeated across 6 rounds) with customizable phase labels and distinct audio tones."
           }
         },
         {
           "@type": "Question",
-          "name": "Does it work offline?",
+          "name": "Are my custom interval presets saved between sessions?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, our PWA Service Worker caches the custom timer builder so you can use your saved timers without internet."
+            "text": "Yes. Custom intervals are saved securely in your browser's local storage under our Zero-Account architecture, so your classroom routines are instantly accessible whenever you return."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the timer support audio cues between interval transitions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Synthesized harmonic tones chime at every phase change and a 3-second countdown warning prepares students for upcoming interval rotations."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -314,47 +205,167 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Create Your Custom Timer</h2>
-            <p>Type a custom activity label (such as "Silent Reading", "Lab Clean-Up", or "Math Speed Drill") into the title field so it displays prominently on screen. Set your target duration in hours, minutes, and seconds, then choose your visual aesthetic from colorful palette themes including Neon Cyber, Forest Calm, Solar Sunset, and Clean Slate.</p>
-            <p>Select your preferred completion chime from our library of acoustic instruments and school bells. Once configured, click "Save & Start" to launch your personalized timer. ClassPanel automatically saves your custom timer settings in your browser's local storage so it is ready for tomorrow's lesson.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Make-Your-Own Custom Timer?</h2>
-            <p>Every classroom routine is unique. Having a dedicated countdown timer clearly labeled with the current task gives students immediate visual context, eliminating repetitive questions like "What are we supposed to be doing right now?"</p>
-            <p>ClassPanel lets you build unlimited custom timers without paying for premium subscriptions, creating user logins, or dealing with distracting banner ads. It works entirely offline, ensuring complete dependability during lessons.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Build Custom Multi-Interval Timers for Classrooms, Workouts & Study</h2>
+        <p>
+          ClassPanel's Custom Timer Builder is an advanced multi-interval sequencer designed for educators running lab rotations, fitness instructors pacing HIIT/Tabata circuits, study groups organizing Pomodoro cycles, and workshop coaches. Instead of resetting basic timers dozens of times, chain work and rest phases into an automated countdown sequence.
+        </p>
+        <p>
+          Key builder features:
+        </p>
+        <ul>
+          <li><strong>Sequential Phase Sequencing:</strong> Define custom work intervals, rest periods, warm-ups, and cool-downs with individualized labels (e.g., "Station 1: Microscopy", "Rotation Rest").</li>
+          <li><strong>Round Counter:</strong> Set total circuit repetitions (e.g., repeat 4 rounds of 5 stations) with automatic cycle progression.</li>
+          <li><strong>Transition Chimes:</strong> Distinctive synthesized chimes announce interval completions so students know when to rotate without teacher prompting.</li>
+          <li><strong>Local Browser Saving:</strong> Save unlimited custom timer templates directly to your device without user registration.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Pedagogical & Athletic Efficiency: Automated Station Pacing</h2>
+          <p>
+            When teachers must constantly watch the clock to call out station rotations, they lose valuable time for individualized student interventions. Automated multi-interval sequencing restores teacher presence:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Hands-Free Classroom Flow:</strong> The visual and acoustic cues manage room pacing automatically, letting the teacher circulate and guide small groups.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Consistent Time Allotment:</strong> Guarantees that every lab group receives identical time at every workstation.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Fitness & Physical Education:</strong> Effortlessly run Tabata intervals (20s sprint / 10s rest) or circuit conditioning during PE classes.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/bomb-countdown/">Bomb Countdown Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/presentation-timer/">Speech & Toastmasters Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/split-timer/">Split & Lap Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Related Timing Utilities</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom Timer & Visual Countdown</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/stopwatch/">Online Digital Stopwatch & Split Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/metronome/">Online Acoustic Metronome</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam & Test Proctoring Timer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Station Rotation & Interval Training Scenarios</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. Science Station Rotations</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Configure 7 minutes per lab station followed by 1 minute of transition time across 4 consecutive classroom rotations.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. Physical Education Circuit Conditioning</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Run automated 45-second exercise intervals (planks, jumping jacks, agility ladders) followed by 15-second rest breaks.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Speed Dating Book Reviews</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Students pitch their independent reading books to peers in 2-minute timed exchanges with rapid 30-second seat swaps.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Agile Scrum & Sprint Planning</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Pace professional engineering meetings: 5-minute retrospective, 10-minute backlog refinement, and 5-minute action item summary.
+            </p>
           </div>
         </div>
       </div>
+  
+
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Exercise Physiology & Focus Science: Interval Work-to-Rest Ratios</h2>
+        <p>
+          Structured interval timing is grounded in metabolic and cognitive research:
+        </p>
+        <ul>
+          <li><strong>High-Intensity Interval Training (HIIT):</strong> P.E. teachers structure 20s work / 10s rest Tabata intervals to maximize cardiovascular VO2 max and anaerobic capacity in gym classes.</li>
+          <li><strong>Ultradian Rhythm Work Cycles:</strong> High school and university students configure 50-minute deep study blocks followed by 10-minute restoration intervals matching natural human ultradian attention cycles.</li>
+          <li><strong>Station-Rotation Pacing:</strong> Ensures equitable time allocation across science wet labs, art pottery wheels, and vocational trade workshops.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Custom Timer</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I chain multiple intervals like HIIT, Tabata, or station rotations?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Add sequential work and rest phases (e.g., 40 seconds work, 20 seconds rest, repeated across 6 rounds) with customizable phase labels and distinct audio tones.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Are my custom interval presets saved between sessions?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Custom intervals are saved securely in your browser's local storage under our Zero-Account architecture, so your classroom routines are instantly accessible whenever you return.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the timer support audio cues between interval transitions?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Synthesized harmonic tones chime at every phase change and a 3-second countdown warning prepares students for upcoming interval rotations.</p>
+        </div>
+      </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I share my custom timer with others?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, your custom title, duration, color palette, and alarm chime are encoded into the URL for easy bookmarking and sharing.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does it work offline?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, our PWA Service Worker caches the custom timer builder so you can use your saved timers without internet.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Differentiated Instruction & Task-Chunking Methodologies</h2>
+        <p>
+          One-size-fits-all timing rarely serves the diverse needs of modern classrooms. Students with Individualized Education Programs (IEPs), 504 accommodation plans, or attention deficit hyperactivity disorder (ADHD) frequently require scaffolded time intervals, extended testing windows, and chunked learning blocks.
+        </p>
+        <p>
+          How customized timing empowers differentiated classroom instruction:
+        </p>
+        <ol>
+          <li><strong>The Task-Chunking Method:</strong> Break large, overwhelming assignments (such as a 5-paragraph essay or 20-problem math worksheet) into three 8-minute sprints interspersed with 2-minute stretch breaks. Setting precise custom durations prevents cognitive fatigue and task avoidance.</li>
+          <li><strong>Science Lab Multi-Stage Countdown:</strong> Chemistry and biology experiments require precise stage timing (e.g., 3 minutes of heating, 7 minutes of cooling, 4 minutes of observation). Custom timers allow teachers to pre-program exact procedural workflows.</li>
+          <li><strong>Debate & Model UN Caucuses:</strong> In speech, debate, and social studies simulations, standard whole-minute presets fall short. Custom timers allow moderators to set exact 45-second rebuttal windows and 90-second moderated caucuses down to the second.</li>
+          <li><strong>Auditory & Visual Autonomy:</strong> Choose between silent flashing screen warnings for test environments or harmonic musical chimes for high-energy group activities.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Custom Classroom Timer</h2>
+        <div class="faq-item">
+          <h3>Can I save my custom timer settings for tomorrow's classes?</h3>
+          <p>Yes. Custom intervals, alarm sound choices, and display modes are saved automatically to your browser's local storage sandbox, so your preferred setup is ready instantly upon your next visit.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the custom timer support both countdowns and count-ups?</h3>
+          <p>Yes, you can configure the clock to count down to zero from any duration or operate as an ascending stopwatch to track task completion speed.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is this tool safe from student distractions?</h3>
+          <p>ClassPanel contains zero games, popups, or external link traps. The minimalist interface ensures students remain focused solely on the timer display.</p>
+        </div>
+      </div>
+
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Executive Functioning & The Pomodoro Study Technique</h2>
+        <p>
+          Teaching middle and high school students to manage their study habits is vital for secondary academic success. The <strong>Classroom Pomodoro Technique</strong> divides independent work into manageable intervals:
+        </p>
+        <ul>
+          <li><strong>25-Minute Work Sprint:</strong> Set a custom 25-minute timer for deep, uninterrupted reading or problem solving. No phone checks, side chats, or tab switching.</li>
+          <li><strong>5-Minute Restorative Break:</strong> When the chime rings, students step away from screens, stretch, drink water, and rest their eyes.</li>
+          <li><strong>Long Break Cycle:</strong> After four consecutive cycles, students enjoy a 20-minute cognitive reset. This prevents mental burn-out during intensive exam revision sessions.</li>
+        </ul>
+      </div>
+
+    </section>
   </main>
 
     <!-- Site Footer -->
@@ -381,10 +392,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

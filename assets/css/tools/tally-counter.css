@@ -1,0 +1,87 @@
+.counter-teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .team-counter-card {
+      background: var(--bg-surface-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .team-counter-card:hover {
+      border-color: var(--primary);
+    }
+    .team-counter-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      outline: none;
+      border-bottom: 1px dashed transparent;
+      padding: 0.2rem 0.5rem;
+    }
+    .team-counter-name:focus {
+      border-bottom-color: var(--primary);
+      background: var(--bg-surface);
+      border-radius: var(--radius-sm);
+    }
+    .team-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 0.25rem;
+    }
+    .btn-delete-team {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.3rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s, background 0.15s, transform 0.1s;
+    }
+    .btn-delete-team:hover {
+      color: var(--accent-rose);
+      background: rgba(239, 68, 68, 0.12);
+      transform: scale(1.1);
+    }
+    .team-counter-val {
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: var(--text-primary);
+      line-height: 1;
+      margin: 1rem 0;
+      user-select: none;
+    }
+    .counter-btn-row {
+      display: flex;
+      gap: 0.6rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-step {
+      flex: 1;
+      height: 3.5rem;
+      border-radius: var(--radius-md);
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+    }
+    .btn-step:active {
+      transform: scale(0.95);
+    }

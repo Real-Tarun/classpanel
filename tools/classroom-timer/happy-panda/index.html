@@ -30,98 +30,7 @@
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","yk2i9d47t3");</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YQYENQ2J88');</script>
-  <style>
-    /* ── Happy Panda Theme ─────────────────────────────────── */
-    .panda-stage {
-      background: linear-gradient(180deg, #fdf6ff 0%, #f0fdf4 100%);
-      border: 2px solid #d1fae5;
-      border-radius: var(--radius-xl);
-      padding: 2rem 1.5rem;
-      margin: 1.25rem auto;
-      max-width: 680px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 30px rgba(52,211,153,0.1);
-    }
-    .panda-mascot {
-      font-size: clamp(4rem, 15vw, 8rem);
-      display: block;
-      margin: 0 auto 0.5rem;
-      line-height: 1;
-      transition: transform 0.3s ease;
-      user-select: none;
-    }
-    .panda-mascot.idle { animation: pandaIdle 3s ease-in-out infinite; }
-    .panda-mascot.running { animation: pandaBounce 0.6s ease-in-out infinite alternate; }
-    .panda-mascot.warning { animation: pandaWorry 0.4s ease-in-out infinite alternate; }
-    .panda-mascot.danger { animation: pandaPanic 0.2s ease-in-out infinite alternate; }
-    .panda-mascot.done { animation: pandaCelebrate 0.3s ease-in-out infinite alternate; }
-    @keyframes pandaIdle {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-6px) rotate(2deg); }
-    }
-    @keyframes pandaBounce {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(-12px) scale(1.05); }
-    }
-    @keyframes pandaWorry {
-      0% { transform: rotate(-5deg) scale(0.97); }
-      100% { transform: rotate(5deg) scale(1.03); }
-    }
-    @keyframes pandaPanic {
-      0% { transform: translateX(-4px) rotate(-8deg) scale(1.05); }
-      100% { transform: translateX(4px) rotate(8deg) scale(1.05); }
-    }
-    @keyframes pandaCelebrate {
-      0% { transform: translateY(-10px) rotate(-10deg) scale(1.1); }
-      100% { transform: translateY(0) rotate(10deg) scale(1.1); }
-    }
-    .panda-speech {
-      background: #fff;
-      border: 2px solid #d1fae5;
-      border-radius: var(--radius-xl);
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #065f46;
-      display: inline-block;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 8px rgba(52,211,153,0.1);
-      min-height: 2.2rem;
-      transition: all 0.3s ease;
-    }
-    .timer-display-panda {
-      font-size: clamp(3.5rem, 12vw, 6.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: #059669;
-      text-shadow: 0 2px 20px rgba(5,150,105,0.2);
-      letter-spacing: 0.04em;
-      display: block;
-      margin: 0.25rem 0;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.5s ease, text-shadow 0.5s ease;
-    }
-    .timer-display-panda.warning { color: #d97706; text-shadow: 0 2px 20px rgba(217,119,6,0.3); }
-    .timer-display-panda.danger { color: #dc2626; text-shadow: 0 2px 20px rgba(220,38,38,0.4); animation: timerPulse 0.5s ease-in-out infinite alternate; }
-    @keyframes timerPulse { 0% { opacity: 1; } 100% { opacity: 0.7; } }
-    .progress-bar-wrap { height: 10px; background: #d1fae5; border-radius: 999px; overflow: hidden; margin: 0.75rem 0; }
-    .progress-bar-fill { height: 100%; background: linear-gradient(90deg,#10b981,#34d399); border-radius: 999px; transition: width 1s linear, background 0.5s ease; }
-    .progress-bar-fill.warning { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
-    .progress-bar-fill.danger { background: linear-gradient(90deg,#ef4444,#f87171); }
-    .theme-gallery-section { margin: 2.5rem auto; max-width: 1080px; }
-    .theme-gallery-section h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); }
-    .theme-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
-    .theme-gallery-card { background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.25rem 1rem; text-align: center; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-    .theme-gallery-card:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); transform: translateY(-2px); }
-    .theme-gallery-card.active-theme { border-color: var(--primary); background: var(--primary-light); }
-    .theme-card-emoji { font-size: 2.2rem; }
-    .theme-card-name { font-weight: 800; font-size: 0.95rem; color: var(--text-primary); }
-    .theme-card-desc { font-size: 0.8rem; color: var(--text-muted); }
-    .theme-card-badge { font-size: 0.7rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/themes/happy-panda.css?v=1">
 </head>
 <body>
   <header class="site-header">
@@ -270,33 +179,83 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Happy Panda Classroom Timer</h2>
-            <p>Choose your countdown duration using the friendly preset buttons (1 min, 5 min, 10 min, 15 min, 30 min, or 1 hr), or click "Custom Time" to specify exact minutes and seconds. Click "Start" to awaken the panda mascot, who happily bounces and munches bamboo while the high-contrast circular progress ring contracts around the digital digits.</p>
-            <p>As the timer enters its final seconds, the panda changes facial expressions dynamically—shifting from happy encouragement to focused attention, and finally into an excited celebration pose. When time expires, a cheerful celebration banner, musical chime, and confetti explosion mark the end of the session. Click "Reset" or "Dismiss" to prepare for the next lesson block.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Choose the Happy Panda Timer for Younger Learners?</h2>
-            <p>Early elementary students and preschool learners respond with genuine enthusiasm to character-driven visual cues. The friendly panda mascot provides reassuring, encouraging feedback that transforms stressful time limits into a collaborative, positive classroom game.</p>
-            <p>The tool operates in high-contrast full-screen mode on smartboards, runs completely offline via service workers, and never displays commercial advertising or tracking cookies in front of children, ensuring an emotionally safe instructional environment.</p>
-          </div>
+            <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>About the Happy Panda Classroom Visual Countdown Timer</h2>
+        <p>
+          ClassPanel's Happy Panda Classroom Timer is a delightful, sensory-friendly visual countdown clock engineered specifically for preschool, kindergarten, and primary elementary classrooms (Grades K–3). Featuring an endearing animated panda, gentle harmonic bells, high-contrast numerals, and edge-to-edge projector display, our panda timer transforms classroom time management into a comforting, predictable routine.
+        </p>
+        <p>
+          Key features for primary educators:
+        </p>
+        <ul>
+          <li><strong>Visual Bamboo Progress Metaphor:</strong> The cheerful panda munches through a bamboo stalk as seconds tick down, giving emerging readers an intuitive spatial understanding of remaining time before they learn to read digital numbers.</li>
+          <li><strong>Gentle End-of-Timer Chimes:</strong> Concludes with harmonic acoustic bells and celebratory panda dance animations rather than jarring electric buzzers.</li>
+          <li><strong>Quick Elementary Presets:</strong> Rapid 1, 2, 5, 10, and 15-minute buttons for reading circles, rug transitions, spelling practice, and cleanup dashes.</li>
+          <li><strong>Full-Screen Projector Mode:</strong> Expands to fill the entire classroom smartboard with crisp, glare-free visuals easily seen from thirty feet away.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Early Childhood Pedagogy: Reducing Transition Friction</h2>
+          <p>
+            Young children experience intense anxiety when activities end abruptly:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Visual Anchoring:</strong> Watching the panda provides a predictable advance warning, allowing children to finish building blocks or coloring before clean-up begins.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Positive Reinforcement:</strong> The celebratory completion animation rewards students for remaining on task until the final chime.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classic Classroom Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/rocket-launch/">Rocket Launch Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/bubble-pop/">Bubble Pop Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/sensory-timer/">Sensory & Calming Timer</a></li>
-            </ul>
-          </div>
+        <div class="seo-card">
+          <h2>Related Primary Classroom Timers</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/rocket-launch/">Rocket Launch Space Countdown Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/bubble-pop/">Bubble Pop Calming Sensory Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Standard Full-Screen Classroom Timer</a></li>
+          </ul>
         </div>
       </div>
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Pedagogical Strategies: Circle Time & Transition Management with Happy Panda</h2>
+        <p>
+          Managing transitions between high-energy physical activities and focused cognitive tasks represents one of the steepest challenges in early childhood education (Pre-K through 2nd Grade). Young children operate predominantly in the present moment, meaning a sudden verbal instruction such as "clean up your blocks now" is experienced as an unexpected interruption, frequently triggering protests or sensory meltdowns.
+        </p>
+        <p>
+          The Happy Panda visual countdown timer bridges this developmental gap through clear behavioral routines:
+        </p>
+        <ol>
+          <li><strong>The 3-Minute Warning Routine:</strong> Set the panda timer to 3 minutes before carpet time begins. Announce: "When the panda finishes eating his bamboo, our blocks will be sleeping in their bins." This concrete visual cue gives emerging learners time to finish their current construction without panic.</li>
+          <li><strong>Gamified Clean-Up Dashes:</strong> Turn cleaning into a cooperative classroom game. Challenge students to have all coloring markers capped and books placed in reading baskets before the panda dances. The playful animated mascot removes the feeling of teacher nagging and replaces it with shared mission success.</li>
+          <li><strong>Sensory-Friendly Auditory Signals:</strong> Unlike harsh acoustic buzzers found in industrial kitchen timers, Happy Panda uses gentle bell resonance. This protects students on the autism spectrum or with auditory processing sensitivities from sensory overload.</li>
+          <li><strong>Smartboard Touch Interaction:</strong> Invite the designated "Classroom Helper of the Day" to come up to the interactive whiteboard and tap the start button. Giving students agency over classroom time management fosters early autonomy and executive functioning skills.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Happy Panda Timer</h2>
+        <div class="faq-item">
+          <h3>Why is visual time representation superior to digital numbers for kindergarteners?</h3>
+          <p>Children aged 3 to 7 are still developing symbolic number comprehension. While a 5-year-old might see "04:30" as arbitrary characters, they instantly understand a bamboo stalk shrinking or a progress bar moving toward a goal. This spatial representation builds foundational intuitive time awareness.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the timer continue running if the display sleeps or tabs change?</h3>
+          <p>Yes. The timer calculates elapsed time using high-precision client-side performance timestamps (<code>performance.now()</code>), ensuring that if your projector or smartboard temporarily enters power-saving mode, the countdown remains accurate upon wake-up.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can Happy Panda be used offline during internet outages?</h3>
+          <p>Yes, ClassPanel is engineered as a progressive web app (PWA). All vector animations, sound synthesis, and logic are cached locally on your device, requiring zero active internet connection once loaded.</p>
+        </div>
+      </div>
+
     </section>
   </main>
 
@@ -324,10 +283,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

@@ -15,117 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/group-generator/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .groups-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.75rem;
-    }
-    .group-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .group-card:hover {
-      box-shadow: var(--shadow-md);
-    }
-    .group-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.6rem;
-    }
-    .group-title {
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .student-pill {
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      padding: 0.5rem 0.85rem;
-      border-radius: var(--radius-md);
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
-      position: relative;
-    }
-    .student-pill:hover {
-      border-color: var(--primary);
-      background: var(--bg-surface);
-      box-shadow: var(--shadow-sm);
-    }
-    .student-pill.is-editing {
-      padding: 0.2rem;
-      background: var(--bg-surface);
-      border-color: var(--primary);
-      box-shadow: var(--shadow-md);
-    }
-    .student-name-text {
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-right: 0.5rem;
-    }
-    .student-pill-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      opacity: 0.4;
-      transition: opacity 0.15s;
-    }
-    .student-pill:hover .student-pill-actions {
-      opacity: 1;
-    }
-    .student-btn-action {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      padding: 0.2rem;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.15s, background 0.15s;
-    }
-    .student-btn-action:hover {
-      color: var(--text-primary);
-    }
-    .student-btn-remove:hover {
-      color: var(--accent-rose);
-      background: rgba(239, 68, 68, 0.12);
-    }
-    .student-inline-input {
-      width: 100%;
-      border: none;
-      outline: none;
-      font-size: 0.95rem;
-      font-weight: 700;
-      background: transparent;
-      color: var(--text-primary);
-      padding: 0.35rem 0.65rem;
-      border-radius: var(--radius-sm);
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/group-generator.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -195,36 +85,61 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/group-generator/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I create teams by group count or members per group?",
+          "name": "How does the Random Group Generator divide classes fairly?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Choose either \"Number of Groups\" (e.g. split into 4 equal teams) or \"Group Size\" (e.g. exactly 3 students per team) to suit your activity."
+            "text": "The generator executes a cryptographic Fisher-Yates array permutation algorithm. Every student has an exactly equal probability of being paired with any classmate, preventing cliquish grouping and subconscious teacher bias."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I manually move students between groups after generating?",
+          "name": "Can I group by number of teams OR by number of students per team?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, our drag-and-drop interface lets you easily swap or rebalance students between generated team cards."
+            "text": "Yes. Choose 'Number of Groups' (e.g., create exactly 5 lab stations) or 'Group Size' (e.g., create groups of 3 students each). The generator automatically balances remaining students into even teams."
           }
         },
         {
           "@type": "Question",
-          "name": "Does the group maker work offline in classrooms without Wi-Fi?",
+          "name": "Are student rosters saved securely and privately?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, once loaded, the team generation algorithms run entirely offline inside your browser without an active connection."
+            "text": "Yes. Roster lists are stored exclusively in your local browser storage under our Zero-Account architecture. No student names or data ever leave your personal computer or Chromebook."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export or copy the generated groups?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. With a single click on 'Copy Groups,' formatted lists are copied to your clipboard ready to paste into Google Classroom, lesson plan binders, or seating charts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I quickly regenerate teams if an absent student needs removing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Simply delete the absent student's name from the input list and click 'Shuffle Groups' for instant re-distribution in under 2 seconds."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool work on mobile devices and touch smartboards?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The card-based responsive grid adjusts cleanly from mobile phone screens to 75-inch classroom smartboards with high-contrast team cards."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -393,51 +308,153 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Random Group Generator</h2>
-            <p>Paste your classroom roster or participant names into the roster box, with one name per line. Next, choose your group formation method: either by "Number of Groups" (e.g. partition the class into exactly 6 lab pods) or by "Group Size" (e.g. create teams of 3 or 4 students each). Click the "Generate Groups" button to instantly sort participants into balanced, color-coded team cards.</p>
-            <p>If you need to make tactical adjustments—such as separating two students who should not work together—simply drag and drop student name tags between group cards. You can assign unique names to each team (e.g. Team Falcon, Team Phoenix), shuffle teams again with one click, or export the completed team roster for seating charts and grading sheets.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Fair Group Generator?</h2>
-            <p>Allowing students to choose their own partners often reinforces exclusive social cliques, leaves timid students feeling socially isolated, and consumes ten minutes of instructional time. ClassPanel creates balanced, impartial teams in seconds, eliminating social anxiety and encouraging cross-classroom collaboration.</p>
-            <p>In strict compliance with student privacy laws (COPPA and FERPA), ClassPanel stores all student roster data locally in your browser cache. No names are ever uploaded to cloud databases or shared with external analytics services, guaranteeing complete confidentiality for school districts.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Random Group Generator: Modes, Controls & Export Options</h2>
+        <p>
+          ClassPanel's Online Group Generator is an automated student team partitioner and cooperative learning utility designed for teachers, workshop facilitators, and project managers. Forming balanced, unbiased groups manually takes valuable minutes out of instructional time; our generator organizes an entire class into clean, visually appealing team cards in less than a second.
+        </p>
+        <p>
+          Configuring your cooperative teams is straightforward:
+        </p>
+        <ul>
+          <li><strong>Roster Entry:</strong> Paste student names separated by lines or commas into the roster box. Your roster is automatically saved in your browser cache so you never have to re-type it.</li>
+          <li><strong>Partitioning Modes:</strong> Choose either <strong>By Number of Groups</strong> (e.g., divide the class into 6 table stations) or <strong>By Group Size</strong> (e.g., pair students into triads of 3).</li>
+          <li><strong>Remainder Balancing:</strong> When class sizes don't divide evenly (e.g., 28 students into groups of 5), our algorithm distributes remainders evenly across groups to prevent awkward isolated students.</li>
+          <li><strong>Instant Reshuffle:</strong> Click "Reshuffle Groups" to generate an entirely new permutation with a satisfying card-flip animation.</li>
+          <li><strong>1-Click Export:</strong> Copy formatted team lists to your clipboard or project the team grid directly onto your smartboard so students can immediately see their assigned lab stations.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Cooperative Learning Pedagogy: Breaking Social Cliques & Building Empathy</h2>
+          <p>
+            Educational research (including studies by David and Roger Johnson on cooperative learning) demonstrates that structured, varied student groupings significantly improve academic retention, social empathy, and classroom culture:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Dismantling In-Group Cliques:</strong> Allowing students to self-select groups invariably creates exclusionary cliques, leaving marginalized or shy students feeling isolated. Random generation establishes equal belonging.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Cross-Peer Collaboration:</strong> Random partitioning guarantees that every student collaborates with diverse peers across gender, cultural, and socioeconomic backgrounds throughout the school year.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Zero Teacher Favoritism:</strong> Students accept randomized teams without complaint because the algorithm is visually neutral, transparent, and provably fair.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Wheel of Names & Picker</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Multi-Track Tally Counter</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Complete Student Data Privacy (COPPA & FERPA Compliance)</h2>
+          <p>
+            Protecting student educational records and roster identities is an absolute priority for ClassPanel:
+          </p>
+          <ul>
+            <li><strong>Zero Server Roster Storage:</strong> Student names are stored exclusively within your local browser storage (<code>localStorage</code>). They are never transmitted over the internet or logged on cloud databases.</li>
+            <li><strong>No User Accounts:</strong> Teachers never need to sign up, enter school email credentials, or agree to marketing newsletters to use our team generator.</li>
+            <li><strong>Offline Progressive Web App (PWA):</strong> Fully cached in browser storage, allowing you to organize groups during outdoor field trips or when school internet connection drops.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Actionable Collaborative Lesson Plans Using the Group Generator</h2>
+        <p>
+          Engage your students in active cooperative learning with these practical classroom strategies:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. Jigsaw Cooperative Reading Labs (Grades 6–12)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Divide an informational text into 4 distinct sections. Use the generator to create 4 "Expert Groups" who master their specific section. Then reshuffle the class into "Home Groups" containing one expert from each section to teach each other.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. STEM Science Station Rotations (Grades 3–8)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Set up 5 hands-on science lab stations (e.g., microscope slides, circuit building, density columns). Generate 5 teams and project the card grid on the smartboard so students immediately know where to report for rotation 1.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Speed Peer Editing Triads (Grades 7–12 Language Arts)</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Set Group Size to 3. In 15-minute bursts, student triads review each other's introductory essay paragraphs for thesis clarity and textual evidence, providing immediate peer critique before final drafting.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Physical Education Tournament Teams</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Quickly divide gym classes into 4 dodgeball squads, relay race heats, or volleyball teams without the awkwardness of team captains picking players on the sidelines.
+            </p>
           </div>
         </div>
       </div>
-    
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I create teams by group count or members per group?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Choose either "Number of Groups" (e.g. split into 4 equal teams) or "Group Size" (e.g. exactly 3 students per team) to suit your activity.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I manually move students between groups after generating?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, our drag-and-drop interface lets you easily swap or rebalance students between generated team cards.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does the group maker work offline in classrooms without Wi-Fi?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, once loaded, the team generation algorithms run entirely offline inside your browser without an active connection.</p>
-            </div>
-          </div>
-</section>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Algorithmic Fairness: Cryptographic Fisher-Yates Permutations</h2>
+          <p>
+            The generator shuffles arrays using the industry-gold-standard Fisher-Yates (Knuth) permutation algorithm driven by <code>crypto.getRandomValues()</code>.
+          </p>
+          <p>
+            Every possible team permutation has an exactly equal mathematical probability of <code>1 / N!</code>, ensuring complete uniformity with zero algorithmic clustering.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Classroom Management Utilities</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-name-picker/">Wheel of Names & Student Picker</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Full-Screen Classroom Timer & Pomodoro</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/random-number-generator/">Random Number Generator (Min/Max Ranges)</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/tally-counter/">Digital Tally Counter & Frequency Tracker</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam & Test Countdown Timer with Alerts</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Group Generator</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">How does the Random Group Generator divide classes fairly?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">The generator executes a cryptographic Fisher-Yates array permutation algorithm. Every student has an exactly equal probability of being paired with any classmate, preventing cliquish grouping and subconscious teacher bias.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I group by number of teams OR by number of students per team?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Choose 'Number of Groups' (e.g., create exactly 5 lab stations) or 'Group Size' (e.g., create groups of 3 students each). The generator automatically balances remaining students into even teams.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Are student rosters saved securely and privately?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Roster lists are stored exclusively in your local browser storage under our Zero-Account architecture. No student names or data ever leave your personal computer or Chromebook.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I export or copy the generated groups?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. With a single click on 'Copy Groups,' formatted lists are copied to your clipboard ready to paste into Google Classroom, lesson plan binders, or seating charts.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I quickly regenerate teams if an absent student needs removing?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Simply delete the absent student's name from the input list and click 'Shuffle Groups' for instant re-distribution in under 2 seconds.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Does this tool work on mobile devices and touch smartboards?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. The card-based responsive grid adjusts cleanly from mobile phone screens to 75-inch classroom smartboards with high-contrast team cards.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -465,10 +482,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

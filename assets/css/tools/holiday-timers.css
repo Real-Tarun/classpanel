@@ -1,0 +1,146 @@
+.countdown-cards-grid {
+      display: flex;
+      justify-content: center;
+      gap: clamp(0.75rem, 2vw, 1.5rem);
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .countdown-unit-card {
+      background: var(--bg-surface-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: clamp(1rem, 2.5vw, 1.75rem) clamp(1.25rem, 3vw, 2.25rem);
+      min-width: clamp(100px, 18vw, 150px);
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .countdown-unit-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .countdown-unit-number {
+      font-size: clamp(2.75rem, 8vw, 5.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .countdown-unit-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+    }
+
+    /* Event Creator Controls */
+    .event-setup-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .event-setup-input {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+    }
+    .event-setup-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-subtle);
+    }
+
+    /* Broadcast & Live Stream Overlay */
+    .broadcast-container {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #090D16;
+      color: #FFFFFF;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .broadcast-container.active {
+      display: flex;
+    }
+    .broadcast-title {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #FFF 30%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .broadcast-date-sub {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 600;
+      color: #64748B;
+      margin-bottom: 3rem;
+    }
+    .broadcast-units-grid {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .broadcast-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.75rem, 4vw, 3rem);
+      min-width: clamp(110px, 18vw, 180px);
+      backdrop-filter: blur(12px);
+    }
+    .broadcast-num {
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #38BDF8;
+      line-height: 1;
+    }
+    .broadcast-lbl {
+      font-size: clamp(0.75rem, 1.5vw, 1rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #94A3B8;
+      margin-top: 0.75rem;
+    }
+    .broadcast-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFF;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s ease;
+    }
+    .broadcast-close-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }

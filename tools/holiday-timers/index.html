@@ -15,154 +15,7 @@
   <link rel="canonical" href="https://classpanel.online/tools/holiday-timers/">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/main.css?v=31">
-  <style>
-    .countdown-cards-grid {
-      display: flex;
-      justify-content: center;
-      gap: clamp(0.75rem, 2vw, 1.5rem);
-      margin: 2rem 0;
-      flex-wrap: wrap;
-    }
-    .countdown-unit-card {
-      background: var(--bg-surface-subtle);
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: clamp(1rem, 2.5vw, 1.75rem) clamp(1.25rem, 3vw, 2.25rem);
-      min-width: clamp(100px, 18vw, 150px);
-      text-align: center;
-      box-shadow: var(--shadow-md);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .countdown-unit-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--primary);
-    }
-    .countdown-unit-number {
-      font-size: clamp(2.75rem, 8vw, 5.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: var(--primary);
-      line-height: 1;
-    }
-    .countdown-unit-label {
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
-    }
-
-    /* Event Creator Controls */
-    .event-setup-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 0.85rem 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .event-setup-input {
-      padding: 0.5rem 0.85rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-size: 0.95rem;
-      font-weight: 600;
-      outline: none;
-    }
-    .event-setup-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-subtle);
-    }
-
-    /* Broadcast & Live Stream Overlay */
-    .broadcast-container {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      background: #090D16;
-      color: #FFFFFF;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
-    }
-    .broadcast-container.active {
-      display: flex;
-    }
-    .broadcast-title {
-      font-size: clamp(2rem, 5vw, 4rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #FFF 30%, #94A3B8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .broadcast-date-sub {
-      font-size: clamp(1rem, 2vw, 1.5rem);
-      font-weight: 600;
-      color: #64748B;
-      margin-bottom: 3rem;
-    }
-    .broadcast-units-grid {
-      display: flex;
-      gap: clamp(1rem, 3vw, 2.5rem);
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .broadcast-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 2px solid rgba(255, 255, 255, 0.12);
-      border-radius: 24px;
-      padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.75rem, 4vw, 3rem);
-      min-width: clamp(110px, 18vw, 180px);
-      backdrop-filter: blur(12px);
-    }
-    .broadcast-num {
-      font-size: clamp(3.5rem, 10vw, 7.5rem);
-      font-weight: 900;
-      font-family: ui-monospace, monospace;
-      color: #38BDF8;
-      line-height: 1;
-    }
-    .broadcast-lbl {
-      font-size: clamp(0.75rem, 1.5vw, 1rem);
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: #94A3B8;
-      margin-top: 0.75rem;
-    }
-    .broadcast-close-btn {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #FFF;
-      padding: 0.5rem 1rem;
-      border-radius: 9999px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: background 0.2s ease;
-    }
-    .broadcast-close-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/tools/holiday-timers.css?v=1">
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ClassPanel">
@@ -232,28 +85,37 @@
         "ratingCount": "135"
       }
     },
-    {
+        {
       "@type": "FAQPage",
       "@id": "https://classpanel.online/tools/holiday-timers/#faq",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Can I countdown to custom dates and holidays?",
+          "name": "Can I count down to any custom date or project deadline?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, select upcoming holidays (Christmas, New Year, Halloween, Summer Break) or enter any future target date and time."
+            "text": "Yes. Pick any target calendar date and time. The ticker calculates remaining days, hours, minutes, and seconds in real-time."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I use this countdown in OBS live streams?",
+          "name": "What holiday presets are included?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, copy the URL into your OBS browser source for a clean, distraction-free countdown overlay."
+            "text": "ClassPanel includes quick presets for New Year's Day, Summer Vacation, Halloween, Thanksgiving, Winter Break, and End-of-School Year milestones."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I embed or display this countdown on livestream software like OBS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Use Projector Mode or OBS Browser Source URL capture to overlay clean, borderless milestone countdowns on school announcements and video streams."
           }
         }
       ]
     }
+  ]
   ]
 }
   </script>
@@ -413,47 +275,167 @@
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
         <!-- SEO Educational Guide Section -->
-    <section class="seo-content-section">
-      <div class="seo-content-grid">
-        <div>
-          <div class="seo-card">
-            <h2>How to Use the Date Countdown & Holiday Timer</h2>
-            <p>Begin by choosing an upcoming holiday or school milestone from the curated presets—including Summer Vacation, Winter Break, Halloween, Thanksgiving, New Year's Day, and the 100th Day of School. To track a personal milestone, wedding, sports tournament, or district testing date, select "Custom Event" and pick your exact target date and time using the calendar picker.</p>
-            <p>Once active, the dashboard calculates the exact duration remaining down to days, hours, minutes, and seconds. Click "Live Stream Mode" to launch a distraction-free, cinematic high-contrast display suitable for projection in school hallways, auditorium screens, or live video broadcasts. You can also copy a shareable link that encodes your custom deadline directly into the URL for students and colleagues.</p>
-          </div>
-          <div class="seo-card">
-            <h2>Why Use ClassPanel's Event & Holiday Countdown?</h2>
-            <p>Long-term planning and calendar math are essential developmental skills for students. Having an aesthetic, synchronized countdown clock projected during homeroom or morning circle fosters positive anticipation, helps students contextualize seasonal changes, and builds excitement for upcoming academic breaks and celebrations.</p>
-            <p>ClassPanel's date countdown runs entirely in your local browser without third-party tracking cookies or registration walls. It supports both light and dark display modes, calculates timezones accurately, and allows schools to maintain an elegant digital ticker on cafeteria monitors and library kiosks completely free of charge.</p>
-          </div>
+        <section class="seo-content-section">
+      <div class="seo-card">
+        <h2>How to Use the Date & Holiday Countdown: Milestones, Vacation Trackers & Custom Deadlines</h2>
+        <p>
+          ClassPanel's Online Holiday & Date Countdown is a live, high-precision milestone ticker engineered for classroom anticipation boards, project deadlines, school holiday countdowns, and event announcements. Whether tracking the remaining days until Summer Break or counting down down to a crucial science fair submission, our ticker displays days, hours, minutes, and seconds with celebratory visuals.
+        </p>
+        <p>
+          Features and customization:
+        </p>
+        <ul>
+          <li><strong>Universal Date Picker:</strong> Select any future calendar date and time zone to track semesters, graduation days, or project milestones.</li>
+          <li><strong>Preset School Holidays:</strong> Pre-programmed with major school milestones: Summer Break, Winter Vacation, Spring Break, New Year's Day, and Halloween.</li>
+          <li><strong>OBS Livestream Integration:</strong> Clean full-screen display perfect for browser source embedding in morning school video announcements or streaming presentations.</li>
+          <li><strong>Digital Confetti Celebration:</strong> When the countdown reaches zero, digital confetti bursts across the screen to celebrate the milestone.</li>
+        </ul>
+      </div>
+
+      <div class="seo-content-grid" style="margin-top: 1.5rem;">
+        <div class="seo-card">
+          <h2>Classroom Anticipation: Building Positive School Culture</h2>
+          <p>
+            Shared countdowns foster community cohesion and sustained motivation throughout long academic quarters:
+          </p>
+          <ul class="seo-features-list">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Goal Visualization:</strong> Counting down to a major project submission date encourages long-term planning and steady pacing.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Community Excitement:</strong> Displaying days until school breaks or cultural festivals during homeroom advisory lifts morale.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Teaching Calendar Math:</strong> Primary educators use date tickers to teach days in months, leap years, and temporal measurement.</span>
+            </li>
+          </ul>
         </div>
 
-        <div>
-          <div class="seo-card">
-            <h2>Related Tools & Utilities</h2>
-            <ul class="seo-features-list">
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/clocks/">Fullscreen Wall & Desk Clock</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom & Study Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Official Exam Timer</a></li>
-              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/presentation-timer/">Speech & Toastmasters Timer</a></li>
-            </ul>
+        <div class="seo-card">
+          <h2>Related Clocks & Timers</h2>
+          <ul class="seo-features-list">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/clocks/">Aesthetic Digital & Analog Clocks</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/classroom-timer/">Classroom Countdown & Pomodoro Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/exam-timer/">Exam & Test Proctoring Timer</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><a href="/tools/talking-clock/">Talking Clock Audio Time Announcements</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>4 Classroom Projects & Milestone Strategies</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">1. Long-Term Capstone Deadlines</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Display a live day/hour countdown on the board for senior capstone research papers or science fair poster submissions.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.5rem;">2. Morning Announcement Broadcasts</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Integrate the date ticker into student broadcast studio livestreams via OBS to count down to spirit week or winter vacation.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.5rem;">3. Historical Milestone Re-enactments</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Count down to precise historic anniversary dates and times for simulated space missions or historical treaty signatures.
+            </p>
+          </div>
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.5rem;">4. Kindergarten Calendar Math</h3>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+              Use the live changing numbers to teach young learners how seconds accumulate into minutes, hours, and full calendar days.
+            </p>
           </div>
         </div>
       </div>
+  
+
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Temporal Psychology: Prospective Time Perception & Goal Visualization</h2>
+        <p>
+          In cognitive psychology, prospective time perception—the ability to estimate and mentally organize future temporal horizons—develops gradually throughout childhood and adolescence:
+        </p>
+        <ul>
+          <li><strong>Defeating the Planning Fallacy:</strong> Students habitually underestimate the calendar time required for extensive projects. A live day/hour countdown keeps project scope visible daily.</li>
+          <li><strong>Dopaminergic Anticipation:</strong> Tracking approaching holiday breaks creates shared positive anticipation that elevates classroom mood during rigorous academic testing weeks.</li>
+          <li><strong>Calendar Arithmetic in Early Education:</strong> Primary grade teachers use the live changing digits to teach the relationship between seconds, minutes, hours, days, and weeks.</li>
+        </ul>
+      </div>
+  
+
+<div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About the Holiday & Date Countdown</h2>
+        
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I count down to any custom date or project deadline?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Pick any target calendar date and time. The ticker calculates remaining days, hours, minutes, and seconds in real-time.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">What holiday presets are included?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">ClassPanel includes quick presets for New Year's Day, Summer Vacation, Halloween, Thanksgiving, Winter Break, and End-of-School Year milestones.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I embed or display this countdown on livestream software like OBS?</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes. Use Projector Mode or OBS Browser Source URL capture to overlay clean, borderless milestone countdowns on school announcements and video streams.</p>
+        </div>
+      </div>
     
-          <div class="seo-card" style="margin-top: 1.5rem;">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I countdown to custom dates and holidays?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, select upcoming holidays (Christmas, New Year, Halloween, Summer Break) or enter any future target date and time.</p>
-            </div>
-            <div class="faq-item" style="margin-bottom: 1.25rem;">
-              <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.35rem; font-weight: 700;">Can I use this countdown in OBS live streams?</h3>
-              <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">Yes, copy the URL into your OBS browser source for a clean, distraction-free countdown overlay.</p>
-            </div>
-          </div>
-</section>
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Cultural Celebrations, Historical Timelines & Seasonal Classroom Themes</h2>
+        <p>
+          Classroom communities thrive on shared milestones and anticipatory excitement. Whether counting down to the winter break, celebrating World Book Day, marking Earth Day, or observing cultural heritage months, visual countdowns create positive social cohesion and calendar awareness.
+        </p>
+        <p>
+          Instructional strategies for calendar literacy and community building:
+        </p>
+        <ol>
+          <li><strong>Calendar & Solar Cycle Literacy:</strong> Elementary students learn the concepts of days, hours, minutes, and seconds by observing long-range countdown clocks. Discuss equinoxes, solstices, and why different cultures follow lunar vs. solar calendars.</li>
+          <li><strong>Project & Term Milestones:</strong> Set countdowns to major classroom exhibits, science fairs, theatrical plays, or the last day of the school year. Breaking down long terms into visible day-by-day markers helps students budget their study and preparation time.</li>
+          <li><strong>Culturally Inclusive Classroom Culture:</strong> Celebrate diverse traditions—including Diwali, Lunar New Year, Eid, Hanukkah, and Christmas—by featuring seasonal themes that welcome and honor every student's heritage.</li>
+          <li><strong>Ambient Whiteboard Display:</strong> Leave the holiday timer running on an ambient corner of your classroom interactive board as an inviting morning bell-ringer backdrop.</li>
+        </ol>
+      </div>
+
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Frequently Asked Questions About Holiday Timers</h2>
+        <div class="faq-item">
+          <h3>Can I create a custom countdown for our school's unique events?</h3>
+          <p>Yes. In addition to pre-configured cultural holidays, teachers can enter any custom event name, target date, and time to create a personalized school celebration countdown.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What celebratory effects occur when the countdown reaches zero?</h3>
+          <p>When the target date and time arrive, the tool triggers festive digital confetti, celebratory sound chimes, and an uplifting milestone animation.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the countdown adjust automatically for local time zones?</h3>
+          <p>Yes, all holiday countdown calculations are computed relative to the viewer's local device time zone, ensuring accurate precision wherever your school is located.</p>
+        </div>
+      </div>
+
+    
+      <div class="seo-card" style="margin-top: 1.5rem;">
+        <h2>Classroom Milestones: Setting Up Student Achievement Countdowns</h2>
+        <p>
+          Celebrate your classroom community's academic milestones by configuring tailored countdowns:
+        </p>
+        <ul>
+          <li><strong>100th Day of School:</strong> A beloved elementary tradition celebrating 100 days of growth, reading, and mathematics. Count down the final days and hours with collaborative math activities.</li>
+          <li><strong>Science Fair Exhibition:</strong> Keep students accountable for project board milestones, hypothesis testing deadlines, and presentation rehearsals leading up to the school showcase.</li>
+          <li><strong>End of School Year Celebration:</strong> Build positive anticipation for summer reading and graduation milestones with a live day-by-day countdown clock.</li>
+        </ul>
+      </div>
+
+    </section>
   </main>
 
   <!-- Site Footer -->
@@ -481,10 +463,11 @@
           <li><a href="/about/">About ClassPanel</a></li>
           <li><a href="/blog/">Teacher Blog</a></li>
           <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
           <li><a href="/contact/">Contact & Feedback</a></li>
         </ul></div>
       </div>
-      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero tracking.</div></div>
+      <div class="footer-bottom"><div>© 2026 ClassPanel.online. Dedicated to educators worldwide. Zero student data collection.</div></div>
     </div>
   </footer>
 

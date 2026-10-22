@@ -1,0 +1,131 @@
+.rocket-stage {
+      background: radial-gradient(ellipse at 50% 100%, #0f0a2e 0%, #050218 60%, #000 100%);
+      border: 2px solid #1e1b4b;
+      border-radius: var(--radius-xl);
+      padding: 2rem 1.5rem 3rem;
+      margin: 1.25rem auto;
+      max-width: 680px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 300px;
+    }
+    /* Stars */
+    .rocket-stage::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, #fff 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 35% 50%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 15%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 70%, #fff 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 85% 30%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 80%, #ccc 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 60%, #ccc 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 90%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 8% 45%, #ccc 0%, transparent 100%);
+      pointer-events:none; z-index:0;
+    }
+    /* Ground / launch pad */
+    .rocket-stage::after {
+      content:'';
+      position:absolute;
+      bottom:0; left:0; right:0;
+      height:48px;
+      background: linear-gradient(180deg, transparent 0%, #1e3a5f 40%, #0f2337 100%);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      z-index: 0;
+    }
+    .rocket-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+    .rocket-emoji {
+      font-size: clamp(3rem, 12vw, 6rem);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+      transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rocket-emoji.idle { animation: rocketIdle 2.5s ease-in-out infinite; }
+    .rocket-emoji.fueling { animation: rocketFuel 1s ease-in-out infinite alternate; }
+    .rocket-emoji.fueling #rocket-flame { opacity: 1 !important; animation: flameFlicker 0.2s ease-in-out infinite alternate; }
+    @keyframes flameFlicker {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #f97316); }
+    }
+    .rocket-emoji.launched { animation: rocketLaunch 0.8s ease-out forwards; }
+    .rocket-emoji.launched #rocket-flame { opacity: 1 !important; transform: scaleY(1.4); }
+    @keyframes rocketIdle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
+    }
+    @keyframes rocketFuel {
+      0% { transform: translateX(-2px) scale(1); filter: drop-shadow(0 0 8px #fb923c); }
+      100% { transform: translateX(2px) scale(1.04); filter: drop-shadow(0 0 16px #f97316); }
+    }
+    @keyframes rocketLaunch {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      30% { transform: translateY(-20px) scale(1.15); opacity: 1; }
+      100% { transform: translateY(-300px) scale(0.5); opacity: 0; }
+    }
+    .rocket-fuel-indicator {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      justify-content: center;
+      margin: 0.75rem 0;
+      z-index: 2;
+      position: relative;
+    }
+    .fuel-cell {
+      width: 18px;
+      height: 26px;
+      border: 2px solid rgba(251,146,60,0.4);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .fuel-cell.lit {
+      background: linear-gradient(180deg, #fb923c, #f97316);
+      border-color: #fb923c;
+      box-shadow: 0 0 8px #fb923c;
+    }
+    .countdown-display {
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      color: #a5b4fc;
+      text-shadow: 0 0 30px rgba(165,180,252,0.4);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      user-select: none;
+      display: block;
+      position: relative;
+      z-index: 2;
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+      margin-bottom: 0.5rem;
+    }
+    .countdown-display.warning { color: #fbbf24; text-shadow: 0 0 30px rgba(251,191,36,0.4); }
+    .countdown-display.danger { color: #f87171; text-shadow: 0 0 30px rgba(248,113,113,0.5); animation: ctDanger 0.5s ease-in-out infinite alternate; }
+    @keyframes ctDanger { 0%{opacity:1} 100%{opacity:0.65} }
+    .launch-status {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #c7d2fe;
+      position: relative;
+      z-index: 2;
+      min-height: 1.4em;
+    }
+    .progress-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; margin: 0.75rem 0; position: relative; z-index: 2; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg,#6366f1,#818cf8); border-radius: 999px; transition: width 1s linear, background 0.5s ease; }
+    .progress-fill.warning { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+    .progress-fill.danger { background: linear-gradient(90deg,#ef4444,#f87171); }
+    .theme-gallery-section{margin:2.5rem auto;max-width:1080px;}
+    .theme-gallery-section h2{font-size:1.2rem;font-weight:800;margin-bottom:1rem;color:var(--text-primary);}
+    .theme-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
+    .theme-gallery-card{background:var(--bg-surface);border:2px solid var(--border-color);border-radius:var(--radius-xl);padding:1.25rem 1rem;text-align:center;transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
+    .theme-gallery-card:hover{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);transform:translateY(-2px);}
+    .theme-gallery-card.active-theme{border-color:var(--primary);background:var(--primary-light);}
+    .theme-card-emoji{font-size:2.2rem;}.theme-card-name{font-weight:800;font-size:0.95rem;color:var(--text-primary);}.theme-card-desc{font-size:0.8rem;color:var(--text-muted);}
+    .theme-card-badge{font-size:0.7rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:0.15rem 0.5rem;border-radius:var(--radius-full);}

@@ -50,3 +50,18 @@
       height: 100%;
       display: block;
     }
+    @media (max-width: 560px) {
+      .sensory-viewport {
+        height: 280px;
+        margin: 1rem 0;
+      }
+      .breathing-circle {
+        width: 105px;
+        height: 105px;
+        font-size: 1.05rem;
+      }
+      .breathing-instruction {
+        font-size: 1.15rem;
+        margin-top: 1rem;
+      }
+    }

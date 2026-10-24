@@ -132,3 +132,21 @@
       background: #F59E0B;
       transition: width 0.3s ease;
     }
+    @media (max-width: 480px) {
+      .stats-card-grid {
+        gap: 0.5rem;
+      }
+      .stat-box {
+        padding: 0.65rem 0.35rem;
+      }
+      .stat-number {
+        font-size: 1.25rem;
+      }
+      .stat-label {
+        font-size: 0.7rem;
+      }
+      .coin-3d {
+        width: 120px;
+        height: 120px;
+      }
+    }

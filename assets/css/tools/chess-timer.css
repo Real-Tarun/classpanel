@@ -72,3 +72,18 @@
       display: none;
     }
     .chess-player-panel.is-active .chess-active-badge { display: block; }
+    @media (max-width: 560px) {
+      .chess-board {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin: 1rem auto;
+      }
+      .chess-player-panel {
+        min-height: 140px;
+        padding: 1.25rem 1rem;
+        gap: 0.5rem;
+      }
+      .chess-time-display {
+        font-size: clamp(2.4rem, 11vw, 3.5rem);
+      }
+    }

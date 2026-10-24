@@ -152,3 +152,42 @@
 .is-shaking {
   animation: rpsShake 0.4s ease-in-out infinite;
 }
+@media (max-width: 500px) {
+  .rps-battlefield {
+    padding: 1.25rem 0.75rem;
+    min-height: 180px;
+  }
+  .rps-hand-display {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+  }
+  .rps-vs-badge {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  .rps-choice-btn {
+    padding: 0.85rem 1rem;
+    min-width: 90px;
+    flex: 1;
+  }
+  .rps-choice-icon {
+    font-size: 2.2rem;
+  }
+  .rps-choice-name {
+    font-size: 0.9rem;
+  }
+  .rps-scoreboard {
+    gap: 0.35rem;
+  }
+  .rps-score-card {
+    padding: 0.5rem 0.25rem;
+  }
+  .rps-score-num {
+    font-size: 1.35rem;
+  }
+  .rps-score-label {
+    font-size: 0.65rem;
+  }
+}

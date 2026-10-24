@@ -85,3 +85,20 @@
     .btn-step:active {
       transform: scale(0.95);
     }
+    @media (max-width: 560px) {
+      .counter-teams-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+      .team-counter-card {
+        padding: 1.25rem 1rem;
+      }
+      .team-counter-val {
+        font-size: clamp(2.8rem, 12vw, 4.2rem);
+        margin: 0.75rem 0;
+      }
+      .btn-step {
+        height: 3rem;
+      }
+    }

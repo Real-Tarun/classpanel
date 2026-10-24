@@ -107,3 +107,12 @@
       padding: 0.35rem 0.65rem;
       border-radius: var(--radius-sm);
     }
+    @media (max-width: 560px) {
+      .groups-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .group-card {
+        padding: 1rem;
+      }
+    }

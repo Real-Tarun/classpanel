@@ -48,3 +48,15 @@
       margin-top: 1rem;
       color: var(--text-primary);
     }
+    @media (max-width: 560px) {
+      .traffic-lights-rack {
+        gap: 1.25rem;
+        padding: 1rem 1.25rem;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .traffic-light {
+        width: 60px;
+        height: 60px;
+      }
+    }

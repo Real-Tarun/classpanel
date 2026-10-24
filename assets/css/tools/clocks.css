@@ -73,3 +73,28 @@
       color: var(--text-primary);
       user-select: none;
     }
+    @media (max-width: 560px) {
+      .clock-display-area {
+        gap: 1.5rem;
+        margin: 1rem 0;
+      }
+      .analog-clock-container {
+        width: 250px;
+        height: 250px;
+        border-width: 6px;
+      }
+      .hand-hour {
+        height: 60px;
+      }
+      .hand-minute {
+        height: 90px;
+      }
+      .hand-second {
+        height: 100px;
+      }
+      .digital-clock-container {
+        padding: 1.25rem 1rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }

@@ -96,3 +96,21 @@
       font-weight: 700;
       color: var(--text-secondary);
     }
+    @media (max-width: 560px) {
+      .dice-tray {
+        padding: 1.5rem 1rem;
+        min-height: 200px;
+      }
+      .die-face {
+        width: 72px;
+        height: 72px;
+        border-radius: 14px;
+      }
+      .die-pip {
+        width: 10px;
+        height: 10px;
+      }
+      .die-poly-num {
+        font-size: 1.8rem;
+      }
+    }

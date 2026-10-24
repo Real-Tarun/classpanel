@@ -209,3 +209,47 @@
       max-width: 720px !important;
       box-sizing: border-box !important;
     }
+    @media (max-width: 560px) {
+      .race-track-container {
+        padding: 0.85rem 0.5rem;
+        margin: 1rem auto;
+        border-radius: var(--radius-lg);
+      }
+      .race-lane {
+        height: 54px;
+        padding-left: 44px;
+        padding-right: 36px;
+        margin-bottom: 0.25rem;
+      }
+      .lane-badge {
+        width: 30px;
+        height: 30px;
+        font-size: 0.82rem;
+        left: 4px;
+      }
+      .start-line {
+        left: 38px;
+      }
+      .finish-line {
+        right: 24px;
+        width: 12px;
+      }
+      .finish-flag {
+        right: 20px;
+        font-size: 1.1rem;
+      }
+      .race-avatar-box {
+        left: 42px;
+      }
+      .race-avatar-icon {
+        font-size: 1.7rem;
+      }
+      .race-avatar-label {
+        font-size: 0.72rem;
+        padding: 0.15rem 0.45rem;
+      }
+      .race-commentary-bar {
+        font-size: 0.82rem;
+        padding: 0.35rem 0.75rem;
+      }
+    }

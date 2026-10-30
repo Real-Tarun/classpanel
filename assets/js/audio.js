@@ -15,14 +15,7 @@ class SoundSynthesizer {
     this._proceduralAlarmInterval = null;
     this.alarmLoopMode = localStorage.getItem('classpanel_alarm_loop_mode') || 'loop'; // 'loop' (default) or 'ting'
 
-    this.TRACKS = {
-      calm: { name: 'Calm Meditation', src: '/assets/audio/calm.mp3' },
-      rain: { name: 'Alpha Beats with Rain', src: '/assets/audio/binaural-rain.mp3' },
-      'binaural-rain': { name: 'Alpha Beats with Rain', src: '/assets/audio/binaural-rain.mp3' },
-      '5d': { name: '5D Spiritual Journey', src: '/assets/audio/journey-5d.mp3' },
-      'journey-5d': { name: '5D Spiritual Journey', src: '/assets/audio/journey-5d.mp3' },
-      meditation: { name: 'Deep Meditation Music', src: '/assets/audio/meditation.mp3' }
-    };
+    this.TRACKS = {};
   }
 
   initContext() {

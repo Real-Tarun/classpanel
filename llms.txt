@@ -11,7 +11,7 @@ Website: https://classpanel.online
 
 ## Interactive Tools Directory
 
-- [Classroom & Study Timer](https://classpanel.online/tools/classroom-timer/): Giant countdown timer, Pomodoro intervals (25/5), and ambient focus audio (Calm, 10Hz Alpha Rain, 5D Journey, Zen Waves).
+- [Classroom & Study Timer](https://classpanel.online/tools/classroom-timer/): Giant countdown timer, Pomodoro intervals (25/5), and ambient focus audio (Calm Focus, Gentle Rain, Ocean Waves, Zen Bowls).
 - [Wheel of Names & Picker](https://classpanel.online/tools/random-name-picker/): Spinning decision wheel for student rosters, raffle giveaways, and random selection with eliminate-on-pick.
 - [Random Group Generator](https://classpanel.online/tools/group-generator/): Instant team creation and pod pairing with drag-and-drop roster management.
 - [Official Exam Timer](https://classpanel.online/tools/exam-timer/): Standardized testing board with synchronized real-time wall clock and silent milestone warnings.

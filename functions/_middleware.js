@@ -116,9 +116,6 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
-Disallow: /es/tools/
-Disallow: /fr/tools/
-Disallow: /de/tools/
 
 # Google AdSense Crawlers
 User-agent: Mediapartners-Google
@@ -140,9 +137,6 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
-Disallow: /es/tools/
-Disallow: /fr/tools/
-Disallow: /de/tools/
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -177,9 +171,6 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
-Disallow: /es/tools/
-Disallow: /fr/tools/
-Disallow: /de/tools/
 
 User-agent: msnbot
 Allow: /
@@ -197,9 +188,6 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
-Disallow: /es/tools/
-Disallow: /fr/tools/
-Disallow: /de/tools/
 
 User-agent: Yandex
 Allow: /
@@ -213,9 +201,6 @@ Disallow: /cdn-cgi/
 Disallow: /404.html
 Disallow: /admin/
 Disallow: /api/admin/
-Disallow: /es/tools/
-Disallow: /fr/tools/
-Disallow: /de/tools/
 
 # Apple Search & Siri Suggestions
 User-agent: Applebot

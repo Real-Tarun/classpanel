@@ -13,22 +13,17 @@
 /about/index.html /about/ 301
 /privacy/index.html /privacy/ 301
 /contact/index.html /contact/ 301
+/terms/index.html /terms/ 301
 
-# i18n language paths — clean URL normalization
-/es /es/ 301
-/es/index.html /es/ 301
-/es/tools /es/tools/ 301
-/es/tools/*/index.html /es/tools/:splat/ 301
-/fr /fr/ 301
-/fr/index.html /fr/ 301
-/fr/tools /fr/tools/ 301
-/fr/tools/*/index.html /fr/tools/:splat/ 301
-/de /de/ 301
-/de/index.html /de/ 301
-/de/tools /de/tools/ 301
-/de/tools/*/index.html /de/tools/:splat/ 301
+# Legacy language path fallback (prevent 404s)
+/es / 301
+/es/* / 301
+/fr / 301
+/fr/* / 301
+/de / 301
+/de/* / 301
 
-# New tool clean paths (trailing slash enforcement)
+# Tool clean paths (trailing slash enforcement)
 /tools/metronome /tools/metronome/ 301
 /tools/chess-timer /tools/chess-timer/ 301
 /tools/talking-clock /tools/talking-clock/ 301

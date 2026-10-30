@@ -44,6 +44,8 @@
 /tools/metronome /tools/metronome/ 301
 /tools/chess-timer /tools/chess-timer/ 301
 /tools/talking-clock /tools/talking-clock/ 301
-/tools/bomb-countdown /tools/bomb-countdown/ 301
+# Bomb Countdown permanent redirect to classroom timer
+/tools/bomb-countdown /tools/classroom-timer/ 301
+/tools/bomb-countdown/* /tools/classroom-timer/ 301
 /tools/custom-timer /tools/custom-timer/ 301
 /tools/split-timer /tools/split-timer/ 301

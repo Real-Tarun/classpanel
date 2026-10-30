@@ -30,7 +30,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/metronome/',
     '/tools/chess-timer/',
     '/tools/talking-clock/',
-    '/tools/bomb-countdown/',
     '/tools/custom-timer/',
     '/tools/split-timer/',
   ];

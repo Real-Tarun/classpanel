@@ -112,11 +112,6 @@
 - **Description**: Natural voice speech-synthesized audio announcer speaking current time, remaining time intervals, and classroom cues.
 - **Primary Use**: Visually impaired accessibility, audio-first study spaces, hands-free work.
 
-### 21. Bomb Countdown Timer
-- **URL**: https://classpanel.online/tools/bomb-countdown/
-- **Description**: Animated burning fuse countdown culminating in a safe sound effect and cartoon explosion animation.
-- **Primary Use**: Lightning review rounds, spelling bees, high-engagement classroom challenges.
-
 ### 22. Custom Timer Maker
 - **URL**: https://classpanel.online/tools/custom-timer/
 - **Description**: Personalized countdown timer builder with custom title labels, custom sound alarms, themes, and shareable encoded URLs.

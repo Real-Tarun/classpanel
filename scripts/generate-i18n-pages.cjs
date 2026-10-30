@@ -37,7 +37,6 @@ const TOOLS = [
   { slug: 'metronome', en_title: 'Online Metronome', es_title: 'Metrónomo en Línea', fr_title: 'Métronome en Ligne', de_title: 'Online-Metronom', category: 'clocks' },
   { slug: 'chess-timer', en_title: 'Chess Clock & Timer', es_title: 'Reloj de Ajedrez', fr_title: "Horloge d'Échecs", de_title: 'Schachuhr', category: 'timers' },
   { slug: 'talking-clock', en_title: 'Talking Clock', es_title: 'Reloj Parlante', fr_title: 'Horloge Parlante', de_title: 'Sprechende Uhr', category: 'clocks' },
-  { slug: 'bomb-countdown', en_title: 'Bomb Countdown Timer', es_title: 'Temporizador de Bomba', fr_title: 'Minuterie Bombe', de_title: 'Bomben-Countdown-Timer', category: 'games' },
   { slug: 'custom-timer', en_title: 'Make Your Own Timer', es_title: 'Crea tu Propio Temporizador', fr_title: 'Créez votre Propre Minuterie', de_title: 'Eigenen Timer Erstellen', category: 'timers' },
   { slug: 'split-timer', en_title: 'Split / Lap Timer', es_title: 'Cronómetro de Vueltas', fr_title: 'Chronomètre à Tours', de_title: 'Split-/Rundenzeitmesser', category: 'timers' },
 ];
@@ -65,7 +64,6 @@ const TOOL_DESCS = {
     'metronome': 'Metrónomo ajustable de 40 a 208 BPM con indicador de beat visual, tap tempo, compases (4/4, 3/4, 6/8) y control de volumen.',
     'chess-timer': 'Reloj de ajedrez para dos jugadores con controles de tiempo Blitz, Rápido y Personalizado. Toca los paneles para cambiar los relojes.',
     'talking-clock': 'Reloj que lee la hora en voz alta usando texto a voz del navegador. Anuncio automático cada 1, 5, 10 o 30 minutos.',
-    'bomb-countdown': 'Cuenta regresiva gamificada con animación de mecha ardiente, cambios de color que generan tensión y animación de explosión al llegar a cero.',
     'custom-timer': 'Crea una cuenta regresiva personalizada con tu propia etiqueta, color de tema, sonido de fin y duración. Guarda tu configuración.',
     'split-timer': 'Cronómetro con botón de Vuelta que registra tiempos de split con delta respecto a la vuelta anterior. Insignias de más rápida/más lenta.',
   },
@@ -90,7 +88,6 @@ const TOOL_DESCS = {
     'metronome': 'Métronome ajustable de 40 à 208 BPM avec indicateur de temps visuel, frappe du tempo, mesures (4/4, 3/4, 6/8) et contrôle du volume.',
     'chess-timer': 'Horloge d\'échecs à deux joueurs avec contrôles de temps Blitz, Rapide et Personnalisé. Appuyez sur les panneaux pour changer d\'horloge.',
     'talking-clock': 'Horloge qui lit l\'heure à voix haute en utilisant la synthèse vocale du navigateur. Annonce automatique toutes les 1, 5, 10 ou 30 minutes.',
-    'bomb-countdown': 'Compte à rebours ludique avec animation de mèche qui brûle, changements de couleur pour la tension et animation d\'explosion à zéro.',
     'custom-timer': 'Créez un compte à rebours personnalisé avec votre propre étiquette, couleur de thème, son de fin et durée. Sauvegardez votre configuration.',
     'split-timer': 'Chronomètre avec bouton Tour qui enregistre les temps de split avec delta par rapport au tour précédent. Badges du plus rapide/plus lent.',
   },
@@ -115,7 +112,6 @@ const TOOL_DESCS = {
     'metronome': 'Einstellbares Metronom von 40 bis 208 BPM mit visuellem Beat-Indikator, Tap-Tempo, Taktarten (4/4, 3/4, 6/8) und Lautstärkeregelung.',
     'chess-timer': 'Zwei-Spieler-Schachuhr mit Blitz-, Schnell- und benutzerdefinierten Zeitkontrollen. Auf Felder tippen zum Wechseln der Uhr.',
     'talking-clock': 'Uhr, die die aktuelle Uhrzeit laut vorliest, mithilfe der eingebauten Text-to-Speech-Funktion des Browsers. Automatische Ansagen einstellbar.',
-    'bomb-countdown': 'Spielerischer Countdown mit Zündschnur-Animation, spannungssteigernden Farbwechseln und Explosionsanimation bei Null.',
     'custom-timer': 'Erstellen Sie einen benutzerdefinierten Countdown mit eigenem Namen, Themenfarbe, Endton und Dauer. Konfiguration speichern.',
     'split-timer': 'Stoppuhr mit Runden-Taste, die Teilzeiten mit Delta zur vorherigen Runde aufzeichnet. Schnellste/Langsamste-Abzeichen und Clipboard-Export.',
   }

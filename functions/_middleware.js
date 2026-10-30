@@ -55,7 +55,6 @@ Website: https://classpanel.online
 - [Online Metronome](https://classpanel.online/tools/metronome/): Visual and acoustic tempo metronome (20-300 BPM) with time signature accents and tap tempo.
 - [Chess Clock & Timer](https://classpanel.online/tools/chess-timer/): Dual game clock with Blitz, Rapid, Bullet, and Fischer increment time controls.
 - [Talking Clock](https://classpanel.online/tools/talking-clock/): Speech-synthesized voice announcements for current time, study intervals, and accessibility.
-- [Bomb Countdown Timer](https://classpanel.online/tools/bomb-countdown/): Dramatic burning fuse animation with explosion sound effect for classroom quizzes and lightning rounds.
 - [Custom Timer Maker](https://classpanel.online/tools/custom-timer/): Build personalized timers with custom labels, sound alarms, color schemes, and shareable URLs.
 - [Split Lap Timer](https://classpanel.online/tools/split-timer/): Multi-athlete precision split timer for track, cross-country, and fitness assessments.
 

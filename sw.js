@@ -1,4 +1,4 @@
-const CACHE_NAME = 'classpanel-v34';
+const CACHE_NAME = 'classpanel-v35';
 const STATIC_ASSETS = [
   '/',
   '/tools/',

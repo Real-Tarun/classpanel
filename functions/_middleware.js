@@ -355,19 +355,18 @@ Sitemap: https://classpanel.online/sitemap.xml
     return Response.redirect(url.toString(), 301);
   }
 
-  // 7. Edge Enforcement: Block restricted IPs and devices
+  // 7. Edge Enforcement: Block restricted IPs and devices (only on API submissions to avoid slowing down static pageviews)
+  const isApiSubmission = url.pathname.startsWith('/api/') && context.request.method !== 'GET';
   const clientIp = context.request.headers.get('cf-connecting-ip');
-  const acceptHeader = context.request.headers.get('accept') || '';
   const cookieHeader = context.request.headers.get('cookie') || '';
   const didMatch = cookieHeader.match(/cp_did=([a-zA-Z0-9_\-]+)/);
   const deviceId = didMatch ? didMatch[1] : null;
 
   if (
+    isApiSubmission &&
     context.env?.DB &&
     (clientIp || deviceId) &&
-    !url.pathname.startsWith('/admin') &&
-    !url.pathname.startsWith('/api/admin') &&
-    (acceptHeader.includes('text/html') || url.pathname.startsWith('/api/'))
+    !url.pathname.startsWith('/api/admin')
   ) {
     try {
       let isBlocked = null;

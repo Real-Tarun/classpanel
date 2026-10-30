@@ -85,13 +85,15 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1563010132282807"
      crossorigin="anonymous"></script>
 
-  <!-- Clarity tracking code for https://classpanel.online/ -->
+  <!-- Clarity tracking code for https://classpanel.online/ (Deferred to load for instant FCP) -->
   <script>
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "yk2i9d47t3");
+    window.addEventListener('load', function() {
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "yk2i9d47t3");
+    });
   </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQYENQ2J88"></script>
@@ -109,7 +111,7 @@
     <div class="container header-inner">
       <div style="display: flex; align-items: center; gap: 1rem;">
         <a href="/" class="brand-logo" aria-label="ClassPanel Home">
-          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+          <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon" width="32" height="32" decoding="async">
           <span>Class<span style="color: var(--primary);">Panel</span></span>
         </a>
         <span style="color: var(--border-strong); font-size: 1.25rem;">/</span>
@@ -179,7 +181,7 @@
 
           <!-- 1. Classroom Timer -->
           <a href="/tools/classroom-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/classroom-timer.png" alt="Classroom Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/classroom-timer.png" alt="Classroom Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Classroom Timer</h2>
             <p class="tool-card-desc">Giant digital countdown timer & stopwatch with ambient audio, visual progress bar, quick presets, and alarms. <em>🎧 Headphones recommended.</em></p>
             <div class="tool-card-meta">
@@ -190,7 +192,7 @@
 
           <!-- 2. Random Name Picker -->
           <a href="/tools/random-name-picker/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/random-name-picker.png" alt="Random Name Picker Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/random-name-picker.png" alt="Random Name Picker Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Random Name Picker</h2>
             <p class="tool-card-desc">Exciting spinning wheel and card draw picker. Save multiple class rosters, eliminate picked names, with confetti celebrations.</p>
             <div class="tool-card-meta">
@@ -201,7 +203,7 @@
 
           <!-- 3. Group Generator -->
           <a href="/tools/group-generator/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-cyan); --card-light: var(--accent-cyan-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/group-generator.png" alt="Class Group Generator Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/group-generator.png" alt="Class Group Generator Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Class Group Generator</h2>
             <p class="tool-card-desc">Instantly split your roster into balanced teams, lab partner pairs, or seating tables with drag-and-drop roster management.</p>
             <div class="tool-card-meta">
@@ -212,7 +214,7 @@
 
           <!-- 4. Official Exam Timer -->
           <a href="/tools/exam-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/exam-timer.png" alt="Official Exam Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/exam-timer.png" alt="Official Exam Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Official Exam Timer</h2>
             <p class="tool-card-desc">Formal assessment board with reading time phase, silent countdown, 15-minute / 5-minute milestone notifications, and rule notes.</p>
             <div class="tool-card-meta">
@@ -223,7 +225,7 @@
 
           <!-- 5. Sensory & Calming Timer -->
           <a href="/tools/sensory-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-cyan); --card-light: var(--accent-cyan-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/sensory-timer.png" alt="Sensory Calming Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/sensory-timer.png" alt="Sensory Calming Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Sensory Calming Timer</h2>
             <p class="tool-card-desc">Low-stimulation visual timers (lava bubbles, breathing rhythms, liquid drops) for calm resets. <em>🎧 Best with headphones.</em></p>
             <div class="tool-card-meta">
@@ -234,7 +236,7 @@
 
           <!-- 6. Classroom Clocks -->
           <a href="/tools/clocks/" class="tool-card" data-category="clocks" style="--card-accent: var(--primary); --card-light: var(--primary-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/clocks.png" alt="Classroom Clocks Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/clocks.png" alt="Classroom Clocks Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Classroom Clocks</h2>
             <p class="tool-card-desc">Synchronized giant analog clock and digital display. Features hidden digital mode for interactive time-telling teaching practice.</p>
             <div class="tool-card-meta">
@@ -245,7 +247,7 @@
 
           <!-- 7. Random Number Generator -->
           <a href="/tools/random-number-generator/" class="tool-card" data-category="randomizers" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/random-number-generator.png" alt="Random Number Generator Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/random-number-generator.png" alt="Random Number Generator Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Random Number Generator</h2>
             <p class="tool-card-desc">Generate single or multiple random numbers, set custom minimum and maximum bounds, and choose unique non-repeating results.</p>
             <div class="tool-card-meta">
@@ -256,7 +258,7 @@
 
           <!-- 8. Chance Games & Mystery Hub -->
           <a href="/tools/chance-games/" class="tool-card" data-category="games" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/chance-games.png" alt="Chance Games & Mystery Hub Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/chance-games.png" alt="Chance Games & Mystery Hub Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Chance Games & Mystery Hub</h2>
             <p class="tool-card-desc">Interactive chance games: spin the Lucky Prize Wheel, unlock 3D Mystery Treasure Chests, and consult the Cosmic Magic 8-Ball Oracle.</p>
             <div class="tool-card-meta">
@@ -267,7 +269,7 @@
 
           <!-- 9. Multi-Team Tally Counter -->
           <a href="/tools/tally-counter/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/tally-counter.png" alt="Multi-Team Tally Counter Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/tally-counter.png" alt="Multi-Team Tally Counter Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Multi-Team Tally Counter</h2>
             <p class="tool-card-desc">Smartboard scoreboard supporting up to 6 custom color-coded teams or houses with step increments and audio feedback.</p>
             <div class="tool-card-meta">
@@ -278,7 +280,7 @@
 
           <!-- 10. Presentation Timer -->
           <a href="/tools/presentation-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/presentation-timer.png" alt="Presentation & Speech Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/presentation-timer.png" alt="Presentation & Speech Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Presentation Timer</h2>
             <p class="tool-card-desc">Speaker pacing display with automated traffic light indicators (green speaking, amber wrap-up, red overtime) for student talks.</p>
             <div class="tool-card-meta">
@@ -289,7 +291,7 @@
 
           <!-- 11. Fun Race Timers -->
           <a href="/tools/race-timers/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/race-timers.png" alt="Race Timers Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/race-timers.png" alt="Race Timers Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Fun Race Timers</h2>
             <p class="tool-card-desc">Exciting 60fps animated animal racetrack countdowns (Cheetah, Turtle, Rocket, Rabbit) that turn quick classroom cleanups into a race.</p>
             <div class="tool-card-meta">
@@ -300,7 +302,7 @@
 
           <!-- 12. Countdown to Any Date -->
           <a href="/tools/holiday-timers/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/holiday-timers.png" alt="Holiday Timers Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/holiday-timers.png" alt="Holiday Timers Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Countdown to Any Date</h2>
             <p class="tool-card-desc">Live countdown ticker to birthdays, deadlines, holidays, and events with fullscreen OBS live stream broadcast mode and shareable links.</p>
             <div class="tool-card-meta">
@@ -311,7 +313,7 @@
 
           <!-- 13. Rock Paper Scissors (NEW) -->
           <a href="/tools/rock-paper-scissors/" class="tool-card" data-category="games" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/rock-paper-scissors.png?v=15" alt="Rock Paper Scissors Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/rock-paper-scissors.png?v=15" alt="Rock Paper Scissors Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Rock Paper Scissors</h2>
             <p class="tool-card-desc">Fast, animated game against the computer with Best of 3 / 5 / 7 match modes, instant feedback, sound effects, and win-streak tracking.</p>
             <div class="tool-card-meta">
@@ -322,7 +324,7 @@
 
           <!-- 14. Flip a Coin Simulator (NEW) -->
           <a href="/tools/coin-flip/" class="tool-card" data-category="games" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/coin-flip.png?v=15" alt="Coin Flip Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/coin-flip.png?v=15" alt="Coin Flip Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Flip a Coin Simulator</h2>
             <p class="tool-card-desc">Satisfying 3D metallic coin toss with sound effects, multi-coin flips (1 to 5 coins simultaneously), and live probability tracking.</p>
             <div class="tool-card-meta">
@@ -333,7 +335,7 @@
 
           <!-- 15. Polyhedral Dice Roller (NEW) -->
           <a href="/tools/dice-roller/" class="tool-card" data-category="games" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/dice-roller.png?v=15" alt="Dice Roller Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/dice-roller.png?v=15" alt="Dice Roller Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Polyhedral Dice Roller</h2>
             <p class="tool-card-desc">Roll 1 to 6+ polyhedral RPG dice (d4, d6, d8, d10, d12, d20, d100) with running sum totals, physics roll animation, and roll history.</p>
             <div class="tool-card-meta">
@@ -344,7 +346,7 @@
 
           <!-- 16. Color Picker & Palette Converter (NEW) -->
           <a href="/tools/color-picker/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/color-picker.png?v=15" alt="Color Picker Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/color-picker.png?v=15" alt="Color Picker Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Color Picker & Converter</h2>
             <p class="tool-card-desc">Lightweight visual color picker with instant 1-click copy for HEX, RGB, HSL, and CMYK codes, curated palettes, and WCAG contrast check.</p>
             <div class="tool-card-meta">
@@ -355,7 +357,7 @@
 
           <!-- 17. Online Stopwatch & Split Laps -->
           <a href="/tools/stopwatch/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/stopwatch.png?v=15" alt="Stopwatch Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/stopwatch.png?v=15" alt="Stopwatch Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Online Stopwatch & Laps</h2>
             <p class="tool-card-desc">Precision millisecond count-up stopwatch with lap recording, fastest/slowest lap comparison badges, keyboard shortcuts, and export.</p>
             <div class="tool-card-meta">
@@ -366,7 +368,7 @@
 
           <!-- 18. Metronome (NEW) -->
           <a href="/tools/metronome/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-purple); --card-light: var(--accent-purple-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/metronome.png" alt="Metronome Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/metronome.png" alt="Metronome Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Online Metronome</h2>
             <p class="tool-card-desc">Adjustable BPM metronome (40–208) with visual beat indicator, tap tempo, time signatures (4/4, 3/4, 6/8), and volume control. No download.</p>
             <div class="tool-card-meta">
@@ -377,7 +379,7 @@
 
           <!-- 19. Chess Timer (NEW) -->
           <a href="/tools/chess-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-amber); --card-light: var(--accent-amber-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/chess-timer.png" alt="Chess Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/chess-timer.png" alt="Chess Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Chess Clock & Timer</h2>
             <p class="tool-card-desc">Two-player chess clock with Blitz, Rapid, and Custom time controls. Tap panels to switch clocks. Fischer increment support. No download needed.</p>
             <div class="tool-card-meta">
@@ -388,7 +390,7 @@
 
           <!-- 20. Talking Clock (NEW) -->
           <a href="/tools/talking-clock/" class="tool-card" data-category="clocks" style="--card-accent: var(--accent-sky); --card-light: var(--accent-sky-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/talking-clock.png" alt="Talking Clock Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/talking-clock.png" alt="Talking Clock Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Talking Clock</h2>
             <p class="tool-card-desc">Clock that speaks the time aloud using browser text-to-speech. Auto-announce every 1, 5, 10, or 30 minutes. 12/24 hour format. No API cost.</p>
             <div class="tool-card-meta">
@@ -399,7 +401,7 @@
 
           <!-- 21. Bomb Countdown (NEW) -->
           <a href="/tools/bomb-countdown/" class="tool-card" data-category="games" style="--card-accent: var(--accent-rose); --card-light: var(--accent-rose-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/bomb-countdown.png" alt="Bomb Countdown Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/bomb-countdown.png" alt="Bomb Countdown Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Bomb Countdown Timer</h2>
             <p class="tool-card-desc">Gamified countdown with a burning fuse animation, tension-building color shifts (green→amber→red), and a dramatic BOOM explosion at zero.</p>
             <div class="tool-card-meta">
@@ -410,7 +412,7 @@
 
           <!-- 22. Custom Timer (NEW) -->
           <a href="/tools/custom-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-coral); --card-light: var(--accent-coral-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/custom-timer.png" alt="Custom Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/custom-timer.png" alt="Custom Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Make Your Own Timer</h2>
             <p class="tool-card-desc">Build a custom countdown with your own label, theme color, end sound (bell, chime, alarm), and duration. Save your setup for next time.</p>
             <div class="tool-card-meta">
@@ -421,7 +423,7 @@
 
           <!-- 23. Split Timer (NEW) -->
           <a href="/tools/split-timer/" class="tool-card" data-category="timers" style="--card-accent: var(--accent-emerald); --card-light: var(--accent-emerald-light);">
-            <div class="tool-card-icon"><img src="/assets/icons/split-timer.png" alt="Split Timer Icon"></div>
+            <div class="tool-card-icon"><img src="/assets/icons/split-timer.png" alt="Split Timer Icon" width="48" height="48" loading="lazy" decoding="async"></div>
             <h2 class="tool-card-title">Split / Lap Timer</h2>
             <p class="tool-card-desc">Stopwatch with a Lap button that records split times with delta from previous lap. Fastest/slowest badges, clipboard export, and keyboard shortcuts.</p>
             <div class="tool-card-meta">
@@ -496,7 +498,7 @@
       <div class="footer-grid">
         <div class="footer-brand-col">
           <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.85rem;">
-            <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon">
+            <img src="/assets/icons/logo.png" alt="ClassPanel Logo" class="brand-icon" width="32" height="32" decoding="async">
             <span style="font-size: 1.25rem; font-weight: 900; color: var(--text-primary);">Class<span style="color: var(--primary);">Panel</span></span>
           </div>
           <p>

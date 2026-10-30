@@ -220,7 +220,7 @@ class SoundSynthesizer {
     this.ambientGain.gain.linearRampToValueAtTime(effectiveVol, this.ctx.currentTime + 1.2);
     this.ambientGain.connect(this.ctx.destination);
 
-    if (track === 'focus') {
+    if (track === 'focus' || track === 'calm') {
       // Warm meditative pad chords: C3 (130.81), G3 (196.00), E4 (329.63), B4 (493.88)
       const freqs = [130.81, 196.00, 329.63, 493.88];
       freqs.forEach((f, idx) => {
@@ -276,6 +276,39 @@ class SoundSynthesizer {
       filter.connect(this.ambientGain);
       whiteNoise.start();
       this.ambientNodes.push(whiteNoise);
+    } else if (track === 'waves' || track === 'ocean') {
+      // Procedural ocean surf: modulated pink noise with slow 8s rhythmic swell
+      const bufferSize = this.ctx.sampleRate * 2;
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        output[i] = (lastOut + (0.02 * white)) / 1.02;
+        lastOut = output[i];
+        output[i] *= 2.6;
+      }
+
+      const oceanNoise = this.ctx.createBufferSource();
+      oceanNoise.buffer = noiseBuffer;
+      oceanNoise.loop = true;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(450, this.ctx.currentTime);
+
+      const lfo = this.ctx.createOscillator();
+      const lfoGain = this.ctx.createGain();
+      lfo.frequency.setValueAtTime(0.12, this.ctx.currentTime);
+      lfoGain.gain.setValueAtTime(320, this.ctx.currentTime);
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+      lfo.start();
+
+      oceanNoise.connect(filter);
+      filter.connect(this.ambientGain);
+      oceanNoise.start();
+      this.ambientNodes.push(oceanNoise, lfo);
     } else if (track === 'zen') {
       // Periodic Tibetan singing bowl & chime intervals
       const playZenChime = () => {
@@ -333,7 +366,7 @@ class SoundSynthesizer {
     }
   }
 
-  // --- Tactile Mechanical Button Click FX ---
+  // --- Tactile Soft Button Tap FX (Gentle, low-volume, zero ear fatigue) ---
   playButtonClick() {
     if (this.isMuted) return;
 
@@ -346,47 +379,47 @@ class SoundSynthesizer {
 
     this.initContext();
 
-    // 1. Instant zero-latency Web Audio API tactile switch synthesis
+    // 1. Instant zero-latency gentle tactile switch synthesis
     if (this.ctx) {
       try {
         const now = this.ctx.currentTime;
 
-        // Layer A: Crisp mechanical snap (1800Hz -> 500Hz)
-        const oscSnap = this.ctx.createOscillator();
-        const gainSnap = this.ctx.createGain();
-        oscSnap.type = 'triangle';
-        oscSnap.frequency.setValueAtTime(1800, now);
-        oscSnap.frequency.exponentialRampToValueAtTime(500, now + 0.035);
+        // Layer A: Soft low-frequency body tap (320Hz -> 90Hz)
+        const oscTap = this.ctx.createOscillator();
+        const gainTap = this.ctx.createGain();
+        oscTap.type = 'sine';
+        oscTap.frequency.setValueAtTime(320, now);
+        oscTap.frequency.exponentialRampToValueAtTime(90, now + 0.018);
 
-        gainSnap.gain.setValueAtTime(0.65 * this.volume, now);
-        gainSnap.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        gainTap.gain.setValueAtTime(0.09 * this.volume, now);
+        gainTap.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
 
-        oscSnap.connect(gainSnap);
-        gainSnap.connect(this.ctx.destination);
-        oscSnap.start(now);
-        oscSnap.stop(now + 0.045);
+        oscTap.connect(gainTap);
+        gainTap.connect(this.ctx.destination);
+        oscTap.start(now);
+        oscTap.stop(now + 0.025);
 
-        // Layer B: Tactile bottom-out body thump (360Hz -> 140Hz)
-        const oscThump = this.ctx.createOscillator();
-        const gainThump = this.ctx.createGain();
-        oscThump.type = 'sine';
-        oscThump.frequency.setValueAtTime(360, now);
-        oscThump.frequency.exponentialRampToValueAtTime(140, now + 0.055);
+        // Layer B: Subtle high-frequency definition transient (700Hz -> 250Hz, very soft)
+        const oscTransient = this.ctx.createOscillator();
+        const gainTransient = this.ctx.createGain();
+        oscTransient.type = 'triangle';
+        oscTransient.frequency.setValueAtTime(700, now);
+        oscTransient.frequency.exponentialRampToValueAtTime(250, now + 0.012);
 
-        gainThump.gain.setValueAtTime(0.5 * this.volume, now);
-        gainThump.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+        gainTransient.gain.setValueAtTime(0.03 * this.volume, now);
+        gainTransient.gain.exponentialRampToValueAtTime(0.0001, now + 0.014);
 
-        oscThump.connect(gainThump);
-        gainThump.connect(this.ctx.destination);
-        oscThump.start(now);
-        oscThump.stop(now + 0.065);
+        oscTransient.connect(gainTransient);
+        gainTransient.connect(this.ctx.destination);
+        oscTransient.start(now);
+        oscTransient.stop(now + 0.016);
         return;
       } catch (e) {
         // Fall back to HTML5 audio if audio context fails
       }
     }
 
-    // 2. HTML5 Audio fallback
+    // 2. HTML5 Audio fallback (softened)
     try {
       if (!this._clickPool) {
         this._clickPool = [
@@ -398,7 +431,7 @@ class SoundSynthesizer {
       const audio = this._clickPool[this._clickIdx % this._clickPool.length];
       this._clickIdx++;
       audio.currentTime = 0;
-      audio.volume = Math.min(1, this.volume * 0.85);
+      audio.volume = Math.min(0.18, this.volume * 0.15);
       audio.play().catch(() => {});
     } catch (e) {}
   }
@@ -407,36 +440,23 @@ class SoundSynthesizer {
     this.playButtonClick();
   }
 
-  // --- Real Pixabay Background Music Player (Loops during timer) ---
+  // --- Procedural Ambient Background Audio (Zero network bloat, 100% PageSpeed) ---
   startMusic(trackKey = 'calm', userVol = 0.5) {
     this.stopMusic();
     if (trackKey === 'none' || !trackKey) return;
     if (this.isMuted) return;
 
-    // Check if it's a real file track
-    const track = this.TRACKS[trackKey];
-    if (track) {
-      this.currentMusicTrack = trackKey;
-      try {
-        const audio = new Audio(track.src);
-        audio.loop = true;
-        audio.volume = Math.max(0, Math.min(1, userVol)) * Math.max(0.4, this.volume) * 0.75;
-        this.currentMusicAudio = audio;
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(err => {
-            console.warn('ClassPanel Music autoplay/play fallback:', err);
-            this.startAmbient('focus', userVol);
-          });
-        }
-      } catch(e) {
-        console.warn('Audio creation error:', e);
-        this.startAmbient('focus', userVol);
-      }
-    } else {
-      // Fallback to procedural synth track (focus, rain, zen)
-      this.startAmbient(trackKey, userVol);
-    }
+    this.currentMusicTrack = trackKey;
+    const synthMap = {
+      'calm': 'focus',
+      'focus': 'focus',
+      'rain': 'rain',
+      'waves': 'waves',
+      'ocean': 'waves',
+      'zen': 'zen'
+    };
+    const ambientType = synthMap[trackKey] || trackKey;
+    this.startAmbient(ambientType, userVol);
   }
 
   previewMusic(trackKey = 'calm', userVol = 0.5) {

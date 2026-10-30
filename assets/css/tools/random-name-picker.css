@@ -40,7 +40,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.75rem;
+      font-size: 0.95rem; font-weight: 900; letter-spacing: 0.06em; color: var(--text-primary);
       cursor: pointer;
       user-select: none;
       z-index: 5;

@@ -208,7 +208,9 @@
 
       <!-- Empty State Card (Visible when list is empty) -->
       <div id="empty-state-card" style="display: none; background: var(--bg-surface-subtle); border: 2px dashed var(--primary); border-radius: var(--radius-xl); padding: 3rem 1.5rem; text-align: center; margin: 1.5rem auto; max-width: 520px;">
-        <div style="font-size: 3rem; margin-bottom: 0.75rem;">🎯</div>
+        <div style="width: 56px; height: 56px; margin: 0 auto 1rem; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">No Names or Options Found</h2>
         <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.5;">Add student names, raffle tickets, dinner ideas, or giveaway entries to spin the wheel! You can enter any custom list.</p>
         <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
@@ -233,13 +235,13 @@
         <div class="wheel-container">
           <div class="wheel-pointer"></div>
           <canvas id="wheel-canvas" width="600" height="600"></canvas>
-          <div class="wheel-center-cap" id="wheel-cap" title="Click to Spin">🎯</div>
+          <div class="wheel-center-cap" id="wheel-cap" title="Click to Spin">SPIN</div>
         </div>
 
         <!-- Bottom Controls -->
         <div class="timer-actions">
           <button id="btn-spin" class="btn-giant btn-giant-primary" style="background: var(--accent-purple); min-width: 220px;">
-            <span>🎲 Spin the Wheel</span>
+            <span style="display:inline-flex;align-items:center;gap:0.5rem;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>Spin the Wheel</span>
           </button>
 
           <button id="btn-bottom-edit" class="btn-giant btn-giant-secondary" style="font-size: 1.05rem; padding: 0 1.5rem;" title="Edit Names & Options">
@@ -251,7 +253,7 @@
           </button>
 
           <button id="btn-reset-pool" class="preset-chip" style="height: 3.5rem; padding: 0 1.25rem;">
-            <span>🔄 Reset Wheel (<span id="count-remaining">16</span> left)</span>
+            <span style="display:inline-flex;align-items:center;gap:0.4rem;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Reset Wheel (<span id="count-remaining">16</span> left)</span>
           </button>
         </div>
       </div>
@@ -277,10 +279,10 @@
         <div style="margin-bottom: 1rem;">
           <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem;">Quick Load Presets:</label>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button type="button" class="preset-pill-btn" id="btn-preset-class">🎓 Sample Class</button>
-            <button type="button" class="preset-pill-btn" id="btn-preset-food">🍕 What to Eat?</button>
-            <button type="button" class="preset-pill-btn" id="btn-preset-first">🎮 Who Goes First?</button>
-            <button type="button" class="preset-pill-btn" id="btn-preset-yesno">🔮 Yes / No / Maybe</button>
+            <button type="button" class="preset-pill-btn" id="btn-preset-class">Sample Class</button>
+            <button type="button" class="preset-pill-btn" id="btn-preset-food">What to Eat</button>
+            <button type="button" class="preset-pill-btn" id="btn-preset-first">Turn Order</button>
+            <button type="button" class="preset-pill-btn" id="btn-preset-yesno">Yes / No / Maybe</button>
           </div>
         </div>
 

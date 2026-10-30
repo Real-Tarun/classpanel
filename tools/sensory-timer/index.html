@@ -176,17 +176,17 @@
 
         <div class="tool-control-bar">
           <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
-            <button id="btn-mode-breathing" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">🫁 Guided Breathing</button>
-            <button id="btn-mode-liquid" class="preset-chip" style="background: transparent; border: none;">💧 Liquid Droplets</button>
+            <button id="btn-mode-breathing" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;"><span style="display:inline-flex;align-items:center;gap:0.35rem;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>Guided Breathing</span></button>
+            <button id="btn-mode-liquid" class="preset-chip" style="background: transparent; border: none;"><span style="display:inline-flex;align-items:center;gap:0.35rem;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>Liquid Droplets</span></button>
           </div>
         </div>
       </div>
 
       <!-- Breathing Rhythm Presets (visible in breathing mode) -->
       <div id="rhythm-selector-bar" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-        <button class="preset-chip active" data-rhythm="box" title="Box Breathing: 4s In, 4s Hold, 4s Out, 4s Hold">🫁 Box Breathing (4-4-4-4)</button>
-        <button class="preset-chip" data-rhythm="478" title="Relaxing Breath: 4s In, 7s Hold, 8s Out">🌙 4-7-8 Deep Calm</button>
-        <button class="preset-chip" data-rhythm="coherence" title="Coherent Breathing: 5s In, 5s Out">🌊 5-5 Coherence</button>
+        <button class="preset-chip active" data-rhythm="box" title="Box Breathing: 4s In, 4s Hold, 4s Out, 4s Hold">Box Breathing (4-4-4-4)</button>
+        <button class="preset-chip" data-rhythm="478" title="Relaxing Breath: 4s In, 7s Hold, 8s Out">4-7-8 Deep Calm</button>
+        <button class="preset-chip" data-rhythm="coherence" title="Coherent Breathing: 5s In, 5s Out">5-5 Coherence</button>
       </div>
 
       <!-- Giant Digital Display (Clickable to customize) -->
@@ -220,7 +220,31 @@
           <button class="preset-chip active" data-time="180">3 Min</button>
           <button class="preset-chip" data-time="300">5 Min</button>
           <button class="preset-chip" data-time="600">10 Min</button>
-          <button class="preset-chip" id="btn-custom-sensory" title="Set custom calm timer duration">⏱️ Custom Time</button>
+          <button class="preset-chip" id="btn-custom-sensory" title="Set custom calm timer duration">Custom Time</button>
+        </div>
+      </div>
+
+      <!-- Procedural Sensory Ambient Audio Controls -->
+      <div class="audio-control-panel" style="justify-content: center; margin-top: 1.5rem;">
+        <div class="audio-panel-group" style="align-items: center;">
+          <span class="audio-group-label" style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+            <span style="display:inline-flex;align-items:center;gap:0.4rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              Calming Soundscape:
+            </span>
+          </span>
+          <div class="audio-input-cluster" style="display: flex; gap: 0.5rem; align-items: center;">
+            <select id="select-sensory-ambient" class="select-input" style="font-size: 0.85rem; padding: 0.45rem 0.85rem; font-weight: 600; border-radius: var(--radius-md);">
+              <option value="none">Silent (No Sound)</option>
+              <option value="calm" selected>Calm Focus</option>
+              <option value="rain">Gentle Rain</option>
+              <option value="waves">Ocean Waves</option>
+              <option value="zen">Zen Singing Bowls</option>
+            </select>
+            <button type="button" id="btn-preview-sensory-music" class="audio-preview-btn" style="padding: 0.45rem 0.9rem; font-weight: 700; font-size: 0.85rem;" title="Preview Soundscape">
+              <span>▶ Preview</span>
+            </button>
+          </div>
         </div>
       </div>
 

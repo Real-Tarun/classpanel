@@ -280,19 +280,42 @@
         <button class="preset-chip" data-seconds="900">15 min</button>
         <button class="preset-chip" data-seconds="1800">30 min</button>
         <button class="preset-chip" data-seconds="3600">1 hr</button>
-        <button class="preset-chip" id="btn-custom-time" title="Click to enter custom countdown time">⏱️ Custom</button>
+        <button class="preset-chip" id="btn-custom-time" title="Click to enter custom countdown time">Custom Time</button>
       </div>
 
       <!-- Pomodoro Session Banner -->
       <div id="pomodoro-banner" style="display: none; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 1.25rem; font-weight: 800; font-size: 1rem; padding: 0.4rem 1.2rem; border-radius: var(--radius-full); background: var(--bg-surface-subtle); border: 1px solid var(--border-color); color: var(--text-primary);">
-        <span id="pomodoro-phase-icon">🍅</span>
+        <span id="pomodoro-phase-icon" style="display:inline-flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span id="pomodoro-phase-text">Focus Period (25:00)</span>
         <span style="color: var(--border-strong);">•</span>
         <span id="pomodoro-cycle-text" style="color: var(--text-muted); font-size: 0.85rem;">Cycle 1 of 4</span>
       </div>
 
       <!-- Sound & Completion Alarm Panel -->
-      <div class="audio-control-panel" style="justify-content: center; margin-top: 1.5rem;">
+      <div class="audio-control-panel" style="justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 1.5rem;">
+        <!-- Procedural Ambient Focus Soundscape -->
+        <div class="audio-panel-group" style="align-items: center;">
+          <span class="audio-group-label" style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+            <span style="display:inline-flex;align-items:center;gap:0.4rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              Ambient Audio:
+            </span>
+          </span>
+          <div class="audio-input-cluster" style="display: flex; gap: 0.5rem; align-items: center;">
+            <select id="select-ambient-track" class="select-input" style="font-size: 0.85rem; padding: 0.45rem 0.85rem; font-weight: 600; border-radius: var(--radius-md);">
+              <option value="none">Silent (Off)</option>
+              <option value="calm">Calm Focus</option>
+              <option value="rain">Gentle Rain</option>
+              <option value="waves">Ocean Waves</option>
+              <option value="zen">Zen Bowls</option>
+            </select>
+            <button type="button" id="btn-preview-music" class="audio-preview-btn" style="padding: 0.45rem 0.9rem; font-weight: 700; font-size: 0.85rem;" title="Preview Ambient Soundscape">
+              <span>▶ Preview</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Completion Alarm -->
         <div class="audio-panel-group" style="align-items: center;">
           <span class="audio-group-label" style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
             <span style="display:inline-flex;align-items:center;gap:0.4rem;">
@@ -313,7 +336,7 @@
 
       <!-- Pulsing Alarm Ringing Alert Banner -->
       <div id="alarm-banner" style="display: none; align-items: center; justify-content: center; gap: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--accent-rose), #dc2626); color: #fff; border-radius: var(--radius-full); font-weight: 800; font-size: 1.05rem; margin: 1.25rem auto 0; max-width: 540px; box-shadow: 0 0 25px rgba(220, 38, 38, 0.6); cursor: pointer; animation: pulse 1s infinite alternate;">
-        <span>⏰ TIME'S UP! Alarm Ringing...</span>
+        <span>TIME'S UP! Alarm Ringing...</span>
         <button type="button" id="btn-stop-alarm" style="background: #fff; color: #dc2626; border: none; padding: 0.35rem 0.9rem; border-radius: var(--radius-full); font-weight: 900; font-size: 0.9rem; cursor: pointer;">
           Stop Alarm (Space)
         </button>

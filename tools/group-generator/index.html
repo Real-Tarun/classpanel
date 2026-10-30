@@ -192,7 +192,7 @@
 
         <div class="tool-control-bar" style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
           <button id="active-class-badge" class="preset-chip" style="cursor: pointer; background: var(--bg-surface); border: 1px solid var(--border-color); font-weight: 700;" title="Click to view or switch active roster">
-            <span id="active-class-badge-text">📚 List: Sample Class (16)</span>
+            <span id="active-class-badge-text">List: Sample Class (16)</span>
           </button>
           <button id="btn-edit-roster" class="btn-primary" style="padding: 0.55rem 1.25rem; border-radius: var(--radius-full); font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: var(--shadow-sm);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -206,7 +206,9 @@
 
       <!-- Empty State Card -->
       <div id="group-empty-state" style="display: none; background: var(--bg-surface-subtle); border: 2px dashed var(--primary); border-radius: var(--radius-xl); padding: 3rem 1.5rem; text-align: center; margin: 1.5rem auto; max-width: 520px;">
-        <div style="font-size: 3rem; margin-bottom: 0.75rem;">👥</div>
+        <div style="width: 56px; height: 56px; margin: 0 auto 1rem; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">No Names or Roster Found</h2>
         <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.5;">Add participant names, student rosters, or coworkers to create instant randomized teams!</p>
         <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
@@ -223,21 +225,21 @@
       <div id="group-controls-bar" class="timer-controls" style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; margin: 1.5rem 0;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div id="quick-presets-container" class="presets-group" style="margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
-            <button class="preset-chip" data-quick="pairs">👥 Pairs (2/grp)</button>
+            <button class="preset-chip" data-quick="pairs">Pairs (2/group)</button>
             <button class="preset-chip" data-quick="2">2 Groups</button>
             <button class="preset-chip" data-quick="3">3 Groups</button>
             <button class="preset-chip active" data-quick="4">4 Groups</button>
             <button class="preset-chip" data-quick="5">5 Groups</button>
             <button class="preset-chip" data-quick="6">6 Groups</button>
-            <button class="preset-chip" id="btn-toggle-advanced" style="color: var(--text-muted); font-size: 0.8rem;">⚙️ Custom Split</button>
+            <button class="preset-chip" id="btn-toggle-advanced" style="color: var(--text-muted); font-size: 0.8rem;">Custom Split</button>
           </div>
 
           <div style="display: flex; gap: 0.6rem; align-items: center;">
             <button id="btn-shuffle" class="btn-giant btn-giant-primary" style="height: 3.25rem; font-size: 1.1rem; padding: 0 1.5rem;">
-              <span>🔀 Shuffle Teams</span>
+              <span style="display:inline-flex;align-items:center;gap:0.45rem;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>Shuffle Teams</span>
             </button>
             <button id="btn-copy" class="action-btn" style="height: 3.25rem;" title="Copy to Clipboard">
-              <span>📋 Copy</span>
+              <span style="display:inline-flex;align-items:center;gap:0.4rem;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</span>
             </button>
           </div>
         </div>
@@ -262,7 +264,7 @@
 
       <!-- Friendly Tip & Count Bar -->
       <div id="group-tip-bar" style="display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.85rem; background: var(--bg-surface); padding: 0.6rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.5rem;">
-        <span>💡 <strong>Teacher Tip:</strong> Click directly on any student name to edit it or fix a typo. Click "Shuffle Teams" to remix!</span>
+        <span><strong style="color: var(--primary);">Tip:</strong> Click directly on any student name to edit it or fix a typo. Click "Shuffle Teams" to remix!</span>
         <span id="group-roster-count-summary" style="font-weight: 700; color: var(--text-primary);">16 students total</span>
       </div>
 

@@ -176,14 +176,14 @@
 
         <div class="tool-control-bar">
           <div style="display: inline-flex; background: var(--bg-surface-subtle); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
-            <button id="btn-mode-race" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">🐾 Animated Race</button>
-            <button id="btn-mode-f1" class="preset-chip" style="background: transparent; border: none;">🏎️ F1 Start Lights</button>
+            <button id="btn-mode-race" class="preset-chip" style="background: var(--primary); color: #FFF; border: none;">Track Sprint Race</button>
+            <button id="btn-mode-f1" class="preset-chip" style="background: transparent; border: none;">F1 Reaction Lights</button>
           </div>
 
           <select id="select-race-theme" class="select-input" style="padding: 0.4rem 0.8rem; font-weight: 700; font-size: 0.85rem;" title="Change Racer Theme">
-            <option value="animals">🐾 Animals & Rocket</option>
-            <option value="teams">🔴 Classroom Teams</option>
-            <option value="vehicles">🏎️ Super Vehicles</option>
+            <option value="animals">Wildlife & Explorers</option>
+            <option value="teams">Color Teams (1-4)</option>
+            <option value="vehicles">Sprint Vehicles</option>
           </select>
         </div>
       </div>
@@ -193,7 +193,7 @@
 
       <!-- Dynamic Live Race Commentary Banner -->
       <div class="race-commentary-bar" id="race-commentary">
-        <span>🏁</span> <span id="race-commentary-text">Ready to race! Click Start Race to begin.</span>
+        <span id="race-commentary-text">Ready to race! Click Start Race to begin.</span>
       </div>
 
       <!-- F1 Starting Gantry Container -->
@@ -232,7 +232,7 @@
       <div class="race-track-container" id="race-track">
         <div class="start-line"></div>
         <div class="finish-line"></div>
-        <div class="finish-flag">🏁</div>
+        <div class="finish-flag" style="font-size: 1.25rem; font-weight: 800; color: #FFF; background: #000; padding: 2px 6px; border-radius: 4px;">FINISH</div>
 
         <div class="race-lane" data-lane="0">
           <div class="lane-badge" style="background: #EF4444;">1</div>
